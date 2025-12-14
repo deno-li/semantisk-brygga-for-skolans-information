@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Perspective } from '../types';
-import { LayoutDashboard, PieChart, FileText, Users, Database, Clock, ClipboardCheck, Sparkles, BookOpen, TrendingUp, Globe, Shield, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, PieChart, FileText, Users, Database, Clock, File, ClipboardCheck, Sparkles, BookOpen, TrendingUp, UsersRound } from 'lucide-react';
 
 interface NavigationProps {
   currentView: View;
@@ -13,17 +13,17 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
   const tabs: { id: View; label: string; icon: React.ReactNode; hiddenForChild?: boolean }[] = [
     { id: 'overview', label: 'Översikt', icon: <LayoutDashboard size={16} /> },
     { id: 'shanarri', label: 'Välbefinnandehjul', icon: <PieChart size={16} /> },
-    { id: 'survey', label: 'Min röst', icon: <MessageSquare size={16} className="text-pink-600" /> },
-    { id: 'sip', label: 'Min Plan', icon: <FileText size={16} /> },
+    { id: 'sip', label: 'Min Plan (SIP)', icon: <FileText size={16} /> },
 
     // Items hidden for child perspective
-    { id: 'lifecourse', label: 'Livsloppsperspektiv', icon: <TrendingUp size={16} className="text-[#005595]" />, hiddenForChild: true },
-    { id: 'myworld', label: 'My World Triangle', icon: <Globe size={16} className="text-blue-600" />, hiddenForChild: true },
-    { id: 'resilience', label: 'Resilience Matrix', icon: <Shield size={16} className="text-green-600" />, hiddenForChild: true },
     { id: 'journal', label: 'Journal (Domäner)', icon: <BookOpen size={16} />, hiddenForChild: true },
-    { id: 'quality', label: 'Systematiskt Trygghetsarbete', icon: <ClipboardCheck size={16} />, hiddenForChild: true },
+    { id: 'quality', label: 'Kvalitet', icon: <ClipboardCheck size={16} />, hiddenForChild: true },
     { id: 'ai-analysis', label: 'AI-Analys', icon: <Sparkles size={16} className="text-purple-600" />, hiddenForChild: true },
+    { id: 'comparison', label: 'Jämförelse', icon: <UsersRound size={16} className="text-blue-600" />, hiddenForChild: true },
+    { id: 'trends', label: 'Trender', icon: <TrendingUp size={16} className="text-green-600" />, hiddenForChild: true },
+    { id: 'dataprofile', label: 'Info-Profil', icon: <Database size={16} />, hiddenForChild: true },
     { id: 'timeline', label: 'Tidslinje', icon: <Clock size={16} />, hiddenForChild: true },
+    { id: 'documents', label: 'Dokument', icon: <File size={16} />, hiddenForChild: true },
   ];
 
   const visibleTabs = currentPerspective === 'child' 

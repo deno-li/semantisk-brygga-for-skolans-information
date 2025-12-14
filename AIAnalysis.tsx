@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect, memo } from 'react';
-import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X, Zap } from 'lucide-react';
 import { AiSuggestion, View } from '../types';
+import { semanticBridgeApi } from '../services/semanticBridgeApi';
 
 interface AIAnalysisProps {
   onNavigate?: (view: View) => void;
@@ -13,6 +14,8 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
   const [results, setResults] = useState<AiSuggestion[] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<number, string>>({});
+  const [apiSource, setApiSource] = useState<'semantic-bridge' | 'gemini' | 'demo'>('semantic-bridge');
+  const [backendStatus, setBackendStatus] = useState<'checking' | 'available' | 'unavailable'>('checking');
 
   useEffect(() => {
     // Check for drafted text passed from Journal component
@@ -21,6 +24,20 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
       setInputText(draft);
       sessionStorage.removeItem('journalDraft');
     }
+
+    // Check backend availability
+    const checkBackend = async () => {
+      try {
+        await semanticBridgeApi.healthCheck();
+        setBackendStatus('available');
+        setApiSource('semantic-bridge');
+      } catch (error) {
+        console.log('Semantic Bridge backend unavailable, falling back to Gemini');
+        setBackendStatus('unavailable');
+        setApiSource('gemini');
+      }
+    };
+    checkBackend();
   }, []);
 
   const validateCodeFormat = (standard: string, code: string): string | null => {
@@ -62,30 +79,130 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
     setValidationErrors({});
 
     try {
-      // Call Vercel serverless API route
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: inputText }),
-      });
+      // Try semantic-bridge backend first
+      if (backendStatus === 'available') {
+        try {
+          const response = await semanticBridgeApi.analyzeText({
+            text: inputText,
+            standards: ['icf', 'ksi', 'bbic', 'kva']
+          });
 
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+          // Transform backend response to match our AiSuggestion format
+          const suggestions: AiSuggestion[] = response.icf_suggestions.map(sugg => ({
+            standard: 'ICF',
+            code: `${sugg.code} (${sugg.description})`,
+            confidence: sugg.confidence,
+            reasoning: sugg.reasoning
+          }));
+
+          // Add KSI suggestions
+          response.ksi_codes?.forEach(code => {
+            suggestions.push({
+              standard: 'KSI',
+              code: code,
+              confidence: 85,
+              reasoning: `Baserat på textanalys, identifierad KSI-kod: ${code}`
+            });
+          });
+
+          // Add BBIC suggestions
+          response.bbic_domains?.forEach(domain => {
+            suggestions.push({
+              standard: 'BBIC',
+              code: domain,
+              confidence: 80,
+              reasoning: `Texten relaterar till BBIC-domänen: ${domain}`
+            });
+          });
+
+          setResults(suggestions);
+          setApiSource('semantic-bridge');
+          setIsAnalyzing(false);
+          return;
+        } catch (backendError) {
+          console.warn('Semantic Bridge analysis failed, falling back to Gemini:', backendError);
+          // Fall through to Gemini
+        }
       }
 
-      const data = await response.json();
+      // Fallback to Gemini if backend unavailable
+      const { GoogleGenAI, Type } = await import("@google/genai");
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-      if (data.suggestions && data.suggestions.length > 0) {
-        setResults(data.suggestions);
-      } else if (data.error) {
-        throw new Error(data.error);
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: `
+          Du är en expert på svensk vård- och omsorgsdokumentation och terminologi.
+          Analysera följande observationstext och föreslå koder för standarderna ICF (ICF-CY), BBIC, KVÅ och KSI.
+          
+          Text att analysera:
+          "${inputText}"
+          
+          INSTRUKTIONER FÖR MOTIVERING (REASONING):
+          För att analysen ska vara trovärdig MÅSTE du inkludera direkta citat från texten.
+          Följ denna struktur för varje motivering:
+          1. Ange exakt vilket citat analysen bygger på.
+          2. Förklara hur citatet tolkas i förhållande till standarden.
+          3. Ange varför den specifika koden valdes.
+
+          Exempelformat: "Baserat på citatet '[CITAT FRÅN TEXT]' som indikerar [TOLKNING/PROBLEM], föreslås koden [KOD] då den omfattar [DEFINITION]."
+          
+          PRIORITERING PER STANDARD:
+          - ICF: Prioritera d-koder (aktivitet/delaktighet) och e-koder (omgivningsfaktorer) för att fånga barnets funktion i vardagen.
+          - BBIC: Koppla till barnets behov, föräldrarnas förmåga eller familj & miljö.
+          - KVÅ: Åtgärdskoder inom hälso- och sjukvård (t.ex. samtal, utredning).
+          - KSI: Insatskoder för socialtjänst (t.ex. bistånd, placering).
+
+          ÖNSKAT JSON-FORMAT:
+          Svaret ska vara en lista av objekt med följande struktur:
+          [
+            {
+              "standard": "ICF" | "BBIC" | "KVÅ" | "KSI",
+              "code": "Kod och beskrivning (t.ex. 'd160 Uppmärksamhet')",
+              "confidence": heltal 0-100,
+              "reasoning": "Motivering med citat"
+            }
+          ]
+        `,
+        config: {
+          responseMimeType: 'application/json',
+          responseSchema: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                standard: { 
+                  type: Type.STRING, 
+                  enum: ['ICF', 'BBIC', 'KVÅ', 'KSI'] 
+                },
+                code: { 
+                  type: Type.STRING,
+                  description: "Koden och dess benämning, t.ex. 'd160 Uppmärksamhet' eller '421 Kontaktfamilj'"
+                },
+                confidence: { 
+                  type: Type.INTEGER,
+                  description: "Säkerhet i bedömningen (0-100)"
+                },
+                reasoning: { 
+                  type: Type.STRING,
+                  description: "Motivering som inkluderar citat från texten."
+                }
+              },
+              required: ['standard', 'code', 'confidence', 'reasoning']
+            }
+          }
+        }
+      });
+
+      if (response.text) {
+        setResults(JSON.parse(response.text));
+        setApiSource('gemini');
       }
 
     } catch (error) {
       console.error("AI Analysis failed:", error);
-      // Fallback/Demo mode if API call fails
+      setApiSource('demo');
+      // Fallback/Demo mode if API key is missing or call fails
       const mockSuggestions: AiSuggestion[] = [
         {
           standard: 'ICF',
@@ -428,4 +545,4 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
   );
 };
 
-export default memo(AIAnalysis);
+export default AIAnalysis;

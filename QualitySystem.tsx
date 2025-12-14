@@ -1,8 +1,8 @@
 
-import React, { useState, memo } from 'react';
-import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../constants';
-import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award } from 'lucide-react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
+import React, { useState } from 'react';
+import { QUALITY_CYCLE, SAFETY_TREND_DATA } from '../constants';
+import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw } from 'lucide-react';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
@@ -108,7 +108,7 @@ const QualitySystem: React.FC = () => {
       {/* Header with context */}
       <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between gap-6 items-start">
         <div>
-          <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Gävlemodellen & Systematiskt Trygghetsarbete</h2>
+          <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Gävlemodellen & Systematiskt Kvalitetsarbete</h2>
           <p className="text-gray-600 max-w-2xl">
             Skolans arbete för trygghet och studiero följer en systematisk process (PDCA). 
             Här ser du hur Eriks individuella upplevelser bidrar till skolans utveckling och hur vi arbetar förebyggande.
@@ -324,172 +324,8 @@ const QualitySystem: React.FC = () => {
         </div>
 
       </div>
-
-      {/* Gävlemodellens Kvalitetsindikatorer */}
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-[#1F1F1F] mb-2 flex items-center gap-2">
-              <Target size={24} className="text-[#005595]" />
-              Uppföljning av systematiskt trygghetsarbete enligt Gävlemodellens hörnstenar
-            </h2>
-          </div>
-          <span className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">
-            Uppdaterad: Nov 2025
-          </span>
-        </div>
-
-        {/* Tabs for indicator types */}
-        <div className="flex gap-2 mb-6 border-b border-gray-200">
-          <button className="px-4 py-2 text-sm font-semibold text-[#005595] border-b-2 border-[#005595]">
-            Alla indikatorer
-          </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
-            Process
-          </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
-            Resultat
-          </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
-            Långsiktig
-          </button>
-        </div>
-
-        {/* Quality Indicators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {QUALITY_INDICATORS.map((indicator) => {
-            const progress = (indicator.current / indicator.target) * 100;
-            const meetsTarget = indicator.current >= indicator.target;
-            const isNearTarget = progress >= 85 && progress < 100;
-
-            return (
-              <div
-                key={indicator.id}
-                className={`bg-white rounded-lg border-2 p-4 hover:shadow-md transition-all ${
-                  meetsTarget ? 'border-green-200 bg-green-50/30' :
-                  isNearTarget ? 'border-yellow-200 bg-yellow-50/30' :
-                  'border-gray-200'
-                }`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                        indicator.type === 'process' ? 'bg-blue-100 text-blue-700' :
-                        indicator.type === 'result' ? 'bg-purple-100 text-purple-700' :
-                        'bg-orange-100 text-orange-700'
-                      }`}>
-                        {indicator.type === 'process' ? 'Process' :
-                         indicator.type === 'result' ? 'Resultat' :
-                         'Långsiktig'}
-                      </span>
-                      {indicator.gavleModelPillar && (
-                        <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">
-                          {indicator.gavleModelPillar === 'mapping' ? '🗺️ Kartläggning' :
-                           indicator.gavleModelPillar === 'collaboration' ? '🤝 Samverkan' :
-                           indicator.gavleModelPillar === 'followup' ? '📊 Uppföljning' :
-                           '🚀 Utveckling'}
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="font-bold text-sm text-[#1F1F1F] leading-tight">
-                      {indicator.name}
-                    </h4>
-                  </div>
-                </div>
-
-                <p className="text-xs text-gray-600 mb-3 leading-relaxed">
-                  {indicator.description}
-                </p>
-
-                {/* Progress visualization */}
-                <div className="mb-3">
-                  <div className="flex items-baseline justify-between mb-1">
-                    <span className="text-2xl font-bold text-[#1F1F1F]">
-                      {indicator.current}{indicator.unit}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      Mål: {indicator.target}{indicator.unit}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                    <div
-                      className={`h-2 rounded-full transition-all ${
-                        meetsTarget ? 'bg-green-500' :
-                        isNearTarget ? 'bg-yellow-500' :
-                        'bg-orange-500'
-                      }`}
-                      style={{ width: `${Math.min(progress, 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Trend indicator */}
-                <div className="flex items-center justify-between text-xs">
-                  <div className={`flex items-center gap-1 font-semibold ${
-                    indicator.trend === 'improving' ? 'text-green-600' :
-                    indicator.trend === 'stable' ? 'text-gray-600' :
-                    'text-red-600'
-                  }`}>
-                    {indicator.trend === 'improving' ? (
-                      <>
-                        <TrendingUp size={14} />
-                        <span>Förbättras</span>
-                      </>
-                    ) : indicator.trend === 'stable' ? (
-                      <>
-                        <Activity size={14} />
-                        <span>Stabil</span>
-                      </>
-                    ) : (
-                      <>
-                        <TrendingUp size={14} className="rotate-180" />
-                        <span>Försämras</span>
-                      </>
-                    )}
-                  </div>
-                  {meetsTarget && (
-                    <div className="flex items-center gap-1 text-green-600">
-                      <Award size={14} />
-                      <span className="font-semibold">Uppnått</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Summary Statistics */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-[#005595]">
-              {QUALITY_INDICATORS.filter(qi => qi.current >= qi.target).length}
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Uppnådda mål</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">
-              {QUALITY_INDICATORS.filter(qi => qi.trend === 'improving').length}
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Förbättras</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-gray-600">
-              {QUALITY_INDICATORS.filter(qi => qi.trend === 'stable').length}
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Stabila</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-[#005595]">
-              {Math.round(QUALITY_INDICATORS.reduce((sum, qi) => sum + (qi.current / qi.target) * 100, 0) / QUALITY_INDICATORS.length)}%
-            </div>
-            <div className="text-xs text-gray-600 mt-1">Snittuppfyllelse</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default memo(QualitySystem);
+export default QualitySystem;

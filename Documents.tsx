@@ -8,10 +8,10 @@ const Documents: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
        {/* Header */}
        <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-          <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Hantera samtycke</h2>
+          <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Dokument & Handlingar</h2>
           <p className="text-gray-600">
-            Här samlas alla journalhandlingar, planer och underlag som rör Erik.
-            Vissa dokument hämtas direkt från anslutna källsystem (Skola, Hälso- och sjukvård, Omsorg) via federation.
+            Här samlas alla journalhandlingar, planer och underlag som rör Erik. 
+            Vissa dokument hämtas direkt från anslutna källsystem (Skola, Vård, Omsorg) via federation.
           </p>
        </div>
 

@@ -1,24 +1,7 @@
 """
-Semantic Bridge Architecture - Services
+Semantic Bridge Architecture - REST API
 """
 
-from .semantic_mapper import (
-    SemanticMappingEngine,
-    MappingResult,
-    MappingConfidence
-)
+from .main import app
 
-from .ai_analyzer import (
-    AITextAnalyzer,
-    ICFSuggestion,
-    ThemeCluster
-)
-
-__all__ = [
-    "SemanticMappingEngine",
-    "MappingResult",
-    "MappingConfidence",
-    "AITextAnalyzer",
-    "ICFSuggestion",
-    "ThemeCluster",
-]
+__all__ = ["app"]

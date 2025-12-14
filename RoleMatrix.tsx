@@ -29,8 +29,9 @@ const RoleMatrix: React.FC = () => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 animate-fade-in">
        <div className="mb-6 border-b border-gray-200 pb-4">
           <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Roller & Behörighet</h2>
-          <p className="text-gray-600 max-w-3xl"> 
-            Välj en roll nedan för att simulera en vy.
+          <p className="text-gray-600 max-w-3xl">
+            Styrning av åtkomst baseras på Digg:s ramverk för samordnad identitet. 
+            Välj en roll nedan för att simulera deras vy.
           </p>
        </div>
 

@@ -1,61 +1,104 @@
 
-import React, { useState, useMemo, useCallback, memo } from 'react';
-import { SHANARRI_DATA, TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, CHILD_PROFILE, ENHANCED_CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS } from '../constants';
-import { getShanarriDataByProfile, getRiskFactorsByProfile, getProtectiveFactorsByProfile } from '../profileData';
-import { getProfileById } from '../childProfiles';
-import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { SHANARRI_DATA, TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, CHILD_PROFILE } from '../constants';
+import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Sparkles, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { Perspective, View } from '../types';
 
 interface DashboardProps {
   currentPerspective: Perspective;
   onNavigate: (view: View) => void;
-  selectedProfileId?: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, selectedProfileId = 'erik' }) => {
-  // Get profile-specific data or fall back to defaults (Erik's data) - memoized
-  const shanarriData = useMemo(() => {
-    const profileData = getShanarriDataByProfile(selectedProfileId);
-    return profileData.length > 0 ? profileData : SHANARRI_DATA;
-  }, [selectedProfileId]);
+// Global cache to persist images across navigation
+const imageCache: Record<string, string> = {};
 
-  const riskFactors = useMemo(() => {
-    const profileRiskFactors = getRiskFactorsByProfile(selectedProfileId);
-    return profileRiskFactors.length > 0 ? profileRiskFactors : RISK_FACTORS;
-  }, [selectedProfileId]);
-
-  const protectiveFactors = useMemo(() => {
-    const profileProtectiveFactors = getProtectiveFactorsByProfile(selectedProfileId);
-    return profileProtectiveFactors.length > 0 ? profileProtectiveFactors : PROTECTIVE_FACTORS;
-  }, [selectedProfileId]);
-
-  const childProfile = useMemo(() => {
-    const currentProfile = getProfileById(selectedProfileId);
-    return currentProfile || CHILD_PROFILE;
-  }, [selectedProfileId]);
-
-  const needsAttention = useMemo(() => shanarriData.filter(d => d.status < 3).length, [shanarriData]);
-  const nextMeeting = useMemo(() => TIMELINE_DATA[0], []);
-  const currentQualityPhase = useMemo(() => QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0], []);
-
+const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate }) => {
+  const needsAttention = SHANARRI_DATA.filter(d => d.status < 3).length;
+  const nextMeeting = TIMELINE_DATA[0];
+  const currentQualityPhase = QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0];
+  
   const isChild = currentPerspective === 'child';
-  const isYouth = useMemo(() => isChild && childProfile.age >= 13, [isChild, childProfile.age]); 
+  // Define "Youth" as 13+ years old.
+  const isYouth = isChild && CHILD_PROFILE.age >= 13;
+  
+  // Use a cache key based on perspective and age group to serve the correct image
+  const cacheKey = isChild ? (isYouth ? 'youth' : 'child') : 'standard';
+  
+  const [heroImage, setHeroImage] = useState<string | null>(imageCache[cacheKey] || null);
+  const [loadingImage, setLoadingImage] = useState<boolean>(!imageCache[cacheKey]);
 
-  // Simplified Mini Wheel for Dashboard - Memoized
-  const MiniWellBeingWheel = useMemo(() => {
+  useEffect(() => {
+    const generateIllustration = async () => {
+        // If we already have a cached image for this perspective, use it.
+        if (imageCache[cacheKey]) {
+            setHeroImage(imageCache[cacheKey]);
+            setLoadingImage(false);
+            return;
+        }
+
+        setLoadingImage(true);
+        try {
+            // Dynamic import to optimize bundle size
+            const { GoogleGenAI } = await import("@google/genai");
+            
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            
+            // Build Prompt Logic based on Age Group
+            let prompt = "";
+            if (!isChild) {
+               // Professional / Guardian / Standard View
+               prompt = "A sophisticated, warm abstract vector illustration representing a child's journey through the welfare system. Connecting symbols of education, health, and care in a harmonious flow. Soft blue and orange tones, clean flat design.";
+            } else if (isYouth) {
+               // Youth View (13+) - Cool, modern, less childish
+               prompt = "A cool, modern digital art illustration suitable for a teenager. A concept of 'My Journey' visualized as a stylized road map or a futuristic interface towards personal goals. Vibrant colors, distinct lines, empowering and energetic. Not childish, no cartoons. Lo-fi or vector art style.";
+            } else {
+               // Young Child View (<13) - Playful, Storybook
+               prompt = "A warm, inviting, watercolor storybook illustration of a happy child adventurer standing on a golden path in a magical, safe forest. The path leads to a friendly school and a cozy house. Soft pastel colors, very cute and comforting.";
+            }
+
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash-image',
+                contents: {
+                    parts: [{ text: prompt }]
+                }
+            });
+
+            if (response.candidates?.[0]?.content?.parts) {
+                for (const part of response.candidates[0].content.parts) {
+                    if (part.inlineData) {
+                        const imageData = `data:image/png;base64,${part.inlineData.data}`;
+                        // Save to cache and state
+                        imageCache[cacheKey] = imageData;
+                        setHeroImage(imageData);
+                        break;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Failed to generate image:", error);
+        } finally {
+            setLoadingImage(false);
+        }
+    };
+
+    generateIllustration();
+  }, [isChild, isYouth, cacheKey]); 
+
+  // Simplified Mini Wheel for Dashboard
+  const MiniWellBeingWheel = () => {
     const size = 160;
     const cx = size / 2;
     const cy = size / 2;
     const outerR = size / 2 - 10;
     const innerR = size / 5;
-    const n = shanarriData.length;
+    const n = SHANARRI_DATA.length;
 
     return (
       <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full max-h-[160px]">
-        {shanarriData.map((dim, i) => {
+        {SHANARRI_DATA.map((dim, i) => {
           const startAngle = (i * 360) / n - 90;
           const endAngle = ((i + 1) * 360) / n - 90;
-
+          
           const startRad = (startAngle * Math.PI) / 180;
           const endRad = (endAngle * Math.PI) / 180;
 
@@ -78,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
         <circle cx={cx} cy={cy} r={innerR} fill="white" />
       </svg>
     );
-  }, [shanarriData]);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in text-[#1F1F1F]">
@@ -87,7 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
       <div>
         {isChild ? (
           <div className="bg-gradient-to-r from-orange-50 to-yellow-50 p-6 rounded-xl border border-orange-100">
-             <h2 className="text-2xl font-bold mb-2 text-[#E87C00]">Hej {childProfile.name.split(' ')[0]}! 👋</h2>
+             <h2 className="text-2xl font-bold mb-2 text-[#E87C00]">Hej {CHILD_PROFILE.name.split(' ')[0]}! 👋</h2>
              <p className="text-gray-700 max-w-2xl">
                Här är din egen sida. Du har rätt att veta vad som skrivs om dig och vara med och bestämma. 
                Här kan du se din plan och vilka vuxna som stöttar dig.
@@ -109,171 +152,75 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
         )}
       </div>
 
-      {/* Well-being Wheel Overview Section */}
-      <div
-        onClick={() => onNavigate('shanarri')}
-        className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden relative min-h-[280px] flex flex-col md:flex-row hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group"
-      >
-        <div className="p-6 md:w-1/3 flex flex-col justify-center relative z-10 bg-white">
-            <h3 className="text-lg font-bold text-[#1F1F1F] mb-2 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[#005595]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2 L12 12 L17 17"/>
-                </svg>
-                {isChild ? "Ditt Välbefinnandehjul" : "Välbefinnandehjul"}
+      {/* AI Generated Illustration Section - Compact Version */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden relative min-h-[150px] flex flex-col md:flex-row">
+        <div className="p-5 md:w-1/3 flex flex-col justify-center relative z-10 bg-white">
+            <h3 className="text-lg font-bold text-[#1F1F1F] mb-1 flex items-center gap-2">
+                <ImageIcon className="text-[#005595]" size={20} />
+                {isChild ? "Min Resa i Bilder" : "Visualisering: Barnets Resa"}
             </h3>
-            <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                {isChild
-                  ? "Klicka för att se mer."
-                  : "SHANARRI-modellen visar barnets välbefinnande inom 8 dimensioner. Klicka för att utforska."}
+            <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+                {isChild 
+                  ? "En bild skapad bara för dig, som visar din väg framåt mot målen." 
+                  : "AI-genererad illustration som symboliserar samverkan och trygghet i barnets livslopp."}
             </p>
-            {!isChild && (
-              <div className="flex items-center gap-2 text-sm">
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-semibold">
-                  {shanarriData.filter(d => d.status >= 4).length} Bra
-                </span>
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded text-xs font-semibold">
-                  {shanarriData.filter(d => d.status === 3).length} OK
-                </span>
-                {needsAttention > 0 && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 rounded text-xs font-semibold">
-                    {needsAttention} Behöver stöd
-                  </span>
-                )}
-              </div>
-            )}
-            <div className="mt-4 flex items-center gap-2 text-[#005595] text-sm font-semibold group-hover:gap-3 transition-all">
-              Se fullständigt hjul <ArrowRight size={16} />
+            <div className="flex items-center gap-2 text-[10px] text-gray-400 bg-gray-50 p-1.5 rounded w-fit">
+                <Sparkles size={10} />
+                Skapad med Gemini AI
             </div>
         </div>
-
-        {/* Interactive Well-being Wheel */}
-        <div className="md:w-2/3 bg-gradient-to-br from-blue-50 via-purple-50 to-teal-50 relative min-h-[280px] overflow-hidden flex items-center justify-center p-8">
-            <div className="relative w-full max-w-[380px]">
-              {(() => {
-                const size = 380;
-                const cx = size / 2;
-                const cy = size / 2;
-                const outerR = size / 2 - 20; // Outer radius for main wheel
-                const innerR = size / 6; // Inner circle radius
-                const textR = (outerR + innerR) / 2; // Position for text
-                const indicatorR = outerR - 25; // Position for status indicators
-                const n = shanarriData.length;
-
-                return (
-                  <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full drop-shadow-lg">
-                    {shanarriData.map((dim, i) => {
-                      const startAngle = (i * 360) / n - 90;
-                      const endAngle = ((i + 1) * 360) / n - 90;
-                      const midAngle = (startAngle + endAngle) / 2;
-
-                      const startRad = (startAngle * Math.PI) / 180;
-                      const endRad = (endAngle * Math.PI) / 180;
-
-                      // Wheel segment coordinates
-                      const x1 = cx + Math.cos(startRad) * innerR;
-                      const y1 = cy + Math.sin(startRad) * innerR;
-                      const x2 = cx + Math.cos(startRad) * outerR;
-                      const y2 = cy + Math.sin(startRad) * outerR;
-                      const x3 = cx + Math.cos(endRad) * outerR;
-                      const y3 = cy + Math.sin(endRad) * outerR;
-                      const x4 = cx + Math.cos(endRad) * innerR;
-                      const y4 = cy + Math.sin(endRad) * innerR;
-
-                      const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
-
-                      // Text positioning
-                      const textAngleRad = (midAngle * Math.PI) / 180;
-                      const textX = cx + Math.cos(textAngleRad) * textR;
-                      const textY = cy + Math.sin(textAngleRad) * textR;
-
-                      // Status indicator positioning
-                      const indicatorAngleRad = (midAngle * Math.PI) / 180;
-                      const indicatorX = cx + Math.cos(indicatorAngleRad) * indicatorR;
-                      const indicatorY = cy + Math.sin(indicatorAngleRad) * indicatorR;
-
-                      // Status color based on value
-                      const statusColor = dim.status >= 4 ? '#10b981' : dim.status === 3 ? '#fbbf24' : '#ef4444';
-
-                      return (
-                        <g key={dim.id}>
-                          {/* Wheel segment */}
-                          <path
-                            d={path}
-                            fill={dim.color}
-                            stroke="white"
-                            strokeWidth="3"
-                            opacity="0.9"
-                            className="transition-all group-hover:opacity-100"
-                          />
-
-                          {/* Dimension name */}
-                          <text
-                            x={textX}
-                            y={textY}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fill="white"
-                            fontSize="11"
-                            fontWeight="700"
-                            className="pointer-events-none uppercase tracking-wide"
-                            transform={`rotate(${midAngle + 90}, ${textX}, ${textY})`}
-                          >
-                            {dim.name}
-                          </text>
-
-                          {/* Status indicator circle */}
-                          <circle
-                            cx={indicatorX}
-                            cy={indicatorY}
-                            r="8"
-                            fill={statusColor}
-                            stroke="white"
-                            strokeWidth="2"
-                            className="transition-all"
-                          />
-                        </g>
-                      );
-                    })}
-
-                    {/* Center circle */}
-                    <circle cx={cx} cy={cy} r={innerR} fill="white" stroke="#005595" strokeWidth="3"/>
-
-                    {/* Center text */}
-                    <text
-                      x={cx}
-                      y={cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill="#005595"
-                      fontSize="14"
-                      fontWeight="bold"
-                      className="pointer-events-none"
-                    >
-                      <tspan x={cx} dy="-8">BARNETS</tspan>
-                      <tspan x={cx} dy="16">BÄSTA</tspan>
-                    </text>
-                  </svg>
-                );
-              })()}
+        
+        {/* Optimized Image Container */}
+        <div className="md:w-2/3 bg-gray-50 relative min-h-[150px] overflow-hidden group">
+            {/* Placeholder Background with Blur - Shows while loading or behind transparent parts */}
+            <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${heroImage ? 'opacity-0' : 'opacity-100'} 
+                ${isChild ? 'bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100' : 'bg-gradient-to-br from-[#EBF4FA] via-white to-blue-50'}`}
+            >
+                {loadingImage && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                         <div className={`mb-3 p-3 rounded-full bg-white/80 shadow-sm backdrop-blur-sm ${isChild ? 'text-orange-500' : 'text-[#005595]'}`}>
+                            <Loader2 size={24} className="animate-spin" />
+                         </div>
+                         <span className={`text-xs font-medium tracking-wide animate-pulse ${isChild ? 'text-orange-600' : 'text-[#005595]'}`}>
+                            {isYouth ? "Genererar design..." : (isChild ? "Målar din bild..." : "Genererar visualisering...")}
+                         </span>
+                    </div>
+                )}
             </div>
+
+            {/* Generated Image - Fades in */}
+            {heroImage && (
+                <img 
+                    src={heroImage} 
+                    alt="AI Generated Illustration" 
+                    className="w-full h-full object-cover animate-fade-in absolute inset-0"
+                />
+            )}
+
+            {/* Error State */}
+            {!loadingImage && !heroImage && (
+                 <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs bg-gray-100">
+                    <ImageIcon className="opacity-20 mr-2" />
+                    Bild kunde inte skapas
+                </div>
+            )}
         </div>
       </div>
 
       {/* KPI Cards - Context Aware */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div
+        <div 
           onClick={() => onNavigate('sip')}
-          className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group ${isChild ? 'hover:border-orange-400' : ''}`}
+          className={`bg-white p-5 rounded-lg border hover:border-[#005595] transition-all cursor-pointer group ${isChild ? 'border-orange-200 hover:border-orange-400' : 'border-gray-300'}`}
         >
           <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
             {isChild ? "Min Plan" : "Aktiva Planer"}
           </div>
           <div className={`text-3xl font-bold transition-colors ${isChild ? 'text-[#E87C00]' : 'text-[#005595] group-hover:text-[#B00020]'}`}>
-            1 <span className="text-sm font-normal text-gray-500">{isChild ? "Barnets plan / SIP" : "Barnets plan / SIP"}</span>
+            1 <span className="text-sm font-normal text-gray-500">{isChild ? "SIP-plan" : "SIP"}</span>
           </div>
         </div>
-        <div className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all group ${isChild ? 'hover:border-orange-400' : ''}`}>
+        <div className={`bg-white p-5 rounded-lg border hover:border-[#005595] transition-colors group ${isChild ? 'border-orange-200 hover:border-orange-400' : 'border-gray-300'}`}>
           <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
             {isChild ? "Vuxna runt mig" : "Kontaktpersoner"}
           </div>
@@ -281,18 +228,16 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
             5
           </div>
         </div>
-        {!isChild && (
-          <div
-            onClick={() => onNavigate('shanarri')}
-            className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group"
-          >
-            <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
-              Välbefinnande
-            </div>
-            <div className="text-3xl font-bold text-[#378056]">7/8 <span className="text-sm font-normal text-gray-500">Bra!</span></div>
+        <div 
+          onClick={() => onNavigate('shanarri')}
+          className={`bg-white p-5 rounded-lg border hover:border-[#005595] transition-all cursor-pointer group ${isChild ? 'border-orange-200 hover:border-orange-400' : 'border-gray-300'}`}
+        >
+          <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
+            {isChild ? "Mitt Mående" : "Välbefinnande"}
           </div>
-        )}
-        <div className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all group ${isChild ? 'hover:border-orange-400' : ''}`}>
+          <div className="text-3xl font-bold text-[#378056]">7/8 <span className="text-sm font-normal text-gray-500">Bra!</span></div>
+        </div>
+        <div className={`bg-white p-5 rounded-lg border hover:border-[#005595] transition-colors group ${isChild ? 'border-orange-200 hover:border-orange-400' : 'border-gray-300'}`}>
           <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
             {isChild ? "Vem får se?" : "Samtycken"}
           </div>
@@ -306,15 +251,33 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
         {/* Main Feed */}
         <div className="lg:col-span-2 space-y-6">
           
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+             {/* Mini Well-being Wheel Widget - CLICKABLE */}
+             <div 
+               onClick={() => onNavigate('shanarri')}
+               className={`bg-white rounded-lg border p-6 shadow-sm flex flex-col items-center text-center cursor-pointer transition-all hover:shadow-md ${isChild ? 'border-orange-200 hover:border-orange-400' : 'border-gray-300 hover:border-[#005595]'}`}
+             >
+                <h3 className="font-bold text-[#1F1F1F] mb-4 text-sm uppercase tracking-wide flex items-center gap-1">
+                  Välbefinnandehjul <ArrowUpRight size={14} className="opacity-50"/>
+                </h3>
+                <div className="w-32 h-32 mb-4 hover:scale-105 transition-transform">
+                  <MiniWellBeingWheel />
+                </div>
+                <p className="text-xs text-gray-500">
+                  {needsAttention > 0 
+                    ? `${needsAttention} områden behöver stöd` 
+                    : "Balanserat välbefinnande"}
+                </p>
+             </div>
+
              {/* Active SIP Card */}
-             <div className={`bg-white rounded-xl border overflow-hidden shadow-sm flex flex-col ${isChild ? 'border-orange-200' : 'border-blue-200'}`}>
+             <div className={`col-span-2 bg-white rounded-lg border-2 overflow-hidden shadow-sm flex flex-col ${isChild ? 'border-[#E87C00]' : 'border-[#005595]'}`}>
               <div className={`px-4 py-3 flex justify-between items-center text-white ${isChild ? 'bg-[#E87C00]' : 'bg-[#005595]'}`}>
                  <h3 className="font-bold flex items-center gap-2 text-sm">
                    <div className={`w-2 h-2 rounded-full animate-pulse ${isChild ? 'bg-white' : 'bg-green-400'}`}></div>
-                   {isChild ? "Min Plan" : "Aktiv"}
+                   {isChild ? "Min Plan (SIP)" : "Aktiv SIP"}
                  </h3>
-                 <button
+                 <button 
                    onClick={() => onNavigate('sip')}
                    className="text-xs bg-white/20 hover:bg-white/30 px-2 py-0.5 rounded text-white font-semibold transition-colors"
                  >
@@ -324,7 +287,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
               <div className="p-4 flex-1 flex flex-col justify-between">
                 <div className={`border-l-4 p-3 mb-4 ${isChild ? 'bg-orange-50 border-[#E87C00]' : 'bg-[#EBF4FA] border-[#005595]'}`}>
                   <p className="text-[#1F1F1F] font-medium text-sm italic">
-                    "{isChild ? (childProfile.sipGoal?.child || "Målet är att jag ska bli bättre på att läsa och känna mig lugn i skolan.") : (childProfile.sipGoal?.professional || "Erik ska uppnå åldersadekvat läsförmåga och känna trygghet i sin skolsituation senast juni 2026.")}"
+                    "{isChild ? "Målet är att jag ska bli bättre på att läsa och känna mig lugn i skolan." : "Erik ska uppnå åldersadekvat läsförmåga och känna trygghet i sin skolsituation senast juni 2026."}"
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
@@ -344,15 +307,15 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
           </div>
 
            {/* Gävlemodellen Quick Status - Child Adapted */}
-           <div
+           <div 
              onClick={() => onNavigate('quality')}
-             className={`bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group ${isChild ? 'hover:border-orange-400' : 'hover:border-[#005595]'}`}
+             className={`bg-white rounded-lg border p-6 shadow-sm transition-all cursor-pointer group ${isChild ? 'border-orange-200 hover:border-[#E87C00]' : 'border-gray-300 hover:border-[#005595]'}`}
             >
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] flex items-center gap-2">
+                <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2">
                   <ClipboardCheck size={20} className={isChild ? "text-[#E87C00]" : "text-[#005595]"} />
-                  {isChild ? "Du svarade, vi lyssnade!" : "Gävlemodellen & Systematiskt trygghetsarbete"}
+                  {isChild ? "Du svarade, vi lyssnade!" : "Gävlemodellen & Systematiskt Kvalitetsarbete"}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
                   {isChild 
@@ -362,7 +325,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
                 </p>
               </div>
               <span className={`text-xs font-bold px-2 py-1 rounded uppercase ${isChild ? 'bg-orange-100 text-[#E87C00]' : 'bg-blue-100 text-[#005595]'}`}>
-                {isChild ? "Pågår nu" : "Läsår 25/26"}
+                {isChild ? "Pågår nu" : "Läsår 24/25"}
               </span>
             </div>
             
@@ -384,7 +347,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
 
           {/* Attention Items */}
           {needsAttention > 0 && (
-            <div className="bg-[#FFF4F0] rounded-xl border border-[#B00020] shadow-sm">
+            <div className="bg-[#FFF4F0] rounded-lg border border-[#B00020]">
                <div className="px-6 py-4 border-b border-[#B00020]/20">
                  <h3 className="font-bold text-[#B00020] flex items-center gap-2">
                    <AlertCircle size={20} />
@@ -392,7 +355,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
                  </h3>
                </div>
                <div className="divide-y divide-[#B00020]/10">
-                 {shanarriData.filter(d => d.status < 3).map(item => (
+                 {SHANARRI_DATA.filter(d => d.status < 3).map(item => (
                    <div key={item.id} className="flex items-start gap-4 p-4 hover:bg-white/50 transition-colors">
                       <div className="w-2 h-2 rounded-full bg-[#B00020] mt-2 shrink-0"></div>
                       <div className="flex-1">
@@ -410,204 +373,12 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
                </div>
             </div>
           )}
-
-          {/* Support Level & Risk/Protective Factors - Professional View Only */}
-          {!isChild && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Support Level Card */}
-              <div className="bg-white rounded-xl border border-orange-200 p-6 shadow-sm">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg">
-                      <TrendingUp size={20} className="text-orange-500" />
-                      Stödnivå
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1">Livsloppsperspektiv</p>
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 border border-orange-200">
-                    Nivå 3
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-[#1F1F1F]">
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'universal' && 'Universell'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'early-attention' && 'Tidig uppmärksamhet'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'enhanced-support' && 'Förstärkt stöd'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'intensive-support' && 'Intensivt stöd'}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div
-                      className={`h-2 rounded-full ${
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'universal' ? 'w-[25%] bg-green-500' :
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'early-attention' ? 'w-[50%] bg-yellow-500' :
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'enhanced-support' ? 'w-[75%] bg-orange-500' :
-                        'w-[100%] bg-red-500'
-                      }`}
-                    ></div>
-                  </div>
-                </div>
-
-                {ENHANCED_CHILD_PROFILE.activeTriggers && ENHANCED_CHILD_PROFILE.activeTriggers.length > 0 && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                    <div className="text-xs font-bold text-orange-700 mb-1 flex items-center gap-1">
-                      <AlertCircle size={12} />
-                      Aktiv trigger från {ENHANCED_CHILD_PROFILE.activeTriggers[0].triggeredDate}
-                    </div>
-                    <p className="text-xs text-gray-700">
-                      {ENHANCED_CHILD_PROFILE.activeTriggers[0].reason}
-                    </p>
-                  </div>
-                )}
-
-                <div className="mt-4 text-xs text-gray-600 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Users size={14} className="text-gray-400" />
-                    <span><strong>Primär:</strong> {ENHANCED_CHILD_PROFILE.primarySector === 'elementary-school' ? 'Grundskola' : ENHANCED_CHILD_PROFILE.primarySector}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users size={14} className="text-gray-400" />
-                    <span><strong>Sekundär:</strong> {ENHANCED_CHILD_PROFILE.secondarySectors.join(', ')}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Current Phase Card */}
-              <div className="bg-white rounded-xl border border-blue-200 p-6 shadow-sm">
-                <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg mb-4">
-                  <Calendar size={20} className="text-[#005595]" />
-                  Livsfas
-                </h3>
-
-                <div className="mb-4">
-                  <div className="text-2xl font-bold text-[#005595] mb-1">
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'early-childhood' && 'Tidig barndom'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'preschool' && 'Förskola'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'elementary-school' && 'Grundskola'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'high-school' && 'Gymnasiet'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'young-adult' && 'Ung vuxen'}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    {childProfile.age} år, {childProfile.grade}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-xs text-gray-500 uppercase font-semibold mb-2">Genomgångna faser:</div>
-                  <div className="flex items-center gap-2 text-xs text-green-700 bg-green-50 px-2 py-1 rounded">
-                    <CheckCircle2 size={14} />
-                    <span>BVC/MVC (0-5 år)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-green-700 bg-green-50 px-2 py-1 rounded">
-                    <CheckCircle2 size={14} />
-                    <span>Förskola (1-6 år)</span>
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase font-semibold mt-3 mb-2">Nuvarande fas:</div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#005595] bg-blue-50 px-2 py-1.5 rounded border border-blue-200">
-                    <div className="w-2 h-2 rounded-full bg-[#005595] animate-pulse"></div>
-                    <span>Grundskola (Åk 9, 15 år)</span>
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase font-semibold mt-3 mb-2">Nästa steg:</div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                    <ArrowRight size={14} />
-                    <span>Gymnasiet (hösten 2026)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Risk & Protective Factors - Professional View Only */}
-          {!isChild && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Risk Factors */}
-              <div className="bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
-                <div className="bg-red-50 px-6 py-4 border-b border-red-100">
-                  <h3 className="text-lg font-bold text-red-700 flex items-center gap-2">
-                    <ShieldAlert size={20} />
-                    Riskfaktorer ({riskFactors.filter(rf => rf.status === 'active' || rf.status === 'monitoring').length})
-                  </h3>
-                </div>
-                <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
-                  {riskFactors.filter(rf => rf.status === 'active' || rf.status === 'monitoring').map(risk => (
-                    <div key={risk.id} className="p-4 hover:bg-gray-50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-semibold text-[#1F1F1F] text-sm">{risk.name}</div>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                          risk.severity === 'low' ? 'bg-yellow-100 text-yellow-700' :
-                          risk.severity === 'medium' ? 'bg-orange-100 text-orange-700' :
-                          risk.severity === 'high' ? 'bg-red-100 text-red-700' :
-                          'bg-red-200 text-red-900'
-                        }`}>
-                          {risk.severity === 'low' ? 'Låg' : risk.severity === 'medium' ? 'Medel' : risk.severity === 'high' ? 'Hög' : 'Kritisk'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-2">{risk.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="px-2 py-0.5 bg-gray-100 rounded">
-                          {risk.category === 'individual' ? 'Individ' : risk.category === 'family' ? 'Familj' : 'Miljö'}
-                        </span>
-                        <span>•</span>
-                        <span>ID: {risk.identifiedDate}</span>
-                      </div>
-                      {risk.mitigationActions && risk.mitigationActions.length > 0 && (
-                        <div className="mt-2 text-xs">
-                          <div className="font-semibold text-gray-700 mb-1">Åtgärder:</div>
-                          <ul className="list-disc list-inside text-gray-600 space-y-0.5">
-                            {risk.mitigationActions.slice(0, 2).map((action, idx) => (
-                              <li key={idx}>{action}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Protective Factors */}
-              <div className="bg-white rounded-xl border border-green-200 shadow-sm overflow-hidden">
-                <div className="bg-green-50 px-6 py-4 border-b border-green-100">
-                  <h3 className="text-lg font-bold text-green-700 flex items-center gap-2">
-                    <Shield size={20} />
-                    Skyddsfaktorer ({protectiveFactors.length})
-                  </h3>
-                </div>
-                <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
-                  {protectiveFactors.map(protective => (
-                    <div key={protective.id} className="p-4 hover:bg-gray-50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-semibold text-[#1F1F1F] text-sm">{protective.name}</div>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                          protective.strength === 'weak' ? 'bg-green-50 text-green-600' :
-                          protective.strength === 'moderate' ? 'bg-green-100 text-green-700' :
-                          'bg-green-200 text-green-800'
-                        }`}>
-                          {protective.strength === 'weak' ? 'Svag' : protective.strength === 'moderate' ? 'Måttlig' : 'Stark'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-2">{protective.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="px-2 py-0.5 bg-gray-100 rounded">
-                          {protective.category === 'individual' ? 'Individ' : protective.category === 'family' ? 'Familj' : 'Miljö'}
-                        </span>
-                        <span>•</span>
-                        <span>ID: {protective.identifiedDate}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Next Event */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-gray-300 p-6 shadow-sm">
             <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg">📅 {isChild ? "Händer snart" : "Nästa händelse"}</h3>
             <div className="flex gap-4 items-start">
                <div className={`rounded-lg px-4 py-3 text-center min-w-[70px] border ${isChild ? 'bg-orange-50 text-[#E87C00] border-orange-100' : 'bg-[#EBF4FA] text-[#005595] border-blue-100'}`}>
@@ -625,7 +396,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
           </div>
 
           {/* Quick Contacts */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-gray-300 p-6 shadow-sm">
              <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg">📞 {isChild ? "Dina vuxna" : "Snabbkontakt"}</h3>
              <div className="space-y-4">
                <div className="flex items-center justify-between pb-4 border-b border-gray-100">
@@ -656,7 +427,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
           </div>
 
           {/* Latest News Feed */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-gray-300 p-6 shadow-sm">
             <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg flex items-center gap-2">
               <Newspaper size={20} className={isChild ? "text-[#E87C00]" : "text-[#005595]"} />
               {isChild ? "Nyheter för dig" : "Senaste Nytt"}
@@ -685,4 +456,4 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
   );
 };
 
-export default memo(Dashboard);
+export default Dashboard;

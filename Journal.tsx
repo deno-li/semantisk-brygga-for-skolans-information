@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { JOURNAL_DATA } from '../constants';
 import { BookOpen, Plus, Sparkles, User, GraduationCap, Stethoscope, Building2, Home, X, Edit, Clock, MapPin, CheckCircle, Save, AlertCircle, Bold, Italic, List } from 'lucide-react';
 import { AiSuggestion } from '../types';
@@ -270,7 +270,7 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
                <div className="flex flex-col sm:flex-row justify-between items-center bg-blue-50 p-3 rounded border border-blue-100 gap-3 mt-4">
                   <span className="text-xs text-blue-800 flex items-center gap-1">
                     <Sparkles size={14} className="shrink-0" />
-                    AI kan hjälpa dig att hitta rätt kodning.
+                    AI kan hjälpa dig att hitta rätt kodning (ICF/KVÅ/BBIC).
                   </span>
                   
                   <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -330,7 +330,7 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
         </div>
 
         <div className="p-4 bg-gray-50 border-t border-gray-200 text-center text-xs text-gray-400">
-           Data hämtad via federation (SDK)
+           Data hämtad via federation (SDK) • Autentiserad via Sambi
         </div>
 
       </div>
@@ -339,4 +339,4 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
   );
 };
 
-export default memo(Journal);
+export default Journal;

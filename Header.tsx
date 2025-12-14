@@ -1,17 +1,15 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Perspective, UserContext, View } from '../types';
-import { ChevronDown, Search, X, FileText, ArrowRight, Users } from 'lucide-react';
+import { ChevronDown, Search, X, FileText, ArrowRight, Moon, Sun } from 'lucide-react';
 import { JOURNAL_DATA, DOCUMENTS_DATA, SHANARRI_DATA, NEWS_FEED_DATA } from '../constants';
-import { CHILD_PROFILES, getProfileMetadata, getSupportLevelColor } from '../childProfiles';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface HeaderProps {
   currentPerspective: Perspective;
   onPerspectiveChange: (p: Perspective) => void;
   userContext: UserContext;
   onNavigate: (view: View) => void;
-  selectedProfileId: string;
-  onProfileChange: (profileId: string) => void;
 }
 
 interface SearchResult {
@@ -21,28 +19,17 @@ interface SearchResult {
   view: View;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  currentPerspective,
-  onPerspectiveChange,
-  userContext,
-  onNavigate,
-  selectedProfileId,
-  onProfileChange
-}) => {
+const Header: React.FC<HeaderProps> = ({ currentPerspective, onPerspectiveChange, userContext, onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-  const profileRef = useRef<HTMLDivElement>(null);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowResults(false);
-      }
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-        setShowProfileDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -67,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
     DOCUMENTS_DATA.forEach(section => {
       section.items.forEach(doc => {
         if (doc.title.toLowerCase().includes(lowerQuery)) {
-          results.push({ type: 'Hantera samtycke', title: doc.title, subtitle: section.category, view: 'documents' });
+          results.push({ type: 'Dokument', title: doc.title, subtitle: section.category, view: 'documents' });
         }
       });
     });
@@ -124,8 +111,8 @@ const Header: React.FC<HeaderProps> = ({
               1177
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl font-bold text-[#1F1F1F] leading-none"> Välbefinnandehjul för Sammanhållen planering i 1177 </h1>
-              <span className="text-sm text-gray-600 mt-1">Gemensam informationsprofil för barnets hela resa (Livsloppsvy)</span>
+              <h1 className="text-xl font-bold text-[#1F1F1F] leading-none">Sammanhållen planering</h1>
+              <span className="text-sm text-gray-600 mt-1">Barnets resa (Livsloppsvy)</span>
             </div>
           </div>
 
@@ -188,87 +175,6 @@ const Header: React.FC<HeaderProps> = ({
              )}
           </div>
 
-          {/* Profile Selector */}
-          <div className="relative shrink-0" ref={profileRef}>
-            <button
-              onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:border-[#005595] transition-all text-sm font-semibold text-[#1F1F1F] shadow-sm"
-            >
-              <Users size={18} className="text-[#005595]" />
-              <span className="hidden sm:inline">{CHILD_PROFILES[selectedProfileId].name}</span>
-              <span
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: getSupportLevelColor(getProfileMetadata(selectedProfileId).supportLevel) }}
-              />
-              <ChevronDown size={16} className={`transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
-            </button>
-
-            {/* Profile Dropdown */}
-            {showProfileDropdown && (
-              <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden min-w-[280px] z-50 animate-fade-in">
-                <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
-                  Välj barnprofil
-                </div>
-                <div className="py-1">
-                  {Object.keys(CHILD_PROFILES).map((profileId) => {
-                    const profile = CHILD_PROFILES[profileId];
-                    const metadata = getProfileMetadata(profileId);
-                    const isSelected = profileId === selectedProfileId;
-
-                    return (
-                      <button
-                        key={profileId}
-                        onClick={() => {
-                          onProfileChange(profileId);
-                          setShowProfileDropdown(false);
-                        }}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-l-4 flex items-center gap-3 ${
-                          isSelected ? 'bg-blue-50' : ''
-                        }`}
-                        style={{
-                          borderLeftColor: isSelected ? getSupportLevelColor(metadata.supportLevel) : 'transparent'
-                        }}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 shrink-0"
-                          style={{
-                            backgroundColor: metadata.colorScheme.background,
-                            borderColor: getSupportLevelColor(metadata.supportLevel),
-                            color: getSupportLevelColor(metadata.supportLevel)
-                          }}
-                        >
-                          {metadata.emoji}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-semibold text-sm text-gray-800">{profile.name}</div>
-                          <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
-                            <span>{profile.age} år</span>
-                            <span className="w-1 h-1 rounded-full bg-gray-300" />
-                            <span>{profile.grade}</span>
-                            {profile.sipActive && (
-                              <>
-                                <span className="w-1 h-1 rounded-full bg-gray-300" />
-                                <span className="text-[#005595] font-semibold">Aktiv plan</span>
-                              </>
-                            )}
-                          </div>
-                          <div className="text-xs mt-1 px-2 py-0.5 rounded inline-block"
-                            style={{
-                              backgroundColor: metadata.colorScheme.background,
-                              color: getSupportLevelColor(metadata.supportLevel)
-                            }}
-                          >
-                            {metadata.description}
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* Perspective/Role Switcher */}
           <div className="flex flex-col sm:flex-row gap-3 items-center shrink-0">
              <div className="flex bg-[#F3F3F3] p-1 rounded-full border border-gray-200">
@@ -321,9 +227,18 @@ const Header: React.FC<HeaderProps> = ({
                {userContext.roleBadge}
              </span>
            </div>
-           <button className="text-[#005595] font-semibold text-sm hover:underline flex items-center gap-1">
-             Logga ut <ChevronDown size={14}/>
-           </button>
+           <div className="flex items-center gap-4">
+             <button
+               onClick={toggleTheme}
+               className="text-[#005595] hover:text-[#003d6b] transition-colors p-2 rounded-lg hover:bg-white/50"
+               title={theme === 'light' ? 'Växla till mörkt läge' : 'Växla till ljust läge'}
+             >
+               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+             </button>
+             <button className="text-[#005595] font-semibold text-sm hover:underline flex items-center gap-1">
+               Logga ut <ChevronDown size={14}/>
+             </button>
+           </div>
         </div>
       </div>
     </header>

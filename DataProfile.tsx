@@ -1,8 +1,7 @@
 
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { SHANARRI_DATA } from '../constants';
-import { X, BookOpen, ExternalLink, Info, Database, Layers, FileText, Settings, ArrowRight } from 'lucide-react';
-import BBICTriangle from './BBICTriangle';
+import { X, BookOpen, ExternalLink, Info, Database, Layers, FileText, Settings } from 'lucide-react';
 
 interface CodeStandardInfo {
   type: 'classification' | 'framework'; // New field to distinguish type
@@ -18,7 +17,7 @@ const STANDARD_INFO: Record<string, CodeStandardInfo> = {
     type: 'classification',
     title: 'ICF (Funktionstillstånd)',
     description: 'Internationell klassifikation av funktionstillstånd, funktionshinder och hälsa. Ett kodverk från WHO som skiftar fokus från diagnos ("vad är fel") till funktion ("hur fungerar vardagen").',
-    childContext: 'I skolan kan ICF används för att beskriva hinder och möjligheter i lärmiljön (e-koder) samt barnets förmåga att delta i aktiviteter (d-koder).',
+    childContext: 'I skolan används ICF-CY (Children & Youth) för att beskriva hinder och möjligheter i lärmiljön (e-koder) samt barnets förmåga att delta i aktiviteter (d-koder).',
     link: 'https://www.socialstyrelsen.se/utveckla-verksamhet/e-halsa/klassificering-och-koder/icf/',
     color: 'text-purple-700 bg-purple-50 border-purple-200'
   },
@@ -72,11 +71,7 @@ const STANDARD_INFO: Record<string, CodeStandardInfo> = {
   }
 };
 
-interface DataProfileProps {
-  selectedProfileId?: string;
-}
-
-const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' }) => {
+const DataProfile: React.FC = () => {
   const [selectedCode, setSelectedCode] = useState<{ type: string; code: string } | null>(null);
 
   const handleCloseModal = () => setSelectedCode(null);
@@ -87,115 +82,20 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
         <div>
           <h2 className="text-xl font-bold text-gray-800">🔄 Gemensam Informationsprofil</h2>
           <p className="text-sm text-gray-500">
-            Tvärsektoriell datamodell som skiljer på <span className="font-semibold text-[#005595]">Arbetssätt</span> (BBIC, IBIC) och <span className="font-semibold text-purple-700">Klassifikationer och kodverk</span> (ICF, KSI, KVÅ, Snomed CT; ICD-10/11).
+            Tvärsektoriell datamodell som skiljer på <span className="font-semibold text-[#005595]">Arbetssätt</span> (BBIC, IBIC) och <span className="font-semibold text-purple-700">Kodverk</span> (ICF, KVÅ, KSI, Snomed CT).
           </p>
         </div>
       </div>
 
-      {/* Semantic Bridge Flow Visualization */}
-      <div className="mb-8 bg-gradient-to-r from-blue-50 via-purple-50 to-teal-50 rounded-xl p-6 border-2 border-blue-200">
-        <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
-          <Layers className="text-blue-600" size={24} />
-          Semantisk brygga: Från skolinformation till Socialstyrelsens informationsmängder
-        </h3>
-        <p className="text-sm text-gray-700 mb-6">
-          Så här översätts skolans information till socialtjänstens och vårdens terminologi via standardiserade kodverk:
-        </p>
-
-        {/* Flow Diagram */}
-        <div className="grid grid-cols-1 lg:grid-cols-7 gap-3 items-stretch">
-          {/* Step 1: School Data */}
-          <div className="bg-white rounded-lg p-4 border-2 border-blue-300 shadow-sm">
-            <div className="text-xs font-bold text-blue-600 uppercase mb-2">1. Skolinformation</div>
-            <div className="space-y-2">
-              <div className="text-xs bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                📊 Frånvaro: 15%
-              </div>
-              <div className="text-xs bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                📚 Betyg: E
-              </div>
-              <div className="text-xs bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                👥 Social: Utmanande
-              </div>
-            </div>
-          </div>
-
-          {/* Arrow */}
-          <div className="flex items-center justify-center">
-            <ArrowRight className="text-purple-500" size={24} />
-          </div>
-
-          {/* Step 2: ICF Mapping */}
-          <div className="bg-white rounded-lg p-4 border-2 border-purple-300 shadow-sm">
-            <div className="text-xs font-bold text-purple-600 uppercase mb-2">2. ICF</div>
-            <div className="space-y-2">
-              <div className="text-xs bg-purple-50 px-2 py-1 rounded font-mono border border-purple-200">
-                <strong>d8</strong> - Skola
-              </div>
-              <div className="text-xs bg-purple-50 px-2 py-1 rounded font-mono border border-purple-200">
-                <strong>d1</strong> - Lärande
-              </div>
-              <div className="text-xs bg-purple-50 px-2 py-1 rounded font-mono border border-purple-200">
-                <strong>d710</strong> - Interaktion
-              </div>
-            </div>
-          </div>
-
-          {/* Arrow */}
-          <div className="flex items-center justify-center">
-            <ArrowRight className="text-red-500" size={24} />
-          </div>
-
-          {/* Step 3: ICD Diagnoses */}
-          <div className="bg-white rounded-lg p-4 border-2 border-red-300 shadow-sm">
-            <div className="text-xs font-bold text-red-600 uppercase mb-2">3. ICD-10/11</div>
-            <div className="space-y-2">
-              <div className="text-xs bg-red-50 px-2 py-1 rounded font-mono border border-red-200">
-                <strong>F81.0</strong> - Läsnedsättning
-              </div>
-              <div className="text-xs bg-red-50 px-2 py-1 rounded font-mono border border-red-200">
-                <strong>F90</strong> - ADHD
-              </div>
-              <div className="text-xs bg-red-50 px-2 py-1 rounded font-mono border border-red-200">
-                <strong>Z00.1</strong> - Hälsokontroll
-              </div>
-            </div>
-          </div>
-
-          {/* Arrow */}
-          <div className="flex items-center justify-center">
-            <ArrowRight className="text-teal-500" size={24} />
-          </div>
-
-          {/* Step 4: Socialstyrelsen & Vård */}
-          <div className="bg-white rounded-lg p-4 border-2 border-teal-300 shadow-sm">
-            <div className="text-xs font-bold text-teal-600 uppercase mb-2">4. Ramverk & Koder</div>
-            <div className="space-y-2">
-              <div className="text-xs bg-red-50 px-2 py-1 rounded border border-red-200">
-                <strong>BBIC:</strong> Utbildning
-              </div>
-              <div className="text-xs bg-orange-50 px-2 py-1 rounded border border-orange-200">
-                <strong>IBIC:</strong> Delaktighet
-              </div>
-              <div className="text-xs bg-teal-50 px-2 py-1 rounded font-mono border border-teal-200">
-                <strong>SNOMED:</strong> 266981006
-              </div>
-              <div className="text-xs bg-gray-50 px-2 py-1 rounded border border-gray-200">
-                <strong>KSI:</strong> Öppen insats
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 p-4 bg-white rounded-lg border border-blue-200">
-          <div className="flex items-start gap-3">
-            <Info className="text-blue-600 shrink-0 mt-0.5" size={20} />
-            <div className="text-sm text-gray-700">
-              <strong className="text-blue-700">Varför detta är viktigt:</strong> Genom att använda <strong>ICF och KSI</strong> som gemensam "översättare" kan information från skolan automatiskt
-              struktureras så att socialtjänsten (BBIC/IBIC) och vården förstår den - utan att varje organisation behöver tolka rådata på nytt. Detta skapar den <strong>semantiska bryggan</strong> mellan systemen.
-            </div>
-          </div>
-        </div>
+      <div className="mb-8 flex gap-4">
+        <a 
+          href="https://docs.google.com/spreadsheets/d/1fvYiSUY7hLiLOr1QpWGif9_GD7KUo-KS/edit?gid=1173368630#gid=1173368630" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm font-semibold hover:bg-green-100 transition-colors"
+        >
+          <Database size={16} /> Källdata: Mappning Behovskompass (Google Sheets) <ExternalLink size={14} />
+        </a>
       </div>
 
       <div>
@@ -209,13 +109,12 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
             <thead className="bg-gray-50 text-gray-700 font-medium">
               <tr>
                 <th className="p-3 border-b border-r min-w-[150px]">Behovskompass</th>
-                <th className="p-3 border-b bg-purple-50 text-purple-800 border-r border-purple-100 min-w-[150px]">ICF (Kodverk)</th>
-                <th className="p-3 border-b border-r min-w-[120px]">BBIC (Arbetssätt)</th>
-                <th className="p-3 border-b border-r min-w-[120px]">IBIC (Arbetssätt)</th>
-                <th className="p-3 border-b border-r min-w-[120px]">KVÅ (Kodverk)</th>
-                <th className="p-3 border-b bg-red-50 text-red-800 border-r border-red-100 min-w-[130px]">ICD-10/11 (Diagnos)</th>
-                <th className="p-3 border-b border-r bg-teal-50 text-teal-800 border-teal-100 min-w-[150px]">Snomed CT</th>
-                <th className="p-3 border-b min-w-[120px]">KSI (Klassifikation)</th>
+                <th className="p-3 border-b bg-purple-50 text-purple-800 border-r border-purple-100 w-1/6 min-w-[150px]">ICF (Kodverk)</th>
+                <th className="p-3 border-b border-r w-1/6 min-w-[120px]">BBIC (Arbetssätt)</th>
+                <th className="p-3 border-b border-r w-1/6 min-w-[120px]">IBIC (Arbetssätt)</th>
+                <th className="p-3 border-b border-r w-1/6 min-w-[120px]">KVÅ (Kodverk)</th>
+                <th className="p-3 border-b border-r bg-teal-50 text-teal-800 border-teal-100 w-1/6 min-w-[150px]">Snomed CT</th>
+                <th className="p-3 border-b w-1/6 min-w-[120px]">KSI (Klassifikation)</th>
               </tr>
             </thead>
             <tbody className="divide-y text-gray-700">
@@ -258,27 +157,21 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
                     </button>
                   </td>
 
-                  {/* KVÅ Cell */}
+                  {/* KVÅ/ICD Cell */}
                   <td className="p-3 border-r text-xs font-mono text-gray-600">
-                    <button
+                    <button 
                        onClick={() => setSelectedCode({ type: 'KVÅ', code: row.kva })}
                        className="w-full text-left hover:bg-green-50 rounded px-1 py-0.5 hover:text-green-800"
                     >
                       {row.kva}
                     </button>
-                  </td>
-
-                  {/* ICD Cell */}
-                  <td className="p-3 border-r text-xs font-mono bg-red-50/30 group-hover:bg-red-50/60 transition-colors">
-                    {row.icd ? (
-                      <button
+                    {row.icd && (
+                      <button 
                         onClick={() => setSelectedCode({ type: 'ICD', code: row.icd || '' })}
-                        className="w-full text-left hover:bg-red-100 rounded px-1 py-0.5 text-red-700 font-semibold"
+                        className="mt-1 w-full text-left bg-red-50 text-red-700 px-1 py-0.5 rounded hover:bg-red-100"
                       >
                         {row.icd}
                       </button>
-                    ) : (
-                      <span className="text-gray-400 text-xs">—</span>
                     )}
                   </td>
 
@@ -306,11 +199,6 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* BBIC Triangle Visualization */}
-      <div className="mt-8">
-        <BBICTriangle selectedProfileId={selectedProfileId} />
       </div>
 
       {/* Code Details Modal */}
@@ -429,4 +317,4 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
   );
 };
 
-export default memo(DataProfile);
+export default DataProfile;

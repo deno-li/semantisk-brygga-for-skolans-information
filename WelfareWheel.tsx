@@ -1,14 +1,12 @@
 
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
 import { SHANARRI_DATA } from '../constants';
-import { getShanarriDataByProfile } from '../profileData';
-import { Info, Tag, Database, Activity, Search, X, Smile, ThumbsUp, Heart, BookOpen, User, CheckCircle2, ExternalLink, Shield, ChevronDown, ChevronUp } from 'lucide-react';
+import { Info, Tag, Database, Activity, Search, X, Smile, ThumbsUp, Heart, BookOpen, User, CheckCircle2, ExternalLink } from 'lucide-react';
 import { ShanarriIndicator, Perspective } from '../types';
 
 interface WelfareWheelProps {
   currentPerspective?: Perspective;
-  selectedProfileId?: string;
 }
 
 const childFriendlyTexts: Record<string, { meaning: string; action: string }> = {
@@ -46,19 +44,14 @@ const childFriendlyTexts: Record<string, { meaning: string; action: string }> = 
   }
 };
 
-const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selectedProfileId = 'erik' }) => {
+const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective }) => {
   const isChild = currentPerspective === 'child';
   const [activeChart, setActiveChart] = useState<'radar' | 'wheel'>('wheel');
   const [selectedIndicator, setSelectedIndicator] = useState<ShanarriIndicator | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showMatrix, setShowMatrix] = useState(false);
-
-  // Get profile-specific data or fall back to default (Erik's data from constants)
-  const profileData = getShanarriDataByProfile(selectedProfileId);
-  const shanarriData = profileData.length > 0 ? profileData : SHANARRI_DATA;
 
   // Filter Logic
-  const filteredData = shanarriData.filter(item => {
+  const filteredData = SHANARRI_DATA.filter(item => {
     const query = searchQuery.toLowerCase();
     return (
       item.name.toLowerCase().includes(query) ||
@@ -190,12 +183,12 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
       <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-8 gap-4">
         <div>
           <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            🎯 {isChild ? "Ditt Välbefinnande" : "Välbefinnandehjul"}
+            🎯 {isChild ? "Ditt Välbefinnande" : "Välbefinnandehjul (Gävlemodellen)"}
           </h2>
           <p className="text-sm text-gray-500 mt-1 max-w-2xl">
-            {isChild
-              ? "Klicka på en tårtbit för att se vad skolan och de vuxna gör för att hjälpa dig."
-              : "Detta hjul är det pedagogiska gränssnittet. Klicka på en tårtbit för att se hur elevens upplevelse mappas mot Socialstyrelsens klassifikationer och kodverk."}
+            {isChild 
+              ? "Klicka på en tårtbit för att se vad skolan och de vuxna gör för att hjälpa dig." 
+              : "Detta hjul är det pedagogiska gränssnittet. Klicka på en tårtbit för att se hur elevens upplevelse mappas mot tekniska standarder (ICF, BBIC, KSI)."}
           </p>
         </div>
         
@@ -342,115 +335,89 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
                    </div>
                 </div>
               ) : (
-                /* PROFESSIONAL PANEL - Kodverk och klassifikationer */
+                /* PROFESSIONAL / STANDARD PANEL */
                 <div className="p-5 flex-1 overflow-y-auto bg-gray-50">
-                  <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-4 flex items-center gap-2">
                     <Database size={16} />
-                    Klassifikationer och kodverk
+                    Semantisk Mappning (Interoperabilitet)
                   </h4>
+                  
+                  {/* Visual Bridge Container */}
+                  <div className="flex flex-col items-center space-y-2">
+                    
+                    {/* 1. Pedagogical Level */}
+                    <div className="w-full bg-white p-3 rounded border border-gray-200 shadow-sm text-center relative">
+                      <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Pedagogiskt Gränssnitt</div>
+                      <div className="font-bold text-[#1F1F1F] flex items-center justify-center gap-2">
+                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: selectedIndicator.color }}></div>
+                         {selectedIndicator.name}
+                      </div>
+                      {/* Connection Line */}
+                      <div className="absolute left-1/2 -bottom-3 w-0.5 h-3 bg-gray-300"></div>
+                    </div>
 
-                  <div className="flex flex-col space-y-3">
+                    {/* Arrow */}
+                    <div className="text-gray-300">▼</div>
 
-                    {/* Status och BBIC */}
-                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Status & BBIC-koppling</div>
-                      <div className="flex items-center gap-3 mb-3">
-                         <div className="w-5 h-5 rounded-full" style={{ backgroundColor: selectedIndicator.color }}></div>
-                         <div>
-                            <div className="font-bold text-gray-800">{selectedIndicator.name}</div>
-                            <div className="text-sm text-gray-600">
-                              Nivå {selectedIndicator.status} av 5
-                            </div>
+                    {/* 2. The Bridge (ICF) - Emphasized */}
+                    <div className="w-full bg-gradient-to-r from-[#6A2A5B] to-[#4A1A3B] p-4 rounded-lg shadow-md text-white relative z-10 ring-4 ring-purple-50 group hover:ring-purple-200 transition-all">
+                       <div className="flex justify-between items-start mb-2">
+                         <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded uppercase tracking-wider">Navet / Semantisk Brygga</span>
+                         <a 
+                            href="https://klassifikationer.socialstyrelsen.se/ICF/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-purple-200 hover:text-white transition-colors p-1 hover:bg-white/10 rounded"
+                            title="Öppna Socialstyrelsens Klassifikationsdatabas (ICF)"
+                         >
+                           <ExternalLink size={16} />
+                         </a>
+                       </div>
+                       <div className="text-center py-2">
+                         <div className="text-2xl font-mono font-bold tracking-tight drop-shadow-md text-white">
+                            {selectedIndicator.icf}
                          </div>
-                      </div>
-                      {selectedIndicator.bbic && (
-                        <div className="mt-2 pt-2 border-t border-gray-200">
-                          <div className="text-xs font-semibold text-gray-600 mb-1">BBIC (Barns Behov i Centrum)</div>
-                          <div className="text-sm text-gray-800 bg-red-50 px-2 py-1 rounded border border-red-200">
-                            {selectedIndicator.bbic}
-                          </div>
-                        </div>
-                      )}
+                         <div className="text-xs text-purple-200 mt-1 font-medium flex items-center justify-center gap-1">
+                            ICF Funktionstillstånd
+                            <ExternalLink size={10} className="opacity-50" />
+                         </div>
+                       </div>
+                       {/* Connection Line */}
+                       <div className="absolute left-1/2 -bottom-3 w-0.5 h-3 bg-[#6A2A5B]"></div>
                     </div>
 
-                    {/* ICF Codes */}
-                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
-                        <Tag size={12} />
-                        ICF (International Classification of Functioning)
+                    {/* Arrow Branching */}
+                    <div className="text-[#6A2A5B]">▼</div>
+
+                    {/* 3. Technical Standards */}
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      {/* BBIC */}
+                      <div className="bg-white p-2.5 rounded border-l-4 border-red-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="text-[10px] font-bold text-gray-400 mb-0.5 uppercase">Socialtjänst (BBIC)</div>
+                        <div className="font-medium text-sm text-gray-800 leading-tight">{selectedIndicator.bbic}</div>
                       </div>
-                      <div className="text-sm font-mono text-purple-700 bg-purple-50 px-3 py-2 rounded border border-purple-200">
-                        {selectedIndicator.icf}
+
+                      {/* KSI */}
+                       <div className="bg-white p-2.5 rounded border-l-4 border-gray-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="text-[10px] font-bold text-gray-400 mb-0.5 uppercase">KSI (Klassifikation)</div>
+                        <div className="font-mono text-sm text-gray-800 leading-tight">{selectedIndicator.ksi}</div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                        WHO:s klassifikation av funktionstillstånd, funktionshinder och hälsa
-                      </p>
+
+                      {/* IBIC */}
+                      <div className="bg-white p-2.5 rounded border-l-4 border-orange-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="text-[10px] font-bold text-gray-400 mb-0.5 uppercase">Omsorg (IBIC)</div>
+                        <div className="font-medium text-sm text-gray-800 leading-tight">{selectedIndicator.ibic}</div>
+                      </div>
+
+                      {/* KVÅ */}
+                      <div className="bg-white p-2.5 rounded border-l-4 border-green-600 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="text-[10px] font-bold text-gray-400 mb-0.5 uppercase">Vård (KVÅ/ICD)</div>
+                        <div className="font-mono text-sm text-gray-800 leading-tight">{selectedIndicator.kva}</div>
+                        {selectedIndicator.icd && (
+                          <div className="font-mono text-xs text-red-600 mt-1 bg-red-50 px-1 rounded inline-block">{selectedIndicator.icd}</div>
+                        )}
+                      </div>
                     </div>
-
-                    {/* ICD-10/11 if available */}
-                    {selectedIndicator.icd && (
-                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">ICD-10/11 (Diagnoskod)</div>
-                        <div className="text-sm font-mono text-red-700 bg-red-50 px-3 py-2 rounded border border-red-200">
-                          {selectedIndicator.icd}
-                        </div>
-                        <p className="text-xs text-gray-500 mt-2">
-                          Internationell sjukdomsklassifikation
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Snomed CT */}
-                    {selectedIndicator.snomed && (
-                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Snomed CT</div>
-                        <div className="text-sm font-mono text-teal-700 bg-teal-50 px-3 py-2 rounded border border-teal-200">
-                          {selectedIndicator.snomed}
-                        </div>
-                        <p className="text-xs text-gray-500 mt-2">
-                          Systematiserad medicinsk nomenklatur
-                        </p>
-                      </div>
-                    )}
-
-                    {/* KVÅ */}
-                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KVÅ (Klassifikation av vårdåtgärder)</div>
-                      <div className="text-sm font-mono text-green-700 bg-green-50 px-3 py-2 rounded border border-green-200">
-                        {selectedIndicator.kva}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Socialstyrelsens kodverk för vårdåtgärder
-                      </p>
-                    </div>
-
-                    {/* KSI */}
-                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KSI (Kommunala socialtjänsten)</div>
-                      <div className="text-sm text-gray-700 bg-gray-50 px-3 py-2 rounded border border-gray-200">
-                        {selectedIndicator.ksi}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Kodverk för statistikrapportering
-                      </p>
-                    </div>
-
-                    {/* IBIC */}
-                    {selectedIndicator.ibic && (
-                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
-                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">IBIC (Individens Behov i Centrum)</div>
-                        <div className="text-sm text-gray-800 bg-orange-50 px-2 py-1 rounded border border-orange-200">
-                          {selectedIndicator.ibic}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Source */}
-                    <div className="w-full bg-blue-50 p-3 rounded border border-blue-200">
-                      <div className="text-xs font-bold text-blue-800 mb-1">Källa</div>
-                      <p className="text-xs text-gray-700">{selectedIndicator.source}</p>
-                    </div>
-
                   </div>
                 </div>
               )}
@@ -471,120 +438,8 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
           )}
         </div>
       </div>
-
-      {/* Semantic Bridge Matrix - Only for professional view */}
-      {!isChild && (
-        <div className="mt-12">
-          <button
-            onClick={() => setShowMatrix(!showMatrix)}
-            className="w-full bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-[#005595] hover:bg-gray-50 transition-all group"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Database size={20} className="text-[#005595]" />
-                <div className="text-left">
-                  <h3 className="text-lg font-bold text-gray-800">
-                    Gemensam Informationsprofil - Från Behov till Struktur
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    {showMatrix ? 'Dölj' : 'Visa'} den semantiska bryggan mellan behov och kodverk
-                  </p>
-                </div>
-              </div>
-              {showMatrix ? (
-                <ChevronUp size={24} className="text-gray-400 group-hover:text-[#005595] transition-colors" />
-              ) : (
-                <ChevronDown size={24} className="text-gray-400 group-hover:text-[#005595] transition-colors" />
-              )}
-            </div>
-          </button>
-
-          {showMatrix && (
-            <div className="mt-6 animate-fade-in">
-              <div className="mb-4">
-                <p className="text-sm text-gray-500">
-                  Tvärsektoriell datamodell som skiljer på <span className="font-semibold text-[#005595]">Arbetssätt</span> (BBIC, IBIC) och <span className="font-semibold text-purple-700">Kodverk</span> (ICF, KVÅ, Snomed CT, ICD-10/11, KSI).
-                </p>
-              </div>
-
-          <div className="overflow-x-auto border rounded-lg shadow-sm bg-white">
-            <table className="w-full text-sm text-left border-collapse">
-              <thead className="bg-gray-50 text-gray-700 font-medium">
-                <tr>
-                  <th className="p-3 border-b border-r min-w-[150px]">Behovskompass</th>
-                  <th className="p-3 border-b bg-purple-50 text-purple-800 border-r border-purple-100 min-w-[150px]">ICF (Kodverk)</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">BBIC (Arbetssätt)</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">IBIC (Arbetssätt)</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">KVÅ (Kodverk)</th>
-                  <th className="p-3 border-b bg-red-50 text-red-800 border-r border-red-100 min-w-[130px]">ICD-10/11 (Diagnos)</th>
-                  <th className="p-3 border-b border-r bg-teal-50 text-teal-800 border-teal-100 min-w-[150px]">Snomed CT</th>
-                  <th className="p-3 border-b min-w-[120px]">KSI (Klassifikation)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y text-gray-700">
-                {shanarriData.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-3 border-r font-medium">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: row.color }}></div>
-                        <span>{row.name}</span>
-                      </div>
-                    </td>
-
-                    {/* ICF Cell */}
-                    <td className="p-3 border-r font-mono text-xs bg-purple-50/30 text-purple-700">
-                      {row.icf}
-                    </td>
-
-                    {/* BBIC Cell */}
-                    <td className="p-3 border-r text-xs">
-                      {row.bbic}
-                    </td>
-
-                    {/* IBIC Cell */}
-                    <td className="p-3 border-r text-xs">
-                      {row.ibic}
-                    </td>
-
-                    {/* KVÅ Cell */}
-                    <td className="p-3 border-r text-xs font-mono text-gray-600">
-                      {row.kva}
-                    </td>
-
-                    {/* ICD Cell */}
-                    <td className="p-3 border-r text-xs font-mono bg-red-50/30 text-red-700">
-                      {row.icd || '—'}
-                    </td>
-
-                    {/* Snomed CT Cell */}
-                    <td className="p-3 border-r text-xs font-mono bg-teal-50/30 text-teal-700">
-                      {row.snomed}
-                    </td>
-
-                    {/* KSI Cell */}
-                    <td className="p-3 text-xs font-mono text-gray-500">
-                      {row.ksi}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-              <div className="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-xs text-gray-700">
-                  <strong className="block mb-1 text-blue-800">Om den semantiska bryggan</strong>
-                  Denna matris visar hur barnets upplevda behov (Behovskompass/SHANARRI) kopplas till olika sektorers arbetssätt (BBIC, IBIC)
-                  och kodverk (ICF, KVÅ, ICD-10/11, Snomed CT, KSI). Detta möjliggör informationsdelning mellan skola, socialtjänst och hälso- och sjukvård
-                  samtidigt som vi behåller det pedagogiska gränssnittet för barnet.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
 
-export default memo(WelfareWheel);
+export default WelfareWheel;
