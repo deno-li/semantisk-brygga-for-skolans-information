@@ -2,7 +2,7 @@
 import { ShanarriIndicator, RiskFactor, ProtectiveFactor } from './types';
 
 // ==========================================
-// LISA - NIVÅ 1: Universell
+// LISA - NIVÅ 2: Stödprofil
 // ==========================================
 
 export const LISA_SHANARRI: ShanarriIndicator[] = [
@@ -11,7 +11,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'TRYGG',
     nameEn: 'Safe',
     color: '#005595',
-    status: 5,
+    status: 2,
     target: 4,
     icf: 'e3 Stöd och relationer, e5 Tjänster, system, policyer, b152 Känslomässiga funktioner | e310 Närmaste familj, e320 Vänner, e325 Bekanta, kamrater, e355 Hälso- och sjukvårdspersonal, e360 Annan yrkeskunnig person, e575 Samhälleliga sociala stödtjänster, b1528C Känsla av otrygghet',
     ksi: 'SS Mellanmänskliga interaktioner, ST Utbildning/arbete, SMI Se till sin egen säkerhet | SS1.AA Bedömning relationer, SSK Förälder-barnrelation, SMI.AA Bedömning säkerhet, SMI.PN Råd om säkerhet',
@@ -29,7 +29,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'MÅ BRA',
     nameEn: 'Healthy',
     color: '#378056',
-    status: 5,
+    status: 3,
     target: 4,
     icf: 'd5 Personlig vård, b1-b8 Kroppsfunktioner, d570 Sköta sin hälsa | d510 Tvätta sig, d520 Kroppsvård, d540 Klä sig, d550 Äta, d560 Dricka, d570 Sköta sin hälsa, b130 Energi och drift, b134 Sömn, b152 Känslomässiga funktioner',
     ksi: 'SM Personlig vård, SMH Sköta sin egen hälsa | SM1.AA Bedömning personlig vård, SMH.AA Bedömning sköta hälsa, SMH.PN Råd om hälsa, SMH.PU Stödjande samtal hälsa',
@@ -47,7 +47,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'UTVECKLAS',
     nameEn: 'Achieving',
     color: '#C12143',
-    status: 5,
+    status: 4,
     target: 4,
     icf: 'd1 Lärande och tillämpa kunskap, d8 Utbildning, d160-d179 Tillämpa kunskap | d110-d159 Grundläggande lärande, d160 Fokusera uppmärksamhet, d163 Tänkande, d166 Läsning, d170 Skrivning, d172 Räkning, d175 Lösa problem, d177 Fatta beslut, d810-d839 Utbildning',
     ksi: 'SA-SC Lärande och tillämpa kunskap, ST Utbildning, arbete | SA1.AA Bedömning lärande, SA1.AT Inhämtning från professionell, SCA Fokusera uppmärksamhet, SCJ Lösa problem, ST1 Utbildning',
@@ -66,7 +66,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'OMVÅRDAD',
     nameEn: 'Nurtured',
     color: '#B00020',
-    status: 5,
+    status: 4,
     target: 4,
     icf: 'e3 Stöd och relationer, d760 Familjerelationer, d6608A Vård av familjemedlem, bis4 barn | e310 Närmaste familj, e315 Utvidgad familj, d760 Familjerelationer, d7600 Förälder-barnrelation, d6608A Vårdnadshavare bistå barnet',
     ksi: 'SP Stöd åt andra, SPE Vårdnadshavare bistå barn, SPE.PN Råd föräldraskap | SPE.AA Bedömning vårdnadshavare, SPE.PH Färdighetsträning föräldraskap, SPE.PN Råd föräldraskap, SSK.PU Stödjande samtal förälder-barn',
@@ -84,7 +84,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'AKTIV',
     nameEn: 'Active',
     color: '#E87C00',
-    status: 5,
+    status: 3,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d920 Rekreation och fritid, d4 Rörlighet | d920 Rekreation och fritid, d9200 Lek, d9201 Sport, d9202 Konst och kultur, d9203 Hantverk, d9205 Umgås, d450 Gå, d455 Röra sig omkring',
     ksi: 'SX Samhällsgemenskap, SXA Lek, SXD Rekreation och fritid, SH-SK Rörlighet | SX1.AA Bedömning samhällsgemenskap, SXA.PH Färdighetsträning lek, SXD.PN Råd fritid, SH1 Rörlighet',
@@ -102,7 +102,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'RESPEKTERAS',
     nameEn: 'Respected',
     color: '#6D8F13',
-    status: 5,
+    status: 2,
     target: 4,
     icf: 'd7 Mellanmänskliga interaktioner, e4 Attityder, d177 Fatta beslut | d710 Grundläggande mellanmänskliga interaktioner, d720 Sammansatta interaktioner, d740 Formella relationer, e410 Närmaste familjens attityder, e420 Vänners attityder, e425 Bekanta, kamraters attityder',
     ksi: 'SR-SS Mellanmänskliga interaktioner, SCL Fatta beslut | SR1.AA Bedömning interaktioner, SR1.PU Stödjande samtal interaktioner, SCL.PH Färdighetsträning beslut',
@@ -120,7 +120,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'ANSVARSTAGAN DE',
     nameEn: 'Responsible',
     color: '#00838F',
-    status: 5,
+    status: 4,
     target: 4,
     icf: 'd250 Hantera sitt beteende, d7 Mellanmänskliga interaktioner, d8 Utbildning, arbete | d250 Hantera sitt beteende, d2500 Acceptera nytt, d2501 Agera på krav, d2502 Svara på kritik, d2503 Agera förutsägbart, d2504 Anpassa aktivitetsnivå',
     ksi: 'SD Allmänna uppgifter och krav, SDA Genomföra daglig rutin, SDB Hantera stress | SD1.AA Bedömning allmänna uppgifter, SDA.PH Färdighetsträning rutin, SDB.PU Stödjande samtal stress, SDC.PN Råd om ansvar',
@@ -138,7 +138,7 @@ export const LISA_SHANARRI: ShanarriIndicator[] = [
     name: 'DELAKTIG',
     nameEn: 'Included',
     color: '#6A2A5B',
-    status: 5,
+    status: 4,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d7 Mellanmänskliga relationer, e5 Tjänster och system | d910 Samhällsgemenskap, d750 Informella sociala relationer, d7500 Informella relationer med vänner, d7504 Informella relationer med kamrater, e585 Utbildningstjänster, e590 Arbets- och anställningstjänster',
     ksi: 'SX Samhällsgemenskap, SS Mellanmänskliga relationer, ST Utbildning | SX1.AA Bedömning samhällsgemenskap, SS2.AA Bedömning sociala relationer, SSC Vänskap, SSE Kamratskap',
@@ -271,7 +271,7 @@ export const OMAR_SHANARRI: ShanarriIndicator[] = [
     name: 'AKTIV',
     nameEn: 'Active',
     color: '#E87C00',
-    status: 3,
+    status: 4,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d920 Rekreation och fritid, d4 Rörlighet | d920 Rekreation och fritid, d9200 Lek, d9201 Sport, d9202 Konst och kultur, d9203 Hantverk, d9205 Umgås, d450 Gå, d455 Röra sig omkring',
     ksi: 'SX Samhällsgemenskap, SXA Lek, SXD Rekreation och fritid, SH-SK Rörlighet | SX1.AA Bedömning samhällsgemenskap, SXA.PH Färdighetsträning lek, SXD.PN Råd fritid, SH1 Rörlighet',
@@ -325,7 +325,7 @@ export const OMAR_SHANARRI: ShanarriIndicator[] = [
     name: 'DELAKTIG',
     nameEn: 'Included',
     color: '#6A2A5B',
-    status: 3,
+    status: 4,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d7 Mellanmänskliga relationer, e5 Tjänster och system | d910 Samhällsgemenskap, d750 Informella sociala relationer, d7500 Informella relationer med vänner, d7504 Informella relationer med kamrater, e585 Utbildningstjänster, e590 Arbets- och anställningstjänster',
     ksi: 'SX Samhällsgemenskap, SS Mellanmänskliga relationer, ST Utbildning | SX1.AA Bedömning samhällsgemenskap, SS2.AA Bedömning sociala relationer, SSC Vänskap, SSE Kamratskap',
@@ -398,7 +398,7 @@ export const OMAR_PROTECTIVE_FACTORS: ProtectiveFactor[] = [
 ];
 
 // ==========================================
-// SOFIA - NIVÅ 4: Intensivt stöd
+// SOFIA - NIVÅ 3: Samordning
 // ==========================================
 
 export const SOFIA_SHANARRI: ShanarriIndicator[] = [
@@ -407,7 +407,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
     name: 'TRYGG',
     nameEn: 'Safe',
     color: '#005595',
-    status: 2,
+    status: 1,
     target: 4,
     icf: 'e3 Stöd och relationer, e5 Tjänster, system, policyer, b152 Känslomässiga funktioner | e310 Närmaste familj, e320 Vänner, e325 Bekanta, kamrater, e355 Hälso- och sjukvårdspersonal, e360 Annan yrkeskunnig person, e575 Samhälleliga sociala stödtjänster, b1528C Känsla av otrygghet',
     ksi: 'SS Mellanmänskliga interaktioner, ST Utbildning/arbete, SMI Se till sin egen säkerhet | SS1.AA Bedömning relationer, SSK Förälder-barnrelation, SMI.AA Bedömning säkerhet, SMI.PN Råd om säkerhet',
@@ -425,7 +425,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
     name: 'MÅ BRA',
     nameEn: 'Healthy',
     color: '#378056',
-    status: 2,
+    status: 1,
     target: 4,
     icf: 'd5 Personlig vård, b1-b8 Kroppsfunktioner, d570 Sköta sin hälsa | d510 Tvätta sig, d520 Kroppsvård, d540 Klä sig, d550 Äta, d560 Dricka, d570 Sköta sin hälsa, b130 Energi och drift, b134 Sömn, b152 Känslomässiga funktioner',
     ksi: 'SM Personlig vård, SMH Sköta sin egen hälsa | SM1.AA Bedömning personlig vård, SMH.AA Bedömning sköta hälsa, SMH.PN Råd om hälsa, SMH.PU Stödjande samtal hälsa',
@@ -462,7 +462,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
     name: 'OMVÅRDAD',
     nameEn: 'Nurtured',
     color: '#B00020',
-    status: 2,
+    status: 1,
     target: 4,
     icf: 'e3 Stöd och relationer, d760 Familjerelationer, d6608A Vård av familjemedlem, bis4 barn | e310 Närmaste familj, e315 Utvidgad familj, d760 Familjerelationer, d7600 Förälder-barnrelation, d6608A Vårdnadshavare bistå barnet',
     ksi: 'SP Stöd åt andra, SPE Vårdnadshavare bistå barn, SPE.PN Råd föräldraskap | SPE.AA Bedömning vårdnadshavare, SPE.PH Färdighetsträning föräldraskap, SPE.PN Råd föräldraskap, SSK.PU Stödjande samtal förälder-barn',
@@ -480,7 +480,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
     name: 'AKTIV',
     nameEn: 'Active',
     color: '#E87C00',
-    status: 1,
+    status: 2,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d920 Rekreation och fritid, d4 Rörlighet | d920 Rekreation och fritid, d9200 Lek, d9201 Sport, d9202 Konst och kultur, d9203 Hantverk, d9205 Umgås, d450 Gå, d455 Röra sig omkring',
     ksi: 'SX Samhällsgemenskap, SXA Lek, SXD Rekreation och fritid, SH-SK Rörlighet | SX1.AA Bedömning samhällsgemenskap, SXA.PH Färdighetsträning lek, SXD.PN Råd fritid, SH1 Rörlighet',
@@ -534,7 +534,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
     name: 'DELAKTIG',
     nameEn: 'Included',
     color: '#6A2A5B',
-    status: 2,
+    status: 3,
     target: 4,
     icf: 'd9 Samhällsgemenskap, d7 Mellanmänskliga relationer, e5 Tjänster och system | d910 Samhällsgemenskap, d750 Informella sociala relationer, d7500 Informella relationer med vänner, d7504 Informella relationer med kamrater, e585 Utbildningstjänster, e590 Arbets- och anställningstjänster',
     ksi: 'SX Samhällsgemenskap, SS Mellanmänskliga relationer, ST Utbildning | SX1.AA Bedömning samhällsgemenskap, SS2.AA Bedömning sociala relationer, SSC Vänskap, SSE Kamratskap',
