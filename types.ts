@@ -1,6 +1,22 @@
 
 export type Perspective = 'guardian' | 'child' | 'professional';
-export type View = 'overview' | 'shanarri' | 'sip' | 'dataprofile' | 'timeline' | 'quality' | 'ai-analysis' | 'journal' | 'lifecourse' | 'myworld' | 'resilience' | 'qualitywheel' | 'survey';
+export type View =
+  | 'overview'
+  | 'shanarri'
+  | 'sip'
+  | 'dataprofile'
+  | 'timeline'
+  | 'quality'
+  | 'ai-analysis'
+  | 'journal'
+  | 'lifecourse'
+  | 'myworld'
+  | 'resilience'
+  | 'qualitywheel'
+  | 'survey'
+  | 'optimal-wheel'      // Barnets Resa - Optimalt välbefinnandehjul
+  | 'journey-level'      // Barnets Resa - Nivåhantering
+  | 'matrix-overview';   // Barnets Resa - Matrisöversikt
 
 export interface ShanarriIndicator {
   id: string;
@@ -456,4 +472,189 @@ export interface EnhancedChildProfile extends ChildProfile {
   activeTriggers: SupportTrigger[];
   myWorldAssessments: MyWorldTriangleAssessment[];
   resilienceMatrix?: ResilienceMatrix;
+}
+
+// ==========================================
+// BARNETS RESA MATRIS - Nivåmodell
+// ==========================================
+
+export type JourneyLevel =
+  | 'universell'           // Nivå 1: Alla barn - Hälsofrämjande + tidig upptäckt
+  | 'stodprofil'          // Nivå 2: Barn med stödbehov - Riktat stöd och uppföljning
+  | 'samordning';         // Nivå 3: Samordnade insatser - Samlad plan över huvudmannagränser
+
+export type WelfareWheelSpoke =
+  | 'trygg'               // TRYGG - Jag känner mig trygg
+  | 'halsa'               // HÄLSA/MÅ BRA - Jag mår bra
+  | 'utvecklas'           // UTVECKLAS - Jag hänger med
+  | 'larande'             // LÄRANDE - Jag får hjälp när jag behöver
+  | 'hemmet'              // HEMMET - Det känns bra hemma
+  | 'relationer'          // RELATIONER - Jag har någon att vara med
+  | 'aktiv'               // AKTIV - Jag gör något jag gillar varje vecka
+  | 'delaktig';           // DELAKTIG - Jag får vara med och påverka
+
+export interface WelfareWheelSpokeData {
+  spoke: WelfareWheelSpoke;
+  name: string;
+  childIndicator: string;      // Barnets indikator
+  guardianIndicator: string;   // Vårdnadshavares indikator
+  professionalIndicator: string; // Professionell indikator
+  icfDomains: string[];        // ICF-domäner (grov nivå)
+  ksiTargets: string[];        // KSI Target/Action/Means
+  snomedCT?: string;           // SNOMED CT (endast vid vård-källa)
+  ss12000Source: string[];     // Skolans bärlager (SS 12000)
+  status: 1 | 2 | 3 | 4 | 5;  // 1=Röd, 2=Orange, 3=Gul, 4=Ljusgrön, 5=Grön
+  history: WheelHistoryPoint[]; // Historisk trend
+  notes?: string;
+}
+
+export interface WheelHistoryPoint {
+  date: string;
+  value: 1 | 2 | 3 | 4 | 5;
+  source: ActorSector;
+  measurement: 'survey' | 'observation' | 'assessment' | 'meeting';
+}
+
+export interface JourneyLevelConfig {
+  level: JourneyLevel;
+  name: string;
+  targetGroup: string;         // Målgrupp
+  purpose: string;             // Syfte
+  familyView: string[];        // Vad syns i 1177 (familjevyn)
+  professionalView: string[];  // Vad syns för profession (rollvy)
+  dataMinimization: string;    // Dataminimeringsregler
+  followUpFrequency: string;   // Uppföljningsfrekvens
+  escalationTriggers: string[]; // Trigger till nästa nivå
+}
+
+export interface EscalationTrigger {
+  id: string;
+  triggeredDate: string;
+  fromLevel: JourneyLevel;
+  toLevel: JourneyLevel;
+  situation: string;           // T.ex. "Röd i 1 eker två gånger"
+  affectedSpokes: WelfareWheelSpoke[]; // Vilka ekrar som triggar
+  action: string;              // Vad ska göras
+  responsible: ActorSector;
+  status: 'pending' | 'active' | 'completed' | 'declined';
+  notes?: string;
+}
+
+export interface DataSharingRule {
+  informationLayer: string;     // T.ex. "Barnets röst", "Välbefinnandeindikatorer"
+  master: string;               // Var är master-systemet
+  example: string;
+  storedIn: string;             // Var lagras data
+  sharedInProfile: boolean;     // Delas i profilen?
+  why: string;                  // Varför/varför inte
+  sensitivity: 'L' | 'M' | 'H'; // Känslighet (Low/Medium/High)
+  consentRequired: 'yes' | 'no' | 'varies'; // Samtyckeskrav
+}
+
+export interface SemanticMapping {
+  id: string;
+  sourceSystem: string;         // T.ex. "Skolans dokumentation"
+  sourceCode: string;           // T.ex. "Frånvaro>10%"
+  targetSystem: 'ICF' | 'KSI' | 'SNOMED' | 'ICD' | 'KVÅ' | 'SS12000';
+  targetCode: string;
+  mappingType: 'exact' | 'narrower' | 'broader' | 'related' | 'no-mapping';
+  confidence: 'high' | 'medium' | 'low';
+  status: 'draft' | 'reviewed' | 'approved' | 'revising';
+  reviewer?: string;
+  reviewDate?: string;
+  notes?: string;
+}
+
+export interface JourneyProfile {
+  childId: string;
+  currentLevel: JourneyLevel;
+  levelHistory: JourneyLevelChange[];
+  welfareWheel: WelfareWheelSpokeData[];
+  activeTriggers: EscalationTrigger[];
+  supportPlan?: SupportPlanData;
+  coordinationPlan?: CoordinationPlanData;
+  dataSharingConsent: ConsentRecord[];
+  lastAssessment: string;
+  nextFollowUp: string;
+}
+
+export interface JourneyLevelChange {
+  date: string;
+  fromLevel: JourneyLevel | null; // null för första nivån
+  toLevel: JourneyLevel;
+  reason: string;
+  triggeredBy: EscalationTrigger | null;
+  decidedBy: ActorSector;
+  notes?: string;
+}
+
+export interface SupportPlanData {
+  id: string;
+  created: string;
+  updated: string;
+  goals: PlanGoal[];
+  interventions: PlanIntervention[];
+  responsible: ActorSector;
+  participants: ActorSector[];
+  followUpSchedule: string;
+  status: 'active' | 'completed' | 'paused';
+}
+
+export interface CoordinationPlanData extends SupportPlanData {
+  sipLike: boolean;             // Om det är en SIP-liknande plan
+  crossSectorGoals: CrossSectorGoal[];
+  responsibilityMatrix: ResponsibilityAssignment[];
+  meetingSchedule: string;
+  coordinatorName: string;
+  coordinatorSector: ActorSector;
+}
+
+export interface PlanGoal {
+  id: string;
+  text: string;                 // Mål i klarspråk
+  targetDate: string;
+  relatedSpokes: WelfareWheelSpoke[];
+  ksiTarget?: string;
+  progress: 'not-started' | 'in-progress' | 'achieved' | 'revised';
+  lastReviewed: string;
+}
+
+export interface PlanIntervention {
+  id: string;
+  name: string;                 // Insats i klarspråk
+  description: string;
+  ksiCode?: string;             // KSI Action/Means
+  responsible: ActorSector;
+  startDate: string;
+  endDate?: string;
+  frequency: string;            // T.ex. "2ggr/vecka"
+  status: 'planned' | 'active' | 'completed' | 'cancelled';
+  effectOnSpokes: WelfareWheelSpoke[]; // Vilka ekrar påverkas
+}
+
+export interface CrossSectorGoal extends PlanGoal {
+  primarySector: ActorSector;
+  supportingSectors: ActorSector[];
+  sectorResponsibilities: { sector: ActorSector; responsibility: string }[];
+}
+
+export interface ResponsibilityAssignment {
+  sector: ActorSector;
+  contactPerson: string;
+  role: string;
+  responsibilities: string[];
+  availableResources: string[];
+}
+
+export interface ConsentRecord {
+  id: string;
+  consentDate: string;
+  givenBy: 'child' | 'guardian' | 'both';
+  consentType: 'data-sharing' | 'coordination' | 'specific-service';
+  scope: string;                // Vad samtycket gäller
+  fromSector: ActorSector;
+  toSector: ActorSector[];
+  validUntil?: string;
+  status: 'active' | 'withdrawn' | 'expired';
+  withdrawalDate?: string;
 }

@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { JOURNAL_DATA } from '../constants';
+import { JOURNAL_DATA } from './constants';
 import { BookOpen, Plus, Sparkles, User, GraduationCap, Stethoscope, Building2, Home, X, Edit, Clock, MapPin, CheckCircle, Save, AlertCircle, Bold, Italic, List } from 'lucide-react';
-import { AiSuggestion } from '../types';
+import { AiSuggestion } from './types';
 
 interface JournalProps {
   onNavigateToAI: () => void;

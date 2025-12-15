@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { RESILIENCE_MATRIX } from '../constants';
+import { RESILIENCE_MATRIX } from './constants';
 import { AlertTriangle, Shield, ShieldAlert } from 'lucide-react';
 
 interface ResilienceMatrixProps {

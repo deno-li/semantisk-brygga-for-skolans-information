@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FileText, Download, ExternalLink, Shield, FileCheck } from 'lucide-react';
-import { DOCUMENTS_DATA } from '../constants';
+import { DOCUMENTS_DATA } from './constants';
 
 const Documents: React.FC = () => {
   return (
