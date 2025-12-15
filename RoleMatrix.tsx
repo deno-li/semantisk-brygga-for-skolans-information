@@ -58,7 +58,7 @@ const RoleMatrix: React.FC = () => {
                     <div className="flex flex-col items-center"><span>Vårdnadshavare</span></div>
                   </th>
                   <th className={`p-4 font-bold border-b-2 border-gray-300 text-center transition-all ${getHighlight('child')}`}>
-                    <div className="flex flex-col items-center"><span>Barn (13+)</span></div>
+                    <div className="flex flex-col items-center"><span>Barn</span></div>
                   </th>
                   <th className={`p-4 font-bold border-b-2 border-gray-300 text-center transition-all ${getHighlight('school')}`}>
                     <div className="flex flex-col items-center"><span>Skola</span></div>
