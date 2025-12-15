@@ -100,26 +100,13 @@ Detta projekt har skapats som privat initiativ av en yrkesperson.
 
 Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för utvärdering, vidareutveckling och anpassning till gmensamma behov och samverkan.
 
-**Önskan från skaparen:**
-Om detta material används i något form av utvecklingsarbete, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).
-
----
-
-## Bidrag och Vidareutveckling
-
-Detta projekt välkomnar bidrag från:
-- Forskare inom utbildning, socialtjänst och hälso- och sjukvård
-- Praktiker inom kommunal verksamhet
-- Systemutvecklare med intresse för interoperabilitet
-- Policymakers inom digital infrastruktur
-
 **Hur du bidrar:**
 1. Forka repository
 2. Skapa en feature branch
 3. Gör dina ändringar
 4. Skicka en pull request med tydlig beskrivning
 
-**Alla bidrag förutsätts licensieras under samma villkor (CC BY 4.0 för dokumentation, MIT för kod).**
+Om detta material används i något form av utvecklingsarbete, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).
 
 ---
 
