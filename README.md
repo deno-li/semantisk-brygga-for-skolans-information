@@ -36,7 +36,7 @@ Visit: **http://localhost:5173**
 - ✅ PDF-export
 - ✅ Mörkt läge
 - ✅ Journalsystem (DFIK)
-- ✅ Kvalitetssystem (PDCA)
+- ✅ Förbättringshjul (PDCA) för Gävlemodellens systematiskt tygghetsarbete
 - ✅ Exempel semantisk integration (ICF/KSI/BBIC/IBIC/KVÅ/Snomed CT)
 
 ---
@@ -45,8 +45,6 @@ Visit: **http://localhost:5173**
 
 - **`README.md`** - Denna fil (översikt)
 - **`BARNETS_RESA_MATRIS_README.md`** - Komplett dokumentation för Journey-systemet
-- **`ULTIMATE_EDITION_GUIDE.md`** - Detaljerad användarguide
-- **`SEMANTIC_BRIDGE_README.md`** - Semantisk integration
 
 ---
 
