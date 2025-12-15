@@ -66,28 +66,9 @@ SOFTWARE.
 
 Detta projekt använder data från följande officiella källor:
 
-1. **ICF (International Classification of Functioning, Disability and Health)**
-   - Källa: World Health Organization (WHO)
-   - Version: ICF 2025 v1.1
-   - Licens: WHO tillåter användning för forsknings- och utvecklingsändamål
-   - Länk: https://www.who.int/classifications/icf
-
-2. **KSI (Klassifikation av stödinsatser)**
-   - Källa: Sveriges Kommuner och Regioner (SKR)
-   - Version: KSI 2025 v1.0
-   - Licens: Öppen för användning i offentlig sektor
-   - Länk: https://skr.se/skr/halsasjukvard/utvecklingavverksamhet/klassifikationisocialtjansten
+Nationell Informationsstruktur (Socialstyrelsen), klassifikationer och kodverk: https://www.socialstyrelsen.se/statistik-och-data/klassifikationer-och-koder/kodtextfiler/
 
 **Observera:** Klassifikationer och kodverk har sina egna licenser och upphovsrätter som tillhör respektive organisation. Detta projekt innehåller endast mappningar och analys av dessa kodverk, inte kodverk eller klassifikationer i sin helhet.
-
-### Metodikbaserad på Gävlemodellen
-
-Detta projekt refererar till resultat från Gävlemodellen (12+ års beprövad metodik för uppföljning av barn och ungas välbefinnande). Dessa referenser är:
-- Baserade på offentligt tillgänglig information
-- Används för att illustrera potentialen i en semantisk brygga
-- Representerar inte Gävle kommuns officiella ståndpunkt
-
-För officiell information om Gävlemodellen, kontakta Gävle kommun.
 
 ---
 
