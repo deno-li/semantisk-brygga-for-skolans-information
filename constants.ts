@@ -32,7 +32,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
     name: 'TRYGG',
     nameEn: 'Safe',
     color: '#005595',
-    status: 4,
+    status: 5,
     target: 4,
     // ICF Kapitel & Komponenter + Detaljkoder från tabellen
     icf: 'e3 Stöd och relationer, e5 Tjänster, system, policyer, b152 Känslomässiga funktioner | e310 Närmaste familj, e320 Vänner, e325 Bekanta, kamrater, e355 Hälso- och sjukvårdspersonal, e360 Annan yrkeskunnig person, e575 Samhälleliga sociala stödtjänster, b1528C Känsla av otrygghet',
@@ -71,7 +71,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
     name: 'UTVECKLAS',
     nameEn: 'Achieving',
     color: '#C12143',
-    status: 2,
+    status: 4,
     target: 4,
     // ICF från tabellen
     icf: 'd1 Lärande och tillämpa kunskap, d8 Utbildning, d160-d179 Tillämpa kunskap | d110-d159 Grundläggande lärande, d160 Fokusera uppmärksamhet, d163 Tänkande, d166 Läsning, d170 Skrivning, d172 Räkning, d175 Lösa problem, d177 Fatta beslut, d810-d839 Utbildning',
@@ -91,7 +91,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
     name: 'OMVÅRDAD',
     nameEn: 'Nurtured',
     color: '#B00020',
-    status: 4,
+    status: 5,
     target: 4,
     // ICF från tabellen
     icf: 'e3 Stöd och relationer, d760 Familjerelationer, d6608A Vård av familjemedlem, bis4 barn | e310 Närmaste familj, e315 Utvidgad familj, d760 Familjerelationer, d7600 Förälder-barnrelation, d6608A Vårdnadshavare bistå barnet',
@@ -110,7 +110,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
     name: 'AKTIV',
     nameEn: 'Active',
     color: '#E87C00',
-    status: 4,
+    status: 5,
     target: 4,
     // ICF från tabellen
     icf: 'd9 Samhällsgemenskap, d920 Rekreation och fritid, d4 Rörlighet | d920 Rekreation och fritid, d9200 Lek, d9201 Sport, d9202 Konst och kultur, d9203 Hantverk, d9205 Umgås, d450 Gå, d455 Röra sig omkring',
@@ -167,7 +167,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
     name: 'DELAKTIG',
     nameEn: 'Included',
     color: '#6A2A5B',
-    status: 3,
+    status: 5,
     target: 4,
     // ICF från tabellen
     icf: 'd9 Samhällsgemenskap, d7 Mellanmänskliga relationer, e5 Tjänster och system | d910 Samhällsgemenskap, d750 Informella sociala relationer, d7500 Informella relationer med vänner, d7504 Informella relationer med kamrater, e585 Utbildningstjänster, e590 Arbets- och anställningstjänster',
