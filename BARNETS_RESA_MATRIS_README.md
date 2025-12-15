@@ -262,10 +262,10 @@ Fyra fullständiga exempelprofiler:
 
 ## ✨ Sammanfattning
 
-Barnets Resa Matris representerar en **optimal slutversion** av prototypen med:
+Barnets Resa Matris representerar en slutversion av prototypen med:
 
 ✅ **Komplett nivåmodell** (3 nivåer)
-✅ **8 evidensbaserade ekrar** med multi-perspektiv
+✅ **8 ekrar** med multi-perspektiv
 ✅ **Automatisk eskalering** med tydliga triggers
 ✅ **Semantisk interoperabilitet** (6 kodsystem)
 ✅ **Interaktiv guide** för pedagogisk förståelse
