@@ -1,8 +1,7 @@
-# 🌟 Barnets Resa Matris - Optimal Prototyp
+# Barnets Resa Matris - Optimal Prototyp
 
 **Version:** 1.0.0
 **Datum:** 2025-12-15
-**Status:** ✅ Produktionsklar
 
 ---
 
@@ -178,8 +177,6 @@ Fyra fullständiga exempelprofiler:
 
 ## 🧩 Semantisk Interoperabilitet
 
-### Kodsystem som används:
-
 1. **ICF** (Socialstyrelsen/WHO)
    - Tvärsektoriell domänstruktur
    - Funktion, delaktighet, miljö
@@ -192,7 +189,7 @@ Fyra fullständiga exempelprofiler:
    - Vårdens primärterminologi
    - Endast vid vård-källa
 
-4. **ICD-10/11** (WHO)
+4. **ICD-10/11** (Socialstyrelsen/WHO)
    - Diagnosklassifikation
    - Undviks i universell vy
 
@@ -247,7 +244,6 @@ Fyra fullständiga exempelprofiler:
 ## 📞 Support & Kontakt
 
 **Projektägare:** Privat initiativ
-**Stödjer:** [Handslaget för digitalisering](https://skr.se/digitaliseringivalfarden/handslagfordigitalisering.8420.html)
 
 **Teknisk stack:**
 - React 18 + TypeScript
@@ -256,7 +252,7 @@ Fyra fullständiga exempelprofiler:
 - Lucide Icons
 - Chart.js (grafer)
 
-**Licens:** MIT (Open source för forskning och utveckling)
+**Licens:** MIT (Open source för utveckling)
 
 ---
 
