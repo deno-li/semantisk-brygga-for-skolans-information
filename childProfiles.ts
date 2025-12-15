@@ -6,35 +6,35 @@ import { ChildProfile, EnhancedChildProfile, SupportLevel, LifePhase } from './t
 // ==========================================
 
 export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
-  // NIVÅ 3: Förstärkt stöd (Erik - existing profile)
+  // NIVÅ 1: Universell - Barn som mår bra
   'erik': {
     name: "Erik A.",
     ssn: "YYYYMMDD-XXXX",
     age: 15,
     school: "Exempel Grundskola",
     grade: "Åk 9",
-    sipActive: true,
+    sipActive: false,
     sipGoal: {
       child: "Barnets mål",
       professional: "Se Eriks plan."
     }
   },
 
-  // NIVÅ 1: Universell - Barn som mår bra
+  // NIVÅ 2: Stödprofil - Aktiv stödplan
   'lisa': {
     name: "Lisa J.",
     ssn: "YYYYMMDD-XXXX",
     age: 12,
     school: "Exempel Grundskola",
     grade: "Åk 6",
-    sipActive: false,
+    sipActive: true,
     sipGoal: {
       child: "Barnets mål.",
       professional: "Se Lisas plan."
     }
   },
 
-  // NIVÅ 2: Tidig uppmärksamhet - Lätt oro
+  // NIVÅ 1: Universell med tidig uppmärksamhet
   'omar': {
     name: "Omar H.",
     ssn: "YYYYMMDD-XXXX",
@@ -48,7 +48,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
     }
   },
 
-  // NIVÅ 4: Intensivt stöd - Komplex problematik
+  // NIVÅ 3: Samordning - Samordnad plan över sektorer
   'sofia': {
     name: "Sofia B.",
     ssn: "YYYYMMDD-XXXX",
@@ -82,25 +82,25 @@ export interface ChildProfileMetadata {
 export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
   'erik': {
     id: 'erik',
-    supportLevel: 'enhanced-support',
+    supportLevel: 'universal',
     currentPhase: 'elementary-school',
-    description: 'Förstärkt stöd - ADHD och dyslexi med SIP',
+    description: 'Universell nivå - Allt fungerar bra',
     emoji: '👦',
     colorScheme: {
-      primary: '#E87C00',
-      background: '#FFF4E6'
+      primary: '#378056',
+      background: '#E8F5E9'
     }
   },
 
   'lisa': {
     id: 'lisa',
-    supportLevel: 'universal',
+    supportLevel: 'enhanced-support',
     currentPhase: 'elementary-school',
-    description: 'Universell nivå - Mår bra, inga bekymmer',
+    description: 'Stödprofil - Stödsamtal och social träning',
     emoji: '👧',
     colorScheme: {
-      primary: '#378056',
-      background: '#E8F5E9'
+      primary: '#E87C00',
+      background: '#FFF4E6'
     }
   },
 
@@ -120,7 +120,7 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     id: 'sofia',
     supportLevel: 'intensive-support',
     currentPhase: 'high-school',
-    description: 'Intensivt stöd - Psykisk ohälsa och familjesituation',
+    description: 'Samordning - BUP, socialtjänst och skola samverkar',
     emoji: '👧🏼',
     colorScheme: {
       primary: '#B00020',
