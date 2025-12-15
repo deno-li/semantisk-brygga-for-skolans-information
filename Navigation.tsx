@@ -31,7 +31,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'overview', label: 'Översikt', icon: <LayoutDashboard size={16} /> },
 
     // Barnets Resa Matris - NYA vyer (markerade med badge)
-    { id: 'optimal-wheel', label: 'Välbefinnandehjul (8 ekrar)', icon: <Target size={16} />, badge: '⭐' },
+    { id: 'optimal-wheel', label: 'Välbefinnandehjul (8 ekrar)', icon: <Target size={16} />, badge: '⭐', hiddenForChild: true },
     { id: 'journey-level', label: 'Nivåhantering', icon: <Layers size={16} />, badge: '⭐', hiddenForChild: true },
     { id: 'matrix-overview', label: 'Matrisöversikt', icon: <BookOpenCheck size={16} />, badge: '⭐', hiddenForChild: true },
 
