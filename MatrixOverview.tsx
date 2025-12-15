@@ -6,14 +6,13 @@ import {
 import {
   JOURNEY_LEVELS,
   WELFARE_WHEEL_SPOKES,
-  DATA_SHARING_RULES,
   ESCALATION_RULES,
   CODE_SYSTEMS,
   LEVEL_COLORS,
   getSpokeColor
 } from './journeyConstants';
 
-type TabType = 'overview' | 'levels' | 'wheel' | 'data-sharing' | 'escalation' | 'code-systems';
+type TabType = 'overview' | 'levels' | 'wheel' | 'escalation' | 'code-systems';
 
 const MatrixOverview: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -33,7 +32,6 @@ const MatrixOverview: React.FC = () => {
     { id: 'overview', name: 'Översikt', icon: BookOpen },
     { id: 'levels', name: 'Nivåmodell', icon: TrendingUp },
     { id: 'wheel', name: 'Välbefinnandehjul', icon: Eye },
-    { id: 'data-sharing', name: 'Datadelning', icon: Share2 },
     { id: 'escalation', name: 'Eskalering', icon: AlertTriangle },
     { id: 'code-systems', name: 'Kodsystem', icon: Code }
   ];
@@ -297,62 +295,6 @@ const MatrixOverview: React.FC = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* DATADELNING */}
-          {activeTab === 'data-sharing' && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Datadelning & Lagring</h2>
-              <p className="text-gray-700 mb-6">
-                Vilka informationslager som delas i profilen och var detaljer stannar (källsystem).
-                Dataminimering och sekretess är centralt.
-              </p>
-
-              <div className="overflow-x-auto">
-                <table className="min-w-full bg-white rounded-lg shadow overflow-hidden">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Informationslager</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Master</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Delas i profil</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Känslighet</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Samtycke</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Varför</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {DATA_SHARING_RULES.map((rule, idx) => (
-                      <tr key={idx} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{rule.informationLayer}</td>
-                        <td className="px-4 py-3 text-sm text-gray-700">{rule.master}</td>
-                        <td className="px-4 py-3 text-sm">
-                          {rule.sharedInProfile ? (
-                            <span className="text-green-700 font-semibold">✓ Ja</span>
-                          ) : (
-                            <span className="text-red-700 font-semibold">✗ Nej</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-sm">
-                          <span
-                            className={`inline-block px-2 py-1 rounded font-semibold ${
-                              rule.sensitivity === 'H'
-                                ? 'bg-red-100 text-red-800'
-                                : rule.sensitivity === 'M'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-green-100 text-green-800'
-                            }`}
-                          >
-                            {rule.sensitivity}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-700 capitalize">{rule.consentRequired}</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">{rule.why}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
             </div>
           )}
