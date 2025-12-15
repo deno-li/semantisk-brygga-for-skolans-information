@@ -38,7 +38,7 @@ const App: React.FC = () => {
       case 'guardian':
         return { name: "Vårdnadshavare", role: "Vårdnadshavare", roleBadge: "Privatperson", avatar: "👩" };
       case 'child':
-        return { name: "Barn", role: "Barn (13+)", roleBadge: "Barnet", avatar: "👦" };
+        return { name: "Barn", role: "Barn", roleBadge: "Barnet", avatar: "👦" };
       case 'professional':
         return { name: "Tjänsteperson", role: "Pedagog", roleBadge: "Tjänsteperson", avatar: "👩‍🏫" };
     }
@@ -143,7 +143,7 @@ const App: React.FC = () => {
                <div className="flex flex-col items-end">
                  <div className="flex items-center gap-2 bg-[#EBF4FA] px-4 py-2 rounded border border-[#005595] text-[#005595] text-sm font-bold shadow-sm mb-2">
                     <ShieldCheck size={18} />
-                    Aktiv Barnets plan/SIP
+                    Aktiv plan/SIP
                  </div>
                  <div className="text-xs text-gray-500">Uppdaterad: 2025-11-28</div>
                </div>
