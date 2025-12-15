@@ -37,7 +37,7 @@ Visit: **http://localhost:5173**
 - ✅ Mörkt läge
 - ✅ Journalsystem (DFIK)
 - ✅ Kvalitetssystem (PDCA)
-- ✅ Full semantisk integration (ICF/KSI/BBIC/IBIC/KVÅ)
+- ✅ Exempel semantisk integration (ICF/KSI/BBIC/IBIC/KVÅ/Snomed CT)
 
 ---
 
