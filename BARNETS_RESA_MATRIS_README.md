@@ -83,7 +83,7 @@ Alla barn    Barn med stöd   Samordnade
 
 ## 📊 Mock Data
 
-Tre fullständiga exempelprofiler:
+Fyra fullständiga exempelprofiler:
 
 ### Erik (Universell nivå)
 - ✅ Alla ekrar gröna/ljusgröna
@@ -96,9 +96,15 @@ Tre fullständiga exempelprofiler:
 - 📅 Uppföljning: Var 6:e vecka
 - Status: Social färdighetsträning + stödsamtal pågår
 
-### Sara (Samordningsprofil)
+### Omar (Universell nivå med tidig uppmärksamhet)
+- 🟡 3 gula ekrar (Trygg, Utvecklas, Relationer)
+- 📝 Språksvårigheter identifierade
+- 📅 Uppföljning: Per termin
+- Status: Extra stöd i svenska, hanteras inom universell nivå
+
+### Sofia (Samordningsprofil)
 - 🚨 Flera röda ekrar (Trygg, Hälsa, Hemmet)
-- 🤝 Samordningsplan över 4 sektorer (Skola, Elevhälsa, BUP, Socialtjänst)
+- 🤝 Samordningsplan över 4 sektorer (Gymnasium, Elevhälsa, BUP, Socialtjänst)
 - 📅 Uppföljning: Var 4:e vecka
 - Status: Barnets plan/SIP aktiverad
 
@@ -237,7 +243,7 @@ Per nivå delas olika informationslager:
 
 ### Scenario 2: Samordnad insats (Stödprofil → Samordning)
 
-**Situation:** Sara har kvarstående röda värden trots stödinsatser. BUP och socialtjänst behöver involveras.
+**Situation:** Sofia har kvarstående röda värden trots stödinsatser. BUP och socialtjänst behöver involveras.
 
 **System:**
 1. Trigger: "Stödprofil utan förbättring + fler huvudmän krävs"
@@ -250,7 +256,7 @@ Per nivå delas olika informationslager:
 - Möten var 4:e vecka med alla sektorer
 - Tydlig ansvarsmatris
 
-**Resultat:** Sara och familjen får samordnat stöd över sektorsgränser.
+**Resultat:** Sofia och familjen får samordnat stöd över sektorsgränser.
 
 ---
 
