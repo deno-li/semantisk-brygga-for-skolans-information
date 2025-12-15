@@ -670,9 +670,252 @@ export const saraJourneyProfile: JourneyProfile = {
   nextFollowUp: '2026-01-05'
 };
 
+// ==========================================
+// Omar - Universell med tidig uppmärksamhet
+// ==========================================
+
+const omarWelfareWheel: WelfareWheelSpokeData[] = [
+  {
+    spoke: 'trygg',
+    name: 'TRYGG',
+    childIndicator: 'Jag känner mig trygg',
+    guardianIndicator: 'Mitt barn är tryggt',
+    professionalIndicator: 'Trygghetsmarkör/trend',
+    icfDomains: ['b152', 'd240', 'e3/e4/e5'],
+    ksiTargets: ['Target: psykosocial miljö', 'Action: bedömning/stödsamtal/miljöanpassning', 'Means: individ/grupp/samverkansmöte'],
+    ss12000Source: ['Trygghetsenkät', 'Incident', 'Frånvaro', 'Elevhälsokontakt'],
+    status: 3,
+    history: [
+      { date: '2025-08-20', value: 4, source: 'elementary-school', measurement: 'survey' },
+      { date: '2025-11-15', value: 3, source: 'elementary-school', measurement: 'survey' }
+    ],
+    notes: 'Omar visar viss oro i vissa situationer, särskilt vid språkliga krav'
+  },
+  {
+    spoke: 'halsa',
+    name: 'HÄLSA / MÅ BRA',
+    childIndicator: 'Jag mår bra',
+    guardianIndicator: 'Hälsa fungerar i vardagen',
+    professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
+    icfDomains: ['b130', 'b134', 'b152', 'd570', 'e-faktorer'],
+    ksiTargets: ['Target: hälsa/egenvård', 'Action: råd/uppföljning', 'Means: individ/digitalt'],
+    ss12000Source: ['EMI-hälsobesök', 'Elevhälsosamtal', 'Frånvaro'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'utvecklas',
+    name: 'UTVECKLAS',
+    childIndicator: 'Jag hänger med',
+    guardianIndicator: 'Utvecklas i sin takt',
+    professionalIndicator: 'Risk för ej nå mål (ja/nej)',
+    icfDomains: ['d1/d8', 'b140–b144', 'e-faktorer (lärmiljö)'],
+    ksiTargets: ['Target: utbildning/lärande', 'Action: undervisning/anpassning/färdighetsträning', 'Means: klass/grupp/1:1'],
+    ss12000Source: ['Extra anpassningar', 'Åtgärdsprogram', 'Prov/betyg'],
+    status: 3,
+    history: [
+      { date: '2025-09-10', value: 3, source: 'elementary-school', measurement: 'observation' },
+      { date: '2025-12-01', value: 3, source: 'elementary-school', measurement: 'assessment' }
+    ],
+    notes: 'Språksvårigheter påverkar vissa ämnen. Extra stöd ges i svenska.'
+  },
+  {
+    spoke: 'larande',
+    name: 'LÄRANDE',
+    childIndicator: 'Jag får hjälp när jag behöver',
+    guardianIndicator: 'Skolan anpassar',
+    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
+    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
+    ksiTargets: ['Target: lärmiljö', 'Action: anpassning/tillgängliggörande', 'Means: material/struktur/stödperson'],
+    ss12000Source: ['Anpassningar', 'Schema/strukturstöd'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'hemmet',
+    name: 'HEMMET',
+    childIndicator: 'Det känns bra hemma',
+    guardianIndicator: 'Vi klarar vardagen',
+    professionalIndicator: 'Samverkansbehov (nivå)',
+    icfDomains: ['e310–e315', 'd760', 'e5'],
+    ksiTargets: ['Target: hemliv', 'Action: rådgivning/stöd', 'Means: samtal/hembesök/samverkansmöte'],
+    ss12000Source: ['Kontaktlogik/möten'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'relationer',
+    name: 'RELATIONER',
+    childIndicator: 'Jag har någon att vara med',
+    guardianIndicator: 'Relationer fungerar',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d710–d740', 'd750', 'e4'],
+    ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
+    ss12000Source: ['Enkät/observation', 'Elevhälsoplan'],
+    status: 3,
+    history: [
+      { date: '2025-10-01', value: 3, source: 'elementary-school', measurement: 'observation' }
+    ],
+    notes: 'Viss social osäkerhet, men har ett par nära kamrater'
+  },
+  {
+    spoke: 'aktiv',
+    name: 'AKTIV',
+    childIndicator: 'Jag gör något jag gillar varje vecka',
+    guardianIndicator: 'Meningsfull fritid',
+    professionalIndicator: 'Deltagande/hinder',
+    icfDomains: ['d920', 'd450–d455', 'e3'],
+    ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
+    ss12000Source: ['Aktivitetsindikator'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'delaktig',
+    name: 'DELAKTIG',
+    childIndicator: 'Jag får vara med och påverka',
+    guardianIndicator: 'Barnets syn tas tillvara',
+    professionalIndicator: 'Barnets röst dokumenterad (ja/nej)',
+    icfDomains: ['d910', 'd750', 'e5'],
+    ksiTargets: ['Target: delaktighet', 'Action: planering/uppföljning', 'Means: möte/digitalt'],
+    ss12000Source: ['Elevinflytande', 'Barnets plan'],
+    status: 4,
+    history: []
+  }
+];
+
+export const omarJourneyProfile: JourneyProfile = {
+  childId: 'omar',
+  currentLevel: 'universell',
+  levelHistory: [
+    {
+      date: '2025-08-15',
+      fromLevel: null,
+      toLevel: 'universell',
+      reason: 'Skolstart - initial bedömning',
+      triggeredBy: null,
+      decidedBy: 'elementary-school',
+      notes: 'Omar börjar åk 5. Språksvårigheter identifierade, men hanteras inom universell nivå.'
+    }
+  ],
+  welfareWheel: omarWelfareWheel,
+  activeTriggers: [],
+  dataSharingConsent: [],
+  lastAssessment: '2025-12-01',
+  nextFollowUp: '2026-03-01'
+};
+
+// ==========================================
+// Sofia - Samordningsprofil (Gymnasiet, intensivt stöd)
+// ==========================================
+
+// Använd samma struktur som Sara men anpassa för Sofia
+const sofiaWelfareWheel: WelfareWheelSpokeData[] = saraWelfareWheel.map(spoke => ({
+  ...spoke,
+  notes: spoke.notes?.replace('Sara', 'Sofia')
+}));
+
+const sofiaCoordinationPlan: CoordinationPlanData = {
+  ...saraCoordinationPlan,
+  id: 'sofia-coord-001',
+  goals: saraCoordinationPlan.goals.map(g => ({ ...g, text: g.text.replace('Sara', 'Sofia') })),
+  crossSectorGoals: saraCoordinationPlan.crossSectorGoals.map(g => ({ ...g, text: g.text.replace('Sara', 'Sofia') })),
+  responsibilityMatrix: [
+    {
+      sector: 'social-services',
+      contactPerson: 'Karin Lundström',
+      role: 'Socialsekreterare',
+      responsibilities: ['Familjestöd', 'Ekonomiskt bistånd', 'Samordning med BUP'],
+      availableResources: ['Hembesök', 'Familjeterapi', 'Ekonomiskt stöd']
+    },
+    {
+      sector: 'bup',
+      contactPerson: 'Dr. Anna Bergman',
+      role: 'Barnpsykiater',
+      responsibilities: ['Psykiatrisk bedömning', 'KBT-behandling', 'Medicinering'],
+      availableResources: ['Psykoterapisessioner', 'Krisintervention']
+    },
+    {
+      sector: 'high-school',
+      contactPerson: 'Per Svensson',
+      role: 'Studievägledare',
+      responsibilities: ['Anpassad studiegång', 'Uppföljning av frånvaro', 'Kontakt med familj'],
+      availableResources: ['Åtgärdsprogram', 'Flexibel studietakt', 'Stödsamtal']
+    },
+    {
+      sector: 'student-health',
+      contactPerson: 'Emma Nilsson',
+      role: 'Skolkurator (Gymnasiet)',
+      responsibilities: ['Samordning', 'Stödsamtal', 'Uppföljning'],
+      availableResources: ['Individuella samtal', 'Gruppaktiviteter']
+    }
+  ]
+};
+
+export const sofiaJourneyProfile: JourneyProfile = {
+  childId: 'sofia',
+  currentLevel: 'samordning',
+  levelHistory: [
+    {
+      date: '2025-08-15',
+      fromLevel: null,
+      toLevel: 'universell',
+      reason: 'Gymnasiestart - initial bedömning',
+      triggeredBy: null,
+      decidedBy: 'high-school'
+    },
+    {
+      date: '2025-09-05',
+      fromLevel: 'universell',
+      toLevel: 'stodprofil',
+      reason: 'Flera röda ekrar och hög frånvaro identifierad',
+      triggeredBy: null,
+      decidedBy: 'student-health'
+    },
+    {
+      date: '2025-09-25',
+      fromLevel: 'stodprofil',
+      toLevel: 'samordning',
+      reason: 'Psykisk ohälsa kräver BUP + familjestöd från socialtjänst',
+      triggeredBy: {
+        id: 'trigger-sofia-001',
+        triggeredDate: '2025-09-20',
+        fromLevel: 'stodprofil',
+        toLevel: 'samordning',
+        situation: 'Stödprofil utan förbättring + fler huvudmän krävs',
+        affectedSpokes: ['trygg', 'halsa', 'hemmet'],
+        action: 'Aktivera samordningsprofil med Barnets plan/SIP',
+        responsible: 'student-health',
+        status: 'completed',
+        notes: 'Familjen och Sofia samtyckt till samordnad plan. BUP och socialtjänst involverade.'
+      },
+      decidedBy: 'student-health',
+      notes: 'Barnets plan upprättad med gemensamma mål över sektorsgränser. Fokus på skola, psykisk hälsa och familjesituation.'
+    }
+  ],
+  welfareWheel: sofiaWelfareWheel,
+  activeTriggers: [],
+  coordinationPlan: sofiaCoordinationPlan,
+  dataSharingConsent: [
+    {
+      id: 'consent-001',
+      consentDate: '2025-09-25',
+      givenBy: 'both',
+      consentType: 'coordination',
+      scope: 'Delning av information mellan gymnasiet, BUP och socialtjänst för samordnad plan',
+      fromSector: 'high-school',
+      toSector: ['student-health', 'bup', 'social-services'],
+      status: 'active'
+    }
+  ],
+  lastAssessment: '2025-12-10',
+  nextFollowUp: '2026-01-10'
+};
+
 // Export all profiles
 export const JOURNEY_PROFILES: Record<string, JourneyProfile> = {
   erik: erikJourneyProfile,
   lisa: lisaJourneyProfile,
-  sara: saraJourneyProfile
+  omar: omarJourneyProfile,
+  sofia: sofiaJourneyProfile
 };
