@@ -56,7 +56,7 @@
 - 📜 Nivåhistorik med fullständig logg
 - ⚡ Aktiva eskaleringstriggrar med åtgärdsförslag
 - 📅 Uppföljningsfrekvens per nivå
-- 🔒 Dataminimeringsregler tydligt presenterade
+- 🔒 Dataminimering
 - 🎯 Triggers till nästa nivå
 
 **Nivåöversikt:**
@@ -75,7 +75,7 @@ Alla barn    Barn med stöd   Samordnade
 1. **Översikt** - Introduktion och nyckelprinciper
 2. **Nivåmodell** - Detaljer om de 3 nivåerna
 3. **Välbefinnandehjul** - De 8 ekrarna med semantik
-4. **Datadelning** - Vad delas, var lagras, känslighet
+4. **Datadelning** - Vad delas
 5. **Eskalering** - Triggers och åtgärder
 6. **Kodsystem** - ICF, KSI, SNOMED, ICD, KVÅ, SS 12000
 
@@ -176,27 +176,11 @@ Fyra fullständiga exempelprofiler:
 
 ---
 
-## 🔒 Dataminimering
-
-Per nivå delas olika informationslager:
-
-| Informationslager | Universell | Stödprofil | Samordning | Känslighet |
-|------------------|------------|------------|------------|------------|
-| Barnets röst | ✅ Ja | ✅ Ja | ✅ Ja | L |
-| Välbefinnandeindikatorer | ✅ Aggregerat | ✅ Domännivå | ✅ Domännivå | L |
-| ICF-domäner | ✅ Grov nivå | ✅ Grov nivå | ✅ Detaljerat | M |
-| KSI-insatsetiketter | ❌ Nej | ✅ Sammanfattning | ✅ Detaljerat | M |
-| SNOMED CT | ❌ Nej | ❌ Ej normalt | ⚠️ Vid behov | H |
-| ICD-diagnos | ❌ Nej | ❌ Nej | ⚠️ Vid samtycke | H |
-| Skolans dokument | ❌ Nej | ⚠️ Sammanfattning | ⚠️ Sammanfattning | M |
-
----
-
 ## 🧩 Semantisk Interoperabilitet
 
 ### Kodsystem som används:
 
-1. **ICF/ICF-CY** (WHO)
+1. **ICF** (Socialstyrelsen/WHO)
    - Tvärsektoriell domänstruktur
    - Funktion, delaktighet, miljö
 
@@ -260,34 +244,6 @@ Per nivå delas olika informationslager:
 
 ---
 
-## 🎯 Nästa Steg
-
-### För pilotimplementering:
-
-1. **Teknisk integration:**
-   - [ ] Koppla till verkliga datakällor (skolsystem, journal, 1177)
-   - [ ] Implementera backend för datadelning
-   - [ ] OAuth/SITHS-autentisering
-   - [ ] Loggning och spårbarhet
-
-2. **Användartestning:**
-   - [ ] Pilottest med 3-5 barn på varje nivå
-   - [ ] Användaracceptanstest med pedagoger, elevhälsa, socialtjänst
-   - [ ] Justera baserat på feedback
-
-3. **Regulatoriskt:**
-   - [ ] PUL/GDPR-analys
-   - [ ] Samtyckes- och sekretessrutiner
-   - [ ] Driftsättningsplan
-
-4. **Förbättringar:**
-   - [ ] AI-stödd eskalering (prediktiva modeller)
-   - [ ] Push-notiser vid triggers
-   - [ ] Mobil app för vårdnadshavare
-   - [ ] Dashboard för chefer/ledning
-
----
-
 ## 📞 Support & Kontakt
 
 **Projektägare:** Privat initiativ
@@ -311,17 +267,10 @@ Barnets Resa Matris representerar en **optimal slutversion** av prototypen med:
 ✅ **Komplett nivåmodell** (3 nivåer)
 ✅ **8 evidensbaserade ekrar** med multi-perspektiv
 ✅ **Automatisk eskalering** med tydliga triggers
-✅ **Dataminimering** för integritet
 ✅ **Semantisk interoperabilitet** (6 kodsystem)
 ✅ **Interaktiv guide** för pedagogisk förståelse
 ✅ **Realistisk mock-data** för demonstration
 
 ---
 
-**🌟 Systemet är redo för pilotimplementering! 🌟**
-
----
-
-*Skapad: 2025-12-15*
-*Baserat på: Barnets_resa_matris.xlsx*
 *Version: 1.0.0*
