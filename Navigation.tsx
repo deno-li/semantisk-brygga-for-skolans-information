@@ -1,7 +1,24 @@
 
 import React from 'react';
-import { View, Perspective } from '../types';
-import { LayoutDashboard, PieChart, FileText, Users, Database, Clock, ClipboardCheck, Sparkles, BookOpen, TrendingUp, Globe, Shield, MessageSquare } from 'lucide-react';
+import { View, Perspective } from './types';
+import {
+  LayoutDashboard,
+  PieChart,
+  FileText,
+  Users,
+  Database,
+  Clock,
+  ClipboardCheck,
+  Sparkles,
+  BookOpen,
+  TrendingUp,
+  Globe,
+  Shield,
+  MessageSquare,
+  Layers,
+  Target,
+  BookOpenCheck
+} from 'lucide-react';
 
 interface NavigationProps {
   currentView: View;
@@ -10,9 +27,16 @@ interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, currentPerspective }) => {
-  const tabs: { id: View; label: string; icon: React.ReactNode; hiddenForChild?: boolean }[] = [
+  const tabs: { id: View; label: string; icon: React.ReactNode; hiddenForChild?: boolean; badge?: string }[] = [
     { id: 'overview', label: 'Översikt', icon: <LayoutDashboard size={16} /> },
-    { id: 'shanarri', label: 'Välbefinnandehjul', icon: <PieChart size={16} /> },
+
+    // Barnets Resa Matris - NYA vyer (markerade med badge)
+    { id: 'optimal-wheel', label: 'Välbefinnandehjul (8 ekrar)', icon: <Target size={16} />, badge: '⭐' },
+    { id: 'journey-level', label: 'Nivåhantering', icon: <Layers size={16} />, badge: '⭐', hiddenForChild: true },
+    { id: 'matrix-overview', label: 'Matrisöversikt', icon: <BookOpenCheck size={16} />, badge: '⭐', hiddenForChild: true },
+
+    // Ursprungliga vyer
+    { id: 'shanarri', label: 'Välbefinnandehjul (original)', icon: <PieChart size={16} /> },
     { id: 'survey', label: 'Min röst', icon: <MessageSquare size={16} className="text-pink-600" /> },
     { id: 'sip', label: 'Min Plan', icon: <FileText size={16} /> },
 
@@ -46,6 +70,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
             >
               {tab.icon}
               {tab.label}
+              {tab.badge && <span className="text-xs">{tab.badge}</span>}
             </button>
           ))}
         </div>

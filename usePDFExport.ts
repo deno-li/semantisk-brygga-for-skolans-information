@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Student, PDFExportOptions } from '../types';
+import { Student, PDFExportOptions } from './types';
 
 export const usePDFExport = () => {
   const exportToPDF = async (student: Student, options: PDFExportOptions) => {

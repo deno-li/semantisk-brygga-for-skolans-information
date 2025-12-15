@@ -1,25 +1,31 @@
 
 import React, { useState, Suspense, lazy } from 'react';
-import Header from './components/Header';
-import Navigation from './components/Navigation';
-import Loading from './components/Loading';
-import ErrorBoundary from './components/ErrorBoundary';
-import { Perspective, View, UserContext } from './types';
+import Header from './Header';
+import Navigation from './Navigation';
+import Loading from './Loading';
+import ErrorBoundary from './ErrorBoundary';
+import { Perspective, View, UserContext, JourneyLevel } from './types';
 import { getProfileById, getProfileMetadata, getSupportLevelColor, CHILD_PROFILES } from './childProfiles';
 import { ShieldCheck, GraduationCap } from 'lucide-react';
+import { JOURNEY_PROFILES } from './journeyMockData';
 
 // Lazy load view components to split code and improve initial load performance
-const Dashboard = lazy(() => import('./components/Dashboard'));
-const WelfareWheel = lazy(() => import('./components/WelfareWheel'));
-const WellbeingSurvey = lazy(() => import('./components/WellbeingSurvey'));
-const DataProfile = lazy(() => import('./components/DataProfile'));
-const QualitySystem = lazy(() => import('./components/QualitySystem'));
-const AIAnalysis = lazy(() => import('./components/AIAnalysis'));
-const Journal = lazy(() => import('./components/Journal'));
-const LifeCourseView = lazy(() => import('./components/LifeCourseView'));
-const MyWorldTriangle = lazy(() => import('./components/MyWorldTriangle'));
-const ResilienceMatrix = lazy(() => import('./components/ResilienceMatrix'));
-const AnnualQualityWheel = lazy(() => import('./components/AnnualQualityWheel'));
+const Dashboard = lazy(() => import('./Dashboard'));
+const WelfareWheel = lazy(() => import('./WelfareWheel'));
+const WellbeingSurvey = lazy(() => import('./WellbeingSurvey'));
+const DataProfile = lazy(() => import('./DataProfile'));
+const QualitySystem = lazy(() => import('./QualitySystem'));
+const AIAnalysis = lazy(() => import('./AIAnalysis'));
+const Journal = lazy(() => import('./Journal'));
+const LifeCourseView = lazy(() => import('./LifeCourseView'));
+const MyWorldTriangle = lazy(() => import('./MyWorldTriangle'));
+const ResilienceMatrix = lazy(() => import('./ResilienceMatrix'));
+const AnnualQualityWheel = lazy(() => import('./AnnualQualityWheel'));
+
+// Barnets Resa Matris - Nya komponenter
+const OptimalWelfareWheel = lazy(() => import('./OptimalWelfareWheel'));
+const ChildJourneyLevel = lazy(() => import('./ChildJourneyLevel'));
+const MatrixOverview = lazy(() => import('./MatrixOverview'));
 
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
@@ -41,6 +47,13 @@ const App: React.FC = () => {
   const userContext = getUserContext(currentPerspective);
   const currentProfile = getProfileById(selectedProfileId);
   const profileMetadata = getProfileMetadata(selectedProfileId);
+  const journeyProfile = JOURNEY_PROFILES[selectedProfileId];
+
+  const handleLevelChange = (newLevel: JourneyLevel, reason: string) => {
+    console.log(`Nivåändring: ${journeyProfile.currentLevel} → ${newLevel}. Anledning: ${reason}`);
+    // I en riktig implementation skulle vi uppdatera databasen här
+    alert(`Nivåändring till ${newLevel} registrerad!\n\nAnledning: ${reason}\n\nDetta skulle i en riktig implementation uppdatera profilen och skicka notiser till alla involverade.`);
+  };
 
   // Render View Content
   const renderView = () => {
@@ -56,6 +69,29 @@ const App: React.FC = () => {
       case 'myworld': return <MyWorldTriangle selectedProfileId={selectedProfileId} />;
       case 'resilience': return <ResilienceMatrix selectedProfileId={selectedProfileId} />;
       case 'qualitywheel': return <AnnualQualityWheel />;
+
+      // Barnets Resa Matris - Nya vyer
+      case 'optimal-wheel':
+        return journeyProfile ? (
+          <OptimalWelfareWheel
+            currentPerspective={currentPerspective}
+            currentLevel={journeyProfile.currentLevel}
+            spokeData={journeyProfile.welfareWheel}
+            onSpokeClick={(spoke) => console.log('Spoke clicked:', spoke)}
+          />
+        ) : <div>Ingen journeyprofil hittades</div>;
+
+      case 'journey-level':
+        return journeyProfile ? (
+          <ChildJourneyLevel
+            journeyProfile={journeyProfile}
+            onLevelChange={handleLevelChange}
+          />
+        ) : <div>Ingen journeyprofil hittades</div>;
+
+      case 'matrix-overview':
+        return <MatrixOverview />;
+
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">
            <div className="mb-4 text-4xl">🚧</div>
