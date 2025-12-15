@@ -9,10 +9,6 @@ const Documents: React.FC = () => {
        {/* Header */}
        <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
           <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Hantera samtycke</h2>
-          <p className="text-gray-600">
-            Här samlas alla journalhandlingar, planer och underlag som rör Erik.
-            Vissa dokument hämtas direkt från anslutna källsystem (Skola, Hälso- och sjukvård, Omsorg) via federation.
-          </p>
        </div>
 
        <div className="grid gap-6">
