@@ -4,9 +4,7 @@
 
 Detta är ett **privat initiativ** av en yrkesperson inom kvalitetsutveckling i offentlig sektor. Projektet är **inte** skapat på uppdrag av någon arbetsgivare och representerar inte någon organisations officiella ståndpunkt.
 
-**Syfte:** Att bidra med ett perspektiv från praktiken för att främja utvecklingen av en gemensam, livsloppsbaserad informationsprofil för barn och unga, som binder ihop skolans pedagogiska dokumentation med socialtjänstens och hälso- och sjukvårdens strukturer.
-
-**Bakgrund:** Skapad av en kvalitetsutvecklare med erfarenhet från både utbildningssektor och socialtjänst/omsorg, i syfte att lyfta behovet av semantisk koppling mellan system via ICF och KSI inom ramen för nationella satsningar på digital infrastruktur och sammanhållen planering.
+**Syfte:** Att bidra med ett perspektiv från praktiken för att främja utvecklingen av en gemensam, livsloppsbaserad informationsprofil för barn och unga, som binder ihop skolans pedagogiska dokumentation med socialtjänstens och hälso- och sjukvårdens strukturer inom ramen för nationella satsningar på digital infrastruktur och sammanhållen planering.
 
 ---
 
@@ -32,7 +30,7 @@ Fullständig licenstext: https://creativecommons.org/licenses/by/4.0/legalcode.s
 **Erkännande ska ange:**
 - "Baserat på 'Välbefinnandehjul för Sammanhållen Planering i 1177'"
 - "Privat initiativ, ej på uppdrag av arbetsgivare"
-- Länk till originalrepository: https://github.com/deno-li/semantisk-brygga-f-r-skolans-information
+- Länk till originalrepository: https://github.com/deno-li/semantisk-brygga-for-skolans-information
 
 ### Källkod
 
@@ -80,7 +78,7 @@ Detta projekt använder data från följande officiella källor:
    - Licens: Öppen för användning i offentlig sektor
    - Länk: https://skr.se/skr/halsasjukvard/utvecklingavverksamhet/klassifikationisocialtjansten
 
-**Observera:** Kodverken själva (ICF och KSI) har sina egna licenser och upphovsrätter som tillhör respektive organisation (WHO och SKR). Detta projekt innehåller endast mappningar och analys av dessa kodverk, inte kodverken själva i sin helhet.
+**Observera:** Klassifikationer och kodverk har sina egna licenser och upphovsrätter som tillhör respektive organisation. Detta projekt innehåller endast mappningar och analys av dessa kodverk, inte kodverk eller klassifikationer i sin helhet.
 
 ### Metodikbaserad på Gävlemodellen
 
@@ -100,7 +98,7 @@ För officiell information om Gävlemodellen, kontakta Gävle kommun.
 Detta material tillhandahålls "i befintligt skick" utan garantier av något slag. Skaparen ansvarar inte för:
 - Eventuella fel eller brister i mappningar mellan kodverk
 - Resultat av implementation i verkliga system
-- Ekonomiska beräkningar (dessa är uppskattningar baserade på tillgänglig information)
+- Ekonomiska beräkningar
 - Juridisk eller regulatorisk compliance
 
 ### Inte Professionell Rådgivning
@@ -113,26 +111,16 @@ Detta projekt utgör inte:
 
 ### Inte på Uppdrag av Arbetsgivare
 
-Detta projekt har skapats:
-- Som privat initiativ av en yrkesperson
-- Utanför arbetstid och arbetsskyldigheter
-- Utan representation av någon arbetsgivares officiella ståndpunkt
-- Utan förväntningar på formell dialog eller svar från myndigheter
+Detta projekt har skapats som privat initiativ av en yrkesperson.
 
 ---
 
 ## Användning i Offentlig Sektor
 
-Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för:
-
-✅ Forskning och utvärdering
-✅ Utveckling av digital infrastruktur
-✅ Pilotprojekt för sammanhållen planering
-✅ Utbildning och kompetensutveckling
-✅ Vidareutveckling och anpassning till lokala behov
+Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för utvärdering, vidareutveckling och anpassning till gmensamma behov och samverkan.
 
 **Önskan från skaparen:**
-Om detta material används i utveckling av nationell infrastruktur, pilotprojekt eller forskning, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).
+Om detta material används i något form av utvecklingsarbete, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).
 
 ---
 
@@ -157,31 +145,15 @@ Detta projekt välkomnar bidrag från:
 ## Kontakt
 
 För frågor om projektet, använd GitHub Issues i detta repository:
-https://github.com/deno-li/semantisk-brygga-f-r-skolans-information/issues
+https://github.com/deno-li/semantisk-brygga-for-skolans-information/issues
 
-För användning i forskningsprojekt eller större implementationer där samverkan önskas, kontakta via GitHub.
-
----
-
-## Versionshistorik
-
-- **v1.1 (2024-12-13)**: Produktionsversion
-  - Flerbarnsvy med individuella profiler
-  - Dynamiska SIP-mål per barn
-  - Förenklat barngränssnitt
-  - Professionell vy med fullständiga klassifikationer
-  - Omfattande semantisk mappning (ICF, KSI, BBIC, IBIC, KVÅ)
-- **v1.0 (2024-12-08)**: Första versionen
-  - Komplett ICF-KSI mappning från faktiska kodverk
-  - React-applikation för SHANARRI-visualisering
-  - Integration med Gävlemodellen och Barnets Resa-konceptet
-  - Omfattande dokumentation
+För användning i projekt kontakta via GitHub.
 
 ---
 
-**Skapad:** 2024-12-08
-**Senast uppdaterad:** 2024-12-13
-**Repository:** https://github.com/deno-li/semantisk-brygga-f-r-skolans-information
+**Skapad:** 2025-12-08
+**Senast uppdaterad:** 2025-12-15
+**Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
 **Licens (dokumentation):** CC BY 4.0
 **Licens (kod):** MIT
 **Status:** Öppen för användning, forskning och vidareutveckling
