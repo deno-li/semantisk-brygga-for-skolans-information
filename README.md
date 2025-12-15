@@ -1,13 +1,13 @@
-# Välbefinnandehjul för Sammanhållen Planering i 1177
-## Gemensam informationsprofil för barnets hela resa (Livsloppsperspektiv)
+## Välbefinnandehjul för Sammanhållen Planering i 1177
 
 En interaktiv prototyp som demonstrerar hur skolans, socialtjänstens och hälso- och sjukvårdens informationsmängder kan harmoniseras genom semantiskt lager för **sammanhållen planering** kring barn och unga.
-
 Designen bygger på välbefinnandehjul och dimensioner från **GIRFEC (Getting It Right For Every Child)**, samt arbetssätt från **Kronobarnsmodellen** och **Gävlemodellen** för systematiskt trygghetsarbete.
+
+**Detta är ett **privat initiativ** av en yrkesperson inom kvalitetsutveckling i offentlig sektor för att bidra med ett perspektiv från praktiken. Projektet representerar inte någon organisations officiella ståndpunkt.
 
 ---
 
-## 🎯 Syfte
+## Syfte
 
 Ett **standardiserat välbefinnandehjul** som följer individen genom hela livet från MVC/BVC till vuxenliv, med samma dimensioner för att möjliggöra:
 
@@ -19,7 +19,7 @@ Ett **standardiserat välbefinnandehjul** som följer individen genom hela livet
 
 ---
 
-## ✨ Huvudfunktioner
+## Huvudfunktioner
 
 ### 1. Välbefinnandehjul (SHANARRI)
 8 välbefinnandedimensioner visualiserade i ett interaktivt cirkeldiagram:
@@ -33,9 +33,9 @@ Ett **standardiserat välbefinnandehjul** som följer individen genom hela livet
 - **Delaktig** (Included)
 
 **Tre perspektiv:**
-- 👨‍👩‍👧 **Vårdnadshavare** - Förälder/målsmans vy
-- 👦 **Barn** - Barnets egen röst med barnanpassat språk
-- 👩‍🏫 **Professionell** - Tjänstepersonens vy med klassifikationer
+- **Vårdnadshavare** - Förälder/målsmans vy
+- **Barn** - Barnets egen röst med barnanpassat språk
+- **Professionell** - Tjänstepersonens vy med klassifikationer
 
 **Exempel semantisk integration mellan skolans information och (ICF/KSI/BBIC/IBIC/KVÅ/Snomed CT)**
 
@@ -176,48 +176,10 @@ Din delningsbara länk: `https://your-project.vercel.app`
 
 ---
 
-## 📖 Bakgrund & Kontext
-
-**Projekt:** Prototyputveckling för välbefinnandehjul
-
-**Stödjer:** [Handslaget för digitalisering](https://skr.se/digitaliseringivalfarden/handslagfordigitalisering.html) - SKR
-
-Detta är ett **privat initiativ** av en yrkesperson inom kvalitetsutveckling i offentlig sektor för att bidra med ett perspektiv från praktiken. Projektet representerar inte någon organisations officiella ståndpunkt.
-
-**Syfte:** Att främja utvecklingen av en gemensam, livsloppsbaserad informationsprofil för barn och unga som binder ihop skolans pedagogiska dokumentation med socialtjänstens och hälso- och sjukvårdens strukturer.
-
----
-
-## Bidrag & Samarbete
-
-Detta projekt välkomnar bidrag från:
-- Forskare inom utbildning, socialtjänst och hälso- och sjukvård
-- Praktiker inom kommunal verksamhet
-- Systemutvecklare med intresse för interoperabilitet
-- Policymakers inom digital infrastruktur
-
-**Användning i offentlig sektor uppmuntras särskilt för:**
-- ✅ Forskning och utvärdering
-- ✅ Utveckling av digital infrastruktur
-- ✅ Pilotprojekt för sammanhållen planering
-- ✅ Utbildning och kompetensutveckling
-- ✅ Vidareutveckling och anpassning till lokala behov
-
----
-
-## 📄 Licens
-
-- **Dokumentation**: Creative Commons Erkännande 4.0 Internationell (CC BY 4.0)
-- **Källkod**: MIT License
-
-Se [LICENSE.md](LICENSE.md) för fullständiga licensvillkor.
-
----
-
-## 🙏 Erkännanden
+## Erkännanden
 
 - **Gävle kommun** - Gävlemodellen för systematiskt trygghetsarbete
-- **Socialstyrelsen** - BBIC, KSI, KVÅ standarder och nationell informationsstruktur
+- **Socialstyrelsen** - Nationell informationsstruktur och gemensamma informationsmängder
 - **WHO** - ICF klassifikation
 - **Scottish Government** - GIRFEC/SHANARRI ramverk
 - **Connected Children** - Forskningsprojekt vid Linnéuniversitetet
@@ -228,14 +190,36 @@ Se [LICENSE.md](LICENSE.md) för fullständiga licensvillkor.
 
 ---
 
-## 📞 Kontakt
+## Användning i Offentlig Sektor
 
-För frågor, feedback eller samarbetsförslag:
-- Öppna ett Issue på GitHub
-- Skicka en Pull Request
-- Kontakta via GitHub
+Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för utvärdering, vidareutveckling och anpassning till gmensamma behov och samverkan.
+
+**Önskan från skaparen:**
+Om detta material används i något form av utvecklingsarbete, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).
 
 ---
 
-**Status**: Prototyp
-**Repository**: [github.com/deno-li/semantisk-brygga-f-r-skolans-information](https://github.com/deno-li/semantisk-brygga-for-skolans-information)
+## Licens
+
+- **Dokumentation**: Creative Commons Erkännande 4.0 Internationell (CC BY 4.0)
+- **Källkod**: MIT License
+
+Se [LICENSE.md](LICENSE.md) för fullständiga licensvillkor.
+
+---
+
+## Kontakt
+
+För frågor om projektet, använd GitHub Issues i detta repository:
+https://github.com/deno-li/semantisk-brygga-for-skolans-information/issues
+
+För användning i projekt kontakta via GitHub.
+
+---
+
+**Skapad:** 2025-12-08
+**Senast uppdaterad:** 2025-12-15
+**Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
+**Licens (dokumentation):** CC BY 4.0
+**Licens (kod):** MIT
+**Status:** Öppen för användning, forskning och vidareutveckling
