@@ -1,9 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Perspective, UserContext, View } from './types';
+import { Perspective, UserContext, View } from '../types/types';
 import { ChevronDown, Search, X, FileText, ArrowRight, Users } from 'lucide-react';
-import { JOURNAL_DATA, DOCUMENTS_DATA, SHANARRI_DATA, NEWS_FEED_DATA } from './constants';
-import { CHILD_PROFILES, getProfileMetadata, getSupportLevelColor } from './childProfiles';
+import { JOURNAL_DATA, DOCUMENTS_DATA, SHANARRI_DATA, NEWS_FEED_DATA } from '../data/constants';
+import { CHILD_PROFILES, getProfileMetadata, getSupportLevelColor } from '../data/childProfiles';
 
 interface HeaderProps {
   currentPerspective: Perspective;

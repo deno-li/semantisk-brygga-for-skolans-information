@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, Perspective } from './types';
+import { View, Perspective } from '../types/types';
 import {
   LayoutDashboard,
   PieChart,

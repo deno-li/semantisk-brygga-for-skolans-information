@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SHANARRI_DATA } from './constants';
+import { SHANARRI_DATA } from '../data/constants';
 import { MessageSquare, Send, Star, ThumbsUp, ThumbsDown, Meh } from 'lucide-react';
 
 const WellbeingSurvey: React.FC = () => {

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, memo } from 'react';
 import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X } from 'lucide-react';
-import { AiSuggestion, View } from './types';
+import { AiSuggestion, View } from '../types/types';
 
 interface AIAnalysisProps {
   onNavigate?: (view: View) => void;

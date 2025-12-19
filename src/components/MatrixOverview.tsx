@@ -10,7 +10,7 @@ import {
   CODE_SYSTEMS,
   LEVEL_COLORS,
   getSpokeColor
-} from './journeyConstants';
+} from '../data/journeyConstants';
 
 type TabType = 'overview' | 'levels' | 'wheel' | 'escalation' | 'code-systems';
 

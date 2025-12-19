@@ -1,5 +1,5 @@
 // Multiple child profiles showing different support levels and situations
-import { ChildProfile, EnhancedChildProfile, SupportLevel, LifePhase } from './types';
+import { ChildProfile, EnhancedChildProfile, SupportLevel, LifePhase } from '../types/types';
 
 // ==========================================
 // BASIC CHILD PROFILES

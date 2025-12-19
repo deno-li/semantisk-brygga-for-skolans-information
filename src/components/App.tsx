@@ -4,10 +4,10 @@ import Header from './Header';
 import Navigation from './Navigation';
 import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
-import { Perspective, View, UserContext, JourneyLevel } from './types';
-import { getProfileById, getProfileMetadata, getSupportLevelColor, CHILD_PROFILES } from './childProfiles';
+import { Perspective, View, UserContext, JourneyLevel } from '../types/types';
+import { getProfileById, getProfileMetadata, getSupportLevelColor, CHILD_PROFILES } from '../data/childProfiles';
 import { ShieldCheck, GraduationCap } from 'lucide-react';
-import { JOURNEY_PROFILES } from './journeyMockData';
+import { JOURNEY_PROFILES } from '../data/journeyMockData';
 
 // Lazy load view components to split code and improve initial load performance
 const Dashboard = lazy(() => import('./Dashboard'));

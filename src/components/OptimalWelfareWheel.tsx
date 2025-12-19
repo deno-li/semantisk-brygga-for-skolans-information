@@ -7,14 +7,14 @@ import {
   WelfareWheelSpokeData,
   Perspective,
   JourneyLevel
-} from './types';
+} from '../types/types';
 import {
   WELFARE_WHEEL_SPOKES,
   getStatusColor,
   getSpokeColor,
   getLevelName,
   LEVEL_COLORS
-} from './journeyConstants';
+} from '../data/journeyConstants';
 
 interface OptimalWelfareWheelProps {
   currentPerspective: Perspective;
