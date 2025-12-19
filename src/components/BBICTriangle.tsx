@@ -1,6 +1,6 @@
 import React from 'react';
-import { BBIC_TRIANGLE, SHANARRI_DATA } from './constants';
-import { BBICTriangleArea } from './types';
+import { BBIC_TRIANGLE, SHANARRI_DATA } from '../data/constants';
+import { BBICTriangleArea } from '../types/types';
 
 interface BBICTriangleProps {
   selectedProfileId?: string;

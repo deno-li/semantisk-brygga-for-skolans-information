@@ -9,7 +9,7 @@ import {
   DataSharingRule,
   JourneyLevel,
   WelfareWheelSpoke
-} from './types';
+} from '../types/types';
 
 // ==========================================
 // NIVÅMODELL - Tre nivåer

@@ -10,7 +10,7 @@ import {
   JourneyLevelChange,
   SupportPlanData,
   CoordinationPlanData
-} from './types';
+} from '../types/types';
 
 // ==========================================
 // Erik - Universell nivå (allt går bra)

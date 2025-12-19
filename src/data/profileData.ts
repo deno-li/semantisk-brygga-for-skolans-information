@@ -1,5 +1,5 @@
 // Profile-specific data for each child
-import { ShanarriIndicator, RiskFactor, ProtectiveFactor } from './types';
+import { ShanarriIndicator, RiskFactor, ProtectiveFactor } from '../types/types';
 
 // ==========================================
 // LISA - NIVÅ 2: Stödprofil

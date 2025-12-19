@@ -1,6 +1,6 @@
 
 import React, { useState, memo } from 'react';
-import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from './constants';
+import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/constants';
 import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
 

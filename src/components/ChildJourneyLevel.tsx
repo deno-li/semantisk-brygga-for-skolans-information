@@ -8,13 +8,13 @@ import {
   JourneyProfile,
   JourneyLevelChange,
   EscalationTrigger
-} from './types';
+} from '../types/types';
 import {
   JOURNEY_LEVELS,
   LEVEL_COLORS,
   getLevelName,
   ESCALATION_RULES
-} from './journeyConstants';
+} from '../data/journeyConstants';
 
 interface ChildJourneyLevelProps {
   journeyProfile: JourneyProfile;

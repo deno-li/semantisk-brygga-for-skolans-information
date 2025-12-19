@@ -1,10 +1,10 @@
 
 import React, { useState, useMemo, memo } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
-import { SHANARRI_DATA } from './constants';
-import { getShanarriDataByProfile } from './profileData';
+import { SHANARRI_DATA } from '../data/constants';
+import { getShanarriDataByProfile } from '../data/profileData';
 import { Info, Tag, Database, Activity, Search, X, Smile, ThumbsUp, Heart, BookOpen, User, CheckCircle2, ExternalLink, Shield, ChevronDown, ChevronUp } from 'lucide-react';
-import { ShanarriIndicator, Perspective } from './types';
+import { ShanarriIndicator, Perspective } from '../types/types';
 
 interface WelfareWheelProps {
   currentPerspective?: Perspective;

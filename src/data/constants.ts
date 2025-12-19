@@ -5,7 +5,7 @@ import {
   MyWorldTriangleAssessment, MyWorldAspect, ResilienceMatrix, AdversityFactor, VulnerabilityFactor,
   ProtectiveEnvironmentFactor, AnnualQualityWheel, QualityWheelPhase, QualityActivity, GavleModelPillar, LegalRequirement,
   BBICTriangleArea
-} from './types';
+} from '../types/types';
 
 export const CHILD_PROFILE: ChildProfile = {
   name: "Erik Andersson",

@@ -1,10 +1,10 @@
 
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { SHANARRI_DATA, TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, CHILD_PROFILE, ENHANCED_CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS } from './constants';
-import { getShanarriDataByProfile, getRiskFactorsByProfile, getProtectiveFactorsByProfile } from './profileData';
-import { getProfileById } from './childProfiles';
+import { SHANARRI_DATA, TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, CHILD_PROFILE, ENHANCED_CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS } from '../data/constants';
+import { getShanarriDataByProfile, getRiskFactorsByProfile, getProtectiveFactorsByProfile } from '../data/profileData';
+import { getProfileById } from '../data/childProfiles';
 import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users } from 'lucide-react';
-import { Perspective, View } from './types';
+import { Perspective, View } from '../types/types';
 
 interface DashboardProps {
   currentPerspective: Perspective;

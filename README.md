@@ -95,10 +95,64 @@ Inga personuppgifter eller känslig information lagras. Alla namn, personnummer 
 
 ---
 
+## 📁 Projektstruktur
+
+Projektet har en clean, välorganiserad mappstruktur:
+
+```
+semantisk-brygga-for-skolans-information/
+├── src/                          # Källkod
+│   ├── components/               # React-komponenter (22 st)
+│   │   ├── App.tsx              # Huvudapplikation
+│   │   ├── Dashboard.tsx        # Översiktsdashboard
+│   │   ├── WelfareWheel.tsx     # SHANARRI-hjul
+│   │   ├── OptimalWelfareWheel.tsx
+│   │   ├── MyWorldTriangle.tsx  # GIRFEC-bedömning
+│   │   ├── ResilienceMatrix.tsx
+│   │   ├── ChildJourneyLevel.tsx
+│   │   └── ...                  # Övriga komponenter
+│   ├── types/                   # TypeScript-typdefinitioner
+│   │   └── types.ts
+│   ├── data/                    # Mockdata och konstanter
+│   │   ├── constants.ts         # Applikationskonstanter
+│   │   ├── childProfiles.ts     # Demo-barnprofiler
+│   │   ├── profileData.ts
+│   │   ├── journeyConstants.ts
+│   │   └── journeyMockData.ts
+│   ├── api/                     # API-klienter
+│   │   └── semanticBridgeApi.ts
+│   ├── hooks/                   # Custom React hooks
+│   │   └── usePDFExport.ts
+│   ├── index.tsx                # Applikationens entry point
+│   └── index.html               # HTML-template
+├── backend/                     # Python-backend
+│   ├── icf_models.py           # ICF-klassificering
+│   ├── ksi_models.py           # KSI-klassificering
+│   ├── intervention_models.py
+│   └── semantic_mapper.py      # Semantisk mappning
+├── data/                        # Klassifikationsdata
+│   ├── icf.tsv                 # ICF-klassifikation (349 KB)
+│   ├── ksi.tsv                 # KSI-klassifikation (664 KB)
+│   ├── kva-medicinska-atgarder-kma.tsv (937 KB)
+│   └── *.xlsx                  # Excel-filer med standarder
+├── docs/                        # Dokumentation
+│   ├── BARNETS_RESA_MATRIS_README.md
+│   ├── LICENSE.md
+│   └── metadata.json
+├── package.json                 # NPM-beroenden
+├── tsconfig.json               # TypeScript-konfiguration
+├── vite.config.ts              # Vite build-konfiguration
+└── README.md                   # Denna fil
+```
+
+---
+
 ## 📖 Dokumentation
 
 - **`README.md`** - Denna fil (översikt)
-- **`BARNETS_RESA_MATRIS_README.md`** - Komplett dokumentation för Journey-systemet
+- **`docs/BARNETS_RESA_MATRIS_README.md`** - Komplett dokumentation för Journey-systemet
+- **`docs/LICENSE.md`** - Licensinformation
+- **`docs/metadata.json`** - Projektmetadata
 
 ---
 
@@ -218,7 +272,7 @@ För användning i projekt kontakta via GitHub.
 ---
 
 **Skapad:** 2025-12-08
-**Senast uppdaterad:** 2025-12-15
+**Senast uppdaterad:** 2025-12-19
 **Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
 **Licens (dokumentation):** CC BY 4.0
 **Licens (kod):** MIT

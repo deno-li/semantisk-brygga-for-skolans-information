@@ -1,6 +1,6 @@
 
 import React, { useState, memo } from 'react';
-import { ENHANCED_CHILD_PROFILE, LONGITUDINAL_DATA, TRANSITIONS, CHILD_PROFILE } from './constants';
+import { ENHANCED_CHILD_PROFILE, LONGITUDINAL_DATA, TRANSITIONS, CHILD_PROFILE } from '../data/constants';
 import { Calendar, TrendingUp, Shield, ShieldAlert, CheckCircle2, Clock, ArrowRight, Users, MapPin } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, AreaChart } from 'recharts';
 
