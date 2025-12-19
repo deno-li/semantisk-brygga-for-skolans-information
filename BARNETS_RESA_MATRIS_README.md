@@ -1,4 +1,4 @@
-# Barnets Resa Matris - Optimal Prototyp
+# Barnets Resa Matris Prototyp
 
 **Version:** 1.0.0
 **Datum:** 2025-12-15
