@@ -304,7 +304,7 @@ export const OMAR_SHANARRI: ShanarriIndicator[] = [
   },
   {
     id: 'responsible',
-    name: 'ANSVARSTAGAN DE',
+    name: 'ANSVARSTAGANDE',
     nameEn: 'Responsible',
     color: '#00838F',
     status: 4,
@@ -513,7 +513,7 @@ export const SOFIA_SHANARRI: ShanarriIndicator[] = [
   },
   {
     id: 'responsible',
-    name: 'ANSVARSTAGAN DE',
+    name: 'ANSVARSTAGANDE',
     nameEn: 'Responsible',
     color: '#00838F',
     status: 3,
