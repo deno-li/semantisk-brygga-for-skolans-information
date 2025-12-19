@@ -139,7 +139,7 @@ const WellbeingSurvey: React.FC = () => {
                   ))}
                 </div>
                 <div className="flex justify-between mt-2 text-xs text-gray-500">
-                  <span>😞 Inte bra alls</span>
+                  <span>😞 Behöver stöd</span>
                   <span>😐 OK</span>
                   <span>😊 Jättebra!</span>
                 </div>
