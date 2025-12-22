@@ -220,11 +220,34 @@ Visit: **http://localhost:5173**
 
 ## 🚀 Deployment
 
-### Vercel (Rekommenderat)
+### GitHub Pages (Säker Demo för Officiella Granskare) ✅
+**Rekommenderat för att dela med offentliga aktörer**
+
+Automatisk deployment via GitHub Actions till en säker, statisk demo:
+
+1. **Aktivera GitHub Pages:**
+   - Gå till Repository Settings → Pages
+   - Under "Source", välj **GitHub Actions**
+
+2. **Deployment sker automatiskt** vid push till `main`
+
+3. **Din demo-URL:** `https://deno-li.github.io/semantisk-brygga-for-skolans-information/`
+
+**Säkerhetsfördelar:**
+- ✅ Inga API-nycklar exponerade
+- ✅ Endast statisk frontend (ingen backend)
+- ✅ Endast demo-data (inga riktiga personuppgifter)
+- ✅ Transparant build-process via GitHub Actions
+- ✅ Kan delas säkert med skola, socialtjänst och vård
+
+📖 **Detaljerad säkerhetsdokumentation:**
+- [README-DEPLOYMENT.md](README-DEPLOYMENT.md) - Deployment-guide
+- [SECURITY.md](SECURITY.md) - Säkerhetsinformation för granskare
+
+### Vercel (För utveckling med backend)
 1. Gå till [vercel.com](https://vercel.com)
 2. Importera ditt GitHub-repo
-3. Välj branch: `claude/optimize-journey-prototype-uB7Up`
-4. Deploya!
+3. Deploya med backend API-support
 
 Din delningsbara länk: `https://your-project.vercel.app`
 
