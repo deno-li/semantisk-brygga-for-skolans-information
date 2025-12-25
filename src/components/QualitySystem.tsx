@@ -4,14 +4,16 @@ import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/co
 import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
 
+const getProgressRatio = (indicator: typeof QUALITY_INDICATORS[number]) =>
+  indicator.target === 0 ? 0 : indicator.current / indicator.target;
+
+const getGapPercent = (indicator: typeof QUALITY_INDICATORS[number]) =>
+  indicator.target === 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
+
 const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [showMyYear, setShowMyYear] = useState(true);
   const [showSchoolAvg, setShowSchoolAvg] = useState(true);
-  const getProgressRatio = (indicator: typeof QUALITY_INDICATORS[number]) =>
-    indicator.target === 0 ? 0 : indicator.current / indicator.target;
-  const getGapPercent = (indicator: typeof QUALITY_INDICATORS[number]) =>
-    indicator.target === 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
   const improvementAreas = useMemo(
     () =>
       QUALITY_INDICATORS
@@ -369,7 +371,7 @@ const QualitySystem: React.FC = () => {
         {/* Quality Indicators Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {QUALITY_INDICATORS.map((indicator) => {
-            const progress = (indicator.current / indicator.target) * 100;
+            const progress = getProgressRatio(indicator) * 100;
             const meetsTarget = indicator.current >= indicator.target;
             const isNearTarget = progress >= 85 && progress < 100;
 
