@@ -99,13 +99,13 @@ const App: React.FC = () => {
 
       // WHO ICF Demo
       case 'icf-demo':
-        return <ICFDemo />;
+        return <ICFDemo selectedProfileId={selectedProfileId} />;
 
       case 'icf-n1':
-        return <N1Screening />;
+        return <N1Screening selectedProfileId={selectedProfileId} />;
 
       case 'icf-n2':
-        return <N2DeepDive />;
+        return <N2DeepDive selectedProfileId={selectedProfileId} />;
 
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">

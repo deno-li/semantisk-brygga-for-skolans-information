@@ -8,6 +8,11 @@ import React, { useState } from 'react';
 import { Activity, TrendingUp, CheckCircle2, AlertTriangle, AlertCircle, Info, User } from 'lucide-react';
 import { ICFQualifierValue } from '../types/icf-types';
 import { WelfareWheelSpoke } from '../types/types';
+import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
+
+interface N1ScreeningProps {
+  selectedProfileId: string;
+}
 
 // N1 Screening Assessment (Performance only, no Capacity)
 interface N1ScreeningItem {
@@ -96,8 +101,32 @@ const ERIK_N1_SCREENING: N1ScreeningItem[] = [
   }
 ];
 
-const N1Screening: React.FC = () => {
+const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
+
+  const profile = ICF_DEMO_PROFILES[selectedProfileId];
+
+  // N1 screening is currently only implemented for Erik A. (universal level)
+  // Show placeholder for other profiles
+  if (selectedProfileId !== 'erik') {
+    return (
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-blue-50 border border-blue-300 rounded-lg p-8 text-center">
+          <Info className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-blue-900 mb-2">N1 Screening exempel</h2>
+          <p className="text-blue-800">
+            N1 Screening är för närvarande endast implementerad med <strong>Erik A.</strong> som exempel.
+          </p>
+          <p className="text-sm text-blue-700 mt-2">
+            Välj Erik A. från profil-menyn för att se N1 universell screening.
+          </p>
+          <p className="text-xs text-blue-600 mt-4">
+            N1-screening skulle i praktiken användas för alla barn som en första översiktlig bedömning.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Helper: Get color for qualifier value
   const getQualifierColor = (value: ICFQualifierValue): string => {
