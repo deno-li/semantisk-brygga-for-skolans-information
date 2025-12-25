@@ -52,6 +52,28 @@ class SemanticBridgeAPI {
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl;
+    this.ensureSecureBaseUrl();
+  }
+
+  private ensureSecureBaseUrl(): void {
+    const allowInsecure = import.meta.env.VITE_ALLOW_INSECURE_API === 'true';
+    if (allowInsecure) {
+      return;
+    }
+
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(this.baseUrl);
+    } catch (error) {
+      throw new Error(`Invalid API base URL: ${this.baseUrl}`);
+    }
+
+    const isLocalhost = ['localhost', '127.0.0.1', '[::1]'].includes(parsedUrl.hostname);
+    if (parsedUrl.protocol === 'http:' && !isLocalhost) {
+      throw new Error(
+        `Insecure API base URL blocked: ${this.baseUrl}. Use HTTPS or set VITE_ALLOW_INSECURE_API=true for local testing.`
+      );
+    }
   }
 
   /**
