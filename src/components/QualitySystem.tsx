@@ -5,11 +5,15 @@ import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, Tren
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
 import { QualityIndicator } from '../types/types';
 
-const getProgressRatio = (indicator: QualityIndicator) =>
-  indicator.target === 0 ? 0 : indicator.current / indicator.target;
+const getProgressRatio = (indicator: QualityIndicator) => {
+  const safeTarget = indicator.target <= 0 ? 0 : indicator.target;
+  if (safeTarget === 0) return 0;
+  const safeCurrent = Math.max(0, indicator.current);
+  return safeCurrent / safeTarget;
+};
 
 const getGapPercent = (indicator: QualityIndicator) =>
-  indicator.target === 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
+  indicator.target <= 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
 
 const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
@@ -20,7 +24,7 @@ const QualitySystem: React.FC = () => {
       QUALITY_INDICATORS
         .filter(qi => qi.target > 0 && qi.current < qi.target)
         .sort((a, b) => getProgressRatio(a) - getProgressRatio(b)),
-    []
+    [QUALITY_INDICATORS]
   );
   
   // Custom PDCA Wheel Component
