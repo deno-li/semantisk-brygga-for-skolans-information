@@ -1,21 +1,45 @@
 /**
  * ICF Demo Component
  * Demonstrates WHO ICF integration with Performance/Capacity and Environmental Factors
- * Uses Elsa's profile from the guide as example
+ * Uses the selected child profile from the system
  */
 
 import React, { useState } from 'react';
 import { Activity, Shield, TrendingUp, Info, User, BookOpen } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
-import { LISA_PROFILE } from '../data/icf-demo-profiles';
+import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import { WelfareWheelSpoke } from '../types/types';
 
-const ICFDemo: React.FC = () => {
+interface ICFDemoProps {
+  selectedProfileId: string;
+}
+
+const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
   const [selectedTab, setSelectedTab] = useState<'overview' | 'gap' | 'risk'>('overview');
   const [selectedSpoke, setSelectedSpoke] = useState<WelfareWheelSpoke | undefined>(undefined);
 
-  const { icfAssessments, environmentalFactors, riskProtectionBalance, summary, childsVoice } = LISA_PROFILE;
+  const profile = ICF_DEMO_PROFILES[selectedProfileId];
+
+  // If profile doesn't have ICF data yet, show placeholder
+  if (!profile || !profile.icfAssessments) {
+    return (
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-8 text-center">
+          <Info className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-yellow-900 mb-2">ICF-data inte tillgänglig än</h2>
+          <p className="text-yellow-800">
+            ICF Gap-analys är för närvarande endast implementerad för <strong>Lisa J.</strong>
+          </p>
+          <p className="text-sm text-yellow-700 mt-2">
+            Välj Lisa J. från profil-menyn för att se WHO ICF-integration.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const { icfAssessments, environmentalFactors, riskProtectionBalance, summary, childsVoice } = profile;
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -70,8 +94,8 @@ const ICFDemo: React.FC = () => {
         <div className="flex items-start gap-4">
           <User className="w-16 h-16 text-blue-600" />
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900">{LISA_PROFILE.name}</h2>
-            <p className="text-gray-600">{LISA_PROFILE.age} år, {LISA_PROFILE.grade} • Nivå: {LISA_PROFILE.level} (Stödprofil)</p>
+            <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+            <p className="text-gray-600">{profile.age} år, {profile.grade} • Nivå: {profile.level} ({profile.level === 'N2' ? 'Stödprofil' : profile.level === 'N1' ? 'Universell' : 'Samordnad'})</p>
 
             <div className="mt-4 bg-yellow-50 border border-yellow-300 rounded p-4">
               <p className="font-medium text-yellow-900 mb-2">📖 Sammanfattning:</p>
@@ -97,11 +121,13 @@ const ICFDemo: React.FC = () => {
             </div>
 
             {/* Barnets röst */}
-            <div className="mt-4 bg-green-50 border border-green-300 rounded p-4">
-              <p className="font-medium text-green-900 mb-2">💬 Lisas röst:</p>
-              <p className="text-sm text-green-900 italic">"{childsVoice.goals}"</p>
-              <p className="text-xs text-green-800 mt-2">{childsVoice.howFeeling}</p>
-            </div>
+            {childsVoice && (
+              <div className="mt-4 bg-green-50 border border-green-300 rounded p-4">
+                <p className="font-medium text-green-900 mb-2">💬 {profile.name.split(' ')[0]}s röst:</p>
+                <p className="text-sm text-green-900 italic">"{childsVoice.goals}"</p>
+                <p className="text-xs text-green-800 mt-2">{childsVoice.howFeeling}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
