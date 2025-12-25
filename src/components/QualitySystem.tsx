@@ -8,11 +8,15 @@ const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [showMyYear, setShowMyYear] = useState(true);
   const [showSchoolAvg, setShowSchoolAvg] = useState(true);
+  const getProgressRatio = (indicator: typeof QUALITY_INDICATORS[number]) =>
+    indicator.target === 0 ? 0 : indicator.current / indicator.target;
+  const getGapPercent = (indicator: typeof QUALITY_INDICATORS[number]) =>
+    indicator.target === 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
   const improvementAreas = useMemo(
     () =>
       QUALITY_INDICATORS
-        .filter(qi => qi.current < qi.target)
-        .sort((a, b) => (a.current / a.target) - (b.current / b.target)),
+        .filter(qi => qi.target > 0 && qi.current < qi.target)
+        .sort((a, b) => getProgressRatio(a) - getProgressRatio(b)),
     []
   );
   
@@ -504,9 +508,7 @@ const QualitySystem: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {improvementAreas.map((indicator) => {
-                const gapPercent = indicator.target === 0
-                  ? 0
-                  : Math.max(0, Math.round((1 - indicator.current / indicator.target) * 100));
+                const gapPercent = getGapPercent(indicator);
                 return (
                   <div
                     key={indicator.id}
