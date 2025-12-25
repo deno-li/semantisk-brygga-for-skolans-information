@@ -27,6 +27,9 @@ const OptimalWelfareWheel = lazy(() => import('./OptimalWelfareWheel'));
 const ChildJourneyLevel = lazy(() => import('./ChildJourneyLevel'));
 const MatrixOverview = lazy(() => import('./MatrixOverview'));
 
+// WHO ICF Integration
+const ICFDemo = lazy(() => import('./ICFDemo'));
+
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
   const [currentView, setCurrentView] = useState<View>('overview');
@@ -91,6 +94,10 @@ const App: React.FC = () => {
 
       case 'matrix-overview':
         return <MatrixOverview />;
+
+      // WHO ICF Demo
+      case 'icf-demo':
+        return <ICFDemo />;
 
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">

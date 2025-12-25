@@ -17,7 +17,8 @@ import {
   MessageSquare,
   Layers,
   Target,
-  BookOpenCheck
+  BookOpenCheck,
+  Activity
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -29,6 +30,9 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, currentPerspective }) => {
   const tabs: { id: View; label: string; icon: React.ReactNode; hiddenForChild?: boolean; badge?: string }[] = [
     { id: 'overview', label: 'Översikt', icon: <LayoutDashboard size={16} /> },
+
+    // WHO ICF Integration (NY!)
+    { id: 'icf-demo', label: 'ICF Gap-analys', icon: <Activity size={16} className="text-blue-600" />, badge: '🆕', hiddenForChild: true },
 
     // Barnets Resa Matris - NYA vyer (markerade med badge)
     { id: 'optimal-wheel', label: 'Välbefinnandehjul (8 ekrar)', icon: <Target size={16} />, badge: '⭐', hiddenForChild: true },
