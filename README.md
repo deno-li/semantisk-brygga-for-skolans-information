@@ -39,7 +39,21 @@ Ett **standardiserat välbefinnandehjul** som följer individen genom hela livet
 
 **Exempel semantisk integration mellan skolans information och (ICF/KSI/BBIC/IBIC/KVÅ/Snomed CT)**
 
-### 2. My World Triangle (GIRFEC)
+### 2. WHO ICF Integration 🆕
+**Internationell klassifikation av funktionstillstånd, funktionshinder och hälsa**
+
+Tre-stegs bedömningssystem enligt WHO ICF:
+- **N1 Screening** - Universell nivå för alla barn (Performance-bedömning, 5-10 min)
+- **N2 Fördjupad analys** - Riktad nivå med Performance vs Capacity gap-analys (30-60 min)
+- **Gap-analys** - Visar om anpassningar fungerar genom att jämföra prestation mot kapacitet
+
+**Nyckelkoncept:**
+- **Performance Qualifier:** Vad barnet GÖR i sin nuvarande miljö med anpassningar
+- **Capacity Qualifier:** Vad barnet KAN göra i standardiserad miljö utan stöd
+- **Environmental Factors:** Barriers (.0-.4) och Facilitators (+0-+4)
+- **Risk/Skydd-balans:** Kvantifiering av hinder och möjliggörare per välfärdseker
+
+### 3. My World Triangle (GIRFEC)
 3-dimensionell helhetsbedömning:
 - Hur jag växer och utvecklas
 - Vad jag behöver från andra
@@ -47,13 +61,13 @@ Ett **standardiserat välbefinnandehjul** som följer individen genom hela livet
 
 Integration med BBIC-triangeln (Barnets utveckling, föräldraförmåga, familj och miljö)
 
-### 3. Resilience Matrix
+### 4. Resilience Matrix
 För komplexa situationer (nivå 3-4 stöd):
 - Adversity (motgångar) - skala 1-10
 - Vulnerability (sårbarhet) - skala 1-10
 - Protective Environment (skyddande miljö) - skala 1-10
 
-### 4. Livsloppsperspektiv
+### 5. Livsloppsperspektiv
 Visualisering genom 6 livsfaser:
 - **MVC/BVC** → **Förskola** → **Grundskola** → **Gymnasiet** → **Ung vuxen** → **Vuxen och äldre**
 
