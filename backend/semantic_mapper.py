@@ -8,8 +8,8 @@ from typing import List, Dict, Optional, Tuple, Any
 from dataclasses import dataclass
 from enum import Enum
 
-from ..models.icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
-from ..models.ksi_models import (
+from .icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
+from .ksi_models import (
     KSITarget, KSIAction, KSIStatus, KSICode,
     KSI_TO_ICF_MAPPINGS, ICF_TO_KSI_MAPPINGS,
     KSI_TARGET_NAMES, KSI_ACTION_NAMES
@@ -52,8 +52,8 @@ class SemanticMappingEngine:
 
     def __init__(self):
         self.icf_database = ICF_DATABASE
-        self.ksi_to_icf = KSI_TO_ICF_MAPPINGS
-        self.icf_to_ksi = ICF_TO_KSI_MAPPINGS
+        self.ksi_to_icf_map = KSI_TO_ICF_MAPPINGS
+        self.icf_to_ksi_map = ICF_TO_KSI_MAPPINGS
         self._initialize_system_mappings()
 
     def _initialize_system_mappings(self):
@@ -144,13 +144,13 @@ class SemanticMappingEngine:
         Map ICF code to KSI Target codes
         Confidence: 97% (KSI Axel 1 = ICF)
         """
-        ksi_targets = self.icf_to_ksi.get(icf_code, [])
+        ksi_targets = self.icf_to_ksi_map.get(icf_code, [])
 
         if not ksi_targets:
             # Try parent code (e.g., b140 -> b1)
             if len(icf_code) > 2:
                 parent = icf_code[:2]
-                ksi_targets = self.icf_to_ksi.get(parent, [])
+                ksi_targets = self.icf_to_ksi_map.get(parent, [])
 
         target_descriptions = [
             KSI_TARGET_NAMES.get(target, target.value)
@@ -175,7 +175,7 @@ class SemanticMappingEngine:
         Map KSI Target to ICF codes
         Confidence: 97% (exact mapping)
         """
-        icf_codes = self.ksi_to_icf.get(ksi_target, [])
+        icf_codes = self.ksi_to_icf_map.get(ksi_target, [])
 
         target_descriptions = []
         for icf_code in icf_codes:
