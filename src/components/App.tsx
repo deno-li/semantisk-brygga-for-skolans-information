@@ -29,6 +29,8 @@ const MatrixOverview = lazy(() => import('./MatrixOverview'));
 
 // WHO ICF Integration
 const ICFDemo = lazy(() => import('./ICFDemo'));
+const N1Screening = lazy(() => import('./N1Screening'));
+const N2DeepDive = lazy(() => import('./N2DeepDive'));
 
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
@@ -98,6 +100,12 @@ const App: React.FC = () => {
       // WHO ICF Demo
       case 'icf-demo':
         return <ICFDemo />;
+
+      case 'icf-n1':
+        return <N1Screening />;
+
+      case 'icf-n2':
+        return <N2DeepDive />;
 
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">
