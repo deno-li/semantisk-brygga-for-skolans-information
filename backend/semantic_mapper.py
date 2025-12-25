@@ -10,8 +10,6 @@ from enum import Enum
 
 from .icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
 from .ksi_models import (
-from .icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
-from .ksi_models import (
     KSITarget, KSIAction, KSIStatus, KSICode,
     KSI_TO_ICF_MAPPINGS, ICF_TO_KSI_MAPPINGS,
     KSI_TARGET_NAMES, KSI_ACTION_NAMES
@@ -53,10 +51,6 @@ class SemanticMappingEngine:
     """
 
     def __init__(self):
-        self.icf_database = ICF_DATABASE
-        self.ksi_to_icf_map = KSI_TO_ICF_MAPPINGS
-        self.icf_to_ksi_map = ICF_TO_KSI_MAPPINGS
-        self._initialize_system_mappings()
         self.icf_database = ICF_DATABASE
         self.ksi_to_icf_map = KSI_TO_ICF_MAPPINGS
         self.icf_to_ksi_map = ICF_TO_KSI_MAPPINGS
