@@ -5,7 +5,7 @@ Confidence scores based on validated mappings from document
 """
 
 from typing import List, Dict, Optional, Tuple, Any
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 from .icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
@@ -37,11 +37,7 @@ class MappingResult:
     confidence: float
     mapping_path: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
-    warnings: List[str] = None
-
-    def __post_init__(self):
-        if self.warnings is None:
-            self.warnings = []
+    warnings: List[str] = field(default_factory=list)
 
 
 class SemanticMappingEngine:
@@ -59,7 +55,7 @@ class SemanticMappingEngine:
     def _initialize_system_mappings(self):
         """Initialize mappings to BBIC, IBIC, KVÅ, etc."""
         # BBIC mappings (95% confidence)
-        self.icf_to_bbic = {
+        self.icf_to_bbic_map = {
             # Barnets utveckling
             "b140": ("Barnets utveckling", "Kognitiv utveckling och inlärning", 0.95),
             "b1400": ("Barnets utveckling", "Kognitiv utveckling och inlärning", 0.95),
@@ -78,7 +74,7 @@ class SemanticMappingEngine:
         }
 
         # IBIC mappings (100% confidence - uses ICF natively)
-        self.icf_to_ibic = {
+        self.icf_to_ibic_map = {
             "b140": ("Funktionsnedsättning", "Koncentration", 1.00),
             "b152": ("Funktionsnedsättning", "Känslomässig reglering", 1.00),
             "d160": ("Funktionsnedsättning", "Koncentration", 1.00),
@@ -89,7 +85,7 @@ class SemanticMappingEngine:
         }
 
         # KVÅ mappings (87% confidence - ICHI structure)
-        self.icf_to_kva = {
+        self.icf_to_kva_map = {
             "d160": [("DV015", "Rådgivning om studieteknik", 0.87)],
             "b140": [("DV015", "Rådgivning om studieteknik", 0.85)],
             "b152": [
@@ -104,7 +100,7 @@ class SemanticMappingEngine:
         }
 
         # SHANARRI to ICF mappings (90% confidence - conceptual)
-        self.shanarri_to_icf = {
+        self.shanarri_to_icf_map = {
             "trygghet": {  # Safe
                 "icf_codes": ["d710", "d7100", "d7107", "e165", "e250", "e355", "d920"],
                 "confidence": 0.90
@@ -151,13 +147,6 @@ class SemanticMappingEngine:
             if len(icf_code) > 2:
                 parent = icf_code[:2]
                 ksi_targets = self.icf_to_ksi_map.get(parent, [])
-        ksi_targets = self.icf_to_ksi_map.get(icf_code, [])
-
-        if not ksi_targets:
-            # Try parent code (e.g., b140 -> b1)
-            if len(icf_code) > 2:
-                parent = icf_code[:2]
-                ksi_targets = self.icf_to_ksi_map.get(parent, [])
 
         target_descriptions = [
             KSI_TARGET_NAMES.get(target, target.value)
@@ -182,7 +171,6 @@ class SemanticMappingEngine:
         Map KSI Target to ICF codes
         Confidence: 97% (exact mapping)
         """
-        icf_codes = self.ksi_to_icf_map.get(ksi_target, [])
         icf_codes = self.ksi_to_icf_map.get(ksi_target, [])
 
         target_descriptions = []
@@ -211,7 +199,7 @@ class SemanticMappingEngine:
         Map ICF to BBIC dimensions
         Confidence: 95% (Socialstyrelsen method)
         """
-        mapping = self.icf_to_bbic.get(icf_code)
+        mapping = self.icf_to_bbic_map.get(icf_code)
 
         if not mapping:
             # Try to infer from component
@@ -256,7 +244,7 @@ class SemanticMappingEngine:
         Map ICF to IBIC
         Confidence: 100% (IBIC uses ICF natively)
         """
-        mapping = self.icf_to_ibic.get(icf_code)
+        mapping = self.icf_to_ibic_map.get(icf_code)
 
         if mapping:
             area, subarea, confidence = mapping
@@ -284,7 +272,7 @@ class SemanticMappingEngine:
         Map ICF to KVÅ procedure codes
         Confidence: 87% (ICHI structure)
         """
-        mappings = self.icf_to_kva.get(icf_code, [])
+        mappings = self.icf_to_kva_map.get(icf_code, [])
 
         if not mappings:
             return MappingResult(
@@ -319,7 +307,7 @@ class SemanticMappingEngine:
         Map SHANARRI/Behovskompassen domain to ICF codes
         Confidence: 90% (conceptual mapping)
         """
-        mapping = self.shanarri_to_icf.get(shanarri_domain)
+        mapping = self.shanarri_to_icf_map.get(shanarri_domain)
 
         if not mapping:
             return MappingResult(
