@@ -12,11 +12,13 @@
     "@ai-sdk/openai": "^2.0.80",
     "@google/genai": "^1.31.0",
     "ai": "^5.0.110",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.556.0",
     "openai": "^6.10.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "recharts": "^3.5.1"
+    "recharts": "^3.5.1",
+    "jspdf": "^3.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
