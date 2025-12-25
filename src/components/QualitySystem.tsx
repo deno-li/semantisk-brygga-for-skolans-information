@@ -1,13 +1,16 @@
 
 import React, { useState, memo } from 'react';
 import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/constants';
-import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award } from 'lucide-react';
+import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
 
 const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [showMyYear, setShowMyYear] = useState(true);
   const [showSchoolAvg, setShowSchoolAvg] = useState(true);
+  const improvementAreas = QUALITY_INDICATORS
+    .filter(qi => qi.current < qi.target)
+    .sort((a, b) => (a.current / a.target) - (b.current / b.target));
   
   // Custom PDCA Wheel Component
   const PDCAWheel = () => {
@@ -487,6 +490,43 @@ const QualitySystem: React.FC = () => {
             <div className="text-xs text-gray-600 mt-1">Snittuppfyllelse</div>
           </div>
         </div>
+
+        {/* Improvement focus */}
+        {improvementAreas.length > 0 && (
+          <div className="mt-6">
+            <div className="flex items-center gap-2 text-sm font-bold text-[#B00020] mb-3">
+              <AlertTriangle size={16} />
+              Identifierade förbättringsområden
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {improvementAreas.map((indicator) => {
+                const gapPercent = Math.max(0, Math.round((1 - indicator.current / indicator.target) * 100));
+                return (
+                  <div
+                    key={indicator.id}
+                    className="bg-[#FFF4F0] border border-[#FECACA] rounded-lg p-3 shadow-sm"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h4 className="font-semibold text-sm text-[#1F1F1F] leading-tight">
+                        {indicator.name}
+                      </h4>
+                      <span className="text-xs font-bold text-[#B00020] bg-white border border-[#FECACA] rounded px-2 py-0.5">
+                        {gapPercent}% kvar
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                      {indicator.description}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-gray-700">
+                      <span>Nu: {indicator.current}{indicator.unit}</span>
+                      <span>Mål: {indicator.target}{indicator.unit}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
