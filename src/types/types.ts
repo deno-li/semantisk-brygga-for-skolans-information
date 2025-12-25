@@ -146,6 +146,21 @@ export interface DocumentSection {
   items: DocumentItem[];
 }
 
+export interface PDFExportOptions {
+  format: 'A4' | 'Letter';
+  includeWheel?: boolean;
+  includeTimeline?: boolean;
+  includeTrends?: boolean;
+}
+
+export interface Student {
+  profile: ChildProfile;
+  riskLevel: 'low' | 'medium' | 'high';
+  dimensions: Record<string, unknown[]>;
+  history?: WheelHistoryPoint[];
+  timeline?: TimelineEvent[];
+}
+
 // ==========================================
 // LIVSLOPPSPERSPEKTIV - Nya typer
 // ==========================================

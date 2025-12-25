@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({
     DOCUMENTS_DATA.forEach(section => {
       section.items.forEach(doc => {
         if (doc.title.toLowerCase().includes(lowerQuery)) {
-          results.push({ type: 'Hantera samtycke', title: doc.title, subtitle: section.category, view: 'documents' });
+          results.push({ type: 'Hantera samtycke', title: doc.title, subtitle: section.category, view: 'overview' });
         }
       });
     });
