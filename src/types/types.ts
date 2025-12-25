@@ -17,7 +17,9 @@ export type View =
   | 'optimal-wheel'      // Barnets Resa - Optimalt välbefinnandehjul
   | 'journey-level'      // Barnets Resa - Nivåhantering
   | 'matrix-overview'    // Barnets Resa - Matrisöversikt
-  | 'icf-demo';          // WHO ICF - Performance/Capacity & Environmental Factors
+  | 'icf-demo'           // WHO ICF - Performance/Capacity & Environmental Factors
+  | 'icf-n1'             // WHO ICF - N1 Universell screening
+  | 'icf-n2';            // WHO ICF - N2 Fördjupad analys
 
 export interface ShanarriIndicator {
   id: string;

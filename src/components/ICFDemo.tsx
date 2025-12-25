@@ -8,14 +8,14 @@ import React, { useState } from 'react';
 import { Activity, Shield, TrendingUp, Info, User, BookOpen } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
-import { ELSA_PROFILE } from '../data/icf-demo-profiles';
+import { LISA_PROFILE } from '../data/icf-demo-profiles';
 import { WelfareWheelSpoke } from '../types/types';
 
 const ICFDemo: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'overview' | 'gap' | 'risk'>('overview');
   const [selectedSpoke, setSelectedSpoke] = useState<WelfareWheelSpoke | undefined>(undefined);
 
-  const { icfAssessments, environmentalFactors, riskProtectionBalance, summary, childsVoice } = ELSA_PROFILE;
+  const { icfAssessments, environmentalFactors, riskProtectionBalance, summary, childsVoice } = LISA_PROFILE;
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -70,8 +70,8 @@ const ICFDemo: React.FC = () => {
         <div className="flex items-start gap-4">
           <User className="w-16 h-16 text-blue-600" />
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900">{ELSA_PROFILE.name}</h2>
-            <p className="text-gray-600">{ELSA_PROFILE.age} år, {ELSA_PROFILE.grade} • Nivå: {ELSA_PROFILE.level}</p>
+            <h2 className="text-2xl font-bold text-gray-900">{LISA_PROFILE.name}</h2>
+            <p className="text-gray-600">{LISA_PROFILE.age} år, {LISA_PROFILE.grade} • Nivå: {LISA_PROFILE.level} (Stödprofil)</p>
 
             <div className="mt-4 bg-yellow-50 border border-yellow-300 rounded p-4">
               <p className="font-medium text-yellow-900 mb-2">📖 Sammanfattning:</p>
@@ -98,7 +98,7 @@ const ICFDemo: React.FC = () => {
 
             {/* Barnets röst */}
             <div className="mt-4 bg-green-50 border border-green-300 rounded p-4">
-              <p className="font-medium text-green-900 mb-2">💬 Elsas röst:</p>
+              <p className="font-medium text-green-900 mb-2">💬 Lisas röst:</p>
               <p className="text-sm text-green-900 italic">"{childsVoice.goals}"</p>
               <p className="text-xs text-green-800 mt-2">{childsVoice.howFeeling}</p>
             </div>

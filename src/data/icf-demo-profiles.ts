@@ -13,11 +13,12 @@ import {
 } from '../types/icf-types';
 
 // ==========================================
-// ELSA, 10 år - Exempel från guiden
+// LISA J., 12 år - Befintlig profil från systemet
 // ==========================================
 
 /**
- * Elsa har stora svårigheter med läsning och skrivning trots att
+ * Lisa J. har stödprofil med stödsamtal och social träning.
+ * Hon har stora svårigheter med läsning och skrivning trots att
  * skolan har infört bildstöd i all undervisning. Det hjälper något men
  * hon är fortfarande mycket efter sina klasskamrater. Hon använder
  * lugnrum 2-3 gånger per vecka när klassrummet blir för högljutt.
@@ -25,8 +26,8 @@ import {
  * varje dag.
  */
 
-// ICF Assessments för Elsa
-export const ELSA_ICF_ASSESSMENTS: ICFAssessment[] = [
+// ICF Assessments för Lisa
+export const LISA_ICF_ASSESSMENTS: ICFAssessment[] = [
   // EKER 3: LÄRANDE - d140 Lära sig läsa
   {
     code: 'd140',
@@ -136,19 +137,19 @@ export const ELSA_ICF_ASSESSMENTS: ICFAssessment[] = [
     context: 'school',
     source: 'observation',
 
-    notes: 'Använder lugnrum 2-3 ggr/vecka när klassrummet blir för högljutt. Detta hjälper Elsa att reglera stress.'
+    notes: 'Använder lugnrum 2-3 ggr/vecka när klassrummet blir för högljutt. Detta hjälper Lisa att reglera stress.'
   }
 ];
 
-// Environmental Factors för Elsa
-export const ELSA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
+// Environmental Factors för Lisa
+export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
   // FACILITATORS (Skyddsfaktorer)
   {
     code: 'e1301',
     domain: 'Läromedel för utbildning (Bildstöd)',
     type: 'facilitator',
     level: 1,  // Lätt underlättare
-    description: 'Bildstöd i all undervisning hjälper Elsa läsa enkla texter med förståelse',
+    description: 'Bildstöd i all undervisning hjälper Lisa läsa enkla texter med förståelse',
     relatedSpokes: ['larande'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
@@ -159,16 +160,16 @@ export const ELSA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
 
   {
     code: 'e330',
-    domain: 'Specialpedagog Maria',
+    domain: 'Kurator och specialpedagog',
     type: 'facilitator',
     level: 2,  // Måttlig underlättare
-    description: 'Specialpedagog Maria ger individuellt stöd 3h/vecka',
-    relatedSpokes: ['larande', 'trygg'],
+    description: 'Stödsamtal och social träning 3h/vecka',
+    relatedSpokes: ['larande', 'trygg', 'relationer'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'school',
     status: 'active',
-    notes: 'Maria är en viktig trygg vuxen för Elsa'
+    notes: 'Del av Lisas stödprofil'
   },
 
   {
@@ -227,10 +228,10 @@ export const ELSA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
   }
 ];
 
-// Risk/Skydd-balans för Elsa
-export const ELSA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
-  barriers: ELSA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'barrier'),
-  facilitators: ELSA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'facilitator'),
+// Risk/Skydd-balans för Lisa
+export const LISA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
+  barriers: LISA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'barrier'),
+  facilitators: LISA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'facilitator'),
 
   riskScore: 1,  // .1
   protectionScore: 8,  // +1+2+1+3+1
@@ -266,8 +267,8 @@ export const ELSA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
   ]
 };
 
-// Longitudinell gap-trend för Elsa (12 månader)
-export const ELSA_GAP_TREND_LEARNING: GapTrend = {
+// Longitudinell gap-trend för Lisa (12 månader)
+export const LISA_GAP_TREND_LEARNING: GapTrend = {
   icfCode: 'd140',
   domain: 'Lära sig läsa',
 
@@ -317,30 +318,31 @@ export const ELSA_GAP_TREND_LEARNING: GapTrend = {
 // Sammanställning för export
 // ==========================================
 
-export const ELSA_PROFILE = {
-  name: 'Elsa Andersson',
-  age: 10,
-  grade: 'Åk 5',
+export const LISA_PROFILE = {
+  name: 'Lisa J.',
+  age: 12,
+  grade: 'Åk 6',
   schoolYear: '2024/2025',
-  level: 'N2' as const,  // Fördjupad analys
+  level: 'N2' as const,  // Fördjupad analys (Stödprofil)
 
   // ICF-data
-  icfAssessments: ELSA_ICF_ASSESSMENTS,
-  environmentalFactors: ELSA_ENVIRONMENTAL_FACTORS,
-  riskProtectionBalance: ELSA_RISK_PROTECTION_BALANCE,
+  icfAssessments: LISA_ICF_ASSESSMENTS,
+  environmentalFactors: LISA_ENVIRONMENTAL_FACTORS,
+  riskProtectionBalance: LISA_RISK_PROTECTION_BALANCE,
 
   // Longitudinell data
   gapTrends: {
-    learning: ELSA_GAP_TREND_LEARNING
+    learning: LISA_GAP_TREND_LEARNING
   },
 
   // Sammanfattning
   summary: {
-    primaryConcerns: ['Lärande (läsning och skrivning)'],
-    strengths: ['Starkt familjestöd', 'Engagerad specialpedagog', 'Fungerande anpassningar'],
+    primaryConcerns: ['Lärande (läsning och skrivning)', 'Social träning'],
+    strengths: ['Starkt familjestöd', 'Stödsamtal och social träning', 'Fungerande anpassningar'],
     interventionsWorking: true,
     nextSteps: [
       'Fortsätt bildstöd (fungerar!)',
+      'Fortsätt social träning med kurator',
       'Överväg utökat bildstöd (e1301: +1→+2)',
       'Förstärk tillgång till lugnrum (e250: 1→0)',
       'Uppföljning om 3 månader: Sträva efter d140.2→d140.1'
@@ -349,37 +351,47 @@ export const ELSA_PROFILE = {
 
   // Barnets röst
   childsVoice: {
-    goals: 'Jag vill bli bättre på att läsa så att jag kan läsa samma böcker som mina kompisar. Och jag vill ha någon att leka med på rasterna.',
-    howFeeling: 'Det är jobbigt att inte kunna läsa som alla andra, men Maria (specialläraren) är jättesnäll och hjälper mig. Bilderna i böckerna hjälper mig förstå bättre.',
-    whatHelps: 'När det blir för högljutt går jag till lugnrummet. Då blir jag lugn igen. Mamma och pappa hjälper mig med läxor hemma varje dag.'
+    goals: 'Jag vill bli bättre på att läsa så att jag kan läsa samma böcker som mina kompisar. Och jag vill ha fler kompisar att umgås med på rasterna.',
+    howFeeling: 'Det är jobbigt att inte kunna läsa som alla andra, men kuratorn och specialläraren hjälper mig mycket. Bilderna i böckerna hjälper mig förstå bättre. Social träning hjälper mig våga prata med nya kompisar.',
+    whatHelps: 'När det blir för högljutt går jag till lugnrummet. Då blir jag lugn igen. Mamma och pappa hjälper mig med läxor hemma varje dag. Och samtalen med kuratorn hjälper mig att våga mer.'
   }
 };
 
 // ==========================================
-// Ytterligare demo-profiler (placeholders)
+// Ytterligare demo-profiler (använd befintliga)
 // ==========================================
 
-// Mira, 8 år - Social färdighetsträning
-export const MIRA_PROFILE = {
-  name: 'Mira Hassan',
-  age: 8,
-  grade: 'Åk 2',
-  level: 'N2' as const,
-  // TODO: Implementera komplett profil enligt guiden
+// Erik A., 15 år - Universell nivå (Placeholder för N1 demo)
+export const ERIK_PROFILE = {
+  name: 'Erik A.',
+  age: 15,
+  grade: 'Åk 9',
+  level: 'N1' as const,
+  // N1 screening-data implementeras i N1Screening-komponenten
 };
 
-// Kevin, 12 år - Trygghet hemma vs skola
-export const KEVIN_PROFILE = {
-  name: 'Kevin Johansson',
-  age: 12,
-  grade: 'Åk 6',
-  level: 'N2' as const,
-  // TODO: Implementera komplett profil enligt guiden
+// Omar H., 11 år - Tidig uppmärksamhet (Placeholder)
+export const OMAR_PROFILE = {
+  name: 'Omar H.',
+  age: 11,
+  grade: 'Åk 5',
+  level: 'N1' as const,
+  // TODO: Implementera om behövs
+};
+
+// Sofia B., 16 år - Samordningsnivå (Placeholder för N3)
+export const SOFIA_PROFILE = {
+  name: 'Sofia B.',
+  age: 16,
+  grade: 'TE 1',
+  level: 'N3' as const,
+  // TODO: N3 samordnad plan implementeras senare
 };
 
 // Export alla profiler
 export const ICF_DEMO_PROFILES = {
-  elsa: ELSA_PROFILE,
-  mira: MIRA_PROFILE,
-  kevin: KEVIN_PROFILE
+  lisa: LISA_PROFILE,
+  erik: ERIK_PROFILE,
+  omar: OMAR_PROFILE,
+  sofia: SOFIA_PROFILE
 };
