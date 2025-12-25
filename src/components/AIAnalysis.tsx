@@ -40,9 +40,9 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         }
         break;
       case 'KSI':
-        // Usually 3 digits
-        if (!/^\d{3}/.test(cleanCode)) {
-           return "Fel format: KSI är vanligtvis 3 siffror (t.ex. 421).";
+        // KSI format: Target (e.g., SCA) optionally with Action/Status (e.g., SCA-PM-2)
+        if (!/^[A-ZÅÄÖ]{2,3}(-[A-ZÅÄÖ]{2})?(-[1-4])?$/.test(cleanCode)) {
+           return "Fel format: KSI ska vara t.ex. SCA eller SCA-PM-2.";
         }
         break;
       case 'BBIC':
@@ -51,6 +51,21 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         break;
     }
     return null;
+  };
+
+  const getCodeHint = (standard: string): string => {
+    switch (standard) {
+      case 'ICF':
+        return 'Format: d160, b140, e310';
+      case 'KVÅ':
+        return 'Format: GD005, DV015';
+      case 'KSI':
+        return 'Format: SCA eller SCA-PM-2';
+      case 'BBIC':
+        return 'Format: kort domännamn, t.ex. Skola & Lärande';
+      default:
+        return 'Ange en kod i standardens format.';
+    }
   };
 
   const handleAnalyze = async () => {
@@ -355,6 +370,11 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                     {isEditing && validationErrors[idx] && (
                         <div className="text-xs text-red-600 font-medium flex items-center gap-1">
                             <AlertCircle size={12} /> {validationErrors[idx]}
+                        </div>
+                    )}
+                    {isEditing && !validationErrors[idx] && (
+                        <div className="text-xs text-gray-500">
+                          {getCodeHint(item.standard)}
                         </div>
                     )}
                   </div>
