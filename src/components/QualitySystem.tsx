@@ -1,5 +1,5 @@
 
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/constants';
 import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
@@ -8,9 +8,13 @@ const QualitySystem: React.FC = () => {
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [showMyYear, setShowMyYear] = useState(true);
   const [showSchoolAvg, setShowSchoolAvg] = useState(true);
-  const improvementAreas = QUALITY_INDICATORS
-    .filter(qi => qi.current < qi.target)
-    .sort((a, b) => (a.current / a.target) - (b.current / b.target));
+  const improvementAreas = useMemo(
+    () =>
+      QUALITY_INDICATORS
+        .filter(qi => qi.current < qi.target)
+        .sort((a, b) => (a.current / a.target) - (b.current / b.target)),
+    []
+  );
   
   // Custom PDCA Wheel Component
   const PDCAWheel = () => {
@@ -500,7 +504,9 @@ const QualitySystem: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {improvementAreas.map((indicator) => {
-                const gapPercent = Math.max(0, Math.round((1 - indicator.current / indicator.target) * 100));
+                const gapPercent = indicator.target === 0
+                  ? 0
+                  : Math.max(0, Math.round((1 - indicator.current / indicator.target) * 100));
                 return (
                   <div
                     key={indicator.id}
