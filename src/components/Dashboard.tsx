@@ -1,10 +1,10 @@
 
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { SHANARRI_DATA, TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, CHILD_PROFILE, ENHANCED_CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS } from '../data/constants';
-import { getShanarriDataByProfile, getRiskFactorsByProfile, getProtectiveFactorsByProfile } from '../data/profileData';
-import { getProfileById } from '../data/childProfiles';
+import { TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA } from '../data/constants';
 import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users } from 'lucide-react';
 import { Perspective, View } from '../types/types';
+import MiniWellBeingWheel from './MiniWellBeingWheel';
+import { useProfileData } from '../hooks/useProfileData';
 
 interface DashboardProps {
   currentPerspective: Perspective;
@@ -13,72 +13,14 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, selectedProfileId = 'erik' }) => {
-  // Get profile-specific data or fall back to defaults (Erik's data) - memoized
-  const shanarriData = useMemo(() => {
-    const profileData = getShanarriDataByProfile(selectedProfileId);
-    return profileData.length > 0 ? profileData : SHANARRI_DATA;
-  }, [selectedProfileId]);
-
-  const riskFactors = useMemo(() => {
-    const profileRiskFactors = getRiskFactorsByProfile(selectedProfileId);
-    return profileRiskFactors.length > 0 ? profileRiskFactors : RISK_FACTORS;
-  }, [selectedProfileId]);
-
-  const protectiveFactors = useMemo(() => {
-    const profileProtectiveFactors = getProtectiveFactorsByProfile(selectedProfileId);
-    return profileProtectiveFactors.length > 0 ? profileProtectiveFactors : PROTECTIVE_FACTORS;
-  }, [selectedProfileId]);
-
-  const childProfile = useMemo(() => {
-    const currentProfile = getProfileById(selectedProfileId);
-    return currentProfile || CHILD_PROFILE;
-  }, [selectedProfileId]);
-
-  const needsAttention = useMemo(() => shanarriData.filter(d => d.status < 3).length, [shanarriData]);
+  // Use custom hook to fetch profile data
+  const { shanarriData, riskFactors, protectiveFactors, childProfile, needsAttention } = useProfileData(selectedProfileId);
+  
   const nextMeeting = useMemo(() => TIMELINE_DATA[0], []);
   const currentQualityPhase = useMemo(() => QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0], []);
 
   const isChild = currentPerspective === 'child';
   const isYouth = useMemo(() => isChild && childProfile.age >= 13, [isChild, childProfile.age]); 
-
-  // Simplified Mini Wheel for Dashboard - Memoized
-  const MiniWellBeingWheel = useMemo(() => {
-    const size = 160;
-    const cx = size / 2;
-    const cy = size / 2;
-    const outerR = size / 2 - 10;
-    const innerR = size / 5;
-    const n = shanarriData.length;
-
-    return (
-      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full max-h-[160px]">
-        {shanarriData.map((dim, i) => {
-          const startAngle = (i * 360) / n - 90;
-          const endAngle = ((i + 1) * 360) / n - 90;
-
-          const startRad = (startAngle * Math.PI) / 180;
-          const endRad = (endAngle * Math.PI) / 180;
-
-          const x1 = cx + Math.cos(startRad) * innerR;
-          const y1 = cy + Math.sin(startRad) * innerR;
-          const x2 = cx + Math.cos(startRad) * outerR;
-          const y2 = cy + Math.sin(startRad) * outerR;
-          const x3 = cx + Math.cos(endRad) * outerR;
-          const y3 = cy + Math.sin(endRad) * outerR;
-          const x4 = cx + Math.cos(endRad) * innerR;
-          const y4 = cy + Math.sin(endRad) * innerR;
-
-          const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
-          const color = dim.status >= 4 ? '#22c55e' : dim.status >= 3 ? '#eab308' : '#ef4444';
-
-          return (
-             <path key={dim.id} d={path} fill={color} stroke="white" strokeWidth="1.5" />
-          );
-        })}
-        <circle cx={cx} cy={cy} r={innerR} fill="white" />
-      </svg>
-    );
-  }, [shanarriData]);
 
   return (
     <div className="space-y-8 animate-fade-in text-[#1F1F1F]">
