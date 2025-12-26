@@ -71,12 +71,12 @@ const ICFSuggestionsDisplay: React.FC<ICFSuggestionsDisplayProps> = ({
     const names: Record<WelfareWheelSpoke, string> = {
       'halsa': 'Hälsa',
       'larande': 'Lärande',
-      'vanner': 'Vänner',
-      'familj': 'Familj',
-      'trygghet': 'Trygghet',
-      'respekt': 'Respekt',
-      'delaktighet': 'Delaktighet',
-      'levnadsstandard': 'Levnadsstandard'
+      'relationer': 'Relationer',
+      'hemmet': 'Hemmet',
+      'trygg': 'Trygghet',
+      'utvecklas': 'Utvecklas',
+      'delaktig': 'Delaktighet',
+      'aktiv': 'Aktiv'
     };
     return names[spoke] || spoke;
   };

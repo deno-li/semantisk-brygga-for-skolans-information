@@ -363,7 +363,7 @@ class SemanticBridgeAPI {
           type: 'facilitator',
           suggested_level: 2,
           reasoning: 'Bildstöd och visuella hjälpmedel underlättar kommunikation och förståelse.',
-          related_spokes: ['larande', 'delaktighet']
+          related_spokes: ['larande', 'delaktig']
         },
         {
           code: 'e250',
@@ -371,7 +371,7 @@ class SemanticBridgeAPI {
           type: 'barrier',
           suggested_level: 2,
           reasoning: 'Hög ljudnivå i klassrummet stressar barnet och försvårar koncentration.',
-          related_spokes: ['larande', 'trygghet']
+          related_spokes: ['larande', 'trygg']
         }
       ],
       risk_protection_balance: {
@@ -387,12 +387,12 @@ class SemanticBridgeAPI {
           suggested_status: 2
         },
         {
-          spoke: 'trygghet',
+          spoke: 'trygg',
           confidence: 0.78,
           suggested_status: 3
         },
         {
-          spoke: 'delaktighet',
+          spoke: 'delaktig',
           confidence: 0.72,
           suggested_status: 3
         }
