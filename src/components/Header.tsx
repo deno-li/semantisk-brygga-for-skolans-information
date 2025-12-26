@@ -111,7 +111,6 @@ const Header: React.FC<HeaderProps> = ({
         <div className="max-w-7xl mx-auto px-4 flex justify-end gap-6 text-xs text-[#005595] font-semibold">
           <span className="cursor-pointer hover:underline">Om 1177</span>
           <span className="cursor-pointer hover:underline">Hjälp & Kontakt</span>
-          <span className="cursor-pointer hover:underline">Region Gävleborg</span>
         </div>
       </div>
 
@@ -125,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-bold text-[#1F1F1F] leading-none"> Välbefinnandehjul för Sammanhållen planering i 1177 </h1>
-              <span className="text-sm text-gray-600 mt-1">Gemensam informationsprofil för barnets hela resa (Livsloppsvy)</span>
+              <span className="text-sm text-gray-600 mt-1">Gemensam informationsprofil </span>
             </div>
           </div>
 
