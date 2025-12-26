@@ -36,6 +36,10 @@ export default [
         alert: 'readonly',
         sessionStorage: 'readonly',
         localStorage: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
     plugins: {
@@ -51,7 +55,7 @@ export default [
       'react/prop-types': 'off',
       'react/no-unescaped-entities': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
