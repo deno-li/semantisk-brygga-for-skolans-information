@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA } from '../data/constants';
+import { TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, ENHANCED_CHILD_PROFILE } from '../data/constants';
 import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users } from 'lucide-react';
 import { Perspective, View } from '../types/types';
 import MiniWellBeingWheel from './MiniWellBeingWheel';

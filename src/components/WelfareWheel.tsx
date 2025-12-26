@@ -19,7 +19,7 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
   const [showMatrix, setShowMatrix] = useState(false);
 
   // Use custom hook for welfare data
-  const { filteredData, hasData } = useWelfareData(selectedProfileId, searchQuery);
+  const { filteredData, hasData, shanarriData } = useWelfareData(selectedProfileId, searchQuery);
 
   // Custom Wheel Logic (SVG)
   const WheelChart = () => {
