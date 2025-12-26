@@ -14,6 +14,7 @@ import {
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
 import { ActorSector, WelfareWheelSpoke } from '../types/types';
+import { ICFQualifierValue, FacilitatorLevel, BarrierLevel } from '../types/icf-types';
 
 interface N3CoordinatedPlanProps {
   selectedProfileId: string;
@@ -132,8 +133,6 @@ const SOFIA_N3_PROFILE = {
     {
       code: 'd720',
       domain: 'Komplexa mellanmänskliga interaktioner',
-      capacity: { value: 2 as ICFQualifierValue, description: 'Måttliga svårigheter' },
-      performance: { value: 2 as ICFQualifierValue, description: 'Måttliga svårigheter' },
       capacity: { value: 2 as const, description: 'Måttliga svårigheter' },
       performance: { value: 2 as const, description: 'Måttliga svårigheter' },
       gap: 0,
@@ -192,9 +191,6 @@ const SOFIA_N3_PROFILE = {
       code: 'e355',
       domain: 'Kontaktperson från socialtjänst',
       type: 'facilitator' as const,
-      level: 1 as FacilitatorLevel,
-      description: 'Stöd kring vardagsstruktur och familjesituation',
-      relatedSpokes: ['hemmet', 'trygg'] as WelfareWheelSpoke[],
       level: 1 as const,
       description: 'Stöd kring vardagsstruktur och familjesituation',
       relatedSpokes: ['hemmet', 'trygg'],
