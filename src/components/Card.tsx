@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 
 export interface CardProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ export interface CardProps {
 /**
  * Reusable card component with consistent styling
  */
-export const Card: React.FC<CardProps> = ({ 
+export const Card: React.FC<CardProps> = memo(({ 
   children, 
   className = '', 
   variant = 'default',
@@ -34,7 +34,9 @@ export const Card: React.FC<CardProps> = ({
       {children}
     </div>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 export interface CardHeaderProps {
   children: ReactNode;
@@ -44,13 +46,15 @@ export interface CardHeaderProps {
 /**
  * Card header component
  */
-export const CardHeader: React.FC<CardHeaderProps> = ({ children, className = '' }) => {
+export const CardHeader: React.FC<CardHeaderProps> = memo(({ children, className = '' }) => {
   return (
     <div className={`px-6 py-4 border-b border-gray-100 ${className}`}>
       {children}
     </div>
   );
-};
+});
+
+CardHeader.displayName = 'CardHeader';
 
 export interface CardContentProps {
   children: ReactNode;
@@ -60,13 +64,15 @@ export interface CardContentProps {
 /**
  * Card content/body component
  */
-export const CardContent: React.FC<CardContentProps> = ({ children, className = '' }) => {
+export const CardContent: React.FC<CardContentProps> = memo(({ children, className = '' }) => {
   return (
     <div className={`p-6 ${className}`}>
       {children}
     </div>
   );
-};
+});
+
+CardContent.displayName = 'CardContent';
 
 export interface CardTitleProps {
   children: ReactNode;
@@ -76,10 +82,12 @@ export interface CardTitleProps {
 /**
  * Card title component
  */
-export const CardTitle: React.FC<CardTitleProps> = ({ children, className = '' }) => {
+export const CardTitle: React.FC<CardTitleProps> = memo(({ children, className = '' }) => {
   return (
     <h3 className={`text-lg font-bold text-[#1F1F1F] ${className}`}>
       {children}
     </h3>
   );
-};
+});
+
+CardTitle.displayName = 'CardTitle';

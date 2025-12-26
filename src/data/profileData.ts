@@ -656,45 +656,115 @@ export const SOFIA_PROTECTIVE_FACTORS: ProtectiveFactor[] = [
 // HELPER FUNCTIONS - Get data by profile ID
 // ==========================================
 
+// Simple cache to avoid repeated lookups
+const profileDataCache = new Map<string, {
+  shanarri: ShanarriIndicator[];
+  risk: RiskFactor[];
+  protective: ProtectiveFactor[];
+}>();
+
 export function getShanarriDataByProfile(profileId: string): ShanarriIndicator[] {
+  // Check cache first
+  const cached = profileDataCache.get(profileId);
+  if (cached) return cached.shanarri;
+
+  let shanarriData: ShanarriIndicator[];
   switch (profileId) {
     case 'lisa':
-      return LISA_SHANARRI;
+      shanarriData = LISA_SHANARRI;
+      break;
     case 'omar':
-      return OMAR_SHANARRI;
+      shanarriData = OMAR_SHANARRI;
+      break;
     case 'sofia':
-      return SOFIA_SHANARRI;
+      shanarriData = SOFIA_SHANARRI;
+      break;
     case 'erik':
     default:
       // Erik uses the default data from constants.ts
-      return [];
+      shanarriData = [];
   }
+
+  // Cache the result
+  if (!profileDataCache.has(profileId)) {
+    profileDataCache.set(profileId, {
+      shanarri: shanarriData,
+      risk: [],
+      protective: []
+    });
+  } else {
+    profileDataCache.get(profileId)!.shanarri = shanarriData;
+  }
+
+  return shanarriData;
 }
 
 export function getRiskFactorsByProfile(profileId: string): RiskFactor[] {
+  // Check cache first
+  const cached = profileDataCache.get(profileId);
+  if (cached && cached.risk.length > 0) return cached.risk;
+
+  let riskFactors: RiskFactor[];
   switch (profileId) {
     case 'lisa':
-      return LISA_RISK_FACTORS;
+      riskFactors = LISA_RISK_FACTORS;
+      break;
     case 'omar':
-      return OMAR_RISK_FACTORS;
+      riskFactors = OMAR_RISK_FACTORS;
+      break;
     case 'sofia':
-      return SOFIA_RISK_FACTORS;
+      riskFactors = SOFIA_RISK_FACTORS;
+      break;
     case 'erik':
     default:
-      return [];
+      riskFactors = [];
   }
+
+  // Cache the result
+  if (!profileDataCache.has(profileId)) {
+    profileDataCache.set(profileId, {
+      shanarri: [],
+      risk: riskFactors,
+      protective: []
+    });
+  } else {
+    profileDataCache.get(profileId)!.risk = riskFactors;
+  }
+
+  return riskFactors;
 }
 
 export function getProtectiveFactorsByProfile(profileId: string): ProtectiveFactor[] {
+  // Check cache first
+  const cached = profileDataCache.get(profileId);
+  if (cached && cached.protective.length > 0) return cached.protective;
+
+  let protectiveFactors: ProtectiveFactor[];
   switch (profileId) {
     case 'lisa':
-      return LISA_PROTECTIVE_FACTORS;
+      protectiveFactors = LISA_PROTECTIVE_FACTORS;
+      break;
     case 'omar':
-      return OMAR_PROTECTIVE_FACTORS;
+      protectiveFactors = OMAR_PROTECTIVE_FACTORS;
+      break;
     case 'sofia':
-      return SOFIA_PROTECTIVE_FACTORS;
+      protectiveFactors = SOFIA_PROTECTIVE_FACTORS;
+      break;
     case 'erik':
     default:
-      return [];
+      protectiveFactors = [];
   }
+
+  // Cache the result
+  if (!profileDataCache.has(profileId)) {
+    profileDataCache.set(profileId, {
+      shanarri: [],
+      risk: [],
+      protective: protectiveFactors
+    });
+  } else {
+    profileDataCache.get(profileId)!.protective = protectiveFactors;
+  }
+
+  return protectiveFactors;
 }

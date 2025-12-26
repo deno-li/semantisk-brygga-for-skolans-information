@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X } from 'lucide-react';
 import { AiSuggestion, View } from '../types/types';
 import SemanticBridgeAPI from '../api/semanticBridgeApi';
@@ -32,7 +32,8 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
     }
   }, []);
 
-  const validateCodeFormat = (standard: string, code: string): string | null => {
+  // Memoize validation function
+  const validateCodeFormat = useCallback((standard: string, code: string): string | null => {
     const cleanCode = code.trim().split(' ')[0]; // Extract the code part, ignoring description
 
     switch (standard) {
@@ -60,9 +61,10 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         break;
     }
     return null;
-  };
+  }, []);
 
-  const getCodeHint = (standard: string): string => {
+  // Memoize hint function
+  const getCodeHint = useCallback((standard: string): string => {
     switch (standard) {
       case 'ICF':
         return 'Format: d160, b140, e310';
@@ -75,9 +77,9 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
       default:
         return 'Ange en kod i standardens format.';
     }
-  };
+  }, []);
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = useCallback(async () => {
     if (!inputText.trim()) return;
 
     setIsAnalyzing(true);
@@ -152,29 +154,36 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
     } finally {
       setIsAnalyzing(false);
     }
-  };
+  }, [inputText, analysisMode]);
 
-  const handleResultChange = (index: number, field: keyof AiSuggestion, value: string | number) => {
-    if (!results) return;
-    const newResults = [...results];
-    newResults[index] = { ...newResults[index], [field]: value };
-    setResults(newResults);
+  const handleResultChange = useCallback((index: number, field: keyof AiSuggestion, value: string | number) => {
+    setResults(prevResults => {
+      if (!prevResults) return null;
+      const newResults = [...prevResults];
+      newResults[index] = { ...newResults[index], [field]: value };
+      return newResults;
+    });
 
     // Validate if standard or code changes
     if (field === 'standard' || field === 'code') {
-      const standardToCheck = (field === 'standard' ? value : newResults[index].standard) as string;
-      const codeToCheck = (field === 'code' ? value : newResults[index].code) as string;
+      setResults(currentResults => {
+        if (!currentResults) return null;
+        const standardToCheck = (field === 'standard' ? value : currentResults[index].standard) as string;
+        const codeToCheck = (field === 'code' ? value : currentResults[index].code) as string;
 
-      const error = validateCodeFormat(standardToCheck, codeToCheck);
-      
-      setValidationErrors(prev => {
-        const next = { ...prev };
-        if (error) next[index] = error;
-        else delete next[index];
-        return next;
+        const error = validateCodeFormat(standardToCheck, codeToCheck);
+        
+        setValidationErrors(prev => {
+          const next = { ...prev };
+          if (error) next[index] = error;
+          else delete next[index];
+          return next;
+        });
+        
+        return currentResults;
       });
     }
-  };
+  }, [validateCodeFormat]);
 
   const handleDeleteResult = (index: number) => {
     if (!results) return;

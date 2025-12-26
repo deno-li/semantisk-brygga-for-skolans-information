@@ -4,7 +4,7 @@
  * Shows triggered spokes and next review date
  */
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Calendar, TrendingUp, Info } from 'lucide-react';
 import { JourneyLevel, WelfareWheelSpoke } from '../types/types';
 import { LEVEL_COLORS, getLevelName } from '../data/journeyConstants';
@@ -22,7 +22,7 @@ interface LevelIndicatorProps {
   onShowHistory?: () => void;
 }
 
-const LevelIndicator: React.FC<LevelIndicatorProps> = ({
+const LevelIndicator: React.FC<LevelIndicatorProps> = memo(({
   level,
   triggeredSpokes = [],
   nextReview,
@@ -183,6 +183,8 @@ const LevelIndicator: React.FC<LevelIndicatorProps> = ({
       </div>
     </div>
   );
-};
+});
+
+LevelIndicator.displayName = 'LevelIndicator';
 
 export default LevelIndicator;

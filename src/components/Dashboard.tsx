@@ -20,7 +20,120 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
   const currentQualityPhase = useMemo(() => QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0], []);
 
   const isChild = currentPerspective === 'child';
-  const isYouth = useMemo(() => isChild && childProfile.age >= 13, [isChild, childProfile.age]); 
+  const isYouth = useMemo(() => isChild && childProfile.age >= 13, [isChild, childProfile.age]);
+
+  // Memoize navigation handlers
+  const handleNavigateToWheel = useCallback(() => {
+    onNavigate('shanarri');
+  }, [onNavigate]);
+
+  // Memoize the wheel SVG rendering for better performance
+  const wheelSvg = useMemo(() => {
+    const size = 380;
+    const cx = size / 2;
+    const cy = size / 2;
+    const outerR = size / 2 - 20;
+    const innerR = size / 6;
+    const textR = (outerR + innerR) / 2;
+    const indicatorR = outerR - 25;
+    const n = shanarriData.length;
+
+    return (
+      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full drop-shadow-lg">
+        {shanarriData.map((dim, i) => {
+          const startAngle = (i * 360) / n - 90;
+          const endAngle = ((i + 1) * 360) / n - 90;
+          const midAngle = (startAngle + endAngle) / 2;
+
+          const startRad = (startAngle * Math.PI) / 180;
+          const endRad = (endAngle * Math.PI) / 180;
+
+          // Wheel segment coordinates
+          const x1 = cx + Math.cos(startRad) * innerR;
+          const y1 = cy + Math.sin(startRad) * innerR;
+          const x2 = cx + Math.cos(startRad) * outerR;
+          const y2 = cy + Math.sin(startRad) * outerR;
+          const x3 = cx + Math.cos(endRad) * outerR;
+          const y3 = cy + Math.sin(endRad) * outerR;
+          const x4 = cx + Math.cos(endRad) * innerR;
+          const y4 = cy + Math.sin(endRad) * innerR;
+
+          const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
+
+          // Text positioning
+          const textAngleRad = (midAngle * Math.PI) / 180;
+          const textX = cx + Math.cos(textAngleRad) * textR;
+          const textY = cy + Math.sin(textAngleRad) * textR;
+
+          // Status indicator positioning
+          const indicatorAngleRad = (midAngle * Math.PI) / 180;
+          const indicatorX = cx + Math.cos(indicatorAngleRad) * indicatorR;
+          const indicatorY = cy + Math.sin(indicatorAngleRad) * indicatorR;
+
+          // Status color based on value
+          const statusColor = dim.status >= 4 ? '#10b981' : dim.status === 3 ? '#fbbf24' : '#ef4444';
+
+          return (
+            <g key={dim.id}>
+              {/* Wheel segment */}
+              <path
+                d={path}
+                fill={dim.color}
+                stroke="white"
+                strokeWidth="3"
+                opacity="0.9"
+                className="transition-all group-hover:opacity-100"
+              />
+
+              {/* Dimension name */}
+              <text
+                x={textX}
+                y={textY}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill="white"
+                fontSize="11"
+                fontWeight="700"
+                className="pointer-events-none uppercase tracking-wide"
+                transform={`rotate(${midAngle + 90}, ${textX}, ${textY})`}
+              >
+                {dim.name}
+              </text>
+
+              {/* Status indicator circle */}
+              <circle
+                cx={indicatorX}
+                cy={indicatorY}
+                r="8"
+                fill={statusColor}
+                stroke="white"
+                strokeWidth="2"
+                className="transition-all"
+              />
+            </g>
+          );
+        })}
+
+        {/* Center circle */}
+        <circle cx={cx} cy={cy} r={innerR} fill="white" stroke="#005595" strokeWidth="3"/>
+
+        {/* Center text */}
+        <text
+          x={cx}
+          y={cy}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="#005595"
+          fontSize="14"
+          fontWeight="bold"
+          className="pointer-events-none"
+        >
+          <tspan x={cx} dy="-8">BARNETS</tspan>
+          <tspan x={cx} dy="16">BÄSTA</tspan>
+        </text>
+      </svg>
+    );
+  }, [shanarriData]); 
 
   return (
     <div className="space-y-8 animate-fade-in text-[#1F1F1F]">
@@ -53,7 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
 
       {/* Well-being Wheel Overview Section */}
       <div
-        onClick={() => onNavigate('shanarri')}
+        onClick={handleNavigateToWheel}
         className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden relative min-h-[280px] flex flex-col md:flex-row hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group"
       >
         <div className="p-6 md:w-1/3 flex flex-col justify-center relative z-10 bg-white">
@@ -92,112 +205,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
         {/* Interactive Well-being Wheel */}
         <div className="md:w-2/3 bg-gradient-to-br from-blue-50 via-purple-50 to-teal-50 relative min-h-[280px] overflow-hidden flex items-center justify-center p-8">
             <div className="relative w-full max-w-[380px]">
-              {(() => {
-                const size = 380;
-                const cx = size / 2;
-                const cy = size / 2;
-                const outerR = size / 2 - 20; // Outer radius for main wheel
-                const innerR = size / 6; // Inner circle radius
-                const textR = (outerR + innerR) / 2; // Position for text
-                const indicatorR = outerR - 25; // Position for status indicators
-                const n = shanarriData.length;
-
-                return (
-                  <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full drop-shadow-lg">
-                    {shanarriData.map((dim, i) => {
-                      const startAngle = (i * 360) / n - 90;
-                      const endAngle = ((i + 1) * 360) / n - 90;
-                      const midAngle = (startAngle + endAngle) / 2;
-
-                      const startRad = (startAngle * Math.PI) / 180;
-                      const endRad = (endAngle * Math.PI) / 180;
-
-                      // Wheel segment coordinates
-                      const x1 = cx + Math.cos(startRad) * innerR;
-                      const y1 = cy + Math.sin(startRad) * innerR;
-                      const x2 = cx + Math.cos(startRad) * outerR;
-                      const y2 = cy + Math.sin(startRad) * outerR;
-                      const x3 = cx + Math.cos(endRad) * outerR;
-                      const y3 = cy + Math.sin(endRad) * outerR;
-                      const x4 = cx + Math.cos(endRad) * innerR;
-                      const y4 = cy + Math.sin(endRad) * innerR;
-
-                      const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
-
-                      // Text positioning
-                      const textAngleRad = (midAngle * Math.PI) / 180;
-                      const textX = cx + Math.cos(textAngleRad) * textR;
-                      const textY = cy + Math.sin(textAngleRad) * textR;
-
-                      // Status indicator positioning
-                      const indicatorAngleRad = (midAngle * Math.PI) / 180;
-                      const indicatorX = cx + Math.cos(indicatorAngleRad) * indicatorR;
-                      const indicatorY = cy + Math.sin(indicatorAngleRad) * indicatorR;
-
-                      // Status color based on value
-                      const statusColor = dim.status >= 4 ? '#10b981' : dim.status === 3 ? '#fbbf24' : '#ef4444';
-
-                      return (
-                        <g key={dim.id}>
-                          {/* Wheel segment */}
-                          <path
-                            d={path}
-                            fill={dim.color}
-                            stroke="white"
-                            strokeWidth="3"
-                            opacity="0.9"
-                            className="transition-all group-hover:opacity-100"
-                          />
-
-                          {/* Dimension name */}
-                          <text
-                            x={textX}
-                            y={textY}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fill="white"
-                            fontSize="11"
-                            fontWeight="700"
-                            className="pointer-events-none uppercase tracking-wide"
-                            transform={`rotate(${midAngle + 90}, ${textX}, ${textY})`}
-                          >
-                            {dim.name}
-                          </text>
-
-                          {/* Status indicator circle */}
-                          <circle
-                            cx={indicatorX}
-                            cy={indicatorY}
-                            r="8"
-                            fill={statusColor}
-                            stroke="white"
-                            strokeWidth="2"
-                            className="transition-all"
-                          />
-                        </g>
-                      );
-                    })}
-
-                    {/* Center circle */}
-                    <circle cx={cx} cy={cy} r={innerR} fill="white" stroke="#005595" strokeWidth="3"/>
-
-                    {/* Center text */}
-                    <text
-                      x={cx}
-                      y={cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill="#005595"
-                      fontSize="14"
-                      fontWeight="bold"
-                      className="pointer-events-none"
-                    >
-                      <tspan x={cx} dy="-8">BARNETS</tspan>
-                      <tspan x={cx} dy="16">BÄSTA</tspan>
-                    </text>
-                  </svg>
-                );
-              })()}
+              {wheelSvg}
             </div>
         </div>
       </div>

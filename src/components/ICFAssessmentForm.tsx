@@ -75,7 +75,7 @@ const ICFAssessmentForm: React.FC<ICFAssessmentFormProps> = ({
   const [efDescription, setEfDescription] = useState('');
   const [efContext, setEfContext] = useState<'home' | 'school' | 'healthcare' | 'community'>('school');
 
-  // Get all available ICF codes
+  // Get all available ICF codes - memoize to avoid recalculating on every render
   const allCoreSets = useMemo(() => getAllCoreSets(), []);
   const availableCodes = useMemo(() => {
     const codes: Array<{ code: string; domain: string; spoke: WelfareWheelSpoke }> = [];

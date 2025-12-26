@@ -19,31 +19,35 @@ interface ChartDataEntry {
 const LifeCourseView: React.FC<LifeCourseViewProps> = () => {
   const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
 
-  // Prepare data for longitudinal chart
-  const chartData = LONGITUDINAL_DATA.map(dataPoint => {
-    const entry: ChartDataEntry = {
-      age: dataPoint.age,
-      date: dataPoint.date,
-      phase: dataPoint.phase === 'early-childhood' ? 'BVC/MVC' :
-             dataPoint.phase === 'preschool' ? 'Förskola' :
-             dataPoint.phase === 'elementary-school' ? 'Grundskola' :
-             dataPoint.phase === 'high-school' ? 'Gymnasiet' :
-             'Ung vuxen',
-      supportLevel: dataPoint.supportLevel === 'universal' ? 1 :
-                    dataPoint.supportLevel === 'early-attention' ? 2 :
-                    dataPoint.supportLevel === 'enhanced-support' ? 3 : 4,
-    };
+  // Memoize chart data transformation for better performance
+  const chartData = useMemo(() => {
+    return LONGITUDINAL_DATA.map(dataPoint => {
+      const entry: ChartDataEntry = {
+        age: dataPoint.age,
+        date: dataPoint.date,
+        phase: dataPoint.phase === 'early-childhood' ? 'BVC/MVC' :
+               dataPoint.phase === 'preschool' ? 'Förskola' :
+               dataPoint.phase === 'elementary-school' ? 'Grundskola' :
+               dataPoint.phase === 'high-school' ? 'Gymnasiet' :
+               'Ung vuxen',
+        supportLevel: dataPoint.supportLevel === 'universal' ? 1 :
+                      dataPoint.supportLevel === 'early-attention' ? 2 :
+                      dataPoint.supportLevel === 'enhanced-support' ? 3 : 4,
+      };
 
-    // Add all dimensions
-    Object.keys(dataPoint.dimensions).forEach(dimId => {
-      entry[dimId] = dataPoint.dimensions[dimId].value;
+      // Add all dimensions
+      Object.keys(dataPoint.dimensions).forEach(dimId => {
+        entry[dimId] = dataPoint.dimensions[dimId].value;
+      });
+
+      return entry;
     });
+  }, []);
 
-    return entry;
-  });
-
-  // Get all dimension names from the first data point
-  const dimensionNames = LONGITUDINAL_DATA[0] ? Object.keys(LONGITUDINAL_DATA[0].dimensions) : [];
+  // Memoize dimension names extraction
+  const dimensionNames = useMemo(() => {
+    return LONGITUDINAL_DATA[0] ? Object.keys(LONGITUDINAL_DATA[0].dimensions) : [];
+  }, []);
 
   // Color mapping for dimensions
   const dimensionColors: Record<string, string> = {
