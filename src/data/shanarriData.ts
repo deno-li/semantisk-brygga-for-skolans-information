@@ -125,7 +125,7 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
   },
   {
     id: 'responsible',
-    name: 'ANSVARSTAGAN DE',
+    name: 'ANSVARSTAGAN​DE',
     nameEn: 'Responsible',
     color: '#00838F',
     status: 4,
