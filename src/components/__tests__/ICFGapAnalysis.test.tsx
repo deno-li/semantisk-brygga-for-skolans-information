@@ -7,12 +7,12 @@ describe('ICFGapAnalysis', () => {
   const mockAssessment: ICFAssessment = {
     code: 'd140',
     domain: 'Lära sig läsa',
-    performance: { value: 2, description: 'Måttliga svårigheter' },
-    capacity: { value: 3, description: 'Stora svårigheter' },
+    performance: { value: 2 as const, description: 'Måttliga svårigheter' },
+    capacity: { value: 3 as const, description: 'Stora svårigheter' },
     gap: -1,
     gapInterpretation: 'facilitators-work',
     assessedDate: '2025-11-15',
-    assessedBy: 'education',
+    assessedBy: 'elementary-school',
     timeSpan: 'Senaste 4 veckor',
     context: 'school',
     source: 'observation',
@@ -50,7 +50,7 @@ describe('ICFGapAnalysis', () => {
   it('displays metadata when showMetadata is true', () => {
     render(<ICFGapAnalysis assessments={[mockAssessment]} showMetadata={true} />);
     expect(screen.getByText(/2025-11-15/i)).toBeInTheDocument();
-    expect(screen.getByText(/education/i)).toBeInTheDocument();
+    expect(screen.getByText(/elementary-school/i)).toBeInTheDocument();
     expect(screen.getByText(/school/i)).toBeInTheDocument();
   });
 
@@ -71,12 +71,12 @@ describe('ICFGapAnalysis', () => {
     const assessment2: ICFAssessment = {
       code: 'd160',
       domain: 'Rikta uppmärksamheten',
-      performance: { value: 1, description: 'Lätta svårigheter' },
-      capacity: { value: 2, description: 'Måttliga svårigheter' },
+      performance: { value: 1 as const, description: 'Lätta svårigheter' },
+      capacity: { value: 2 as const, description: 'Måttliga svårigheter' },
       gap: -1,
       gapInterpretation: 'facilitators-work',
       assessedDate: '2025-11-15',
-      assessedBy: 'education',
+      assessedBy: 'elementary-school',
       timeSpan: 'Senaste 4 veckor',
       context: 'school',
       source: 'observation',

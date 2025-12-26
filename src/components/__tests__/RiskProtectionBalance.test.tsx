@@ -8,11 +8,11 @@ describe('RiskProtectionBalance', () => {
     code: 'e250',
     domain: 'Ljud (fysisk miljö)',
     type: 'barrier',
-    level: 2,
+    level: 2 as const,
     description: 'Hög ljudnivå i klassrummet',
     relatedSpokes: ['larande', 'trygg'],
     identifiedDate: '2025-11-15',
-    identifiedBy: 'education',
+    identifiedBy: 'elementary-school',
     context: 'school',
     status: 'active',
   };
@@ -21,11 +21,11 @@ describe('RiskProtectionBalance', () => {
     code: 'e1301',
     domain: 'Läromedel för utbildning',
     type: 'facilitator',
-    level: 3,
+    level: 3 as const,
     description: 'Inlästa böcker och digitala läromedel',
     relatedSpokes: ['larande'],
     identifiedDate: '2025-11-15',
-    identifiedBy: 'education',
+    identifiedBy: 'elementary-school',
     context: 'school',
     status: 'active',
   };
@@ -39,7 +39,7 @@ describe('RiskProtectionBalance', () => {
     // Use level 4 facilitator to ensure balance >= 2 (4 - 2 = 2)
     const strongFacilitator: EnvironmentalFactor = {
       ...mockFacilitator,
-      level: 4,
+      level: 4 as const,
     };
     render(<RiskProtectionBalance environmentalFactors={[mockBarrier, strongFacilitator]} />);
     // Check that it shows positive balance (protection > risk)
@@ -68,16 +68,16 @@ describe('RiskProtectionBalance', () => {
   });
 
   it('calculates risk score from barriers', () => {
-    const barrier1 = { ...mockBarrier, level: 2 };
-    const barrier2 = { ...mockBarrier, code: 'e251', level: 1 };
+    const barrier1 = { ...mockBarrier, level: 2 as const };
+    const barrier2 = { ...mockBarrier, code: 'e251', level: 1 as const };
     render(<RiskProtectionBalance environmentalFactors={[barrier1, barrier2]} />);
     // Risk score should be 3 (2 + 1) - check in the total summary
     expect(screen.getAllByText(/Risk: 3/i).length).toBeGreaterThan(0);
   });
 
   it('calculates protection score from facilitators', () => {
-    const facilitator1 = { ...mockFacilitator, level: 3 };
-    const facilitator2 = { ...mockFacilitator, code: 'e125', level: 2 };
+    const facilitator1 = { ...mockFacilitator, level: 3 as const };
+    const facilitator2 = { ...mockFacilitator, code: 'e125', level: 2 as const };
     render(<RiskProtectionBalance environmentalFactors={[facilitator1, facilitator2]} />);
     // Protection score should be 5 (3 + 2) - check that it exists
     expect(screen.getAllByText(/Skydd: 5/i).length).toBeGreaterThan(0);
@@ -89,16 +89,16 @@ describe('RiskProtectionBalance', () => {
   });
 
   it('filters by spoke when selectedSpoke is provided', () => {
-    const learningFactor = { ...mockFacilitator, relatedSpokes: ['larande'] };
-    const healthFactor = { ...mockFacilitator, code: 'e999', relatedSpokes: ['halsa'] };
-    
+    const learningFactor: EnvironmentalFactor = { ...mockFacilitator, relatedSpokes: ['larande'] };
+    const healthFactor: EnvironmentalFactor = { ...mockFacilitator, code: 'e999', relatedSpokes: ['halsa'] };
+
     render(
-      <RiskProtectionBalance 
-        environmentalFactors={[learningFactor, healthFactor]} 
+      <RiskProtectionBalance
+        environmentalFactors={[learningFactor, healthFactor]}
         selectedSpoke="larande"
       />
     );
-    
+
     // Should show learning factor
     expect(screen.getByText(/Läromedel för utbildning/i)).toBeInTheDocument();
     // Should not show health factor (since it's filtered out)
