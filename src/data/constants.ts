@@ -1,9 +1,7 @@
 
 // Re-exports from modular data files for backward compatibility
 export { SHANARRI_DATA, BBIC_TRIANGLE } from './shanarriData';
-export { CHILD_PROFILE } from './childProfileConstants';
 export { TIMELINE_DATA, QUALITY_CYCLE, SAFETY_TREND_DATA } from './timelineQualityData';
-export { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
 
 import { CHILD_PROFILE } from './childProfileConstants';
 import { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
@@ -13,6 +11,8 @@ import {
   MyWorldTriangleAssessment, MyWorldAspect, ResilienceMatrix, AdversityFactor, VulnerabilityFactor,
   ProtectiveEnvironmentFactor, AnnualQualityWheel, QualityWheelPhase, QualityActivity, GavleModelPillar, LegalRequirement
 } from '../types/types';
+
+export { CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS };
 
 // ============================================
 // REMAINING CONSTANTS (Not yet modularized)
@@ -1040,7 +1040,7 @@ export const ACTOR_PROFILES: ActorProfile[] = [
 ];
 
 // Utökad barnprofil med livsloppsperspektiv
-export const ENHANCED_CHILD_PROFILE: EnhancedChildProfile = {
+const ENHANCED_CHILD_PROFILE: EnhancedChildProfile = {
   ...CHILD_PROFILE,
   currentPhase: 'elementary-school',
   supportLevel: 'enhanced-support',
@@ -1073,3 +1073,5 @@ export const ENHANCED_CHILD_PROFILE: EnhancedChildProfile = {
   myWorldAssessments: MY_WORLD_ASSESSMENTS,
   resilienceMatrix: RESILIENCE_MATRIX
 };
+
+export { ENHANCED_CHILD_PROFILE };
