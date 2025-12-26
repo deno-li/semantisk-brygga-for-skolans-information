@@ -60,7 +60,7 @@ const ICFSuggestionsDisplay: React.FC<ICFSuggestionsDisplayProps> = ({
         className="h-full rounded-full transition-all"
         style={{ 
           width: `${(value / 4) * 100}%`,
-          backgroundColor: getQualifierColor(value)
+          backgroundColor: getQualifierColor(value as import('../types/icf-types').ICFQualifierValue)
         }}
       />
     </div>
