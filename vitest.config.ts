@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  // Type assertion needed due to version incompatibility between vite and vitest plugin types
   plugins: [react()] as any,
   test: {
     globals: true,
