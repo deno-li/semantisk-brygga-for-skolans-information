@@ -11,6 +11,7 @@ import {
   ICFAnalysisResult,
   ICFCodeSuggestion,
   EnvironmentalFactorSuggestion,
+  ICFQualifierValue,
   getQualifierDescription,
   getQualifierColor
 } from '../types/icf-types';
@@ -56,11 +57,11 @@ const ICFSuggestionsDisplay: React.FC<ICFSuggestionsDisplayProps> = ({
   // Helper: QualifierBar component
   const QualifierBar: React.FC<{ value: number }> = ({ value }) => (
     <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-      <div 
+      <div
         className="h-full rounded-full transition-all"
-        style={{ 
+        style={{
           width: `${(value / 4) * 100}%`,
-          backgroundColor: getQualifierColor(value)
+          backgroundColor: getQualifierColor(value as ICFQualifierValue)
         }}
       />
     </div>
@@ -76,7 +77,11 @@ const ICFSuggestionsDisplay: React.FC<ICFSuggestionsDisplayProps> = ({
       'trygg': 'Trygghet',
       'utvecklas': 'Utvecklas',
       'delaktig': 'Delaktighet',
-      'aktiv': 'Aktiv'
+      'aktiv': 'Aktiv',
+      'respekterad': 'Respekterad',
+      'ansvarig': 'Ansvarig',
+      'inkluderad': 'Inkluderad',
+      'nurtured': 'Omhändertagen'
     };
     return names[spoke] || spoke;
   };

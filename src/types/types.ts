@@ -510,7 +510,11 @@ export type WelfareWheelSpoke =
   | 'hemmet'              // HEMMET - Det känns bra hemma
   | 'relationer'          // RELATIONER - Jag har någon att vara med
   | 'aktiv'               // AKTIV - Jag gör något jag gillar varje vecka
-  | 'delaktig';           // DELAKTIG - Jag får vara med och påverka
+  | 'delaktig'            // DELAKTIG - Jag får vara med och påverka
+  | 'respekterad'         // RESPEKTERAD - Jag blir respekterad
+  | 'ansvarig'            // ANSVARIG - Jag tar ansvar
+  | 'inkluderad'          // INKLUDERAD - Jag känner mig inkluderad
+  | 'nurtured';           // NURTURED - Jag blir omhändertagen
 
 export interface WelfareWheelSpokeData {
   spoke: WelfareWheelSpoke;
