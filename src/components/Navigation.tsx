@@ -35,6 +35,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'icf-demo', label: 'ICF Gap-analys', icon: <Activity size={16} className="text-blue-600" />, badge: '🆕', hiddenForChild: true },
     { id: 'icf-n1', label: 'N1 Screening', icon: <Activity size={16} className="text-green-600" />, badge: '🆕', hiddenForChild: true },
     { id: 'icf-n2', label: 'N2 Fördjupad analys', icon: <Activity size={16} className="text-orange-600" />, badge: '🆕', hiddenForChild: true },
+    { id: 'icf-n3', label: 'N3 Samordnad plan', icon: <Activity size={16} className="text-red-600" />, badge: '🆕', hiddenForChild: true },
 
     // Barnets Resa Matris - NYA vyer (markerade med badge)
     { id: 'optimal-wheel', label: 'Välbefinnandehjul (8 ekrar)', icon: <Target size={16} />, badge: '⭐', hiddenForChild: true },
