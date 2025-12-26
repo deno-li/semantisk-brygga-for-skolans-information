@@ -190,7 +190,7 @@ const App: React.FC = () => {
              <h4 className="font-bold mb-4 text-lg">En prototyp för gemensam informationsprofil</h4>
              <p className="text-gray-400 leading-relaxed">
                Utvecklad för att demonstrera ett kompletterande perspektiv för Kronobarnsmodellen och utvecklingsinitiativet "Barnets rätt till information". 
-               Syftet är att visa hur informationsdelning och samverkan mellan skola, vård och omsorg kan visualiseras genom semantisk brygga, ICF & KSI, som mappar skolans information till Socialstyrelsens informationsstruktur och mängder.
+               Syftet är att visa hur informationsdelning och samverkan mellan skola, vård och omsorg kan visualiseras genom semantisk brygga ICF som mappar skolans information till Socialstyrelsens informationsstruktur och mängder.
              </p>
            </div>
            
