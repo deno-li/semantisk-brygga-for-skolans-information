@@ -105,7 +105,7 @@ Inga personuppgifter eller känslig information lagras. Alla namn, personnummer 
 - PDF-export
 - Mörkt läge
 - Journalsystem (DFIK)
-- Förbättringshjul (PDCA) för Gävlemodellens systematiskt tygghetsarbete
+- Förbättringshjul (PDCA) för Gävlemodellens systematiska trygghetsarbete
 
 ---
 
@@ -283,7 +283,7 @@ Din delningsbara länk: `https://your-project.vercel.app`
 
 ## Användning i Offentlig Sektor
 
-Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för utvärdering, vidareutveckling och anpassning till gmensamma behov och samverkan.
+Detta projekt **uppmuntrar särskilt användning inom offentlig sektor** för utvärdering, vidareutveckling och anpassning till gemensamma behov och samverkan.
 
 **Önskan från skaparen:**
 Om detta material används i något form av utvecklingsarbete, skulle erkännande uppskattas (men är inte juridiskt krav utöver CC BY 4.0-villkoren).

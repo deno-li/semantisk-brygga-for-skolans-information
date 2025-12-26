@@ -8,12 +8,20 @@ interface LifeCourseViewProps {
   selectedProfileId?: string;
 }
 
+interface ChartDataEntry {
+  age: number;
+  date: string;
+  phase: string;
+  supportLevel: number;
+  [key: string]: string | number;
+}
+
 const LifeCourseView: React.FC<LifeCourseViewProps> = () => {
   const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
 
   // Prepare data for longitudinal chart
   const chartData = LONGITUDINAL_DATA.map(dataPoint => {
-    const entry: any = {
+    const entry: ChartDataEntry = {
       age: dataPoint.age,
       date: dataPoint.date,
       phase: dataPoint.phase === 'early-childhood' ? 'BVC/MVC' :

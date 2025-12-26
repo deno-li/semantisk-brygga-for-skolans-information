@@ -5,6 +5,12 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+export interface CodeMapping {
+  code: string;
+  description: string;
+  confidence?: number;
+}
+
 export interface MappingResult {
   source_code: string;
   source_system: string;
@@ -12,7 +18,7 @@ export interface MappingResult {
   target_codes: string[];
   confidence: number;
   description?: string;
-  mappings?: Record<string, any>;
+  mappings?: Record<string, CodeMapping>;
 }
 
 export interface AIAnalysisRequest {
@@ -36,6 +42,12 @@ export interface AIAnalysisResponse {
   bbic_domains: string[];
   analysis_summary: string;
   confidence: number;
+}
+
+export interface CodeInfo {
+  code: string;
+  description: string;
+  category?: string;
 }
 
 export interface HealthCheckResponse {
@@ -202,7 +214,7 @@ class SemanticBridgeAPI {
     category?: string,
     limit: number = 100,
     offset: number = 0
-  ): Promise<{ codes: any[]; total: number }> {
+  ): Promise<{ codes: CodeInfo[]; total: number }> {
     let url = `${this.baseUrl}/api/v1/codes/icf?limit=${limit}&offset=${offset}`;
     if (category) {
       url += `&category=${encodeURIComponent(category)}`;
@@ -217,7 +229,7 @@ class SemanticBridgeAPI {
   /**
    * Get all available KSI codes
    */
-  async getKSICodes(): Promise<any[]> {
+  async getKSICodes(): Promise<CodeInfo[]> {
     const response = await fetch(`${this.baseUrl}/api/v1/codes/ksi`);
     if (!response.ok) {
       throw new Error(`Failed to fetch KSI codes: ${response.statusText}`);

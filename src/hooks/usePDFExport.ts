@@ -187,7 +187,8 @@ export const usePDFExport = () => {
       }
 
       // Add footer on last page
-      const pageCount = (pdf as any).internal.getNumberOfPages();
+      // Note: getNumberOfPages is available on the internal API but not in the type definitions
+      const pageCount = (pdf as unknown as { internal: { getNumberOfPages: () => number } }).internal.getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
         pdf.setPage(i);
         pdf.setFontSize(9);
