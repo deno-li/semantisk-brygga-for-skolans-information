@@ -13,8 +13,8 @@ import { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
 import {
   JournalData, NewsItem, DocumentSection,
   LongitudinalDataPoint, QualityIndicator, Transition, ActorProfile, EnhancedChildProfile,
-  MyWorldTriangleAssessment, MyWorldAspect, ResilienceMatrix, AdversityFactor, VulnerabilityFactor,
-  ProtectiveEnvironmentFactor, AnnualQualityWheel, QualityWheelPhase, QualityActivity, GavleModelPillar, LegalRequirement
+  MyWorldTriangleAssessment, ResilienceMatrix, AdversityFactor, VulnerabilityFactor,
+  ProtectiveEnvironmentFactor, AnnualQualityWheel
 } from '../types/types';
 
 export { CHILD_PROFILE, RISK_FACTORS, PROTECTIVE_FACTORS };

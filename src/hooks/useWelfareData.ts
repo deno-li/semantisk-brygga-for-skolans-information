@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { ShanarriIndicator } from '../types/types';
 import { SHANARRI_DATA } from '../data/constants';
 import { getShanarriDataByProfile } from '../data/profileData';
 

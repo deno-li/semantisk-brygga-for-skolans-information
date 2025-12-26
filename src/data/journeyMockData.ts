@@ -6,8 +6,6 @@
 import {
   JourneyProfile,
   WelfareWheelSpokeData,
-  EscalationTrigger,
-  JourneyLevelChange,
   SupportPlanData,
   CoordinationPlanData
 } from '../types/types';

@@ -5,8 +5,6 @@ import {
   LayoutDashboard,
   PieChart,
   FileText,
-  Users,
-  Database,
   Clock,
   ClipboardCheck,
   Sparkles,

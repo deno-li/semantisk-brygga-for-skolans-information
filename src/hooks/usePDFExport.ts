@@ -129,7 +129,7 @@ export const usePDFExport = () => {
         pdf.setFontSize(11);
         pdf.setTextColor(80, 80, 80);
 
-        student.timeline.slice(0, 10).forEach((event, index) => {
+        student.timeline.slice(0, 10).forEach((event) => {
           if (yPosition > 260) {
             pdf.addPage();
             yPosition = 20;
