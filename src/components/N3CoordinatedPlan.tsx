@@ -14,9 +14,23 @@ import {
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
+import { ActorSector, WelfareWheelSpoke } from '../types/types';
 
 interface N3CoordinatedPlanProps {
   selectedProfileId: string;
+}
+
+interface CoordinatedGoal {
+  id: string;
+  text: string;
+  targetDate: string;
+  icfTarget: string;
+  relatedSpokes: WelfareWheelSpoke[];
+  responsible: ActorSector;
+  supporting: ActorSector[];
+  status: 'in-progress' | 'completed' | 'on-hold';
+  progress: number;
+  actions: string[];
 }
 
 // Sofia B. - N3 Example Profile with cross-sectoral coordination
@@ -91,8 +105,8 @@ const SOFIA_N3_PROFILE = {
     {
       code: 'd820',
       domain: 'Skolutbildning',
-      capacity: { value: 2, description: 'Måttliga svårigheter' },
-      performance: { value: 3, description: 'Stora svårigheter' },
+      capacity: { value: 2 as const, description: 'Måttliga svårigheter' },
+      performance: { value: 3 as const, description: 'Stora svårigheter' },
       gap: 1,
       gapInterpretation: 'barriers-exist' as const,
       assessedDate: '2025-01-20',
@@ -105,8 +119,8 @@ const SOFIA_N3_PROFILE = {
     {
       code: 'd240',
       domain: 'Hantera stress och psykologiska krav',
-      capacity: { value: 3, description: 'Stora svårigheter' },
-      performance: { value: 2, description: 'Måttliga svårigheter' },
+      capacity: { value: 3 as const, description: 'Stora svårigheter' },
+      performance: { value: 2 as const, description: 'Måttliga svårigheter' },
       gap: -1,
       gapInterpretation: 'facilitators-work' as const,
       assessedDate: '2025-01-20',
@@ -119,8 +133,8 @@ const SOFIA_N3_PROFILE = {
     {
       code: 'd720',
       domain: 'Komplexa mellanmänskliga interaktioner',
-      capacity: { value: 2, description: 'Måttliga svårigheter' },
-      performance: { value: 2, description: 'Måttliga svårigheter' },
+      capacity: { value: 2 as const, description: 'Måttliga svårigheter' },
+      performance: { value: 2 as const, description: 'Måttliga svårigheter' },
       gap: 0,
       gapInterpretation: 'neutral' as const,
       assessedDate: '2025-01-20',
@@ -133,8 +147,8 @@ const SOFIA_N3_PROFILE = {
     {
       code: 'b152',
       domain: 'Känslofunktioner',
-      capacity: { value: 3, description: 'Stora svårigheter' },
-      performance: { value: 2, description: 'Måttliga svårigheter' },
+      capacity: { value: 3 as const, description: 'Stora svårigheter' },
+      performance: { value: 2 as const, description: 'Måttliga svårigheter' },
       gap: -1,
       gapInterpretation: 'facilitators-work' as const,
       assessedDate: '2025-01-20',
@@ -153,9 +167,9 @@ const SOFIA_N3_PROFILE = {
       code: 'e580',
       domain: 'BUP - KBT och medicinering',
       type: 'facilitator' as const,
-      level: 2,
+      level: 2 as const,
       description: 'KBT varannan vecka + SSRI har tydlig positiv effekt på ångest',
-      relatedSpokes: ['halsa', 'trygg'] as const[],
+      relatedSpokes: ['halsa', 'trygg'],
       identifiedDate: '2024-09-01',
       identifiedBy: 'bup' as const,
       context: 'healthcare' as const,
@@ -165,9 +179,9 @@ const SOFIA_N3_PROFILE = {
       code: 'e330',
       domain: 'Kurator - Stödsamtal',
       type: 'facilitator' as const,
-      level: 2,
+      level: 2 as const,
       description: 'Stödsamtal 2ggr/vecka ger trygghet och coping-strategier',
-      relatedSpokes: ['trygg', 'larande'] as const[],
+      relatedSpokes: ['trygg', 'larande'],
       identifiedDate: '2024-09-01',
       identifiedBy: 'student-health' as const,
       context: 'school' as const,
@@ -177,9 +191,9 @@ const SOFIA_N3_PROFILE = {
       code: 'e355',
       domain: 'Kontaktperson från socialtjänst',
       type: 'facilitator' as const,
-      level: 1,
+      level: 1 as const,
       description: 'Stöd kring vardagsstruktur och familjesituation',
-      relatedSpokes: ['hemmet', 'trygg'] as const[],
+      relatedSpokes: ['hemmet', 'trygg'],
       identifiedDate: '2024-11-01',
       identifiedBy: 'social-services' as const,
       context: 'home' as const,
@@ -189,9 +203,9 @@ const SOFIA_N3_PROFILE = {
       code: 'e585',
       domain: 'Anpassad studieplan',
       type: 'facilitator' as const,
-      level: 1,
+      level: 1 as const,
       description: 'Reducerad kursbelastning och flexibla deadlines',
-      relatedSpokes: ['larande'] as const[],
+      relatedSpokes: ['larande'],
       identifiedDate: '2024-09-01',
       identifiedBy: 'elementary-school' as const,
       context: 'school' as const,
@@ -202,9 +216,9 @@ const SOFIA_N3_PROFILE = {
       code: 'e310',
       domain: 'Familjesituation (separation)',
       type: 'barrier' as const,
-      level: 1,
+      level: 1 as const,
       description: 'Växelvis boende och föräldrakonflikt skapar osäkerhet',
-      relatedSpokes: ['hemmet', 'trygg'] as const[],
+      relatedSpokes: ['hemmet', 'trygg'],
       identifiedDate: '2022-06-01',
       identifiedBy: 'social-services' as const,
       context: 'home' as const,
@@ -214,15 +228,15 @@ const SOFIA_N3_PROFILE = {
       code: 'e460',
       domain: 'Samhälleliga attityder',
       type: 'barrier' as const,
-      level: 1,
+      level: 1 as const,
       description: 'Stigma kring psykisk ohälsa och skolfrånvaro',
-      relatedSpokes: ['delaktig', 'relationer'] as const[],
+      relatedSpokes: ['delaktig', 'relationer'],
       identifiedDate: '2024-03-01',
       identifiedBy: 'student-health' as const,
       context: 'school' as const,
       status: 'monitoring' as const
     }
-  ],
+  ] as import('../types/icf-types').EnvironmentalFactor[],
 
   // Coordinated goals (SIP-style)
   coordinatedGoals: [
@@ -231,9 +245,9 @@ const SOFIA_N3_PROFILE = {
       text: 'Öka skolnärvaro från 60% till 80% inom 3 månader',
       targetDate: '2025-04-30',
       icfTarget: 'd820.2 → d820.1',
-      relatedSpokes: ['larande'] as const[],
+      relatedSpokes: ['larande'],
       responsible: 'elementary-school' as const,
-      supporting: ['student-health', 'bup'] as const[],
+      supporting: ['student-health', 'bup'],
       status: 'in-progress' as const,
       progress: 40,
       actions: [
@@ -247,9 +261,9 @@ const SOFIA_N3_PROFILE = {
       text: 'Minska ångestnivå och panikattacker med 50%',
       targetDate: '2025-06-30',
       icfTarget: 'b152.3 → b152.1',
-      relatedSpokes: ['halsa', 'trygg'] as const[],
+      relatedSpokes: ['halsa', 'trygg'],
       responsible: 'bup' as const,
-      supporting: ['student-health'] as const[],
+      supporting: ['student-health'],
       status: 'in-progress' as const,
       progress: 60,
       actions: [
@@ -263,9 +277,9 @@ const SOFIA_N3_PROFILE = {
       text: 'Stabilisera familjesituation och minska konflikter',
       targetDate: '2025-05-31',
       icfTarget: 'e310: .1 → +0',
-      relatedSpokes: ['hemmet', 'trygg'] as const[],
+      relatedSpokes: ['hemmet', 'trygg'],
       responsible: 'social-services' as const,
-      supporting: [] as const[],
+      supporting: [],
       status: 'in-progress' as const,
       progress: 30,
       actions: [
@@ -274,7 +288,7 @@ const SOFIA_N3_PROFILE = {
         'Familjesamtal vid behov'
       ]
     }
-  ],
+  ] as CoordinatedGoal[],
 
   // Risk/Protection balance
   riskProtectionBalance: {
