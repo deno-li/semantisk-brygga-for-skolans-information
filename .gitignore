@@ -81,3 +81,5 @@ logs/
 htmlcov/
 .pytest_cache/
 coverage/
+coverage.xml
+*.lcov
