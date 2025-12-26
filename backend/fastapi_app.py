@@ -25,7 +25,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -116,7 +116,7 @@ def map_bbic_to_icf(bbic_domain: str) -> dict:
     ]
 
     if not matches:
-        raise HTTPException(status_code=404, detail="BBIC-dimension saknas")
+        raise HTTPException(status_code=404, detail="BBIC dimension not found")
 
     codes = [code for code, _ in matches]
     descriptions = [meta[1] for _, meta in matches]
@@ -224,22 +224,24 @@ def analyze_text(request: AnalyzeTextRequest) -> dict:
     matched_codes = [code for keyword, code in candidates.items() if keyword in text]
     mapped = [serialize_result(engine.icf_to_bbic(code)) for code in matched_codes]
 
-    return {
-        "text": request.text,
-        "icf_suggestions": [
+    suggestions = []
+    for code in matched_codes:
+        icf_entry = ICF_DATABASE.get(code)
+        suggestions.append(
             {
                 "code": code,
-                "description": ICF_DATABASE.get(code).name_sv
-                if ICF_DATABASE.get(code)
-                else code,
+                "description": icf_entry.name_sv if icf_entry else code,
                 "confidence": 0.65,
                 "category": "rule-based",
-                "reasoning": "Nyckelordsträff",
+                "reasoning": "Keyword match",
             }
-            for code in matched_codes
-        ],
+        )
+
+    return {
+        "text": request.text,
+        "icf_suggestions": suggestions,
         "bbic_domains": [item["target_descriptions"] for item in mapped],
-        "analysis_summary": "Regelbaserad analys för demo",
+        "analysis_summary": "Rule-based analysis for demo purposes",
         "confidence": 0.65 if matched_codes else 0.0,
     }
 

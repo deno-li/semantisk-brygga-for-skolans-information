@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Semantic Bridge Exchange",
-  "description": "Data som skickas mellan React-frontenden och FastAPI-backenden",
+  "description": "Dataflöden mellan React-gränssnittet och FastAPI-backenden",
   "type": "object",
   "properties": {
     "mappingRequest": {
