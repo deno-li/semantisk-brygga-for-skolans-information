@@ -55,7 +55,6 @@ const App: React.FC = () => {
   const journeyProfile = JOURNEY_PROFILES[selectedProfileId];
 
   const handleLevelChange = (newLevel: JourneyLevel, reason: string) => {
-    console.log(`Nivåändring: ${journeyProfile.currentLevel} → ${newLevel}. Anledning: ${reason}`);
     // I en riktig implementation skulle vi uppdatera databasen här
     alert(`Nivåändring till ${newLevel} registrerad!\n\nAnledning: ${reason}\n\nDetta skulle i en riktig implementation uppdatera profilen och skicka notiser till alla involverade.`);
   };
@@ -82,7 +81,7 @@ const App: React.FC = () => {
             currentPerspective={currentPerspective}
             currentLevel={journeyProfile.currentLevel}
             spokeData={journeyProfile.welfareWheel}
-            onSpokeClick={(spoke) => console.log('Spoke clicked:', spoke)}
+            onSpokeClick={() => {}}
           />
         ) : <div>Ingen journeyprofil hittades</div>;
 

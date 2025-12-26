@@ -127,7 +127,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
     }
   };
 
-  const handleResultChange = (index: number, field: keyof AiSuggestion, value: any) => {
+  const handleResultChange = (index: number, field: keyof AiSuggestion, value: string | number) => {
     if (!results) return;
     const newResults = [...results];
     newResults[index] = { ...newResults[index], [field]: value };
@@ -135,9 +135,9 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
 
     // Validate if standard or code changes
     if (field === 'standard' || field === 'code') {
-      const standardToCheck = field === 'standard' ? value : newResults[index].standard;
-      const codeToCheck = field === 'code' ? value : newResults[index].code;
-      
+      const standardToCheck = (field === 'standard' ? value : newResults[index].standard) as string;
+      const codeToCheck = (field === 'code' ? value : newResults[index].code) as string;
+
       const error = validateCodeFormat(standardToCheck, codeToCheck);
       
       setValidationErrors(prev => {
