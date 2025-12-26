@@ -429,7 +429,11 @@ export const getSpokeColor = (spoke: WelfareWheelSpoke): string => {
     hemmet: '#EC4899',     // Rosa
     relationer: '#14B8A6', // Teal
     aktiv: '#F97316',      // Orange-röd
-    delaktig: '#6366F1'    // Indigo
+    delaktig: '#6366F1',   // Indigo
+    respekterad: '#A78BFA', // Ljuslila
+    ansvarig: '#34D399',   // Ljusgrön
+    inkluderad: '#60A5FA', // Ljusblå
+    nurtured: '#FCA5A5'    // Ljusröd
   };
   return colors[spoke];
 };
