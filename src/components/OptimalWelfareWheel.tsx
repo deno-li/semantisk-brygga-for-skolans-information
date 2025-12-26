@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Shield, Heart, TrendingUp, BookOpen, Home, Users, Bike, MessageSquare,
-  ChevronRight, Info, AlertTriangle, CheckCircle2
+  ChevronRight, Info, AlertTriangle
 } from 'lucide-react';
 import {
   WelfareWheelSpokeData,
@@ -9,7 +9,6 @@ import {
   JourneyLevel
 } from '../types/types';
 import {
-  WELFARE_WHEEL_SPOKES,
   getStatusColor,
   getSpokeColor,
   getLevelName,

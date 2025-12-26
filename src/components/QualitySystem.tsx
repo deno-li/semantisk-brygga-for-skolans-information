@@ -2,7 +2,7 @@
 import React, { useState, memo, useMemo } from 'react';
 import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/constants';
 import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle } from 'lucide-react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { QualityIndicator } from '../types/types';
 
 const getProgressRatio = (indicator: QualityIndicator) => {
@@ -24,7 +24,7 @@ const QualitySystem: React.FC = () => {
       QUALITY_INDICATORS
         .filter(qi => qi.target > 0 && qi.current < qi.target)
         .sort((a, b) => getProgressRatio(a) - getProgressRatio(b)),
-    [QUALITY_INDICATORS]
+    []
   );
   
   // Custom PDCA Wheel Component
@@ -44,7 +44,7 @@ const QualitySystem: React.FC = () => {
     ];
 
     // Find active phase index to highlight
-    const activeIndex = QUALITY_CYCLE.findIndex(q => q.status === 'active');
+    const _activeIndex = QUALITY_CYCLE.findIndex(q => q.status === 'active');
 
     return (
       <div className="relative flex justify-center items-center py-4">

@@ -12,6 +12,7 @@ from datetime import datetime
 
 class KSITarget(str, Enum):
     """KSI Axel 1: INRIKTNING (Target) - All mappade till ICF-koder"""
+
     # Learning and applying knowledge (d1)
     SA1 = "SA1"  # Lärande och att tillämpa kunskap → d1
     SA2 = "SA2"  # Målinriktade sinnesupplevelser → d110-d129
@@ -76,6 +77,7 @@ class KSITarget(str, Enum):
 
 class KSIAction(str, Enum):
     """KSI Axel 2: AGERANDE (Action) - Vad gör professionen?"""
+
     # Kategori A: Utredande eller uppföljande
     AA = "AA"  # Bedömning
     AC = "AC"  # Manualbaserat test eller samtal
@@ -102,6 +104,7 @@ class KSIAction(str, Enum):
 
 class KSIStatus(str, Enum):
     """KSI Axel 3: STATUS"""
+
     PLANNED = "1"  # Planerad
     ONGOING = "2"  # Pågående
     COMPLETED = "3"  # Avslutad
@@ -123,7 +126,6 @@ KSI_TO_ICF_MAPPINGS = {
     KSITarget.SCJ: ["d175"],
     KSITarget.SCL: ["d177"],
     KSITarget.SBX: ["d150"],
-
     # Communication
     KSITarget.SE2: ["d310", "d315", "d320", "d329"],
     KSITarget.SEA: ["d310"],
@@ -134,12 +136,10 @@ KSI_TO_ICF_MAPPINGS = {
     KSITarget.SG2: ["d350", "d355", "d360", "d369"],
     KSITarget.SGA: ["d350"],
     KSITarget.SGG: ["d360"],
-
     # Tasks and demands
     KSITarget.SDA: ["d210", "d220"],
     KSITarget.SDJ: ["d240"],
     KSITarget.SDK: ["d298A"],
-
     # Mobility
     KSITarget.SH2: ["d410", "d415", "d420", "d429"],
     KSITarget.SJ2: ["d450", "d455", "d460", "d465", "d469"],
@@ -147,25 +147,20 @@ KSI_TO_ICF_MAPPINGS = {
     KSITarget.SK2: ["d470", "d475", "d480", "d489"],
     KSITarget.SIF: ["d430", "d435", "d440", "d445", "d449"],
     KSITarget.SIA: ["d430"],
-
     # Self-care
     KSITarget.SM1: ["d5"],
     KSITarget.SMB: ["d510"],
     KSITarget.SMC: ["d520"],
     KSITarget.SMD: ["d530"],
-
     # Recreation
     KSITarget.SY: ["d920"],
-
     # Interpersonal
     KSITarget.SUA: ["d710"],
-
     # Body functions
     KSITarget.SAT: ["b152"],
     KSITarget.SCR: ["b134"],
     KSITarget.SAS: ["b130", "b1300"],
     KSITarget.SAH: ["b280"],
-
     # Environmental
     KSITarget.QD2: ["e2", "e250", "e260"],
     KSITarget.QE2: ["e3", "e310", "e330", "e355"],
@@ -184,6 +179,7 @@ for ksi_target, icf_codes in KSI_TO_ICF_MAPPINGS.items():
 
 class KSICode(BaseModel):
     """Complete KSI Code with all three axes"""
+
     target: KSITarget = Field(..., description="Axel 1: Inriktning/Target")
     action: KSIAction = Field(..., description="Axel 2: Agerande/Action")
     status: KSIStatus = Field(..., description="Axel 3: Status")
@@ -207,11 +203,7 @@ class KSICode(BaseModel):
 
     class Config:
         json_schema_extra = {
-            "example": {
-                "target": "SCA",
-                "action": "PM",
-                "status": "2"
-            }
+            "example": {"target": "SCA", "action": "PM", "status": "2"}
         }
 
 
@@ -262,17 +254,24 @@ KSI_STATUS_NAMES = {
 
 class KSIActionContext(BaseModel):
     """Detailed information about a KSI action in school context"""
+
     ksi_code: str = Field(..., description="Full KSI code (e.g., SCA-PM-2)")
     target: KSITarget
     action: KSIAction
     status: KSIStatus
     icf_codes: List[str] = Field(..., description="Linked ICF codes")
-    specific_actions: List[str] = Field(default_factory=list, description="Concrete actions taken")
+    specific_actions: List[str] = Field(
+        default_factory=list, description="Concrete actions taken"
+    )
     responsible_role: str = Field(..., description="Who is responsible")
-    start_date: Optional[datetime] = Field(None, description="When intervention started")
+    start_date: Optional[datetime] = Field(
+        None, description="When intervention started"
+    )
     planned_end_date: Optional[datetime] = Field(None, description="Planned completion")
     review_schedule: Optional[str] = Field(None, description="How often to review")
-    confidence: float = Field(default=1.0, ge=0.0, le=1.0, description="Mapping confidence")
+    confidence: float = Field(
+        default=1.0, ge=0.0, le=1.0, description="Mapping confidence"
+    )
 
     class Config:
         json_schema_extra = {
@@ -284,12 +283,12 @@ class KSIActionContext(BaseModel):
                 "icf_codes": ["d160", "b140"],
                 "specific_actions": [
                     "Strategier för fokusering vid längre arbetspass",
-                    "Visuellt stöd vid instruktioner"
+                    "Visuellt stöd vid instruktioner",
                 ],
                 "responsible_role": "Specialpedagog",
                 "start_date": "2024-11-01T00:00:00Z",
                 "planned_end_date": "2025-05-01T00:00:00Z",
                 "review_schedule": "Månadsvis",
-                "confidence": 0.97
+                "confidence": 0.97,
             }
         }

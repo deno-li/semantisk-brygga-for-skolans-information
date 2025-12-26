@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  BookOpen, Database, Share2, TrendingUp, Code, CheckSquare,
+  BookOpen, Database, Share2, TrendingUp, Code,
   ChevronDown, ChevronUp, Info, Eye, Lock, AlertTriangle
 } from 'lucide-react';
 import {

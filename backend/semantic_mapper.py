@@ -10,14 +10,20 @@ from enum import Enum
 
 from .icf_models import ICFCode, ICF_DATABASE, ICF_CORE_SETS
 from .ksi_models import (
-    KSITarget, KSIAction, KSIStatus, KSICode,
-    KSI_TO_ICF_MAPPINGS, ICF_TO_KSI_MAPPINGS,
-    KSI_TARGET_NAMES, KSI_ACTION_NAMES
+    KSITarget,
+    KSIAction,
+    KSIStatus,
+    KSICode,
+    KSI_TO_ICF_MAPPINGS,
+    ICF_TO_KSI_MAPPINGS,
+    KSI_TARGET_NAMES,
+    KSI_ACTION_NAMES,
 )
 
 
 class MappingConfidence(float, Enum):
     """Documented confidence scores for different system mappings"""
+
     ICF_KSI = 0.97  # KSI Target = ICF codes (exact)
     ICF_IBIC = 1.00  # IBIC uses ICF natively
     ICF_BBIC = 0.95  # Socialstyrelsen method, ICF-based
@@ -30,6 +36,7 @@ class MappingConfidence(float, Enum):
 @dataclass
 class MappingResult:
     """Result of a semantic mapping operation"""
+
     source_code: str
     target_system: str
     target_codes: List[str]
@@ -63,7 +70,11 @@ class SemanticMappingEngine:
             "d140": ("Barnets utveckling", "Utbildning och lärande", 0.95),
             "d145": ("Barnets utveckling", "Utbildning och lärande", 0.95),
             "d150": ("Barnets utveckling", "Utbildning och lärande", 0.95),
-            "b152": ("Barnets hälsa", "Känslomässig och beteendemässig utveckling", 0.95),
+            "b152": (
+                "Barnets hälsa",
+                "Känslomässig och beteendemässig utveckling",
+                0.95,
+            ),
             "b134": ("Barnets hälsa", "Hälsa", 0.95),
             "d710": ("Barnets utveckling", "Identitet och social presentation", 0.95),
             "d920": ("Barnets utveckling", "Sociala relationer", 0.95),
@@ -90,12 +101,12 @@ class SemanticMappingEngine:
             "b140": [("DV015", "Rådgivning om studieteknik", 0.85)],
             "b152": [
                 ("AH030", "Psykoterapi individuell", 0.90),
-                ("GD012", "Stödsamtal", 0.88)
+                ("GD012", "Stödsamtal", 0.88),
             ],
             "d710": [("GD012", "Stödsamtal", 0.87)],
             "d140": [
                 ("DV015", "Rådgivning om studieteknik", 0.85),
-                ("DV017", "Läs- och skrivträning", 0.90)
+                ("DV017", "Läs- och skrivträning", 0.90),
             ],
         }
 
@@ -103,36 +114,46 @@ class SemanticMappingEngine:
         self.shanarri_to_icf_map = {
             "trygghet": {  # Safe
                 "icf_codes": ["d710", "d7100", "d7107", "e165", "e250", "e355", "d920"],
-                "confidence": 0.90
+                "confidence": 0.90,
             },
             "utvecklas": {  # Achieving
-                "icf_codes": ["d1", "d140", "d145", "d150", "d160", "d175", "d177", "b140", "b164"],
-                "confidence": 0.92
+                "icf_codes": [
+                    "d1",
+                    "d140",
+                    "d145",
+                    "d150",
+                    "d160",
+                    "d175",
+                    "d177",
+                    "b140",
+                    "b164",
+                ],
+                "confidence": 0.92,
             },
             "ma_bra": {  # Healthy
                 "icf_codes": ["b152", "b134", "b1300", "b1263", "b280"],
-                "confidence": 0.93
+                "confidence": 0.93,
             },
             "omtanke": {  # Nurtured
                 "icf_codes": ["e310", "e330", "e355", "d710"],
-                "confidence": 0.88
+                "confidence": 0.88,
             },
             "aktivitet": {  # Active
                 "icf_codes": ["d920", "d450", "d460", "d470"],
-                "confidence": 0.90
+                "confidence": 0.90,
             },
             "respekterad": {  # Respected
                 "icf_codes": ["d710", "d7107", "e165", "e410"],
-                "confidence": 0.91
+                "confidence": 0.91,
             },
             "ansvarstagande": {  # Responsible
                 "icf_codes": ["d177", "d240", "b164"],
-                "confidence": 0.89
+                "confidence": 0.89,
             },
             "delaktighet": {  # Included
                 "icf_codes": ["d710", "d350", "d920", "e165"],
-                "confidence": 0.90
-            }
+                "confidence": 0.90,
+            },
         }
 
     def icf_to_ksi(self, icf_code: str) -> MappingResult:
@@ -149,8 +170,7 @@ class SemanticMappingEngine:
                 ksi_targets = self.icf_to_ksi_map.get(parent, [])
 
         target_descriptions = [
-            KSI_TARGET_NAMES.get(target, target.value)
-            for target in ksi_targets
+            KSI_TARGET_NAMES.get(target, target.value) for target in ksi_targets
         ]
 
         return MappingResult(
@@ -162,8 +182,8 @@ class SemanticMappingEngine:
             mapping_path="direct",
             metadata={
                 "mapping_type": "ICF Target to KSI Target (Axel 1)",
-                "note": "KSI Axel 1 uses ICF codes directly"
-            }
+                "note": "KSI Axel 1 uses ICF codes directly",
+            },
         )
 
     def ksi_to_icf(self, ksi_target: KSITarget) -> MappingResult:
@@ -190,8 +210,8 @@ class SemanticMappingEngine:
             mapping_path="direct",
             metadata={
                 "mapping_type": "KSI Target (Axel 1) to ICF",
-                "note": "Direct mapping - KSI uses ICF structure"
-            }
+                "note": "Direct mapping - KSI uses ICF structure",
+            },
         )
 
     def icf_to_bbic(self, icf_code: str) -> MappingResult:
@@ -203,15 +223,15 @@ class SemanticMappingEngine:
 
         if not mapping:
             # Try to infer from component
-            if icf_code.startswith('b'):
+            if icf_code.startswith("b"):
                 dimension = "Barnets hälsa"
                 subdimension = "Hälsa (inferred)"
                 confidence = 0.75
-            elif icf_code.startswith('d'):
+            elif icf_code.startswith("d"):
                 dimension = "Barnets utveckling"
                 subdimension = "Aktiviteter (inferred)"
                 confidence = 0.75
-            elif icf_code.startswith('e'):
+            elif icf_code.startswith("e"):
                 dimension = "Familj och miljö"
                 subdimension = "Miljöfaktorer (inferred)"
                 confidence = 0.70
@@ -222,7 +242,7 @@ class SemanticMappingEngine:
                     target_codes=[],
                     target_descriptions=[],
                     confidence=0.0,
-                    warnings=["No BBIC mapping found"]
+                    warnings=["No BBIC mapping found"],
                 )
         else:
             dimension, subdimension, confidence = mapping
@@ -233,10 +253,7 @@ class SemanticMappingEngine:
             target_codes=[dimension],
             target_descriptions=[subdimension],
             confidence=confidence,
-            metadata={
-                "dimension": dimension,
-                "subdimension": subdimension
-            }
+            metadata={"dimension": dimension, "subdimension": subdimension},
         )
 
     def icf_to_ibic(self, icf_code: str) -> MappingResult:
@@ -263,8 +280,8 @@ class SemanticMappingEngine:
             metadata={
                 "area": area,
                 "subarea": subarea,
-                "note": "IBIC uses ICF codes natively"
-            }
+                "note": "IBIC uses ICF codes natively",
+            },
         )
 
     def icf_to_kva(self, icf_code: str) -> MappingResult:
@@ -281,7 +298,7 @@ class SemanticMappingEngine:
                 target_codes=[],
                 target_descriptions=[],
                 confidence=0.0,
-                warnings=["No KVÅ procedure code found for this ICF code"]
+                warnings=["No KVÅ procedure code found for this ICF code"],
             )
 
         codes = [m[0] for m in mappings]
@@ -299,7 +316,7 @@ class SemanticMappingEngine:
                     {"code": m[0], "description": m[1], "confidence": m[2]}
                     for m in mappings
                 ]
-            }
+            },
         )
 
     def shanarri_to_icf(self, shanarri_domain: str) -> MappingResult:
@@ -316,7 +333,7 @@ class SemanticMappingEngine:
                 target_codes=[],
                 target_descriptions=[],
                 confidence=0.0,
-                warnings=[f"Unknown SHANARRI domain: {shanarri_domain}"]
+                warnings=[f"Unknown SHANARRI domain: {shanarri_domain}"],
             )
 
         icf_codes = mapping["icf_codes"]
@@ -338,15 +355,12 @@ class SemanticMappingEngine:
             confidence=confidence,
             metadata={
                 "shanarri_domain": shanarri_domain,
-                "note": "Conceptual mapping from GIRFEC framework"
-            }
+                "note": "Conceptual mapping from GIRFEC framework",
+            },
         )
 
     def generate_ksi_code(
-        self,
-        icf_code: str,
-        action: KSIAction,
-        status: KSIStatus
+        self, icf_code: str, action: KSIAction, status: KSIStatus
     ) -> Tuple[Optional[KSICode], float]:
         """
         Generate complete KSI code from ICF code
@@ -365,11 +379,7 @@ class SemanticMappingEngine:
         except ValueError:
             return None, 0.0
 
-        ksi_code = KSICode(
-            target=target,
-            action=action,
-            status=status
-        )
+        ksi_code = KSICode(target=target, action=action, status=status)
 
         return ksi_code, mapping.confidence
 
@@ -386,9 +396,7 @@ class SemanticMappingEngine:
         }
 
     def suggest_interventions(
-        self,
-        icf_codes: List[str],
-        context: str = "school"
+        self, icf_codes: List[str], context: str = "school"
     ) -> List[Dict[str, Any]]:
         """
         Suggest KSI interventions based on ICF codes
@@ -412,26 +420,36 @@ class SemanticMappingEngine:
 
                 # Suggest appropriate actions based on context
                 if context == "school":
-                    suggested_actions = self._suggest_school_actions(icf_obj, ksi_target)
+                    suggested_actions = self._suggest_school_actions(
+                        icf_obj, ksi_target
+                    )
                 else:
                     suggested_actions = [KSIAction.AA, KSIAction.PM, KSIAction.RA]
 
                 for action in suggested_actions:
-                    suggestions.append({
-                        "icf_code": icf_code,
-                        "icf_name": icf_obj.name_sv,
-                        "ksi_target": ksi_target.value,
-                        "ksi_target_name": KSI_TARGET_NAMES.get(ksi_target, ksi_target.value),
-                        "ksi_action": action.value,
-                        "ksi_action_name": KSI_ACTION_NAMES.get(action, action.value),
-                        "suggested_code": f"{ksi_target.value}-{action.value}",
-                        "confidence": ksi_mapping.confidence,
-                        "rationale": self._get_action_rationale(icf_obj, action)
-                    })
+                    suggestions.append(
+                        {
+                            "icf_code": icf_code,
+                            "icf_name": icf_obj.name_sv,
+                            "ksi_target": ksi_target.value,
+                            "ksi_target_name": KSI_TARGET_NAMES.get(
+                                ksi_target, ksi_target.value
+                            ),
+                            "ksi_action": action.value,
+                            "ksi_action_name": KSI_ACTION_NAMES.get(
+                                action, action.value
+                            ),
+                            "suggested_code": f"{ksi_target.value}-{action.value}",
+                            "confidence": ksi_mapping.confidence,
+                            "rationale": self._get_action_rationale(icf_obj, action),
+                        }
+                    )
 
         return suggestions
 
-    def _suggest_school_actions(self, icf_obj: ICFCode, ksi_target: KSITarget) -> List[KSIAction]:
+    def _suggest_school_actions(
+        self, icf_obj: ICFCode, ksi_target: KSITarget
+    ) -> List[KSIAction]:
         """Suggest appropriate KSI actions for school context"""
         # For d-codes (activities), suggest pedagogical interventions
         if icf_obj.component.value == "d":

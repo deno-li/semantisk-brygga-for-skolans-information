@@ -8,7 +8,6 @@ import {
   ICFAssessment,
   EnvironmentalFactor,
   GapTrend,
-  GapTrendPoint,
   RiskProtectionBalance
 } from '../types/icf-types';
 
@@ -489,7 +488,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'barrier',
       level: 1,  // .1 = Lätt barriär
       description: 'Viss oro för att andra barn inte förstår hennes läsutmaningar',
-      relatedSpokes: ['respekterad', 'inkluderad'],
+      relatedSpokes: ['delaktig', 'relationer'],
       identifiedDate: '2025-09-15',
       identifiedBy: 'elementary-school',
       context: 'school',

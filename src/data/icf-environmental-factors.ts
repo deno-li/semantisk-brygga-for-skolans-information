@@ -210,13 +210,13 @@ export function getEnvironmentalFactorsForSpoke(spoke: WelfareWheelSpoke): { cod
       return COMMON_ENVIRONMENTAL_FACTORS.learning;
     case 'aktiv':
       return COMMON_ENVIRONMENTAL_FACTORS.active;
-    case 'respekterad':
+    case 'delaktig':
       return COMMON_ENVIRONMENTAL_FACTORS.respected;
-    case 'ansvarig':
+    case 'utvecklas':
       return COMMON_ENVIRONMENTAL_FACTORS.responsible;
-    case 'inkluderad':
+    case 'relationer':
       return COMMON_ENVIRONMENTAL_FACTORS.included;
-    case 'nurtured':
+    case 'hemmet':
       return COMMON_ENVIRONMENTAL_FACTORS.nurtured;
     default:
       return [];

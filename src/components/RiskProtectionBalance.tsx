@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Shield, AlertTriangle, TrendingUp, TrendingDown, Minus, Info } from 'lucide-react';
+import { Shield, AlertTriangle, Info } from 'lucide-react';
 import { EnvironmentalFactor, interpretBalance, getBarrierDescription, getFacilitatorDescription } from '../types/icf-types';
 import { WelfareWheelSpoke } from '../types/types';
 

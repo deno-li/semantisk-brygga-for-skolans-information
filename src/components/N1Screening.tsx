@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { Activity, TrendingUp, CheckCircle2, AlertTriangle, AlertCircle, Info, User } from 'lucide-react';
+import { Activity, CheckCircle2, AlertTriangle, AlertCircle, Info, User } from 'lucide-react';
 import { ICFQualifierValue } from '../types/icf-types';
 import { WelfareWheelSpoke } from '../types/types';
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
@@ -103,8 +103,6 @@ const ERIK_N1_SCREENING: N1ScreeningItem[] = [
 
 const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
-
-  const profile = ICF_DEMO_PROFILES[selectedProfileId];
 
   // N1 screening is currently only implemented for Erik A. (universal level)
   // Show placeholder for other profiles

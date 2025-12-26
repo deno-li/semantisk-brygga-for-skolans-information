@@ -1,7 +1,7 @@
 
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, memo } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
-import { Info, Tag, Database, Activity, Search, X, Smile, ThumbsUp, Heart, BookOpen, User, CheckCircle2, ExternalLink, Shield, ChevronDown, ChevronUp } from 'lucide-react';
+import { Tag, Database, Search, X, Smile, ThumbsUp, Heart, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import { ShanarriIndicator, Perspective } from '../types/types';
 import { childFriendlyTexts } from '../data/childFriendlyTexts';
 import { useWelfareData } from '../hooks/useWelfareData';

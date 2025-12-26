@@ -3,7 +3,7 @@
  * Baserat på WHO ICF och praktiska behov i svensk välfärd
  */
 
-import { ICFCoreSet, ICFCoreSetItem } from '../types/icf-types';
+import { ICFCoreSet } from '../types/icf-types';
 
 // ==========================================
 // EKER 1: HÄLSA (halsa)
@@ -413,11 +413,11 @@ export const ACTIVE_CORE_SET_N3: ICFCoreSet = {
 };
 
 // ==========================================
-// EKER 5: RESPEKTERAD (respekterad)
+// EKER 5: RESPEKTERAD (respekterad) -> DELAKTIG
 // ==========================================
 
 export const RESPECTED_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'respekterad',
+  spoke: 'delaktig',
   level: 'N1',
   items: [
     {
@@ -434,7 +434,7 @@ export const RESPECTED_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const RESPECTED_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'respekterad',
+  spoke: 'delaktig',
   level: 'N2',
   items: [
     ...RESPECTED_CORE_SET_N1.items,
@@ -451,7 +451,7 @@ export const RESPECTED_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const RESPECTED_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'respekterad',
+  spoke: 'delaktig',
   level: 'N3',
   items: [
     ...RESPECTED_CORE_SET_N2.items,
@@ -468,11 +468,11 @@ export const RESPECTED_CORE_SET_N3: ICFCoreSet = {
 };
 
 // ==========================================
-// EKER 6: ANSVARIG (ansvarig)
+// EKER 6: ANSVARIG (ansvarig) -> UTVECKLAS
 // ==========================================
 
 export const RESPONSIBLE_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'utvecklas',
   level: 'N1',
   items: [
     {
@@ -489,7 +489,7 @@ export const RESPONSIBLE_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const RESPONSIBLE_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'utvecklas',
   level: 'N2',
   items: [
     ...RESPONSIBLE_CORE_SET_N1.items,
@@ -506,7 +506,7 @@ export const RESPONSIBLE_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const RESPONSIBLE_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'utvecklas',
   level: 'N3',
   items: [
     ...RESPONSIBLE_CORE_SET_N2.items,
@@ -523,11 +523,11 @@ export const RESPONSIBLE_CORE_SET_N3: ICFCoreSet = {
 };
 
 // ==========================================
-// EKER 7: INKLUDERAD (inkluderad)
+// EKER 7: INKLUDERAD (inkluderad) -> RELATIONER
 // ==========================================
 
 export const INCLUDED_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'relationer',
   level: 'N1',
   items: [
     {
@@ -544,7 +544,7 @@ export const INCLUDED_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const INCLUDED_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'relationer',
   level: 'N2',
   items: [
     ...INCLUDED_CORE_SET_N1.items,
@@ -561,7 +561,7 @@ export const INCLUDED_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const INCLUDED_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'relationer',
   level: 'N3',
   items: [
     ...INCLUDED_CORE_SET_N2.items,
@@ -578,11 +578,11 @@ export const INCLUDED_CORE_SET_N3: ICFCoreSet = {
 };
 
 // ==========================================
-// EKER 8: OMHÄNDERTAGEN (nurtured)
+// EKER 8: OMHÄNDERTAGEN (nurtured) -> HEMMET
 // ==========================================
 
 export const NURTURED_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'hemmet',
   level: 'N1',
   items: [
     {
@@ -599,7 +599,7 @@ export const NURTURED_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const NURTURED_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'hemmet',
   level: 'N2',
   items: [
     ...NURTURED_CORE_SET_N1.items,
@@ -616,7 +616,7 @@ export const NURTURED_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const NURTURED_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'hemmet',
   level: 'N3',
   items: [
     ...NURTURED_CORE_SET_N2.items,

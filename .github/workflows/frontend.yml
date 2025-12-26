@@ -32,10 +32,9 @@ jobs:
       
       - name: Lint
         run: npm run lint
-        continue-on-error: true
       
       - name: Run tests
-        run: npm run test || true
+        run: npm run test
       
       - name: Build
         run: npm run build

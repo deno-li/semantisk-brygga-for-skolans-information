@@ -8,10 +8,9 @@ import React, { useState } from 'react';
 import {
   Activity, Shield, Users, FileText, Target, Calendar,
   CheckCircle2, AlertCircle, Info, User, Building2, Heart,
-  GraduationCap, Home, Clock, ArrowRight, MessageSquare,
+  GraduationCap, Clock, ArrowRight, MessageSquare,
   Layers, TrendingUp
 } from 'lucide-react';
-import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
 import { WelfareWheelSpoke, ActorSector } from '../types/types';
@@ -665,9 +664,12 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
                         <span className="text-xs font-medium text-gray-500">Ansvarig:</span>
                         <span className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${getSectorColor(goal.responsible as string)}`}>
                           {getSectorIcon(goal.responsible as string)}
-                          {goal.responsible === 'elementary-school' ? 'Skola' :
-                           goal.responsible === 'bup' ? 'BUP' :
-                           goal.responsible === 'social-services' ? 'Socialtjänst' : goal.responsible}
+                          {(() => {
+                            const responsible = goal.responsible;
+                            return responsible === 'elementary-school' ? 'Skola' :
+                                   responsible === 'bup' ? 'BUP' :
+                                   responsible === 'social-services' ? 'Socialtjänst' : responsible;
+                          })()}
                         </span>
                       </div>
                       {goal.supporting.length > 0 && (

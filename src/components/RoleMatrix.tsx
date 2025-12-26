@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShieldCheck, Server, Globe, User, Users, Stethoscope, GraduationCap, Building2 } from 'lucide-react';
+import { ShieldCheck, Globe, User, Users, Stethoscope, GraduationCap, Building2 } from 'lucide-react';
 
 type RoleType = 'guardian' | 'child' | 'school' | 'health' | 'social' | 'all';
 
