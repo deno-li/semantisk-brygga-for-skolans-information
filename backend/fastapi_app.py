@@ -172,7 +172,10 @@ def get_icf_code(code: str) -> dict:
     response_model=List[dict],
 )
 def list_ksi_codes() -> List[dict]:
-    return [{"code": target.value, "description": KSI_TARGET_NAMES[target]} for target in KSITarget]
+    return [
+        {"code": target.value, "description": KSI_TARGET_NAMES[target]}
+        for target in KSITarget
+    ]
 
 
 @app.post(
