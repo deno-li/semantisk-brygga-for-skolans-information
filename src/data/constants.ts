@@ -5,6 +5,8 @@ export { CHILD_PROFILE } from './childProfileConstants';
 export { TIMELINE_DATA, QUALITY_CYCLE, SAFETY_TREND_DATA } from './timelineQualityData';
 export { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
 
+import { CHILD_PROFILE } from './childProfileConstants';
+import { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
 import {
   JournalData, NewsItem, DocumentSection,
   LongitudinalDataPoint, QualityIndicator, Transition, ActorProfile, EnhancedChildProfile,
