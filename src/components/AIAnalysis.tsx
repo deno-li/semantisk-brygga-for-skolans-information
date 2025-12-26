@@ -2,6 +2,11 @@
 import React, { useState, useEffect, memo } from 'react';
 import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X } from 'lucide-react';
 import { AiSuggestion, View } from '../types/types';
+import SemanticBridgeAPI from '../api/semanticBridgeApi';
+import type { ICFAnalysisResult } from '../types/icf-types';
+import ICFSuggestionsDisplay from './ICFSuggestionsDisplay';
+
+type AnalysisMode = 'semantic-mapping' | 'icf-observation';
 
 interface AIAnalysisProps {
   onNavigate?: (view: View) => void;
@@ -13,6 +18,10 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
   const [results, setResults] = useState<AiSuggestion[] | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<number, string>>({});
+  
+  // Phase 4: ICF observation analysis state
+  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>('semantic-mapping');
+  const [icfSuggestions, setIcfSuggestions] = useState<ICFAnalysisResult | null>(null);
 
   useEffect(() => {
     // Check for drafted text passed from Journal component
@@ -73,55 +82,73 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
 
     setIsAnalyzing(true);
     setResults(null);
+    setIcfSuggestions(null);
     setIsEditing(false);
     setValidationErrors({});
 
     try {
-      // Call Vercel serverless API route
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: inputText }),
-      });
+      if (analysisMode === 'semantic-mapping') {
+        // Existing semantic mapping logic
+        // Call Vercel serverless API route
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: inputText }),
+        });
 
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.suggestions && data.suggestions.length > 0) {
+          setResults(data.suggestions);
+        } else if (data.error) {
+          throw new Error(data.error);
+        }
+      } else if (analysisMode === 'icf-observation') {
+        // NEW: ICF observation analysis
+        const apiClient = new SemanticBridgeAPI();
+        const result = await apiClient.analyzeICFObservation({
+          observation_text: inputText,
+          child_age: 10,  // Could come from selected profile
+          context: 'school',
+          current_level: 'N2'
+        });
+        
+        setIcfSuggestions(result);
       }
-
-      const data = await response.json();
-
-      if (data.suggestions && data.suggestions.length > 0) {
-        setResults(data.suggestions);
-      } else if (data.error) {
-        throw new Error(data.error);
-      }
-
     } catch (error) {
       console.error("AI Analysis failed:", error);
-      // Fallback/Demo mode if API call fails
-      const mockSuggestions: AiSuggestion[] = [
-        {
-          standard: 'ICF',
-          code: 'd160 (Uppmärksamhet)',
-          confidence: 88,
-          reasoning: `Baserat på citatet "svårt att koncentrera sig" som indikerar nedsatt mental funktion, föreslås koden d160 (Uppmärksamhet) då den avser förmågan att fokusera på uppgifter.`
-        },
-        {
-          standard: 'BBIC',
-          code: 'Skola & Lärande',
-          confidence: 82,
-          reasoning: `Baserat på citatet "på lektionerna" och beskrivna svårigheter med skolarbete, kopplas detta till BBIC-domänen Skola & Lärande.`
-        },
-        {
-          standard: 'KVÅ',
-          code: 'GD005 (Stödsamtal)',
-          confidence: 75,
-          reasoning: `Baserat på citatet "uttrycker oro" som indikerar ett behov av ventilerande samtal, föreslås åtgärdskoden GD005 (Stödsamtal).`
-        }
-      ];
-      setResults(mockSuggestions);
+      
+      if (analysisMode === 'semantic-mapping') {
+        // Fallback/Demo mode for semantic mapping if API call fails
+        const mockSuggestions: AiSuggestion[] = [
+          {
+            standard: 'ICF',
+            code: 'd160 (Uppmärksamhet)',
+            confidence: 88,
+            reasoning: `Baserat på citatet "svårt att koncentrera sig" som indikerar nedsatt mental funktion, föreslås koden d160 (Uppmärksamhet) då den avser förmågan att fokusera på uppgifter.`
+          },
+          {
+            standard: 'BBIC',
+            code: 'Skola & Lärande',
+            confidence: 82,
+            reasoning: `Baserat på citatet "på lektionerna" och beskrivna svårigheter med skolarbete, kopplas detta till BBIC-domänen Skola & Lärande.`
+          },
+          {
+            standard: 'KVÅ',
+            code: 'GD005 (Stödsamtal)',
+            confidence: 75,
+            reasoning: `Baserat på citatet "uttrycker oro" som indikerar ett behov av ventilerande samtal, föreslås åtgärdskoden GD005 (Stödsamtal).`
+          }
+        ];
+        setResults(mockSuggestions);
+      }
+      // ICF observation mode already has fallback in API client
     } finally {
       setIsAnalyzing(false);
     }
@@ -186,6 +213,8 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
   };
 
   const sampleText = "Erik har visat tecken på oro vid raster. Han drar sig undan och har svårt att koncentrera sig på lektionerna efter rasten. Han uttrycker att det är 'stökigt' i korridoren.";
+  
+  const sampleICFText = "Elsa har svårt att läsa självständigt i klassrummet. Hon behöver ljudböcker och bildstöd för att kunna följa med. När hon får dessa anpassningar fungerar det bra. Ljudnivån i klassrummet stressar henne ibland.";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -208,24 +237,60 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         </div>
       </div>
 
+      {/* Phase 4: Analysis Mode Toggle */}
+      <div className="flex gap-2 mb-4">
+        <button 
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+            analysisMode === 'semantic-mapping' 
+              ? 'bg-purple-600 text-white shadow-md' 
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+          onClick={() => {
+            setAnalysisMode('semantic-mapping');
+            setResults(null);
+            setIcfSuggestions(null);
+          }}
+        >
+          📊 Semantisk mappning (ICF/KSI/KVÅ)
+        </button>
+        <button 
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+            analysisMode === 'icf-observation' 
+              ? 'bg-purple-600 text-white shadow-md' 
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+          onClick={() => {
+            setAnalysisMode('icf-observation');
+            setResults(null);
+            setIcfSuggestions(null);
+          }}
+        >
+          🧠 ICF-bedömning från observation
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Input Section */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 flex flex-col h-full">
           <label className="font-bold text-gray-700 mb-2 block">
-            Pedagogisk Observation / Journalanteckning
+            {analysisMode === 'semantic-mapping' 
+              ? 'Pedagogisk Observation / Journalanteckning'
+              : 'ICF Observation (Performance & Capacity)'}
           </label>
           <div className="relative flex-grow">
             <textarea
               className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-sm leading-relaxed"
-              placeholder="Skriv din observation här..."
+              placeholder={analysisMode === 'semantic-mapping' 
+                ? "Skriv din observation här..."
+                : "Beskriv barnets funktioner med och utan anpassningar..."}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isEditing} 
             />
             {!inputText && (
               <button 
-                onClick={() => setInputText(sampleText)}
+                onClick={() => setInputText(analysisMode === 'semantic-mapping' ? sampleText : sampleICFText)}
                 className="absolute top-4 right-4 text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded transition-colors"
               >
                 Klistra in exempel
@@ -261,7 +326,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
 
         {/* Output Section */}
         <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 h-full overflow-y-auto">
-          {!results ? (
+          {!results && !icfSuggestions ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 text-center">
               <Database size={48} className="mb-4 opacity-20" />
               <h3 className="text-lg font-medium text-gray-600">Inväntar analys</h3>
@@ -269,7 +334,31 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                 Skriv in en text till vänster och klicka på "Analysera" för att se förslag på kodning.
               </p>
             </div>
-          ) : (
+          ) : icfSuggestions ? (
+            // Phase 4: ICF Suggestions Display
+            <div className="space-y-4 animate-fade-in">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Check className="text-green-600" size={20} />
+                  ICF-bedömning från AI
+                </h3>
+              </div>
+              
+              <ICFSuggestionsDisplay 
+                suggestions={icfSuggestions}
+                onApplySuggestion={(suggestion) => {
+                  console.log('Apply ICF suggestion:', suggestion);
+                  // Future: Navigate to ICF Assessment Form with pre-filled data
+                  alert('Funktionen att applicera förslag till ICF-formulär kommer snart!');
+                }}
+                onApplyEnvironmentalFactor={(factor) => {
+                  console.log('Apply environmental factor:', factor);
+                  alert('Funktionen att applicera miljöfaktorer kommer snart!');
+                }}
+              />
+            </div>
+          ) : results ? (
+            // Existing semantic mapping results display
             <div className="space-y-4 animate-fade-in">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-gray-800 flex items-center gap-2">
@@ -440,7 +529,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                 )}
               </div>
             </div>
-          )}
+          ) : null}
         </div>
 
       </div>

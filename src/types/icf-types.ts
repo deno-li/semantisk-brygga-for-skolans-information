@@ -274,3 +274,68 @@ export interface ICFChildProfile extends ChildProfile {
   overallGap?: number;
   riskProtectionBalance?: number;
 }
+
+// ==========================================
+// PHASE 4: AI ANALYSIS TYPES
+// ==========================================
+
+/**
+ * AI-generated ICF code suggestion with Performance/Capacity qualifiers
+ */
+export interface ICFCodeSuggestion {
+  code: string;
+  domain: string;
+  confidence: number;  // 0.0 to 1.0
+  performance_qualifier: {
+    value: ICFQualifierValue;
+    description: string;
+    reasoning: string;
+  };
+  capacity_qualifier: {
+    value: ICFQualifierValue;
+    description: string;
+    reasoning: string;
+  };
+  gap: number;
+  gap_interpretation: 'facilitators-work' | 'neutral' | 'barriers-exist';
+  gap_explanation: string;
+}
+
+/**
+ * AI-generated Environmental Factor suggestion
+ */
+export interface EnvironmentalFactorSuggestion {
+  code: string;
+  domain: string;
+  type: EnvironmentalFactorType;
+  suggested_level: number;  // 0-4
+  reasoning: string;
+  related_spokes: WelfareWheelSpoke[];
+}
+
+/**
+ * AI-generated Welfare Wheel spoke mapping
+ */
+export interface WelfareWheelSuggestion {
+  spoke: WelfareWheelSpoke;
+  confidence: number;
+  suggested_status: 1 | 2 | 3 | 4 | 5;
+}
+
+/**
+ * Complete AI analysis result for ICF observation
+ */
+export interface ICFAnalysisResult {
+  success: boolean;
+  icf_suggestions: ICFCodeSuggestion[];
+  environmental_factors: EnvironmentalFactorSuggestion[];
+  risk_protection_balance: {
+    risk_score: number;
+    protection_score: number;
+    balance: number;
+    interpretation: 'protection-dominates' | 'balanced' | 'risk-dominates';
+  };
+  welfare_wheel_mapping: WelfareWheelSuggestion[];
+  recommended_level: 'N1' | 'N2' | 'N3';
+  summary: string;
+}
