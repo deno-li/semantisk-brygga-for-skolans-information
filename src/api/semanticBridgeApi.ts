@@ -4,6 +4,13 @@
  */
 
 import { Observable } from '../utils/observer';
+// Import AI analysis result types from icf-types (Phase 4)
+import type { 
+  ICFAnalysisResult,
+  ICFCodeSuggestion,
+  EnvironmentalFactorSuggestion,
+  WelfareWheelSuggestion 
+} from '../types/icf-types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -411,14 +418,6 @@ export interface ICFObservationRequest {
   current_level: 'N1' | 'N2' | 'N3';
   welfare_spokes?: string[];
 }
-
-// Import AI analysis result types from icf-types
-import type { 
-  ICFAnalysisResult,
-  ICFCodeSuggestion,
-  EnvironmentalFactorSuggestion,
-  WelfareWheelSuggestion 
-} from '../types/icf-types';
 
 // Export types for convenience
 export type { 
