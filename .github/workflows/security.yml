@@ -23,6 +23,7 @@ jobs:
       
       - name: Run Snyk security scan
         uses: snyk/actions/node@master
+        # Continue on error as Snyk requires SNYK_TOKEN secret which may not be configured
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
