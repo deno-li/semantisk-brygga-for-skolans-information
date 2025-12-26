@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.80",
