@@ -3,6 +3,8 @@
  * Connects Ultimate Edition to the Semantic Bridge Backend
  */
 
+import { Observable } from '../utils/observer';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export interface CodeMapping {
@@ -61,6 +63,7 @@ export interface HealthCheckResponse {
 
 class SemanticBridgeAPI {
   private baseUrl: string;
+  private mappingObservable = new Observable<MappingResult>();
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl;
@@ -112,7 +115,9 @@ class SemanticBridgeAPI {
     if (!response.ok) {
       throw new Error(`ICF to KSI mapping failed: ${response.statusText}`);
     }
-    return response.json();
+    const result = await response.json();
+    this.mappingObservable.notify(result);
+    return result;
   }
 
   /**
@@ -125,7 +130,9 @@ class SemanticBridgeAPI {
     if (!response.ok) {
       throw new Error(`KSI to ICF mapping failed: ${response.statusText}`);
     }
-    return response.json();
+    const result = await response.json();
+    this.mappingObservable.notify(result);
+    return result;
   }
 
   /**
@@ -255,6 +262,13 @@ class SemanticBridgeAPI {
       throw new Error(`Code search failed: ${response.statusText}`);
     }
     return response.json();
+  }
+
+  /**
+   * Subscribe to mapping events (Observer pattern)
+   */
+  onMapping(callback: (result: MappingResult) => void): () => void {
+    return this.mappingObservable.subscribe(callback);
   }
 }
 

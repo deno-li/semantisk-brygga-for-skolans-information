@@ -167,6 +167,15 @@ semantisk-brygga-for-skolans-information/
 - **`docs/BARNETS_RESA_MATRIS_README.md`** - Komplett dokumentation för Journey-systemet
 - **`docs/LICENSE.md`** - Licensinformation
 - **`docs/metadata.json`** - Projektmetadata
+- **`docs/json-schemas/semantic-bridge.schema.json`** - JSON-schema för payloads mellan React och FastAPI
+
+### Arkitektur och designmönster
+
+- **Presentationslager:** React-komponenter i `src/components`
+- **Logiklager:** API-klient och hooks i `src/api` och `src/hooks`
+- **Datalager:** Mockdata i `src/data` och Python-motor i `backend/semantic_mapper.py`
+- **Singleton:** `semanticBridgeApi` exporteras som en delad instans
+- **Observer:** `src/utils/observer.ts` notifierar mapping-event till abonnenter
 
 ---
 
@@ -229,6 +238,15 @@ npm run dev
 ```
 
 Visit: **http://localhost:5173**
+
+### Starta backend (FastAPI)
+
+```bash
+python -m pip install -r backend/requirements.txt
+uvicorn backend.fastapi_app:app --reload
+```
+
+Ställ in `SEMANTIC_BRIDGE_API_KEY` om du vill kräva API-nyckel för alla anrop.
 
 ---
 
