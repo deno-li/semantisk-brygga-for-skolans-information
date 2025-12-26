@@ -724,6 +724,11 @@ export function getCoreSet(spoke: string, level: 'N1' | 'N2' | 'N3'): ICFCoreSet
   return allCoreSets.find(cs => cs.spoke === spoke);
 }
 
+// Helper function: Get all core sets (combined from all levels)
+export function getAllCoreSets(): ICFCoreSet[] {
+  return [...ALL_CORE_SETS_N1, ...ALL_CORE_SETS_N2, ...ALL_CORE_SETS_N3];
+}
+
 // Helper function: Get environmental factors for spoke
 export function getEnvironmentalFactorsForSpoke(spoke: string): { code: string; domain: string; category: string }[] {
   switch (spoke) {

@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { Activity, Shield, TrendingUp, Info, User, BookOpen } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
+import LevelIndicator from './LevelIndicator';
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import { WelfareWheelSpoke } from '../types/types';
 
@@ -181,6 +182,12 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
       <div>
         {selectedTab === 'overview' && (
           <div className="space-y-6">
+            {/* Level Indicator */}
+            <LevelIndicator
+              level={profile.level === 'N1' ? 'universell' : profile.level === 'N2' ? 'stodprofil' : 'samordning'}
+              nextReview={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()}
+            />
+
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white border border-gray-300 rounded-lg p-6 text-center">
