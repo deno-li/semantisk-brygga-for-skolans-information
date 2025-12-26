@@ -525,6 +525,21 @@ export interface WelfareWheelSpokeData {
   status: 1 | 2 | 3 | 4 | 5;  // 1=Röd, 2=Orange, 3=Gul, 4=Ljusgrön, 5=Grön
   history: WheelHistoryPoint[]; // Historisk trend
   notes?: string;
+
+  // NEW ICF FIELDS (Phase 1-2):
+  level?: 'N1' | 'N2' | 'N3';       // Vilken nivå bedömningen är på
+  icfCoreSet?: import('../types/icf-types').ICFCoreSetItem[];   // Core set för denna eker + nivå
+  icfAssessments?: import('../types/icf-types').ICFAssessment[]; // Performance/Capacity (N2/N3)
+  environmentalFactors?: import('../types/icf-types').EnvironmentalFactor[];  // e-koder
+
+  // Status omdefinieras till ICF-skala
+  capacity?: import('../types/icf-types').ICFQualifierValue;    // Endast N2/N3
+  gap?: number;                    // Performance - Capacity
+
+  // Risk/Skydd från Environmental Factors
+  riskScore?: number;              // Summa .1-.4
+  protectionScore?: number;        // Summa +1-+4
+  balance?: number;                // protection - risk
 }
 
 export interface WheelHistoryPoint {
