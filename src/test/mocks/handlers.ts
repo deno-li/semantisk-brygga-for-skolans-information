@@ -4,9 +4,7 @@ const API_BASE_URL = 'http://localhost:8000';
 
 export const handlers = [
   // ICF Analysis endpoint
-  http.post(`${API_BASE_URL}/api/v1/icf/analyze-observation`, async ({ request }) => {
-    await request.json();
-    
+  http.post(`${API_BASE_URL}/api/v1/icf/analyze-observation`, async () => {
     return HttpResponse.json({
       success: true,
       icf_suggestions: [
