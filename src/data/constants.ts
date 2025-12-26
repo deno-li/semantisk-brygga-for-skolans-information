@@ -3,6 +3,11 @@
 export { SHANARRI_DATA, BBIC_TRIANGLE } from './shanarriData';
 export { TIMELINE_DATA, QUALITY_CYCLE, SAFETY_TREND_DATA } from './timelineQualityData';
 
+// ICF Integration - Phase 1-2 exports
+export { ICF_DEMO_PROFILES, ELSA_PROFILE, LISA_PROFILE } from './icf-demo-profiles';
+export { COMMON_ENVIRONMENTAL_FACTORS, createEnvironmentalFactor } from './icf-environmental-factors';
+export * from './icf-core-sets';
+
 import { CHILD_PROFILE } from './childProfileConstants';
 import { RISK_FACTORS, PROTECTIVE_FACTORS } from './riskProtectionData';
 import {

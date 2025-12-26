@@ -358,6 +358,151 @@ export const LISA_PROFILE = {
 };
 
 // ==========================================
+// ELSA BERGSTRÖM, 10 år - From WHO ICF Beginner's Guide page 7
+// ==========================================
+
+/**
+ * Elsa, 10 år - Example from WHO ICF Beginner's Guide
+ * Has dyslexia and uses adapted materials. Shows how facilitators
+ * (assistive technology, supportive family) reduce the gap between
+ * performance and capacity.
+ */
+
+import { ICFChildProfile } from '../types/icf-types';
+
+export const ELSA_PROFILE: ICFChildProfile = {
+  // Basic profile
+  name: "Elsa Bergström",
+  ssn: "20141015-5678",
+  age: 10,
+  school: "Stigslundsskolan",
+  grade: "Åk 4",
+  sipActive: true,
+  journeyLevel: 'N2',
+  
+  sipGoal: {
+    child: "Jag vill kunna läsa böcker som mina kompisar läser och slippa vara rädd i skolan.",
+    professional: "Elsa ska uppnå läsförmåga motsvarande åk 3-nivå och uppleva trygghet i skolmiljön senast juni 2026."
+  },
+  
+  // ICF Assessments with Performance vs Capacity
+  icfAssessments: [
+    {
+      code: 'd140',
+      domain: 'Lära sig läsa',
+      performance: { value: 2, description: 'Måttliga svårigheter (med ljudbok + bildstöd)' },
+      capacity: { value: 3, description: 'Stora svårigheter (utan anpassningar)' },
+      gap: -1,  // Negative = facilitators work!
+      gapInterpretation: 'facilitators-work',
+      assessedDate: '2025-11-15',
+      assessedBy: 'elementary-school',
+      timeSpan: 'Senaste 4 veckor',
+      context: 'school',
+      source: 'observation',
+      notes: 'Ljudböcker och bildstöd fungerar bra. Elsa deltar aktivt när material är anpassat.'
+    },
+    {
+      code: 'd350',
+      domain: 'Konversation',
+      performance: { value: 1, description: 'Lätta svårigheter' },
+      capacity: { value: 1, description: 'Lätta svårigheter' },
+      gap: 0,
+      gapInterpretation: 'neutral',
+      assessedDate: '2025-11-15',
+      assessedBy: 'elementary-school',
+      timeSpan: 'Senaste 4 veckor',
+      context: 'school',
+      source: 'observation'
+    },
+    {
+      code: 'd160',
+      domain: 'Fokusera uppmärksamhet',
+      performance: { value: 2, description: 'Måttliga svårigheter' },
+      capacity: { value: 2, description: 'Måttliga svårigheter' },
+      gap: 0,
+      gapInterpretation: 'neutral',
+      assessedDate: '2025-11-15',
+      assessedBy: 'elementary-school',
+      timeSpan: 'Senaste 4 veckor',
+      context: 'school',
+      source: 'observation',
+      notes: 'Kan koncentrera sig med strukturerat stöd'
+    }
+  ],
+  
+  // Environmental Factors - Barriers and Facilitators
+  environmentalFactors: [
+    // FACILITATORS (+)
+    {
+      code: 'e1301',
+      domain: 'Läromedel för utbildning',
+      type: 'facilitator',
+      level: 3,  // +3 = Betydande underlättare
+      description: 'Inlästa böcker via Legimus + digitala läromedel',
+      relatedSpokes: ['larande'],
+      identifiedDate: '2025-09-01',
+      identifiedBy: 'elementary-school',
+      context: 'school',
+      status: 'active'
+    },
+    {
+      code: 'e310',
+      domain: 'Närmaste familjen',
+      type: 'facilitator',
+      level: 2,  // +2 = Måttlig underlättare
+      description: 'Stöttande föräldrar som följer upp läxor',
+      relatedSpokes: ['halsa', 'trygg', 'larande'],
+      identifiedDate: '2025-09-01',
+      identifiedBy: 'elementary-school',
+      context: 'home',
+      status: 'active'
+    },
+    {
+      code: 'e585',
+      domain: 'Utbildnings- och träningstjänster',
+      type: 'facilitator',
+      level: 2,  // +2 = Måttlig underlättare
+      description: 'Specialpedagog 2 tim/vecka med fokus på läsning',
+      relatedSpokes: ['larande'],
+      identifiedDate: '2025-09-01',
+      identifiedBy: 'elementary-school',
+      context: 'school',
+      status: 'active'
+    },
+    
+    // BARRIERS (.)
+    {
+      code: 'e250',
+      domain: 'Ljud (fysisk miljö)',
+      type: 'barrier',
+      level: 2,  // .2 = Måttlig barriär
+      description: 'Hög ljudnivå i klassrummet och korridorer stressar Elsa',
+      relatedSpokes: ['larande', 'trygg'],
+      identifiedDate: '2025-09-15',
+      identifiedBy: 'elementary-school',
+      context: 'school',
+      status: 'active'
+    },
+    {
+      code: 'e460',
+      domain: 'Samhälleliga attityder',
+      type: 'barrier',
+      level: 1,  // .1 = Lätt barriär
+      description: 'Viss oro för att andra barn inte förstår hennes läsutmaningar',
+      relatedSpokes: ['respekterad', 'inkluderad'],
+      identifiedDate: '2025-09-15',
+      identifiedBy: 'elementary-school',
+      context: 'school',
+      status: 'monitoring'
+    }
+  ],
+  
+  // Risk/Protection Balance
+  overallGap: -0.33,  // Overall, facilitators are working (average gap: -1, 0, 0)
+  riskProtectionBalance: 4  // Barriers: 2+1=3, Facilitators: 3+2+2=7, Balance: 7-3=+4
+};
+
+// ==========================================
 // Ytterligare demo-profiler (använd befintliga)
 // ==========================================
 
@@ -391,6 +536,7 @@ export const SOFIA_PROFILE = {
 // Export alla profiler
 export const ICF_DEMO_PROFILES = {
   lisa: LISA_PROFILE,
+  elsa: ELSA_PROFILE,
   erik: ERIK_PROFILE,
   omar: OMAR_PROFILE,
   sofia: SOFIA_PROFILE

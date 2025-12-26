@@ -239,3 +239,38 @@ export function getQualifierColor(value: ICFQualifierValue): string {
     default: return '#000000';
   }
 }
+
+// ==========================================
+// ENHANCED TYPES FOR PHASE 1-2
+// ==========================================
+
+// Enhanced ShanarriIndicator with ICF assessments (imported from types.ts)
+import type { ShanarriIndicator } from './types';
+
+export interface EnhancedShanarriIndicator extends ShanarriIndicator {
+  // Performance/Capacity (endast N2 och N3)
+  icfAssessments?: ICFAssessment[];
+
+  // Environmental Factors
+  environmentalFactors?: EnvironmentalFactor[];
+
+  // Gap-analys sammanfattning
+  overallGap?: number;             // Genomsnittlig gap över alla assessments
+  gapTrend?: 'improving' | 'stable' | 'declining';
+
+  // Risk/Skydd-balans
+  riskScore?: number;              // Summa barriers
+  protectionScore?: number;        // Summa facilitators
+  balance?: number;                // protectionScore - riskScore
+}
+
+// ICF-enhanced child profile (imported from types.ts)
+import type { ChildProfile } from './types';
+
+export interface ICFChildProfile extends ChildProfile {
+  journeyLevel: 'N1' | 'N2' | 'N3';
+  icfAssessments: ICFAssessment[];
+  environmentalFactors: EnvironmentalFactor[];
+  overallGap?: number;
+  riskProtectionBalance?: number;
+}
