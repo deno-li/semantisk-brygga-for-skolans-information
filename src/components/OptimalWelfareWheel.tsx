@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Shield, Heart, TrendingUp, BookOpen, Home, Users, Bike, MessageSquare,
-  ChevronRight, Info, AlertTriangle, CheckCircle2
+  ChevronRight, Info, AlertTriangle, CheckCircle2, UserCheck, CircleUserRound
 } from 'lucide-react';
 import {
   WelfareWheelSpokeData,
@@ -27,10 +27,10 @@ const SPOKE_ICONS = {
   trygg: Shield,
   halsa: Heart,
   utvecklas: TrendingUp,
-  larande: BookOpen,
-  hemmet: Home,
-  relationer: Users,
+  omvardad: Home,
   aktiv: Bike,
+  respekterad: UserCheck,
+  ansvarstagande: CircleUserRound,
   delaktig: MessageSquare
 };
 

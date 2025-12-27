@@ -106,7 +106,7 @@ export const WELFARE_WHEEL_SPOKES: Omit<WelfareWheelSpokeData, 'status' | 'histo
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -135,23 +135,9 @@ export const WELFARE_WHEEL_SPOKES: Omit<WelfareWheelSpokeData, 'status' | 'histo
     ss12000Source: ['Extra anpassningar', 'Åtgärdsprogram (sammanfattning)', 'Prov/betyg (grovt)']
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE (stöd i lärmiljön)',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
-    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
-    ksiTargets: [
-      'Target: lärmiljö',
-      'Action: anpassning/tillgängliggörande',
-      'Means: material/struktur/stödperson'
-    ],
-    ss12000Source: ['Anpassningar', 'Schema/strukturstöd']
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov (nivå)',
     icfDomains: ['e310–e315', 'd760', 'e5'],
@@ -160,21 +146,8 @@ export const WELFARE_WHEEL_SPOKES: Omit<WelfareWheelSpokeData, 'status' | 'histo
       'Action: rådgivning/stöd',
       'Means: samtal/hembesök/samverkansmöte'
     ],
+    snomedCT: 'Omsorgsstatus',
     ss12000Source: ['Kontaktlogik/möten (inte innehåll)']
-  },
-  {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
-    professionalIndicator: 'Trivselindikator',
-    icfDomains: ['d710–d740', 'd750', 'e4'],
-    ksiTargets: [
-      'Target: relationer',
-      'Action: social färdighetsträning/stöd',
-      'Means: grupp/individ'
-    ],
-    ss12000Source: ['Enkät/observation', 'Elevhälsoplan']
   },
   {
     spoke: 'aktiv',
@@ -189,6 +162,34 @@ export const WELFARE_WHEEL_SPOKES: Omit<WelfareWheelSpokeData, 'status' | 'histo
       'Means: grupp/assistans'
     ],
     ss12000Source: ['Aktivitetsindikator (grovt)']
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d710–d740', 'd750', 'e4'],
+    ksiTargets: [
+      'Target: relationer',
+      'Action: social färdighetsträning/stöd',
+      'Means: grupp/individ'
+    ],
+    ss12000Source: ['Enkät/observation', 'Elevhälsoplan']
+  },
+  {
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d250', 'd7', 'd8'],
+    ksiTargets: [
+      'Target: beteende/ansvar',
+      'Action: färdighetsträning',
+      'Means: individ/grupp'
+    ],
+    ss12000Source: ['Lärarbedömning', 'Elevhälsoplan']
   },
   {
     spoke: 'delaktig',
@@ -425,15 +426,11 @@ export const getSpokeColor = (spoke: WelfareWheelSpoke): string => {
     trygg: '#3B82F6',      // Blå
     halsa: '#10B981',      // Grön
     utvecklas: '#8B5CF6',  // Lila
-    larande: '#F59E0B',    // Orange
-    hemmet: '#EC4899',     // Rosa
-    relationer: '#14B8A6', // Teal
+    omvardad: '#EC4899',   // Rosa
     aktiv: '#F97316',      // Orange-röd
-    delaktig: '#6366F1',   // Indigo
-    respekterad: '#A78BFA', // Ljuslila
-    ansvarig: '#34D399',   // Ljusgrön
-    inkluderad: '#60A5FA', // Ljusblå
-    nurtured: '#FCA5A5'    // Ljusröd
+    respekterad: '#14B8A6', // Teal
+    ansvarstagande: '#F59E0B', // Orange
+    delaktig: '#6366F1'    // Indigo
   };
   return colors[spoke];
 };

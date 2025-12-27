@@ -88,7 +88,7 @@ const ERIK_N1_SCREENING: N1ScreeningItem[] = [
     triageLevel: 'green'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd140',
     domain: 'Lära sig läsa',
@@ -100,7 +100,7 @@ const ERIK_N1_SCREENING: N1ScreeningItem[] = [
     triageLevel: 'green'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd820',
     domain: 'Skolutbildning',
@@ -168,7 +168,7 @@ const LISA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Starkt familjestöd, engagerade föräldrar'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd140',
     domain: 'Lära sig läsa',
@@ -181,7 +181,7 @@ const LISA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Stora svårigheter med läsning - behöver fördjupad analys'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd150',
     domain: 'Lära sig skriva',
@@ -194,7 +194,7 @@ const LISA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Stora svårigheter med skrivning'
   },
   {
-    spoke: 'relationer',
+    spoke: 'respekterad',
     spokeName: 'Relationer',
     code: 'd710',
     domain: 'Grundläggande mellanmänskliga interaktioner',
@@ -262,7 +262,7 @@ const ELSA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Stöttande föräldrar som följer upp läxor'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd140',
     domain: 'Lära sig läsa',
@@ -275,7 +275,7 @@ const ELSA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Dyslexi - stora svårigheter utan anpassningar'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd160',
     domain: 'Fokusera uppmärksamhet',
@@ -288,7 +288,7 @@ const ELSA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Kan koncentrera sig med strukturerat stöd'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd350',
     domain: 'Konversation',
@@ -354,7 +354,7 @@ const OMAR_N1_SCREENING: N1ScreeningItem[] = [
     triageLevel: 'green'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd140',
     domain: 'Lära sig läsa',
@@ -367,7 +367,7 @@ const OMAR_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Språksvårigheter påverkar läsning på svenska'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd820',
     domain: 'Skolutbildning',
@@ -379,7 +379,7 @@ const OMAR_N1_SCREENING: N1ScreeningItem[] = [
     triageLevel: 'green'
   },
   {
-    spoke: 'relationer',
+    spoke: 'respekterad',
     spokeName: 'Relationer',
     code: 'd710',
     domain: 'Grundläggande mellanmänskliga interaktioner',
@@ -448,7 +448,7 @@ const SOFIA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Föräldrar separerade, växelvis boende skapar osäkerhet'
   },
   {
-    spoke: 'larande',
+    spoke: 'ansvarstagande',
     spokeName: 'Lärande',
     code: 'd820',
     domain: 'Skolutbildning',
@@ -461,7 +461,7 @@ const SOFIA_N1_SCREENING: N1ScreeningItem[] = [
     notes: 'Hög skolfrånvaro (>50%)'
   },
   {
-    spoke: 'relationer',
+    spoke: 'respekterad',
     spokeName: 'Relationer',
     code: 'd720',
     domain: 'Komplexa mellanmänskliga interaktioner',
