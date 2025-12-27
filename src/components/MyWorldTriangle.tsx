@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import { MY_WORLD_ASSESSMENTS } from '../data/constants';
 import { User, Users, Globe, Star, AlertCircle } from 'lucide-react';
 import BBICTriangle from './BBICTriangle';
