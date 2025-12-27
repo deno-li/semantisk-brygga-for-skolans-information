@@ -656,6 +656,230 @@ export const SOFIA_PROTECTIVE_FACTORS: ProtectiveFactor[] = [
 // HELPER FUNCTIONS - Get data by profile ID
 // ==========================================
 
+// ==========================================
+// ELSA - NIVÅ 2: Stödprofil (dyslexi)
+// ==========================================
+
+export const ELSA_SHANARRI: ShanarriIndicator[] = [
+  {
+    id: 'safe',
+    name: 'TRYGG',
+    nameEn: 'Safe',
+    color: '#005595',
+    status: 3,
+    target: 4,
+    icf: 'e3 Stöd och relationer, e5 Tjänster, system, policyer, b152 Känslomässiga funktioner | e310 Närmaste familj, e320 Vänner, e325 Bekanta, kamrater, e355 Hälso- och sjukvårdspersonal',
+    ksi: 'SS Mellanmänskliga interaktioner, ST Utbildning/arbete, SMI Se till sin egen säkerhet',
+    bbic: 'Säkerhet, Familj och miljö, Familjebakgrund',
+    bbicCategory: 'family-environment',
+    bbicArea: 'Nuvarande familjesituation',
+    ibic: 'Känsla av otrygghet, Omgivningsfaktorer, Stöd och relationer',
+    kva: 'GD001 (Stödsamtal)',
+    snomed: '371609003 (Känsla av trygghet)',
+    source: 'Trygghetsenkät',
+    notes: 'Hög ljudnivå i klassrummet stressar ibland. Stöttande familj ger trygghet. Konfidens: 88%'
+  },
+  {
+    id: 'healthy',
+    name: 'MÅ BRA',
+    nameEn: 'Healthy',
+    color: '#378056',
+    status: 4,
+    target: 4,
+    icf: 'd5 Personlig vård, b1-b8 Kroppsfunktioner, d570 Sköta sin hälsa | d510 Tvätta sig, d520 Kroppsvård, d540 Klä sig, d550 Äta, d560 Dricka, d570 Sköta sin hälsa, b130 Energi och drift, b134 Sömn',
+    ksi: 'SM Personlig vård, SMH Sköta sin egen hälsa',
+    bbic: 'Hälsa, Känslor och beteende',
+    bbicCategory: 'child-development',
+    bbicArea: 'Hälsa',
+    ibic: 'Personlig vård, Sköta sin egen hälsa, Kroppsfunktioner',
+    kva: 'AU120 (Hälsobesök EMI)',
+    snomed: '271919001 (God hälsa)',
+    source: 'Hälsosamtal EMI',
+    notes: 'God fysisk hälsa. Sover bra och har energi. Konfidens: 95%'
+  },
+  {
+    id: 'achieving',
+    name: 'UTVECKLAS',
+    nameEn: 'Achieving',
+    color: '#C12143',
+    status: 2,
+    target: 4,
+    icf: 'd1 Lärande och tillämpa kunskap, d8 Utbildning, d160-d179 Tillämpa kunskap | d140 Lära sig läsa, d160 Fokusera uppmärksamhet, d166 Läsning',
+    ksi: 'SA-SC Lärande och tillämpa kunskap, ST Utbildning, arbete',
+    bbic: 'Utbildning, Känslor och beteende',
+    bbicCategory: 'child-development',
+    bbicArea: 'Utbildning',
+    ibic: 'Lärande och tillämpa kunskap, Utbildning',
+    kva: 'DU011 (Logopedutredning)',
+    icd: 'F81.0 (Specifik lässvårighet - dyslexi)',
+    snomed: '224497003 (Skolprestation)',
+    source: 'Utvecklingssamtal',
+    notes: 'Dyslexi - stora svårigheter med läsning utan anpassningar. Med ljudböcker och bildstöd fungerar det bättre. Konfidens: 85%'
+  },
+  {
+    id: 'nurtured',
+    name: 'OMVÅRDAD',
+    nameEn: 'Nurtured',
+    color: '#B00020',
+    status: 4,
+    target: 4,
+    icf: 'e3 Stöd och relationer, d760 Familjerelationer | e310 Närmaste familj, e315 Utvidgad familj, d760 Familjerelationer, d7600 Förälder-barnrelation',
+    ksi: 'SP Stöd åt andra, SPE Vårdnadshavare bistå barn, SPE.PN Råd föräldraskap',
+    bbic: 'Föräldrarnas förmåga, Grundläggande omsorg, Känslomässig tillgänglighet',
+    bbicCategory: 'parenting',
+    bbicArea: 'Grundläggande omsorg',
+    ibic: 'Att bistå andra, Familjerelationer, Stöd från närstående',
+    kva: 'XS005 (Social utredning)',
+    snomed: '105455006 (Omsorgsstatus)',
+    source: 'Hembesök',
+    notes: 'Stöttande föräldrar som följer upp läxor och hjälper hemma. Konfidens: 96%'
+  },
+  {
+    id: 'active',
+    name: 'AKTIV',
+    nameEn: 'Active',
+    color: '#E87C00',
+    status: 4,
+    target: 4,
+    icf: 'd9 Samhällsgemenskap, d920 Rekreation och fritid, d4 Rörlighet | d920 Rekreation och fritid, d9200 Lek, d9201 Sport',
+    ksi: 'SX Samhällsgemenskap, SXA Lek, SXD Rekreation och fritid, SH-SK Rörlighet',
+    bbic: 'Sociala relationer, Fritid',
+    bbicCategory: 'family-environment',
+    bbicArea: 'Social tillhörighet och integration',
+    ibic: 'Samhällsgemenskap, socialt och medborgerligt liv, Rekreation och fritid',
+    kva: 'QV001 (Råd om fys. aktivitet)',
+    snomed: '256235009 (Fritidsaktivitet)',
+    source: 'Samtal',
+    notes: 'Deltar i fritidsaktiviteter. Gillar att rita och leka. Konfidens: 92%'
+  },
+  {
+    id: 'respected',
+    name: 'RESPEKTERAS',
+    nameEn: 'Respected',
+    color: '#6D8F13',
+    status: 3,
+    target: 4,
+    icf: 'd7 Mellanmänskliga interaktioner, e4 Attityder, d177 Fatta beslut | d710 Grundläggande mellanmänskliga interaktioner, d720 Sammansatta interaktioner',
+    ksi: 'SR-SS Mellanmänskliga interaktioner, SCL Fatta beslut',
+    bbic: 'Sociala relationer, Känslor och beteende, Identitet och självbild',
+    bbicCategory: 'parenting',
+    bbicArea: 'Känslomässig tillgänglighet',
+    ibic: 'Mellanmänskliga interaktioner, Attityder i omgivningen',
+    kva: 'GD005 (Stödsamtal)',
+    snomed: '125678000 (Självkänsla)',
+    source: 'Samtal',
+    notes: 'Viss oro för att andra barn inte förstår hennes läsutmaningar. Konfidens: 84%'
+  },
+  {
+    id: 'responsible',
+    name: 'ANSVARSTAGANDE',
+    nameEn: 'Responsible',
+    color: '#00838F',
+    status: 4,
+    target: 4,
+    icf: 'd250 Hantera sitt beteende, d7 Mellanmänskliga interaktioner, d8 Utbildning, arbete | d250 Hantera sitt beteende',
+    ksi: 'SD Allmänna uppgifter och krav, SDA Genomföra daglig rutin, SDB Hantera stress',
+    bbic: 'Känslor och beteende, Sociala relationer',
+    bbicCategory: 'child-development',
+    bbicArea: 'Känslor och beteende',
+    ibic: 'Allmänna uppgifter och krav, Handläggning av stress, Handläggning av ansvar',
+    kva: '-',
+    snomed: '288600008 (Förmåga att ta ansvar)',
+    source: 'Lärarbedömning',
+    notes: 'God förmåga att ta ansvar för sina uppgifter. Konfidens: 90%'
+  },
+  {
+    id: 'included',
+    name: 'DELAKTIG',
+    nameEn: 'Included',
+    color: '#6A2A5B',
+    status: 4,
+    target: 4,
+    icf: 'd9 Samhällsgemenskap, d7 Mellanmänskliga relationer, e5 Tjänster och system | d910 Samhällsgemenskap, d750 Informella sociala relationer',
+    ksi: 'SX Samhällsgemenskap, SS Mellanmänskliga relationer, ST Utbildning',
+    bbic: 'Sociala relationer, Familj och miljö, Socialt nätverk',
+    bbicCategory: 'child-development',
+    bbicArea: 'Sociala relationer',
+    ibic: 'Samhällsgemenskap, Sociala relationer, Informella relationer',
+    kva: 'UX001 (Upprätta nätverkskarta)',
+    snomed: '86603000 (Social delaktighet)',
+    source: 'Trygghetsenkät',
+    notes: 'Har kompisar och känner sig inkluderad i klassen. Konfidens: 91%'
+  }
+];
+
+export const ELSA_RISK_FACTORS: RiskFactor[] = [
+  {
+    id: 'rf-elsa-001',
+    category: 'individual',
+    severity: 'medium',
+    name: 'Dyslexi',
+    description: 'Specifik lässvårighet som påverkar läsning och skrivning',
+    identifiedDate: '2025-09-01',
+    identifiedBy: 'elementary-school',
+    relatedDimensions: ['achieving'],
+    icfCodes: ['d140', 'd166'],
+    mitigationActions: [
+      'Ljudböcker via Legimus',
+      'Digitala läromedel med bildstöd',
+      'Specialpedagog 2h/vecka'
+    ],
+    status: 'monitoring'
+  },
+  {
+    id: 'rf-elsa-002',
+    category: 'environment',
+    severity: 'low',
+    name: 'Ljudkänslighet i klassrum',
+    description: 'Hög ljudnivå i klassrummet och korridorer stressar',
+    identifiedDate: '2025-09-15',
+    identifiedBy: 'elementary-school',
+    relatedDimensions: ['safe', 'achieving'],
+    icfCodes: ['e250'],
+    mitigationActions: [
+      'Möjlighet att använda hörselskydd',
+      'Tillgång till lugnare plats vid behov'
+    ],
+    status: 'monitoring'
+  }
+];
+
+export const ELSA_PROTECTIVE_FACTORS: ProtectiveFactor[] = [
+  {
+    id: 'pf-elsa-001',
+    category: 'family',
+    strength: 'strong',
+    name: 'Stöttande familj',
+    description: 'Föräldrar som aktivt följer upp läxor och stöttar hemma',
+    identifiedDate: '2025-09-01',
+    identifiedBy: 'elementary-school',
+    relatedDimensions: ['nurtured', 'achieving', 'safe'],
+    icfCodes: ['e310']
+  },
+  {
+    id: 'pf-elsa-002',
+    category: 'environment',
+    strength: 'strong',
+    name: 'Fungerande anpassningar',
+    description: 'Ljudböcker och bildstöd fungerar bra',
+    identifiedDate: '2025-09-01',
+    identifiedBy: 'elementary-school',
+    relatedDimensions: ['achieving'],
+    icfCodes: ['e1301', 'e585']
+  },
+  {
+    id: 'pf-elsa-003',
+    category: 'individual',
+    strength: 'strong',
+    name: 'God motivation',
+    description: 'Elsa är motiverad att lära sig och deltar aktivt när material är anpassat',
+    identifiedDate: '2025-09-01',
+    identifiedBy: 'elementary-school',
+    relatedDimensions: ['achieving', 'responsible'],
+    icfCodes: ['b1266']
+  }
+];
+
 export function getShanarriDataByProfile(profileId: string): ShanarriIndicator[] {
   switch (profileId) {
     case 'lisa':
@@ -664,6 +888,8 @@ export function getShanarriDataByProfile(profileId: string): ShanarriIndicator[]
       return OMAR_SHANARRI;
     case 'sofia':
       return SOFIA_SHANARRI;
+    case 'elsa':
+      return ELSA_SHANARRI;
     case 'erik':
     default:
       // Erik uses the default data from constants.ts
@@ -679,6 +905,8 @@ export function getRiskFactorsByProfile(profileId: string): RiskFactor[] {
       return OMAR_RISK_FACTORS;
     case 'sofia':
       return SOFIA_RISK_FACTORS;
+    case 'elsa':
+      return ELSA_RISK_FACTORS;
     case 'erik':
     default:
       return [];
@@ -693,6 +921,8 @@ export function getProtectiveFactorsByProfile(profileId: string): ProtectiveFact
       return OMAR_PROTECTIVE_FACTORS;
     case 'sofia':
       return SOFIA_PROTECTIVE_FACTORS;
+    case 'elsa':
+      return ELSA_PROTECTIVE_FACTORS;
     case 'erik':
     default:
       return [];
