@@ -5,17 +5,18 @@
  */
 
 import React, { useState } from 'react';
-import { Activity, Shield, TrendingUp, Info, User, Target } from 'lucide-react';
+import { Activity, Shield, TrendingUp, Info, User, Target, BarChart3 } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
-import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
+import GapTrendChart from './GapTrendChart';
+import { ICF_DEMO_PROFILES, LISA_GAP_TREND_LEARNING } from '../data/icf-demo-profiles';
 
 interface N2DeepDiveProps {
   selectedProfileId: string;
 }
 
 const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
-  const [selectedView, setSelectedView] = useState<'gap' | 'risk' | 'both'>('both');
+  const [selectedView, setSelectedView] = useState<'gap' | 'risk' | 'both' | 'trend'>('both');
 
   const profile = ICF_DEMO_PROFILES[selectedProfileId];
 
@@ -27,10 +28,10 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
           <Info className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-yellow-900 mb-2">N2 Fördjupad analys inte tillgänglig</h2>
           <p className="text-yellow-800">
-            N2 Fördjupad analys är för närvarande endast implementerad för <strong>Lisa J.</strong>
+            N2 Fördjupad analys är för närvarande implementerad för <strong>Lisa J.</strong> och <strong>Elsa Bergström</strong>.
           </p>
           <p className="text-sm text-yellow-700 mt-2">
-            Välj Lisa J. från profil-menyn för att se N2-nivå med Performance vs Capacity gap-analys.
+            Välj Lisa eller Elsa från profil-menyn för att se N2-nivå med Performance vs Capacity gap-analys.
           </p>
         </div>
       </div>
@@ -192,6 +193,17 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
               <Shield className="w-4 h-4 inline mr-1" />
               Risk/Skydd
             </button>
+            <button
+              onClick={() => setSelectedView('trend')}
+              className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                selectedView === 'trend'
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <BarChart3 className="w-4 h-4 inline mr-1" />
+              Gap-trend
+            </button>
           </div>
         </div>
       </div>
@@ -216,6 +228,14 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
           <RiskProtectionBalance
             environmentalFactors={environmentalFactors}
             showBySpoke={true}
+          />
+        )}
+
+        {selectedView === 'trend' && (
+          <GapTrendChart
+            trends={selectedProfileId === 'lisa' ? [LISA_GAP_TREND_LEARNING] : []}
+            title="Gap-trendanalys över tid"
+            showInterventions={true}
           />
         )}
       </div>
