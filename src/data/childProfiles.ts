@@ -34,6 +34,20 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
     }
   },
 
+  // NIVÅ 2: Stödprofil - Dyslexi med anpassningar (från WHO ICF-guiden)
+  'elsa': {
+    name: "Elsa Bergström",
+    ssn: "20141015-5678",
+    age: 10,
+    school: "Stigslundsskolan",
+    grade: "Åk 4",
+    sipActive: true,
+    sipGoal: {
+      child: "Jag vill kunna läsa böcker som mina kompisar läser och slippa vara rädd i skolan.",
+      professional: "Elsa ska uppnå läsförmåga motsvarande åk 3-nivå och uppleva trygghet i skolmiljön senast juni 2026."
+    }
+  },
+
   // NIVÅ 1: Universell med tidig uppmärksamhet
   'omar': {
     name: "Omar H.",
@@ -98,6 +112,18 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     currentPhase: 'elementary-school',
     description: 'Stödprofil - Stödsamtal och social träning',
     emoji: '👧',
+    colorScheme: {
+      primary: '#E87C00',
+      background: '#FFF4E6'
+    }
+  },
+
+  'elsa': {
+    id: 'elsa',
+    supportLevel: 'enhanced-support',
+    currentPhase: 'elementary-school',
+    description: 'Stödprofil - Dyslexi med anpassningar (ICF-exempel)',
+    emoji: '👧🏼',
     colorScheme: {
       primary: '#E87C00',
       background: '#FFF4E6'

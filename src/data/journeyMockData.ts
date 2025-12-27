@@ -805,10 +805,135 @@ export const omarJourneyProfile: JourneyProfile = {
   nextFollowUp: '2026-03-01'
 };
 
+// ==========================================
+// Elsa - Stödprofil (Dyslexi med anpassningar - från WHO ICF-guiden)
+// ==========================================
+
+const elsaWelfareWheel: WelfareWheelSpokeData[] = [
+  {
+    spoke: 'trygg',
+    name: 'TRYGG',
+    childIndicator: 'Jag känner mig trygg',
+    guardianIndicator: 'Mitt barn är tryggt',
+    professionalIndicator: 'Trygghetsmarkör/trend',
+    icfDomains: ['b152', 'd240', 'e3/e4/e5'],
+    ksiTargets: ['Target: psykosocial miljö'],
+    ss12000Source: ['Trygghetsenkät'],
+    status: 2,
+    history: []
+  },
+  {
+    spoke: 'halsa',
+    name: 'HÄLSA / MÅ BRA',
+    childIndicator: 'Jag mår bra',
+    guardianIndicator: 'Hälsa fungerar i vardagen',
+    professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
+    icfDomains: ['b130', 'b134', 'b152'],
+    ksiTargets: ['Target: hälsa/egenvård'],
+    ss12000Source: ['Elevhälsosamtal'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'utvecklas',
+    name: 'UTVECKLAS',
+    childIndicator: 'Jag hänger med',
+    guardianIndicator: 'Utvecklas i sin takt',
+    professionalIndicator: 'Risk för ej nå mål',
+    icfDomains: ['d1/d8', 'b140–b144'],
+    ksiTargets: ['Target: utbildning/lärande'],
+    ss12000Source: ['Extra anpassningar'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'larande',
+    name: 'LÄRANDE',
+    childIndicator: 'Jag får hjälp när jag behöver',
+    guardianIndicator: 'Skolan anpassar',
+    professionalIndicator: 'Anpassningar aktiva',
+    icfDomains: ['d140', 'd150', 'd160'],
+    ksiTargets: ['Target: lärmiljö'],
+    ss12000Source: ['Anpassningar'],
+    status: 2,
+    history: []
+  },
+  {
+    spoke: 'hemmet',
+    name: 'HEMMET',
+    childIndicator: 'Det känns bra hemma',
+    guardianIndicator: 'Vi klarar vardagen',
+    professionalIndicator: 'Samverkansbehov',
+    icfDomains: ['e310'],
+    ksiTargets: ['Target: hemliv'],
+    ss12000Source: ['Kontaktlogik/möten'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'relationer',
+    name: 'RELATIONER',
+    childIndicator: 'Jag har någon att vara med',
+    guardianIndicator: 'Relationer fungerar',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d350', 'd710–d740'],
+    ksiTargets: ['Target: relationer'],
+    ss12000Source: ['Enkät/observation'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'aktiv',
+    name: 'AKTIV',
+    childIndicator: 'Jag gör något jag gillar',
+    guardianIndicator: 'Meningsfull fritid',
+    professionalIndicator: 'Deltagande/hinder',
+    icfDomains: ['d920'],
+    ksiTargets: ['Target: fritid/aktivitet'],
+    ss12000Source: ['Aktivitetsindikator'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'delaktig',
+    name: 'DELAKTIG',
+    childIndicator: 'Jag får säga vad jag tycker',
+    guardianIndicator: 'Barnet lyssnas på',
+    professionalIndicator: 'Inflytande dokumenterat',
+    icfDomains: ['d9'],
+    ksiTargets: ['Target: delaktighet'],
+    ss12000Source: ['Barnsamtal'],
+    status: 4,
+    history: []
+  }
+];
+
+export const elsaJourneyProfile: JourneyProfile = {
+  childId: 'elsa',
+  currentLevel: 'stodprofil',
+  levelHistory: [
+    {
+      date: '2025-09-01',
+      fromLevel: 'universell',
+      toLevel: 'stodprofil',
+      reason: 'Dyslexi identifierad, behöver anpassningar och specialpedagogiskt stöd',
+      triggeredBy: null,
+      decidedBy: 'elementary-school',
+      notes: 'WHO ICF exempel-profil. Elsa har dyslexi och använder ljudböcker och bildstöd.'
+    }
+  ],
+  welfareWheel: elsaWelfareWheel,
+  activeTriggers: [],
+  dataSharingConsent: [],
+  lastAssessment: '2025-11-15',
+  nextFollowUp: '2026-02-15'
+};
+
 // Export all profiles
 export const JOURNEY_PROFILES: Record<string, JourneyProfile> = {
   erik: erikJourneyProfile,
   lisa: lisaJourneyProfile,
   omar: omarJourneyProfile,
+  elsa: elsaJourneyProfile,
   sofia: sofiaJourneyProfile
 };

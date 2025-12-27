@@ -502,6 +502,67 @@ export const ELSA_PROFILE: ICFChildProfile = {
   riskProtectionBalance: 4  // Barriers: 2+1=3, Facilitators: 3+2+2=7, Balance: 7-3=+4
 };
 
+// Complete Elsa profile with same structure as LISA_PROFILE for ICFDemo component
+export const ELSA_COMPLETE_PROFILE = {
+  name: 'Elsa Bergström',
+  age: 10,
+  grade: 'Åk 4',
+  schoolYear: '2024/2025',
+  level: 'N2' as const,
+
+  // ICF-data
+  icfAssessments: ELSA_PROFILE.icfAssessments,
+  environmentalFactors: ELSA_PROFILE.environmentalFactors,
+  riskProtectionBalance: {
+    barriers: ELSA_PROFILE.environmentalFactors.filter(ef => ef.type === 'barrier'),
+    facilitators: ELSA_PROFILE.environmentalFactors.filter(ef => ef.type === 'facilitator'),
+    riskScore: 3,  // 2+1
+    protectionScore: 7,  // 3+2+2
+    balance: 4,  // 7-3
+    interpretation: 'protection-dominates' as const,
+    spokeBalances: [
+      {
+        spoke: 'larande',
+        riskScore: 2,
+        protectionScore: 7,  // 3+2+2
+        balance: 5
+      },
+      {
+        spoke: 'trygg',
+        riskScore: 2,
+        protectionScore: 2,
+        balance: 0
+      },
+      {
+        spoke: 'halsa',
+        riskScore: 0,
+        protectionScore: 2,
+        balance: 2
+      }
+    ]
+  },
+
+  // Sammanfattning
+  summary: {
+    primaryConcerns: ['Läsning (dyslexi)', 'Koncentration', 'Ljudkänslighet'],
+    strengths: ['Stöttande familj', 'Fungerande anpassningar', 'God motivation'],
+    interventionsWorking: true,
+    nextSteps: [
+      'Fortsätt ljudböcker och bildstöd (fungerar!)',
+      'Fortsätt specialpedagogstöd 2h/vecka',
+      'Överväg hörselskydd för klassrum',
+      'Uppföljning om 3 månader'
+    ]
+  },
+
+  // Barnets röst
+  childsVoice: {
+    goals: 'Jag vill kunna läsa böcker som mina kompisar läser och slippa vara rädd i skolan.',
+    howFeeling: 'Det är svårt att läsa, men när jag får lyssna på ljudböcker och se bilder förstår jag mycket bättre. Ibland blir det för högt i klassrummet och då har jag svårt att koncentrera mig.',
+    whatHelps: 'Ljudböckerna hjälper jätteme mycket! Och när läraren visar bilder. Mina föräldrar hjälper mig hemma också. Specialläraren är jättesnäll.'
+  }
+};
+
 // ==========================================
 // Ytterligare demo-profiler (använd befintliga)
 // ==========================================
@@ -536,7 +597,7 @@ export const SOFIA_PROFILE = {
 // Export alla profiler
 export const ICF_DEMO_PROFILES = {
   lisa: LISA_PROFILE,
-  elsa: ELSA_PROFILE,
+  elsa: ELSA_COMPLETE_PROFILE,
   erik: ERIK_PROFILE,
   omar: OMAR_PROFILE,
   sofia: SOFIA_PROFILE
