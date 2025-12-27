@@ -855,7 +855,7 @@ const elsaWelfareWheel: WelfareWheelSpokeData[] = [
     icfDomains: ['d140', 'd150', 'd160'],
     ksiTargets: ['Target: lärmiljö'],
     ss12000Source: ['Anpassningar'],
-    status: 2,
+    status: 1,
     history: []
   },
   {
@@ -903,7 +903,7 @@ const elsaWelfareWheel: WelfareWheelSpokeData[] = [
     icfDomains: ['d9'],
     ksiTargets: ['Target: delaktighet'],
     ss12000Source: ['Barnsamtal'],
-    status: 4,
+    status: 3,
     history: []
   }
 ];

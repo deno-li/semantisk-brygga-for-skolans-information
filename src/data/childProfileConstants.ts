@@ -2,7 +2,7 @@ import { ChildProfile } from '../types/types';
 
 export const CHILD_PROFILE: ChildProfile = {
   name: "Erik Andersson",
-  ssn: "20100315-1234",
+  ssn: "DEMO-ERIK-ANDERSSON",
   age: 15,
   school: "Stigslundsskolan",
   grade: "Åk 9",

@@ -98,6 +98,7 @@ Enkätverktyg för barn att uttrycka sina egna upplevelser:
 **Dataskydd & Säkerhet**
 **VIKTIGT:** Detta är en prototyp med **fiktiva demonstrationsdata**.
 Inga personuppgifter eller känslig information lagras. Alla namn, personnummer och skolnamn är påhittade exempel för demonstrationsändamål.
+Alla ID-fält i gränssnittet är demoprofil-ID (inga personnummer eller födelsedata).
 
 ### 8. Övriga funktioner
 - AI-analys
