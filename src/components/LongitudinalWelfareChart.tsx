@@ -19,14 +19,14 @@ interface LongitudinalWelfareChartProps {
 
 // Spoke color mapping
 const SPOKE_COLORS: Record<string, string> = {
-  trygg: '#22c55e',     // green
-  halsa: '#3b82f6',     // blue
-  utvecklas: '#f59e0b', // amber
-  larande: '#8b5cf6',   // violet
-  hemmet: '#ec4899',    // pink
-  relationer: '#14b8a6',// teal
-  aktiv: '#f97316',     // orange
-  delaktig: '#6366f1'   // indigo
+  trygg: '#22c55e',        // green
+  halsa: '#3b82f6',        // blue
+  utvecklas: '#f59e0b',    // amber
+  omvardad: '#ec4899',     // pink
+  aktiv: '#f97316',        // orange
+  respekterad: '#14b8a6',  // teal
+  ansvarstagande: '#8b5cf6', // violet
+  delaktig: '#6366f1'      // indigo
 };
 
 // Status color mapping

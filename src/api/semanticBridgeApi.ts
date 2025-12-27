@@ -362,7 +362,7 @@ class SemanticBridgeAPI {
           type: 'facilitator',
           suggested_level: 3,
           reasoning: 'Inlästa böcker och digitala läromedel fungerar som betydande underlättare. Dessa verktyg är kritiska för barnets lärande.',
-          related_spokes: ['larande']
+          related_spokes: ['ansvarstagande']
         },
         {
           code: 'e125',
@@ -370,7 +370,7 @@ class SemanticBridgeAPI {
           type: 'facilitator',
           suggested_level: 2,
           reasoning: 'Bildstöd och visuella hjälpmedel underlättar kommunikation och förståelse.',
-          related_spokes: ['larande', 'delaktig']
+          related_spokes: ['ansvarstagande', 'delaktig']
         },
         {
           code: 'e250',
@@ -378,7 +378,7 @@ class SemanticBridgeAPI {
           type: 'barrier',
           suggested_level: 2,
           reasoning: 'Hög ljudnivå i klassrummet stressar barnet och försvårar koncentration.',
-          related_spokes: ['larande', 'trygg']
+          related_spokes: ['ansvarstagande', 'trygg']
         }
       ],
       risk_protection_balance: {
@@ -389,7 +389,7 @@ class SemanticBridgeAPI {
       },
       welfare_wheel_mapping: [
         {
-          spoke: 'larande',
+          spoke: 'ansvarstagande',
           confidence: 0.95,
           suggested_status: 2
         },

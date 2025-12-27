@@ -70,18 +70,14 @@ const ICFSuggestionsDisplay: React.FC<ICFSuggestionsDisplayProps> = ({
   // Helper: Get Swedish spoke name
   const getSpokeNameSwedish = (spoke: WelfareWheelSpoke): string => {
     const names: Record<WelfareWheelSpoke, string> = {
-      'halsa': 'Hälsa',
-      'larande': 'Lärande',
-      'relationer': 'Relationer',
-      'hemmet': 'Hemmet',
-      'trygg': 'Trygghet',
-      'utvecklas': 'Utvecklas',
-      'delaktig': 'Delaktighet',
-      'aktiv': 'Aktiv',
+      'halsa': 'Må bra',
+      'ansvarstagande': 'Ansvarstagande',
       'respekterad': 'Respekterad',
-      'ansvarig': 'Ansvarig',
-      'inkluderad': 'Inkluderad',
-      'nurtured': 'Omhändertagen'
+      'omvardad': 'Omvårdad',
+      'trygg': 'Trygg',
+      'utvecklas': 'Utvecklas',
+      'delaktig': 'Delaktig',
+      'aktiv': 'Aktiv'
     };
     return names[spoke] || spoke;
   };

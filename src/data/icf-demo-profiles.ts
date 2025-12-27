@@ -150,7 +150,7 @@ export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
     type: 'facilitator',
     level: 1,  // Lätt underlättare
     description: 'Bildstöd i all undervisning hjälper Lisa läsa enkla texter med förståelse',
-    relatedSpokes: ['larande'],
+    relatedSpokes: ['ansvarstagande'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'school',
@@ -164,7 +164,7 @@ export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
     type: 'facilitator',
     level: 2,  // Måttlig underlättare
     description: 'Stödsamtal och social träning 3h/vecka',
-    relatedSpokes: ['larande', 'trygg', 'relationer'],
+    relatedSpokes: ['ansvarstagande', 'trygg', 'respekterad'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'school',
@@ -178,7 +178,7 @@ export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
     type: 'facilitator',
     level: 1,  // Lätt underlättare
     description: 'Tillgång till lugnrum vid behov, används 2-3 ggr/vecka',
-    relatedSpokes: ['trygg', 'larande'],
+    relatedSpokes: ['trygg', 'ansvarstagande'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'school',
@@ -191,7 +191,7 @@ export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
     type: 'facilitator',
     level: 3,  // Betydande underlättare
     description: 'Engagerade föräldrar, stöttar hemma med läxor varje dag',
-    relatedSpokes: ['larande', 'trygg', 'hemmet'],
+    relatedSpokes: ['ansvarstagande', 'trygg', 'omvardad'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'home',
@@ -219,7 +219,7 @@ export const LISA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
     type: 'barrier',
     level: 1,  // Lätt barriär
     description: 'Klassrum kan bli för högljutt, sensorisk överkänslighet',
-    relatedSpokes: ['larande', 'trygg'],
+    relatedSpokes: ['ansvarstagande', 'trygg'],
     identifiedDate: '2024-09-01',
     identifiedBy: 'elementary-school',
     context: 'school',
@@ -241,7 +241,7 @@ export const LISA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
 
   spokeBalances: [
     {
-      spoke: 'larande',
+      spoke: 'ansvarstagande',
       riskScore: 1,  // e250
       protectionScore: 4,  // e1301(+1) + e330(+2) + e585(+1)
       balance: 3
@@ -259,7 +259,7 @@ export const LISA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
       balance: 1
     },
     {
-      spoke: 'hemmet',
+      spoke: 'omvardad',
       riskScore: 0,
       protectionScore: 3,  // e310(+3)
       balance: 3
@@ -439,7 +439,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'facilitator',
       level: 3,  // +3 = Betydande underlättare
       description: 'Inlästa böcker via Legimus + digitala läromedel',
-      relatedSpokes: ['larande'],
+      relatedSpokes: ['ansvarstagande'],
       identifiedDate: '2025-09-01',
       identifiedBy: 'elementary-school',
       context: 'school',
@@ -451,7 +451,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'facilitator',
       level: 2,  // +2 = Måttlig underlättare
       description: 'Stöttande föräldrar som följer upp läxor',
-      relatedSpokes: ['halsa', 'trygg', 'larande'],
+      relatedSpokes: ['halsa', 'trygg', 'ansvarstagande'],
       identifiedDate: '2025-09-01',
       identifiedBy: 'elementary-school',
       context: 'home',
@@ -463,7 +463,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'facilitator',
       level: 2,  // +2 = Måttlig underlättare
       description: 'Specialpedagog 2 tim/vecka med fokus på läsning',
-      relatedSpokes: ['larande'],
+      relatedSpokes: ['ansvarstagande'],
       identifiedDate: '2025-09-01',
       identifiedBy: 'elementary-school',
       context: 'school',
@@ -477,7 +477,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'barrier',
       level: 2,  // .2 = Måttlig barriär
       description: 'Hög ljudnivå i klassrummet och korridorer stressar Elsa',
-      relatedSpokes: ['larande', 'trygg'],
+      relatedSpokes: ['ansvarstagande', 'trygg'],
       identifiedDate: '2025-09-15',
       identifiedBy: 'elementary-school',
       context: 'school',
@@ -522,7 +522,7 @@ export const ELSA_COMPLETE_PROFILE = {
     interpretation: 'protection-dominates' as const,
     spokeBalances: [
       {
-        spoke: 'larande',
+        spoke: 'ansvarstagande',
         riskScore: 2,
         protectionScore: 7,  // 3+2+2
         balance: 5
