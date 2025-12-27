@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { ShanarriIndicator } from '../types/types';
 import { SHANARRI_DATA } from '../data/constants';
 import { getShanarriDataByProfile } from '../data/profileData';
+import { JOURNEY_PROFILES } from '../data/journeyMockData';
+import { convertWelfareWheelArrayToShanarri } from '../utils/welfareConverter';
 
 /**
  * Custom hook for welfare data with filtering capabilities
@@ -10,8 +12,16 @@ import { getShanarriDataByProfile } from '../data/profileData';
  * @returns Filtered welfare data
  */
 export function useWelfareData(profileId: string = 'erik', searchQuery: string = '') {
-  // Get profile-specific data or fall back to default (Erik's data from constants)
+  // Get profile-specific data - prioritize Journey Profile data if available
   const shanarriData = useMemo(() => {
+    // First, check if this profile has Journey Profile data with welfareWheel
+    const journeyProfile = JOURNEY_PROFILES[profileId];
+    if (journeyProfile && journeyProfile.welfareWheel && journeyProfile.welfareWheel.length > 0) {
+      // Convert Journey Profile welfareWheel data to ShanarriIndicator format
+      return convertWelfareWheelArrayToShanarri(journeyProfile.welfareWheel);
+    }
+    
+    // Fall back to profile-specific SHANARRI data
     const profileData = getShanarriDataByProfile(profileId);
     return profileData.length > 0 ? profileData : SHANARRI_DATA;
   }, [profileId]);
