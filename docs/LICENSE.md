@@ -120,7 +120,7 @@ För användning i projekt kontakta via GitHub.
 ---
 
 **Skapad:** 2025-12-08
-**Senast uppdaterad:** 2025-12-15
+**Senast uppdaterad:** 2025-12-27
 **Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
 **Licens (dokumentation):** CC BY 4.0
 **Licens (kod):** MIT
