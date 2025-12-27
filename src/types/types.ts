@@ -503,18 +503,14 @@ export type JourneyLevel =
   | 'samordning';         // Nivå 3: Samordnade insatser - Samlad plan över huvudmannagränser
 
 export type WelfareWheelSpoke =
-  | 'trygg'               // TRYGG - Jag känner mig trygg
-  | 'halsa'               // HÄLSA/MÅ BRA - Jag mår bra
-  | 'utvecklas'           // UTVECKLAS - Jag hänger med
-  | 'larande'             // LÄRANDE - Jag får hjälp när jag behöver
-  | 'hemmet'              // HEMMET - Det känns bra hemma
-  | 'relationer'          // RELATIONER - Jag har någon att vara med
-  | 'aktiv'               // AKTIV - Jag gör något jag gillar varje vecka
-  | 'delaktig'            // DELAKTIG - Jag får vara med och påverka
-  | 'respekterad'         // RESPEKTERAD - Jag blir respekterad
-  | 'ansvarig'            // ANSVARIG - Jag tar ansvar
-  | 'inkluderad'          // INKLUDERAD - Jag känner mig inkluderad
-  | 'nurtured';           // NURTURED - Jag blir omhändertagen
+  | 'trygg'               // TRYGG - Safe
+  | 'halsa'               // MÅ BRA - Healthy
+  | 'utvecklas'           // UTVECKLAS - Achieving
+  | 'omvardad'            // OMVÅRDAD - Nurtured
+  | 'aktiv'               // AKTIV - Active
+  | 'respekterad'         // RESPEKTERAD - Respected
+  | 'ansvarstagande'      // ANSVARSTAGANDE - Responsible
+  | 'delaktig';           // DELAKTIG - Included
 
 export interface WelfareWheelSpokeData {
   spoke: WelfareWheelSpoke;

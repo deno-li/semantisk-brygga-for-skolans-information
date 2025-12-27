@@ -169,14 +169,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'early-childhood',
     age: 5,
     dimensions: {
-      'safe': { value: 4, source: 'bvc', notes: 'Trygg anknytning' },
-      'healthy': { value: 4, source: 'bvc', notes: 'God hälsa' },
-      'nurtured': { value: 5, source: 'bvc', notes: 'Omsorgsfull familj' },
-      'active': { value: 4, source: 'bvc', notes: 'Lekfull och motoriskt aktiv' },
-      'included': { value: 4, source: 'preschool', notes: 'Deltar i lekaktiviteter' },
-      'responsible': { value: 3, source: 'preschool', notes: 'Åldersadekvat' },
-      'respected': { value: 4, source: 'preschool', notes: 'Respekteras av kamrater' },
-      'achieving': { value: 4, source: 'preschool', notes: 'Nyfiken och lär sig snabbt' }
+      'trygg': { value: 4, source: 'bvc', notes: 'Trygg anknytning' },
+      'halsa': { value: 4, source: 'bvc', notes: 'God hälsa' },
+      'omvardad': { value: 5, source: 'bvc', notes: 'Omsorgsfull familj' },
+      'aktiv': { value: 4, source: 'bvc', notes: 'Lekfull och motoriskt aktiv' },
+      'delaktig': { value: 4, source: 'preschool', notes: 'Deltar i lekaktiviteter' },
+      'ansvarstagande': { value: 3, source: 'preschool', notes: 'Åldersadekvat' },
+      'respekterad': { value: 4, source: 'preschool', notes: 'Respekteras av kamrater' },
+      'utvecklas': { value: 4, source: 'preschool', notes: 'Nyfiken och lär sig snabbt' }
     },
     riskFactors: [],
     protectiveFactors: ['pf-001', 'pf-002'],
@@ -188,14 +188,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'elementary-school',
     age: 7,
     dimensions: {
-      'safe': { value: 4, source: 'elementary-school', notes: 'Trivs i skolan' },
-      'healthy': { value: 4, source: 'healthcare', notes: 'God hälsa' },
-      'nurtured': { value: 4, source: 'elementary-school', notes: 'Föräldrar engagerade' },
-      'active': { value: 4, source: 'elementary-school', notes: 'Deltar i idrott' },
-      'included': { value: 4, source: 'elementary-school', notes: 'Har kompisar' },
-      'responsible': { value: 4, source: 'elementary-school', notes: 'Ansvarsfull' },
-      'respected': { value: 4, source: 'elementary-school', notes: 'Positiv självbild' },
-      'achieving': { value: 3, source: 'elementary-school', notes: 'Vissa läsutmaningar börjar synas' }
+      'trygg': { value: 4, source: 'elementary-school', notes: 'Trivs i skolan' },
+      'halsa': { value: 4, source: 'healthcare', notes: 'God hälsa' },
+      'omvardad': { value: 4, source: 'elementary-school', notes: 'Föräldrar engagerade' },
+      'aktiv': { value: 4, source: 'elementary-school', notes: 'Deltar i idrott' },
+      'delaktig': { value: 4, source: 'elementary-school', notes: 'Har kompisar' },
+      'ansvarstagande': { value: 4, source: 'elementary-school', notes: 'Ansvarsfull' },
+      'respekterad': { value: 4, source: 'elementary-school', notes: 'Positiv självbild' },
+      'utvecklas': { value: 3, source: 'elementary-school', notes: 'Vissa läsutmaningar börjar synas' }
     },
     riskFactors: [],
     protectiveFactors: ['pf-001', 'pf-002', 'pf-003', 'pf-005'],
@@ -207,14 +207,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'elementary-school',
     age: 10,
     dimensions: {
-      'safe': { value: 4, source: 'elementary-school', notes: 'Trygg i skolan' },
-      'healthy': { value: 4, source: 'student-health', notes: 'God hälsa' },
-      'nurtured': { value: 4, source: 'elementary-school', notes: 'Stabil familj' },
-      'active': { value: 4, source: 'elementary-school', notes: 'Fotboll 2 ggr/vecka' },
-      'included': { value: 3, source: 'elementary-school', notes: 'Begränsat kamratkrets' },
-      'responsible': { value: 4, source: 'elementary-school', notes: 'Ansvarsfull' },
-      'respected': { value: 4, source: 'elementary-school', notes: 'Respekteras' },
-      'achieving': { value: 2, source: 'elementary-school', notes: 'Läs- och skrivsvårigheter tydliga' }
+      'trygg': { value: 4, source: 'elementary-school', notes: 'Trygg i skolan' },
+      'halsa': { value: 4, source: 'student-health', notes: 'God hälsa' },
+      'omvardad': { value: 4, source: 'elementary-school', notes: 'Stabil familj' },
+      'aktiv': { value: 4, source: 'elementary-school', notes: 'Fotboll 2 ggr/vecka' },
+      'delaktig': { value: 3, source: 'elementary-school', notes: 'Begränsat kamratkrets' },
+      'ansvarstagande': { value: 4, source: 'elementary-school', notes: 'Ansvarsfull' },
+      'respekterad': { value: 4, source: 'elementary-school', notes: 'Respekteras' },
+      'utvecklas': { value: 2, source: 'elementary-school', notes: 'Läs- och skrivsvårigheter tydliga' }
     },
     riskFactors: ['rf-001'],
     protectiveFactors: ['pf-001', 'pf-002', 'pf-003', 'pf-004', 'pf-005'],
@@ -226,14 +226,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'elementary-school',
     age: 13,
     dimensions: {
-      'safe': { value: 4, source: 'elementary-school', notes: 'Trygg i skolan' },
-      'healthy': { value: 4, source: 'student-health', notes: 'God fysisk hälsa' },
-      'nurtured': { value: 4, source: 'social-services', notes: 'Stabil men viss föräldrastress' },
-      'active': { value: 4, source: 'elementary-school', notes: 'Aktiv fritid' },
-      'included': { value: 3, source: 'elementary-school', notes: 'Ibland ensam' },
-      'responsible': { value: 4, source: 'elementary-school', notes: 'Tar ansvar' },
-      'respected': { value: 4, source: 'elementary-school', notes: 'Känner sig lyssnad på' },
-      'achieving': { value: 2, source: 'elementary-school', notes: 'Fortsatta läsutmaningar' }
+      'trygg': { value: 4, source: 'elementary-school', notes: 'Trygg i skolan' },
+      'halsa': { value: 4, source: 'student-health', notes: 'God fysisk hälsa' },
+      'omvardad': { value: 4, source: 'social-services', notes: 'Stabil men viss föräldrastress' },
+      'aktiv': { value: 4, source: 'elementary-school', notes: 'Aktiv fritid' },
+      'delaktig': { value: 3, source: 'elementary-school', notes: 'Ibland ensam' },
+      'ansvarstagande': { value: 4, source: 'elementary-school', notes: 'Tar ansvar' },
+      'respekterad': { value: 4, source: 'elementary-school', notes: 'Känner sig lyssnad på' },
+      'utvecklas': { value: 2, source: 'elementary-school', notes: 'Fortsatta läsutmaningar' }
     },
     riskFactors: ['rf-001', 'rf-003'],
     protectiveFactors: ['pf-001', 'pf-002', 'pf-003', 'pf-004', 'pf-005'],
@@ -245,14 +245,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'elementary-school',
     age: 14,
     dimensions: {
-      'safe': { value: 4, source: 'elementary-school', notes: 'Trivs i skolan, har kompisar' },
-      'healthy': { value: 4, source: 'student-health', notes: 'God hälsa, normal BMI' },
-      'nurtured': { value: 4, source: 'social-services', notes: 'Kontaktfamilj ger avlastning' },
-      'active': { value: 4, source: 'elementary-school', notes: 'Fotboll 2 ggr/vecka' },
-      'included': { value: 3, source: 'elementary-school', notes: 'Har några nära kompisar' },
-      'responsible': { value: 4, source: 'elementary-school', notes: 'Tar ansvar för uppgifter' },
-      'respected': { value: 4, source: 'elementary-school', notes: 'Lyssnad på av mentor' },
-      'achieving': { value: 2, source: 'elementary-school', notes: 'Behöver stöd i läsning/svenska' }
+      'trygg': { value: 4, source: 'elementary-school', notes: 'Trivs i skolan, har kompisar' },
+      'halsa': { value: 4, source: 'student-health', notes: 'God hälsa, normal BMI' },
+      'omvardad': { value: 4, source: 'social-services', notes: 'Kontaktfamilj ger avlastning' },
+      'aktiv': { value: 4, source: 'elementary-school', notes: 'Fotboll 2 ggr/vecka' },
+      'delaktig': { value: 3, source: 'elementary-school', notes: 'Har några nära kompisar' },
+      'ansvarstagande': { value: 4, source: 'elementary-school', notes: 'Tar ansvar för uppgifter' },
+      'respekterad': { value: 4, source: 'elementary-school', notes: 'Lyssnad på av mentor' },
+      'utvecklas': { value: 2, source: 'elementary-school', notes: 'Behöver stöd i läsning/svenska' }
     },
     riskFactors: ['rf-001', 'rf-002', 'rf-003', 'rf-004'],
     protectiveFactors: ['pf-001', 'pf-002', 'pf-003', 'pf-004', 'pf-005', 'pf-006'],
@@ -264,14 +264,14 @@ export const LONGITUDINAL_DATA: LongitudinalDataPoint[] = [
     phase: 'elementary-school',
     age: 15,
     dimensions: {
-      'safe': { value: 4, source: 'elementary-school' },
-      'healthy': { value: 4, source: 'student-health' },
-      'nurtured': { value: 4, source: 'social-services' },
-      'active': { value: 4, source: 'elementary-school' },
-      'included': { value: 3, source: 'elementary-school' },
-      'responsible': { value: 4, source: 'elementary-school' },
-      'respected': { value: 4, source: 'elementary-school' },
-      'achieving': { value: 2, source: 'elementary-school', notes: 'God progress med stöd' }
+      'trygg': { value: 4, source: 'elementary-school' },
+      'halsa': { value: 4, source: 'student-health' },
+      'omvardad': { value: 4, source: 'social-services' },
+      'aktiv': { value: 4, source: 'elementary-school' },
+      'delaktig': { value: 3, source: 'elementary-school' },
+      'ansvarstagande': { value: 4, source: 'elementary-school' },
+      'respekterad': { value: 4, source: 'elementary-school' },
+      'utvecklas': { value: 2, source: 'elementary-school', notes: 'God progress med stöd' }
     },
     riskFactors: ['rf-001', 'rf-002', 'rf-003', 'rf-004'],
     protectiveFactors: ['pf-001', 'pf-002', 'pf-003', 'pf-004', 'pf-005', 'pf-006'],
@@ -425,7 +425,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Lärande och utveckling',
         description: 'Kognitiv utveckling, skolprestationer och inlärningsförmåga',
         rating: 3,
-        shanarriLinks: ['achieving'],
+        shanarriLinks: ['utvecklas'],
         bbicCode: 'Utveckling: Utbildning',
         icfCodes: ['d1', 'd166', 'd145'],
         concerns: [
@@ -443,7 +443,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Sociala relationer och kommunikation',
         description: 'Förmåga att bygga och upprätthålla vänskap och kommunicera',
         rating: 4,
-        shanarriLinks: ['included', 'respected'],
+        shanarriLinks: ['delaktig', 'respekterad'],
         bbicCode: 'Utveckling: Emotionell & beteendemässig',
         icfCodes: ['d710', 'd720', 'd750'],
         concerns: [
@@ -461,7 +461,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Fysisk hälsa och motorik',
         description: 'Fysisk utveckling, hälsa och välbefinnande',
         rating: 4,
-        shanarriLinks: ['healthy', 'active'],
+        shanarriLinks: ['halsa', 'aktiv'],
         bbicCode: 'Utveckling: Hälsa',
         icfCodes: ['b530', 'd410', 'd450'],
         concerns: [],
@@ -484,7 +484,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Grundläggande omsorg',
         description: 'Mat, kläder, boende och fysisk omvårdnad',
         rating: 4,
-        shanarriLinks: ['nurtured', 'safe'],
+        shanarriLinks: ['omvardad', 'trygg'],
         bbicCode: 'Föräldraförmåga: Grundläggande omsorg',
         icfCodes: ['e310', 'e355'],
         concerns: [],
@@ -499,7 +499,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Emotionell värme och trygghet',
         description: 'Känslomässig anknytning och stöd från vårdnadshavare',
         rating: 3,
-        shanarriLinks: ['nurtured', 'safe', 'respected'],
+        shanarriLinks: ['omvardad', 'trygg', 'respekterad'],
         bbicCode: 'Föräldraförmåga: Emotionell värme',
         icfCodes: ['e310', 'd760'],
         concerns: [
@@ -518,7 +518,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Stimulans och vägledning',
         description: 'Stöd för lärande, utveckling och goda beslut',
         rating: 4,
-        shanarriLinks: ['achieving', 'responsible'],
+        shanarriLinks: ['utvecklas', 'ansvarstagande'],
         bbicCode: 'Föräldraförmåga: Stimulans',
         icfCodes: ['e310', 'd8'],
         concerns: [],
@@ -541,7 +541,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Skolmiljö',
         description: 'Skolan som arena för lärande och utveckling',
         rating: 4,
-        shanarriLinks: ['safe', 'achieving', 'included'],
+        shanarriLinks: ['trygg', 'utvecklas', 'delaktig'],
         bbicCode: 'Familj & Miljö: Utbildning',
         icfCodes: ['e585'],
         concerns: [
@@ -558,7 +558,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Socialt nätverk och fritid',
         description: 'Vänner, fritidsaktiviteter och samhällelig tillhörighet',
         rating: 4,
-        shanarriLinks: ['active', 'included', 'responsible'],
+        shanarriLinks: ['aktiv', 'delaktig', 'ansvarstagande'],
         bbicCode: 'Familj & Miljö: Sociala relationer',
         icfCodes: ['e325', 'd920'],
         concerns: [],
@@ -573,7 +573,7 @@ export const MY_WORLD_ASSESSMENTS: MyWorldTriangleAssessment[] = [
         name: 'Boendemiljö och samhälle',
         description: 'Hemområde, grannskap och samhällsresurser',
         rating: 4,
-        shanarriLinks: ['safe'],
+        shanarriLinks: ['trygg'],
         bbicCode: 'Familj & Miljö: Bostadsförhållanden',
         icfCodes: ['e210', 'e360'],
         concerns: [],
@@ -667,7 +667,7 @@ export const PROTECTIVE_ENVIRONMENT_FACTORS: ProtectiveEnvironmentFactor[] = [
     type: 'community',
     strength: 'strong',
     sustainabilityRisk: 'low',
-    relatedDimensions: ['achieving', 'included', 'respected']
+    relatedDimensions: ['utvecklas', 'delaktig', 'respekterad']
   },
   {
     id: 'prot-env-002',
@@ -676,7 +676,7 @@ export const PROTECTIVE_ENVIRONMENT_FACTORS: ProtectiveEnvironmentFactor[] = [
     type: 'community',
     strength: 'strong',
     sustainabilityRisk: 'low',
-    relatedDimensions: ['active', 'included', 'responsible']
+    relatedDimensions: ['aktiv', 'delaktig', 'ansvarstagande']
   },
   {
     id: 'prot-env-003',
@@ -685,7 +685,7 @@ export const PROTECTIVE_ENVIRONMENT_FACTORS: ProtectiveEnvironmentFactor[] = [
     type: 'family',
     strength: 'strong',
     sustainabilityRisk: 'low',
-    relatedDimensions: ['nurtured', 'safe', 'achieving']
+    relatedDimensions: ['omvardad', 'trygg', 'utvecklas']
   },
   {
     id: 'prot-env-004',
@@ -694,7 +694,7 @@ export const PROTECTIVE_ENVIRONMENT_FACTORS: ProtectiveEnvironmentFactor[] = [
     type: 'community',
     strength: 'moderate',
     sustainabilityRisk: 'medium',
-    relatedDimensions: ['nurtured', 'active', 'included']
+    relatedDimensions: ['omvardad', 'aktiv', 'delaktig']
   }
 ];
 
@@ -994,8 +994,8 @@ export const ACTOR_PROFILES: ActorProfile[] = [
     contact: 'lisa.svensson@gavle.se',
     role: 'Mentor & Klasslärare',
     accessLevel: 'extended',
-    canViewDimensions: ['safe', 'healthy', 'achieving', 'active', 'included', 'responsible', 'respected', 'nurtured'],
-    canEditDimensions: ['safe', 'achieving', 'active', 'included', 'responsible', 'respected'],
+    canViewDimensions: ['trygg', 'halsa', 'utvecklas', 'aktiv', 'delaktig', 'ansvarstagande', 'respekterad', 'omvardad'],
+    canEditDimensions: ['trygg', 'utvecklas', 'aktiv', 'delaktig', 'ansvarstagande', 'respekterad'],
     activePhases: ['elementary-school']
   },
   {
@@ -1005,8 +1005,8 @@ export const ACTOR_PROFILES: ActorProfile[] = [
     contact: 'karin.larsson@gavle.se',
     role: 'Socialsekreterare',
     accessLevel: 'full',
-    canViewDimensions: ['safe', 'healthy', 'achieving', 'active', 'included', 'responsible', 'respected', 'nurtured'],
-    canEditDimensions: ['safe', 'nurtured', 'included'],
+    canViewDimensions: ['trygg', 'halsa', 'utvecklas', 'aktiv', 'delaktig', 'ansvarstagande', 'respekterad', 'omvardad'],
+    canEditDimensions: ['trygg', 'omvardad', 'delaktig'],
     activePhases: ['early-childhood', 'preschool', 'elementary-school', 'high-school', 'young-adult']
   },
   {
@@ -1016,8 +1016,8 @@ export const ACTOR_PROFILES: ActorProfile[] = [
     contact: 'emma.karlsson@gavle.se',
     role: 'Skolsköterska',
     accessLevel: 'extended',
-    canViewDimensions: ['safe', 'healthy', 'achieving', 'active', 'included', 'responsible', 'respected'],
-    canEditDimensions: ['healthy'],
+    canViewDimensions: ['trygg', 'halsa', 'utvecklas', 'aktiv', 'delaktig', 'ansvarstagande', 'respekterad'],
+    canEditDimensions: ['halsa'],
     activePhases: ['elementary-school', 'high-school']
   },
   {
@@ -1027,8 +1027,8 @@ export const ACTOR_PROFILES: ActorProfile[] = [
     contact: 'anders.lakare@regiongavleborg.se',
     role: 'Barnläkare',
     accessLevel: 'standard',
-    canViewDimensions: ['healthy', 'achieving', 'responsible'],
-    canEditDimensions: ['healthy'],
+    canViewDimensions: ['halsa', 'utvecklas', 'ansvarstagande'],
+    canEditDimensions: ['halsa'],
     activePhases: ['early-childhood', 'preschool', 'elementary-school', 'high-school']
   },
   {
@@ -1038,8 +1038,8 @@ export const ACTOR_PROFILES: ActorProfile[] = [
     contact: 'maria.johansson@regiongavleborg.se',
     role: 'BVC-sköterska',
     accessLevel: 'standard',
-    canViewDimensions: ['safe', 'healthy', 'nurtured', 'active'],
-    canEditDimensions: ['healthy', 'nurtured'],
+    canViewDimensions: ['trygg', 'halsa', 'omvardad', 'aktiv'],
+    canEditDimensions: ['halsa', 'omvardad'],
     activePhases: ['early-childhood']
   }
 ];
@@ -1069,10 +1069,10 @@ const ENHANCED_CHILD_PROFILE: EnhancedChildProfile = {
         'Föräldrastress identifierad'
       ],
       riskFactors: ['rf-001', 'rf-002', 'rf-003', 'rf-004'],
-      dimensions: ['achieving', 'included'],
+      dimensions: ['utvecklas', 'delaktig'],
       actionPlan: 'Samordnad plan upprättad med skola, BUP och socialtjänst. Kontaktfamilj insatt för avlastning.',
       responsibleSector: 'social-services',
-      status: 'active'
+      status: 'aktiv'
     }
   ],
   myWorldAssessments: MY_WORLD_ASSESSMENTS,

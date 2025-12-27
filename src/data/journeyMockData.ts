@@ -35,7 +35,7 @@ const erikWelfareWheel: WelfareWheelSpokeData[] = [
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -63,39 +63,15 @@ const erikWelfareWheel: WelfareWheelSpokeData[] = [
     ]
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
-    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
-    ksiTargets: ['Target: lärmiljö', 'Action: anpassning/tillgängliggörande', 'Means: material/struktur/stödperson'],
-    ss12000Source: ['Anpassningar', 'Schema/strukturstöd'],
-    status: 5,
-    history: []
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov (nivå)',
     icfDomains: ['e310–e315', 'd760', 'e5'],
     ksiTargets: ['Target: hemliv', 'Action: rådgivning/stöd', 'Means: samtal/hembesök/samverkansmöte'],
     ss12000Source: ['Kontaktlogik/möten'],
     status: 5,
-    history: []
-  },
-  {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
-    professionalIndicator: 'Trivselindikator',
-    icfDomains: ['d710–d740', 'd750', 'e4'],
-    ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
-    ss12000Source: ['Enkät/observation', 'Elevhälsoplan'],
-    status: 4,
     history: []
   },
   {
@@ -107,6 +83,30 @@ const erikWelfareWheel: WelfareWheelSpokeData[] = [
     icfDomains: ['d920', 'd450–d455', 'e3'],
     ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
     ss12000Source: ['Aktivitetsindikator'],
+    status: 5,
+    history: []
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d710–d740', 'd750', 'e4'],
+    ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
+    ss12000Source: ['Enkät/observation', 'Elevhälsoplan'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d250', 'd7', 'd8'],
+    ksiTargets: ['Target: beteende/ansvar', 'Action: färdighetsträning', 'Means: individ/grupp'],
+    ss12000Source: ['Lärarbedömning', 'Elevhälsoplan'],
     status: 5,
     history: []
   },
@@ -169,7 +169,7 @@ const lisaWelfareWheel: WelfareWheelSpokeData[] = [
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -196,21 +196,9 @@ const lisaWelfareWheel: WelfareWheelSpokeData[] = [
     history: []
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
-    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
-    ksiTargets: ['Target: lärmiljö', 'Action: anpassning/tillgängliggörande', 'Means: material/struktur/stödperson'],
-    ss12000Source: ['Anpassningar', 'Schema/strukturstöd'],
-    status: 4,
-    history: []
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov (nivå)',
     icfDomains: ['e310–e315', 'd760', 'e5'],
@@ -220,10 +208,22 @@ const lisaWelfareWheel: WelfareWheelSpokeData[] = [
     history: []
   },
   {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
+    spoke: 'aktiv',
+    name: 'AKTIV',
+    childIndicator: 'Jag gör något jag gillar varje vecka',
+    guardianIndicator: 'Meningsfull fritid',
+    professionalIndicator: 'Deltagande/hinder',
+    icfDomains: ['d920', 'd450–d455', 'e3'],
+    ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
+    ss12000Source: ['Aktivitetsindikator'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
     professionalIndicator: 'Trivselindikator',
     icfDomains: ['d710–d740', 'd750', 'e4'],
     ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
@@ -236,15 +236,15 @@ const lisaWelfareWheel: WelfareWheelSpokeData[] = [
     notes: 'Lisa har svårt att hitta kamrater. Social färdighetsträning påbörjad.'
   },
   {
-    spoke: 'aktiv',
-    name: 'AKTIV',
-    childIndicator: 'Jag gör något jag gillar varje vecka',
-    guardianIndicator: 'Meningsfull fritid',
-    professionalIndicator: 'Deltagande/hinder',
-    icfDomains: ['d920', 'd450–d455', 'e3'],
-    ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
-    ss12000Source: ['Aktivitetsindikator'],
-    status: 3,
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d250', 'd7', 'd8'],
+    ksiTargets: ['Target: beteende/ansvar', 'Action: färdighetsträning', 'Means: individ/grupp'],
+    ss12000Source: ['Lärarbedömning', 'Elevhälsoplan'],
+    status: 4,
     history: []
   },
   {
@@ -270,7 +270,7 @@ const lisaSupportPlan: SupportPlanData = {
       id: 'goal-1',
       text: 'Lisa ska känna sig trygg i grupparbeten inom 8 veckor',
       targetDate: '2026-02-15',
-      relatedSpokes: ['trygg', 'relationer'],
+      relatedSpokes: ['trygg', 'respekterad'],
       ksiTarget: 'Target: psykosocial miljö',
       progress: 'in-progress',
       lastReviewed: '2025-12-01'
@@ -295,7 +295,7 @@ const lisaSupportPlan: SupportPlanData = {
       startDate: '2025-10-25',
       frequency: '1 gång/vecka',
       status: 'active',
-      effectOnSpokes: ['trygg', 'relationer']
+      effectOnSpokes: ['trygg', 'respekterad']
     },
     {
       id: 'int-2',
@@ -390,7 +390,7 @@ const sofiaWelfareWheel: WelfareWheelSpokeData[] = [
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -418,22 +418,9 @@ const sofiaWelfareWheel: WelfareWheelSpokeData[] = [
     notes: 'Risk att ej nå kunskapsmål. Hög frånvaro påverkar.'
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
-    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
-    ksiTargets: ['Target: lärmiljö', 'Action: anpassning/tillgängliggörande', 'Means: material/struktur/stödperson'],
-    ss12000Source: ['Anpassningar', 'Schema/strukturstöd'],
-    status: 3,
-    history: [],
-    notes: 'Åtgärdsprogram aktivt med omfattande anpassningar.'
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov (nivå)',
     icfDomains: ['e310–e315', 'd760', 'e5'],
@@ -442,19 +429,6 @@ const sofiaWelfareWheel: WelfareWheelSpokeData[] = [
     status: 1,
     history: [],
     notes: 'Familjen får stöd av socialtjänst. Hög sekretess.'
-  },
-  {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
-    professionalIndicator: 'Trivselindikator',
-    icfDomains: ['d710–d740', 'd750', 'e4'],
-    ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
-    ss12000Source: ['Enkät/observation', 'Elevhälsoplan'],
-    status: 2,
-    history: [],
-    notes: 'Få kamratrelationer. Social isolering.'
   },
   {
     spoke: 'aktiv',
@@ -468,6 +442,32 @@ const sofiaWelfareWheel: WelfareWheelSpokeData[] = [
     status: 2,
     history: [],
     notes: 'Ingen fritidsaktivitet. Fritidsgård kontaktad.'
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d710–d740', 'd750', 'e4'],
+    ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
+    ss12000Source: ['Enkät/observation', 'Elevhälsoplan'],
+    status: 2,
+    history: [],
+    notes: 'Få kamratrelationer. Social isolering.'
+  },
+  {
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
+    ksiTargets: ['Target: beteende/ansvar', 'Action: färdighetsträning', 'Means: individ/grupp'],
+    ss12000Source: ['Lärarbedömning', 'Elevhälsoplan'],
+    status: 3,
+    history: [],
+    notes: 'Åtgärdsprogram aktivt med omfattande anpassningar.'
   },
   {
     spoke: 'delaktig',
@@ -494,7 +494,7 @@ const sofiaCoordinationPlan: CoordinationPlanData = {
       id: 'goal-1',
       text: 'Sofia ska känna sig trygg hemma och i skolan inom 6 månader',
       targetDate: '2026-03-20',
-      relatedSpokes: ['trygg', 'hemmet'],
+      relatedSpokes: ['trygg', 'omvardad'],
       ksiTarget: 'Target: psykosocial miljö + hemliv',
       progress: 'in-progress',
       lastReviewed: '2025-12-05'
@@ -512,7 +512,7 @@ const sofiaCoordinationPlan: CoordinationPlanData = {
       id: 'goal-3',
       text: 'Sofia ska klara första året på gymnasiet med godkända betyg',
       targetDate: '2026-06-15',
-      relatedSpokes: ['utvecklas', 'larande'],
+      relatedSpokes: ['utvecklas', 'ansvarstagande'],
       ksiTarget: 'Target: utbildning',
       progress: 'in-progress',
       lastReviewed: '2025-12-05'
@@ -523,7 +523,7 @@ const sofiaCoordinationPlan: CoordinationPlanData = {
       id: 'cross-goal-1',
       text: 'Samordnade insatser för familjen',
       targetDate: '2026-03-01',
-      relatedSpokes: ['trygg', 'hemmet', 'halsa'],
+      relatedSpokes: ['trygg', 'omvardad', 'halsa'],
       primarySector: 'social-services',
       supportingSectors: ['high-school', 'bup', 'student-health'],
       sectorResponsibilities: [
@@ -557,7 +557,7 @@ const sofiaCoordinationPlan: CoordinationPlanData = {
       startDate: '2025-09-20',
       frequency: '2 gånger/månad',
       status: 'active',
-      effectOnSpokes: ['hemmet', 'trygg']
+      effectOnSpokes: ['omvardad', 'trygg']
     },
     {
       id: 'int-3',
@@ -568,7 +568,7 @@ const sofiaCoordinationPlan: CoordinationPlanData = {
       startDate: '2025-10-01',
       frequency: 'Kontinuerligt',
       status: 'active',
-      effectOnSpokes: ['utvecklas', 'larande', 'trygg']
+      effectOnSpokes: ['utvecklas', 'ansvarstagande', 'trygg']
     }
   ],
   responsible: 'student-health',
@@ -641,7 +641,7 @@ export const sofiaJourneyProfile: JourneyProfile = {
         fromLevel: 'stodprofil',
         toLevel: 'samordning',
         situation: 'Stödprofil utan förbättring + fler huvudmän krävs',
-        affectedSpokes: ['trygg', 'halsa', 'hemmet'],
+        affectedSpokes: ['trygg', 'halsa', 'omvardad'],
         action: 'Aktivera samordningsprofil med Barnets plan/SIP',
         responsible: 'student-health',
         status: 'completed',
@@ -693,7 +693,7 @@ const omarWelfareWheel: WelfareWheelSpokeData[] = [
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -720,21 +720,9 @@ const omarWelfareWheel: WelfareWheelSpokeData[] = [
     notes: 'Språksvårigheter påverkar vissa ämnen. Extra stöd ges i svenska.'
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva (ja/nej)',
-    icfDomains: ['d155–d179', 'd820', 'e-faktorer'],
-    ksiTargets: ['Target: lärmiljö', 'Action: anpassning/tillgängliggörande', 'Means: material/struktur/stödperson'],
-    ss12000Source: ['Anpassningar', 'Schema/strukturstöd'],
-    status: 4,
-    history: []
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov (nivå)',
     icfDomains: ['e310–e315', 'd760', 'e5'],
@@ -744,10 +732,22 @@ const omarWelfareWheel: WelfareWheelSpokeData[] = [
     history: []
   },
   {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
+    spoke: 'aktiv',
+    name: 'AKTIV',
+    childIndicator: 'Jag gör något jag gillar varje vecka',
+    guardianIndicator: 'Meningsfull fritid',
+    professionalIndicator: 'Deltagande/hinder',
+    icfDomains: ['d920', 'd450–d455', 'e3'],
+    ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
+    ss12000Source: ['Aktivitetsindikator'],
+    status: 4,
+    history: []
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
     professionalIndicator: 'Trivselindikator',
     icfDomains: ['d710–d740', 'd750', 'e4'],
     ksiTargets: ['Target: relationer', 'Action: social färdighetsträning/stöd', 'Means: grupp/individ'],
@@ -759,14 +759,14 @@ const omarWelfareWheel: WelfareWheelSpokeData[] = [
     notes: 'Viss social osäkerhet, men har ett par nära kamrater'
   },
   {
-    spoke: 'aktiv',
-    name: 'AKTIV',
-    childIndicator: 'Jag gör något jag gillar varje vecka',
-    guardianIndicator: 'Meningsfull fritid',
-    professionalIndicator: 'Deltagande/hinder',
-    icfDomains: ['d920', 'd450–d455', 'e3'],
-    ksiTargets: ['Target: fritid/aktivitet', 'Action: tillgängliggöra/råd', 'Means: grupp/assistans'],
-    ss12000Source: ['Aktivitetsindikator'],
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d250', 'd7', 'd8'],
+    ksiTargets: ['Target: beteende/ansvar', 'Action: färdighetsträning', 'Means: individ/grupp'],
+    ss12000Source: ['Lärarbedömning', 'Elevhälsoplan'],
     status: 4,
     history: []
   },
@@ -824,7 +824,7 @@ const elsaWelfareWheel: WelfareWheelSpokeData[] = [
   },
   {
     spoke: 'halsa',
-    name: 'HÄLSA / MÅ BRA',
+    name: 'MÅ BRA',
     childIndicator: 'Jag mår bra',
     guardianIndicator: 'Hälsa fungerar i vardagen',
     professionalIndicator: 'Frånvarotrend eller hälsosamtal gjort',
@@ -847,39 +847,15 @@ const elsaWelfareWheel: WelfareWheelSpokeData[] = [
     history: []
   },
   {
-    spoke: 'larande',
-    name: 'LÄRANDE',
-    childIndicator: 'Jag får hjälp när jag behöver',
-    guardianIndicator: 'Skolan anpassar',
-    professionalIndicator: 'Anpassningar aktiva',
-    icfDomains: ['d140', 'd150', 'd160'],
-    ksiTargets: ['Target: lärmiljö'],
-    ss12000Source: ['Anpassningar'],
-    status: 1,
-    history: []
-  },
-  {
-    spoke: 'hemmet',
-    name: 'HEMMET',
-    childIndicator: 'Det känns bra hemma',
+    spoke: 'omvardad',
+    name: 'OMVÅRDAD',
+    childIndicator: 'Jag blir omhändertagen',
     guardianIndicator: 'Vi klarar vardagen',
     professionalIndicator: 'Samverkansbehov',
     icfDomains: ['e310'],
     ksiTargets: ['Target: hemliv'],
     ss12000Source: ['Kontaktlogik/möten'],
     status: 4,
-    history: []
-  },
-  {
-    spoke: 'relationer',
-    name: 'RELATIONER',
-    childIndicator: 'Jag har någon att vara med',
-    guardianIndicator: 'Relationer fungerar',
-    professionalIndicator: 'Trivselindikator',
-    icfDomains: ['d350', 'd710–d740'],
-    ksiTargets: ['Target: relationer'],
-    ss12000Source: ['Enkät/observation'],
-    status: 3,
     history: []
   },
   {
@@ -892,6 +868,30 @@ const elsaWelfareWheel: WelfareWheelSpokeData[] = [
     ksiTargets: ['Target: fritid/aktivitet'],
     ss12000Source: ['Aktivitetsindikator'],
     status: 3,
+    history: []
+  },
+  {
+    spoke: 'respekterad',
+    name: 'RESPEKTERAD',
+    childIndicator: 'Jag blir respekterad',
+    guardianIndicator: 'Barnets syn tas tillvara',
+    professionalIndicator: 'Trivselindikator',
+    icfDomains: ['d350', 'd710–d740'],
+    ksiTargets: ['Target: relationer'],
+    ss12000Source: ['Enkät/observation'],
+    status: 3,
+    history: []
+  },
+  {
+    spoke: 'ansvarstagande',
+    name: 'ANSVARSTAGANDE',
+    childIndicator: 'Jag tar ansvar',
+    guardianIndicator: 'Barnet tar ansvar',
+    professionalIndicator: 'Ansvarstagande dokumenterat',
+    icfDomains: ['d140', 'd150', 'd160'],
+    ksiTargets: ['Target: beteende/ansvar'],
+    ss12000Source: ['Lärarbedömning'],
+    status: 1,
     history: []
   },
   {
