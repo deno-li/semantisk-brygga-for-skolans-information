@@ -41,6 +41,9 @@ const SPOKE_NAME_EN_MAP: Record<string, string> = {
   delaktig: 'Included'
 };
 
+// Default target value for all indicators
+const DEFAULT_TARGET = 4;
+
 /**
  * Convert a single WelfareWheelSpokeData to ShanarriIndicator format
  */
@@ -50,10 +53,10 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
   const color = SPOKE_COLORS[spokeKey] || '#005595';
   const nameEn = SPOKE_NAME_EN_MAP[spokeKey] || spokeData.name;
 
-  // Extract ICF domains - join array into pipe-separated string
+  // Extract ICF domains - join array into comma-separated string for consistency with existing SHANARRI data
   const icfString = spokeData.icfDomains.join(', ');
   
-  // Extract KSI targets - join array into pipe-separated string
+  // Extract KSI targets - join array into pipe-separated string for consistency with existing SHANARRI data
   const ksiString = spokeData.ksiTargets.join(' | ');
 
   // Build notes from childIndicator and any existing notes
@@ -62,8 +65,8 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
     notes += ` | ${spokeData.notes}`;
   }
 
-  // Default target to 4 if not specified
-  const target = 4;
+  // Use default target value
+  const target = DEFAULT_TARGET;
 
   // Extract BBIC info - use generic values that match spoke themes
   let bbic = '';
@@ -133,8 +136,8 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
     bbic: bbic,
     bbicCategory: bbicCategory,
     bbicArea: bbicArea,
-    ibic: icfString, // Use ICF as IBIC fallback
-    kva: '-', // Not provided in Journey format, use placeholder
+    ibic: '-', // IBIC mapping not available in Journey Profile format
+    kva: '-', // KVÅ not provided in Journey Profile format
     source: source,
     notes: notes
   };
