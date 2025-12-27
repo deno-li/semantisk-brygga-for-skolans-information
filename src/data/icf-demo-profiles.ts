@@ -373,7 +373,7 @@ import { ICFChildProfile } from '../types/icf-types';
 export const ELSA_PROFILE: ICFChildProfile = {
   // Basic profile
   name: "Elsa Bergström",
-  ssn: "20141015-5678",
+  ssn: "DEMO-ELSA-B",
   age: 10,
   school: "Stigslundsskolan",
   grade: "Åk 4",

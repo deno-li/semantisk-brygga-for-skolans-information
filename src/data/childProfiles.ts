@@ -9,7 +9,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
   // NIVÅ 1: Universell - Barn som mår bra
   'erik': {
     name: "Erik A.",
-    ssn: "YYYYMMDD-XXXX",
+    ssn: "DEMO-ERIK-A",
     age: 15,
     school: "Exempel Grundskola",
     grade: "Åk 9",
@@ -23,7 +23,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
   // NIVÅ 2: Stödprofil - Aktiv stödplan
   'lisa': {
     name: "Lisa J.",
-    ssn: "YYYYMMDD-XXXX",
+    ssn: "DEMO-LISA-J",
     age: 12,
     school: "Exempel Grundskola",
     grade: "Åk 6",
@@ -37,7 +37,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
   // NIVÅ 2: Stödprofil - Dyslexi med anpassningar (från WHO ICF-guiden)
   'elsa': {
     name: "Elsa Bergström",
-    ssn: "20141015-5678",
+    ssn: "DEMO-ELSA-B",
     age: 10,
     school: "Stigslundsskolan",
     grade: "Åk 4",
@@ -51,7 +51,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
   // NIVÅ 1: Universell med tidig uppmärksamhet
   'omar': {
     name: "Omar H.",
-    ssn: "YYYYMMDD-XXXX",
+    ssn: "DEMO-OMAR-H",
     age: 11,
     school: "Exempel Grundskola",
     grade: "Åk 5",
@@ -65,7 +65,7 @@ export const CHILD_PROFILES: {[key: string]: ChildProfile} = {
   // NIVÅ 3: Samordning - Samordnad plan över sektorer
   'sofia': {
     name: "Sofia B.",
-    ssn: "YYYYMMDD-XXXX",
+    ssn: "DEMO-SOFIA-B",
     age: 16,
     school: "Exempel Gymnasium",
     grade: "TE 1",

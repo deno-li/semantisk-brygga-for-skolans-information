@@ -69,7 +69,7 @@ export interface UserContext {
 
 export interface ChildProfile {
   name: string;
-  ssn: string; // Fictional
+  ssn: string; // Demoprofil-ID (ej personnummer)
   age: number;
   school: string;
   grade: string;

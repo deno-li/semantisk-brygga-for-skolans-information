@@ -150,7 +150,7 @@ const App: React.FC = () => {
                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Livsloppsjournal</div>
                  <h2 className="text-3xl font-bold text-[#1F1F1F]">{currentProfile.name}</h2>
                  <div className="flex items-center gap-4 text-sm text-gray-700 mt-2 font-medium">
-                    <span className="bg-gray-100 px-2 py-1 rounded">{currentProfile.ssn}</span>
+                    <span className="bg-gray-100 px-2 py-1 rounded">Demo-ID: {currentProfile.ssn}</span>
                     <span>{currentProfile.age} år</span>
                     <span className="flex items-center gap-1 text-[#005595]"><GraduationCap size={16}/> {currentProfile.school}, {currentProfile.grade}</span>
                  </div>
