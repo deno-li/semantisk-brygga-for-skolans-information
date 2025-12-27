@@ -472,7 +472,7 @@ export const RESPECTED_CORE_SET_N3: ICFCoreSet = {
 // ==========================================
 
 export const RESPONSIBLE_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'ansvarstagande',
   level: 'N1',
   items: [
     {
@@ -489,7 +489,7 @@ export const RESPONSIBLE_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const RESPONSIBLE_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'ansvarstagande',
   level: 'N2',
   items: [
     ...RESPONSIBLE_CORE_SET_N1.items,
@@ -506,7 +506,7 @@ export const RESPONSIBLE_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const RESPONSIBLE_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'ansvarig',
+  spoke: 'ansvarstagande',
   level: 'N3',
   items: [
     ...RESPONSIBLE_CORE_SET_N2.items,
@@ -527,7 +527,7 @@ export const RESPONSIBLE_CORE_SET_N3: ICFCoreSet = {
 // ==========================================
 
 export const INCLUDED_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'delaktig',
   level: 'N1',
   items: [
     {
@@ -544,7 +544,7 @@ export const INCLUDED_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const INCLUDED_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'delaktig',
   level: 'N2',
   items: [
     ...INCLUDED_CORE_SET_N1.items,
@@ -561,7 +561,7 @@ export const INCLUDED_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const INCLUDED_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'inkluderad',
+  spoke: 'delaktig',
   level: 'N3',
   items: [
     ...INCLUDED_CORE_SET_N2.items,
@@ -582,7 +582,7 @@ export const INCLUDED_CORE_SET_N3: ICFCoreSet = {
 // ==========================================
 
 export const NURTURED_CORE_SET_N1: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'omvardad',
   level: 'N1',
   items: [
     {
@@ -599,7 +599,7 @@ export const NURTURED_CORE_SET_N1: ICFCoreSet = {
 };
 
 export const NURTURED_CORE_SET_N2: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'omvardad',
   level: 'N2',
   items: [
     ...NURTURED_CORE_SET_N1.items,
@@ -616,7 +616,7 @@ export const NURTURED_CORE_SET_N2: ICFCoreSet = {
 };
 
 export const NURTURED_CORE_SET_N3: ICFCoreSet = {
-  spoke: 'nurtured',
+  spoke: 'omvardad',
   level: 'N3',
   items: [
     ...NURTURED_CORE_SET_N2.items,

@@ -338,7 +338,7 @@ export const lisaJourneyProfile: JourneyProfile = {
         fromLevel: 'universell',
         toLevel: 'stodprofil',
         situation: 'Röd/orange i 2 ekrar samtidigt',
-        affectedSpokes: ['trygg', 'relationer'],
+        affectedSpokes: ['trygg', 'respekterad'],
         action: 'Aktivera stödprofil med riktat stöd',
         responsible: 'student-health',
         status: 'completed'

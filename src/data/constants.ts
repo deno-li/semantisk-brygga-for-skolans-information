@@ -1072,7 +1072,7 @@ const ENHANCED_CHILD_PROFILE: EnhancedChildProfile = {
       dimensions: ['utvecklas', 'delaktig'],
       actionPlan: 'Samordnad plan upprättad med skola, BUP och socialtjänst. Kontaktfamilj insatt för avlastning.',
       responsibleSector: 'social-services',
-      status: 'aktiv'
+      status: 'active'
     }
   ],
   myWorldAssessments: MY_WORLD_ASSESSMENTS,

@@ -489,7 +489,7 @@ export const ELSA_PROFILE: ICFChildProfile = {
       type: 'barrier',
       level: 1,  // .1 = Lätt barriär
       description: 'Viss oro för att andra barn inte förstår hennes läsutmaningar',
-      relatedSpokes: ['respekterad', 'inkluderad'],
+      relatedSpokes: ['respekterad', 'delaktig'],
       identifiedDate: '2025-09-15',
       identifiedBy: 'elementary-school',
       context: 'school',
