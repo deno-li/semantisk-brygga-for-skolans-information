@@ -156,6 +156,7 @@ semantisk-brygga-for-skolans-information/
 ├── package.json                 # NPM-beroenden
 ├── tsconfig.json               # TypeScript-konfiguration
 ├── vite.config.ts              # Vite build-konfiguration
+├── LICENSE                     # Licens (MIT + CC BY 4.0)
 └── README.md                   # Denna fil
 ```
 
@@ -313,7 +314,7 @@ Om detta material används i något form av utvecklingsarbete, skulle erkännand
 - **Dokumentation**: Creative Commons Erkännande 4.0 Internationell (CC BY 4.0)
 - **Källkod**: MIT License
 
-Se [LICENSE.md](LICENSE.md) för fullständiga licensvillkor.
+Se [LICENSE](LICENSE) för fullständiga licensvillkor eller [docs/LICENSE.md](docs/LICENSE.md) för detaljerad information.
 
 ---
 
@@ -327,7 +328,7 @@ För användning i projekt kontakta via GitHub.
 ---
 
 **Skapad:** 2025-12-08
-**Senast uppdaterad:** 2025-12-19
+**Senast uppdaterad:** 2025-12-27
 **Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
 **Licens (dokumentation):** CC BY 4.0
 **Licens (kod):** MIT

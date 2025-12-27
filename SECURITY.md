@@ -178,5 +178,5 @@ För säkerhetsfrågor, kontakta projektägaren via:
 
 ---
 
-**Senast uppdaterad**: 2025-12-22
+**Senast uppdaterad**: 2025-12-27
 **Prototypstatus**: Endast demonstration, EJ för produktion

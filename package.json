@@ -1,8 +1,33 @@
 {
   "name": "barnets-resa---sammanhållen-planering",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Interactive wellbeing wheel prototype demonstrating semantic integration of information from schools, social services and healthcare for coordinated planning around children and youth. Built on GIRFEC (Getting It Right For Every Child) framework.",
+  "keywords": [
+    "wellbeing",
+    "girfec",
+    "shanarri",
+    "icf",
+    "bbic",
+    "child-welfare",
+    "coordinated-planning",
+    "semantic-integration",
+    "sweden",
+    "healthcare",
+    "education",
+    "social-services"
+  ],
+  "author": "deno-li",
+  "license": "MIT",
+  "homepage": "https://github.com/deno-li/semantisk-brygga-for-skolans-information#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deno-li/semantisk-brygga-for-skolans-information.git"
+  },
+  "bugs": {
+    "url": "https://github.com/deno-li/semantisk-brygga-for-skolans-information/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
