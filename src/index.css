@@ -1,4 +1,406 @@
-/* Base stylesheet placeholder for Vite entry */
+/* Base stylesheet with animations and dark mode support */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================
+   CSS Custom Properties (Theme Variables)
+   ========================================== */
+:root {
+  /* Primary colors */
+  --color-primary: #005595;
+  --color-primary-hover: #004477;
+  --color-secondary: #C12143;
+  --color-accent: #E87C00;
+
+  /* Status colors */
+  --color-success: #378056;
+  --color-warning: #fbbf24;
+  --color-error: #B00020;
+  --color-info: #3b82f6;
+
+  /* Background colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+
+  /* Text colors */
+  --text-primary: #1F1F1F;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  /* Border colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* Dark mode variables */
+.dark {
+  --color-primary: #60a5fa;
+  --color-primary-hover: #93c5fd;
+  --color-secondary: #f87171;
+  --color-accent: #fbbf24;
+
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
+
+/* ==========================================
+   Base Styles
+   ========================================== */
 body {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================
+   Animations
+   ========================================== */
+
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Fade in up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Scale in */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(229 231 235) 0%,
+    rgb(243 244 246) 50%,
+    rgb(229 231 235) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(55 65 81) 0%,
+    rgb(75 85 99) 50%,
+    rgb(55 65 81) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 85, 149, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 85, 149, 0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Bounce */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce 1s infinite;
+}
+
+/* Spin */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+/* ==========================================
+   Transitions
+   ========================================== */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors-smooth {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ==========================================
+   Scrollbar Styling
+   ========================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ==========================================
+   Focus Styles (Accessibility)
+   ========================================== */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ==========================================
+   Status Colors (Enhanced Contrast)
+   ========================================== */
+.status-excellent {
+  background-color: #dcfce7;
+  color: #15803d;
+  border-color: #86efac;
+}
+
+.status-good {
+  background-color: #d1fae5;
+  color: #047857;
+  border-color: #6ee7b7;
+}
+
+.status-attention {
+  background-color: #fef3c7;
+  color: #b45309;
+  border-color: #fcd34d;
+}
+
+.status-concern {
+  background-color: #ffedd5;
+  color: #c2410c;
+  border-color: #fdba74;
+}
+
+.status-critical {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.dark .status-excellent {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+.dark .status-good {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.dark .status-attention {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+}
+
+.dark .status-concern {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #fdba74;
+}
+
+.dark .status-critical {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+/* ==========================================
+   Compact Mode
+   ========================================== */
+.compact-mode .card {
+  padding: 0.75rem;
+}
+
+.compact-mode .card-header {
+  padding: 0.5rem;
+}
+
+.compact-mode .text-lg {
+  font-size: 1rem;
+}
+
+.compact-mode .text-xl {
+  font-size: 1.125rem;
+}
+
+.compact-mode .space-y-6 > * + * {
+  margin-top: 1rem;
+}
+
+.compact-mode .gap-6 {
+  gap: 1rem;
+}
+
+/* ==========================================
+   Responsive Utilities
+   ========================================== */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .stack-mobile {
+    flex-direction: column !important;
+  }
+
+  .full-width-mobile {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Touch-friendly targets on mobile */
+@media (max-width: 768px) {
+  button, a, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ==========================================
+   Print Styles
+   ========================================== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .dark {
+    --bg-primary: #ffffff;
+    --text-primary: #000000;
+  }
 }
