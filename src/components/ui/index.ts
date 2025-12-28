@@ -35,3 +35,13 @@ export {
   ViewControlsToolbar,
   useViewMode
 } from './ViewModeToggle';
+
+// Drag and drop
+export {
+  DragDropProvider,
+  DraggableWidgetWrapper,
+  DragDropGrid,
+  ReorderableList,
+  useDragDrop
+} from './DragDrop';
+export type { DraggableWidget } from './DragDrop';
