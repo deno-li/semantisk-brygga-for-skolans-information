@@ -1,10 +1,12 @@
 
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, ENHANCED_CHILD_PROFILE } from '../data/constants';
-import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users } from 'lucide-react';
+import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
 import { Perspective, View } from '../types/types';
 import MiniWellBeingWheel from './MiniWellBeingWheel';
 import { useProfileData } from '../hooks/useProfileData';
+import LongitudinalWelfareChart from './LongitudinalWelfareChart';
+import { JOURNEY_PROFILES } from '../data/journeyMockData';
 
 interface DashboardProps {
   currentPerspective: Perspective;
@@ -15,7 +17,11 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, selectedProfileId = 'erik' }) => {
   // Use custom hook to fetch profile data
   const { shanarriData, riskFactors, protectiveFactors, childProfile, needsAttention } = useProfileData(selectedProfileId);
-  
+  const [showTrendChart, setShowTrendChart] = useState(false);
+
+  // Get journey profile for trend data
+  const journeyProfile = useMemo(() => JOURNEY_PROFILES[selectedProfileId], [selectedProfileId]);
+
   const nextMeeting = useMemo(() => TIMELINE_DATA[0], []);
   const currentQualityPhase = useMemo(() => QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0], []);
 
@@ -201,6 +207,40 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
             </div>
         </div>
       </div>
+
+      {/* Longitudinal Trend Chart - Collapsible (Professional View Only) */}
+      {!isChild && journeyProfile && journeyProfile.welfareWheel.some(s => s.history && s.history.length > 0) && (
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <button
+            onClick={() => setShowTrendChart(!showTrendChart)}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <BarChart3 size={20} className="text-blue-600" />
+              <div className="text-left">
+                <h3 className="font-bold text-[#1F1F1F]">Välbefinnandetrend över tid</h3>
+                <p className="text-sm text-gray-600">Se hur välbefinnandeekrarna har förändrats</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
+                {journeyProfile.welfareWheel.filter(s => s.history && s.history.length > 0).length} ekrar med historik
+              </span>
+              {showTrendChart ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+            </div>
+          </button>
+
+          {showTrendChart && (
+            <div className="border-t border-gray-200 p-6">
+              <LongitudinalWelfareChart
+                welfareWheel={journeyProfile.welfareWheel}
+                title="Utveckling av välbefinnandeekrar"
+                showComparison
+              />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* KPI Cards - Context Aware */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
