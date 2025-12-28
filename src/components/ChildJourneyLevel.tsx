@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   ArrowRight, CheckCircle2, Clock, AlertCircle, TrendingUp, TrendingDown,
-  Calendar, Users, FileText, ChevronDown, ChevronUp
+  Calendar, Users, FileText, ChevronDown, ChevronUp, History
 } from 'lucide-react';
 import {
   JourneyLevel,
@@ -15,6 +15,7 @@ import {
   getLevelName,
   ESCALATION_RULES
 } from '../data/journeyConstants';
+import JourneyTimeline from './JourneyTimeline';
 
 interface ChildJourneyLevelProps {
   journeyProfile: JourneyProfile;
@@ -27,6 +28,7 @@ const ChildJourneyLevel: React.FC<ChildJourneyLevelProps> = ({
 }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showLevelDetails, setShowLevelDetails] = useState(false);
+  const [activeView, setActiveView] = useState<'status' | 'timeline'>('status');
 
   const currentLevelConfig = JOURNEY_LEVELS.find(
     l => l.level === journeyProfile.currentLevel
@@ -71,11 +73,45 @@ const ChildJourneyLevel: React.FC<ChildJourneyLevelProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Huvudkort: Nuvarande nivå */}
-      <div
-        className="bg-white rounded-lg shadow-lg border-4 p-6"
-        style={{ borderColor: LEVEL_COLORS[journeyProfile.currentLevel].border }}
-      >
+      {/* View Toggle */}
+      <div className="flex gap-2 border-b border-gray-200 pb-4">
+        <button
+          onClick={() => setActiveView('status')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+            activeView === 'status'
+              ? 'bg-blue-100 text-blue-700 border border-blue-300'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          <AlertCircle size={16} />
+          Aktuell status
+        </button>
+        <button
+          onClick={() => setActiveView('timeline')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+            activeView === 'timeline'
+              ? 'bg-blue-100 text-blue-700 border border-blue-300'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          <History size={16} />
+          Tidslinje
+        </button>
+      </div>
+
+      {/* Timeline View */}
+      {activeView === 'timeline' && (
+        <JourneyTimeline profile={journeyProfile} showDetails />
+      )}
+
+      {/* Status View */}
+      {activeView === 'status' && (
+        <>
+          {/* Huvudkort: Nuvarande nivå */}
+          <div
+            className="bg-white rounded-lg shadow-lg border-4 p-6"
+            style={{ borderColor: LEVEL_COLORS[journeyProfile.currentLevel].border }}
+          >
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-4">
@@ -351,6 +387,8 @@ const ChildJourneyLevel: React.FC<ChildJourneyLevelProps> = ({
           </div>
         )}
       </div>
+        </>
+      )}
     </div>
   );
 };
