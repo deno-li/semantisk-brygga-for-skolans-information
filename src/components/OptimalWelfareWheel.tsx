@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   Shield, Heart, TrendingUp, BookOpen, Home, Users, Bike, MessageSquare,
-  ChevronRight, Info, AlertTriangle, CheckCircle2, UserCheck, CircleUserRound
+  ChevronRight, Info, AlertTriangle, CheckCircle2, UserCheck, CircleUserRound,
+  X, TrendingDown, Minus, Sparkles, BarChart3
 } from 'lucide-react';
 import {
   WelfareWheelSpokeData,
@@ -9,7 +10,6 @@ import {
   JourneyLevel
 } from '../types/types';
 import {
-  WELFARE_WHEEL_SPOKES,
   getStatusColor,
   getSpokeColor,
   getLevelName,
@@ -58,22 +58,22 @@ const OptimalWelfareWheel: React.FC<OptimalWelfareWheelProps> = ({
 
   const getStatusLabel = (status: 1 | 2 | 3 | 4 | 5): string => {
     const labels = {
-      1: 'Mycket låg/Behöver åtgärd',
-      2: 'Låg/Behöver uppmärksamhet',
-      3: 'Medel/Följ upp',
-      4: 'Bra/Fortsätt så',
-      5: 'Mycket bra/Styrka'
+      1: 'Behöver åtgärd',
+      2: 'Behöver uppmärksamhet',
+      3: 'Följ upp',
+      4: 'Bra',
+      5: 'Styrka'
     };
     return labels[status];
   };
 
-  const getTrendArrow = (history: WelfareWheelSpokeData['history']): string => {
-    if (history.length < 2) return '→';
+  const getTrendIcon = (history: WelfareWheelSpokeData['history']) => {
+    if (history.length < 2) return <Minus size={16} className="text-gray-400" />;
     const recent = history[history.length - 1].value;
     const previous = history[history.length - 2].value;
-    if (recent > previous) return '↗️';
-    if (recent < previous) return '↘️';
-    return '→';
+    if (recent > previous) return <TrendingUp size={16} className="text-emerald-500" />;
+    if (recent < previous) return <TrendingDown size={16} className="text-red-500" />;
+    return <Minus size={16} className="text-gray-400" />;
   };
 
   const handleSpokeClick = (spoke: WelfareWheelSpokeData) => {
@@ -94,256 +94,325 @@ const OptimalWelfareWheel: React.FC<OptimalWelfareWheelProps> = ({
 
   const needsEscalation = stats.red >= 1 || (stats.red + stats.orange >= 2);
 
+  // Mini sparkline component
+  const MiniSparkline = ({ history }: { history: WelfareWheelSpokeData['history'] }) => {
+    if (history.length < 2) return null;
+    const last5 = history.slice(-5);
+    const max = 5;
+    const width = 60;
+    const height = 20;
+    const points = last5.map((p, i) => ({
+      x: (i / (last5.length - 1)) * width,
+      y: height - (p.value / max) * height
+    }));
+    const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+
+    return (
+      <svg width={width} height={height} className="opacity-60">
+        <path d={pathD} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* Rubrik med nivåindikator */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border-2" style={{ borderColor: LEVEL_COLORS[currentLevel].border }}>
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Välbefinnandehjul</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Visar från {currentPerspective === 'child' ? 'barnets' : currentPerspective === 'guardian' ? 'vårdnadshavares' : 'professionell'} perspektiv
-            </p>
-          </div>
-          <div className="text-right">
-            <div
-              className="inline-block px-4 py-2 rounded-lg font-bold text-sm"
-              style={{
-                backgroundColor: LEVEL_COLORS[currentLevel].bg,
-                color: LEVEL_COLORS[currentLevel].text
-              }}
-            >
-              {getLevelName(currentLevel)}
+      {/* Compact Status Bar */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="p-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Level Badge */}
+            <div className="flex items-center gap-3">
+              <div
+                className="px-4 py-2 rounded-xl font-bold text-sm shadow-sm"
+                style={{
+                  backgroundColor: LEVEL_COLORS[currentLevel].bg,
+                  color: LEVEL_COLORS[currentLevel].text,
+                  borderColor: LEVEL_COLORS[currentLevel].border
+                }}
+              >
+                {getLevelName(currentLevel)}
+              </div>
+              <div className="text-sm text-gray-500">
+                Genomsnitt: <span className="font-semibold text-gray-900">{stats.average}</span>/5
+              </div>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
-              Genomsnitt: {stats.average} av 5
+
+            {/* Quick Stats */}
+            <div className="flex items-center gap-2">
+              {[
+                { count: stats.green, color: 'bg-emerald-500', label: 'Gröna' },
+                { count: stats.yellow, color: 'bg-amber-400', label: 'Gula' },
+                { count: stats.orange, color: 'bg-orange-500', label: 'Orange' },
+                { count: stats.red, color: 'bg-red-500', label: 'Röda' },
+              ].map((stat, i) => (
+                stat.count > 0 && (
+                  <div key={i} className="flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 rounded-full">
+                    <span className={`w-2 h-2 rounded-full ${stat.color}`} />
+                    <span className="text-xs font-medium text-gray-700">{stat.count}</span>
+                  </div>
+                )
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Varning om eskalering behövs */}
+        {/* Escalation Warning */}
         {needsEscalation && currentLevel === 'universell' && (
-          <div className="mt-4 bg-orange-50 border-l-4 border-orange-500 p-4">
-            <div className="flex items-center">
-              <AlertTriangle className="text-orange-500 mr-3" size={20} />
-              <div>
-                <p className="font-semibold text-orange-900">Eskalering kan behövas</p>
-                <p className="text-sm text-orange-700">
-                  {stats.red > 0 && `${stats.red} röd eker identifierad. `}
-                  {stats.red + stats.orange >= 2 && 'Flera ekrar visar låga värden. '}
-                  Överväg att aktivera stödprofil.
-                </p>
-              </div>
+          <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-100 flex items-center gap-3">
+            <div className="p-1.5 bg-orange-100 rounded-lg">
+              <AlertTriangle className="text-orange-600" size={18} />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-orange-900 text-sm">Överväg eskalering</p>
+              <p className="text-xs text-orange-700">
+                {stats.red > 0 && `${stats.red} kritisk eker. `}
+                {stats.red + stats.orange >= 2 && 'Flera områden behöver uppmärksamhet.'}
+              </p>
             </div>
           </div>
         )}
-
-        {/* Snabb översikt */}
-        <div className="grid grid-cols-4 gap-3 mt-4">
-          <div className="bg-red-50 p-3 rounded border border-red-200">
-            <div className="text-2xl font-bold text-red-700">{stats.red}</div>
-            <div className="text-xs text-red-600">Röda ekrar</div>
-          </div>
-          <div className="bg-orange-50 p-3 rounded border border-orange-200">
-            <div className="text-2xl font-bold text-orange-700">{stats.orange}</div>
-            <div className="text-xs text-orange-600">Orange ekrar</div>
-          </div>
-          <div className="bg-yellow-50 p-3 rounded border border-yellow-200">
-            <div className="text-2xl font-bold text-yellow-700">{stats.yellow}</div>
-            <div className="text-xs text-yellow-600">Gula ekrar</div>
-          </div>
-          <div className="bg-green-50 p-3 rounded border border-green-200">
-            <div className="text-2xl font-bold text-green-700">{stats.green}</div>
-            <div className="text-xs text-green-600">Gröna ekrar</div>
-          </div>
-        </div>
       </div>
 
-      {/* De 8 ekrarna */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Spoke Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {spokeData.map((spoke) => {
           const Icon = SPOKE_ICONS[spoke.spoke];
           const statusColor = getStatusColor(spoke.status);
+          const spokeColor = getSpokeColor(spoke.spoke);
           const indicatorText = getIndicatorText(spoke);
-          const trend = getTrendArrow(spoke.history);
+          const isSelected = selectedSpoke?.spoke === spoke.spoke;
 
           return (
-            <div
+            <button
               key={spoke.spoke}
-              className="bg-white rounded-lg shadow-sm border-2 hover:shadow-md transition-all cursor-pointer"
-              style={{ borderColor: getSpokeColor(spoke.spoke) }}
               onClick={() => handleSpokeClick(spoke)}
+              className={`
+                group relative bg-white rounded-2xl border-2 p-4 text-left
+                transition-all duration-300 ease-out
+                hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1
+                focus:outline-none focus:ring-2 focus:ring-offset-2
+                ${isSelected ? 'ring-2 ring-offset-2 shadow-lg scale-[1.02]' : ''}
+              `}
+              style={{
+                borderColor: isSelected ? spokeColor : '#e5e7eb',
+                '--ring-color': spokeColor
+              } as React.CSSProperties}
             >
-              <div className="p-4">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: getSpokeColor(spoke.spoke) + '20' }}
-                  >
-                    <Icon size={24} style={{ color: getSpokeColor(spoke.spoke) }} />
-                  </div>
-                  <div className="text-2xl">{trend}</div>
-                </div>
+              {/* Status indicator bar */}
+              <div
+                className="absolute top-0 left-4 right-4 h-1 rounded-b-full transition-all duration-300"
+                style={{ backgroundColor: statusColor.bg }}
+              />
 
-                {/* Namn */}
-                <h3 className="font-bold text-lg mb-2" style={{ color: getSpokeColor(spoke.spoke) }}>
-                  {spoke.name}
-                </h3>
-
-                {/* Indikator */}
-                <p className="text-sm text-gray-700 mb-3 min-h-[40px]">
-                  {indicatorText}
-                </p>
-
-                {/* Status */}
+              {/* Header */}
+              <div className="flex items-start justify-between mt-2 mb-3">
                 <div
-                  className="rounded-lg p-3 text-center"
-                  style={{
-                    backgroundColor: statusColor.bg,
-                    color: statusColor.text
-                  }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: spokeColor + '15' }}
                 >
-                  <div className="text-3xl font-bold mb-1">{statusColor.icon}</div>
-                  <div className="text-xs font-semibold">{getStatusLabel(spoke.status)}</div>
+                  <Icon size={22} style={{ color: spokeColor }} />
                 </div>
-
-                {/* Historik mini */}
-                {spoke.history.length > 0 && (
-                  <div className="mt-3 flex justify-between items-center text-xs text-gray-500">
-                    <span>Senaste: {spoke.history[spoke.history.length - 1].date}</span>
-                    <ChevronRight size={16} />
-                  </div>
-                )}
+                <div className="flex items-center gap-1.5">
+                  {getTrendIcon(spoke.history)}
+                  <MiniSparkline history={spoke.history} />
+                </div>
               </div>
-            </div>
+
+              {/* Name */}
+              <h3
+                className="font-bold text-base mb-1.5 transition-colors"
+                style={{ color: spokeColor }}
+              >
+                {spoke.name}
+              </h3>
+
+              {/* Indicator text */}
+              <p className="text-xs text-gray-600 line-clamp-2 mb-3 min-h-[32px]">
+                {indicatorText}
+              </p>
+
+              {/* Status Badge */}
+              <div
+                className="flex items-center justify-between rounded-xl px-3 py-2"
+                style={{ backgroundColor: statusColor.bg }}
+              >
+                <span className="text-lg">{statusColor.icon}</span>
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: statusColor.text }}
+                >
+                  {getStatusLabel(spoke.status)}
+                </span>
+              </div>
+
+              {/* Hover arrow */}
+              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ChevronRight size={16} className="text-gray-400" />
+              </div>
+            </button>
           );
         })}
       </div>
 
-      {/* Detaljerad vy av vald eker */}
+      {/* Detail Panel (Slide-in) */}
       {selectedSpoke && (
-        <div className="bg-white p-6 rounded-lg shadow-lg border-2" style={{ borderColor: getSpokeColor(selectedSpoke.spoke) }}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold" style={{ color: getSpokeColor(selectedSpoke.spoke) }}>
-              Detaljer: {selectedSpoke.name}
-            </h3>
-            <button
-              onClick={() => setSelectedSpoke(null)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
+        <div
+          className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
+          style={{ borderTopColor: getSpokeColor(selectedSpoke.spoke), borderTopWidth: '3px' }}
+        >
+          {/* Panel Header */}
+          <div className="p-5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: getSpokeColor(selectedSpoke.spoke) + '15' }}
+                >
+                  {React.createElement(SPOKE_ICONS[selectedSpoke.spoke], {
+                    size: 24,
+                    style: { color: getSpokeColor(selectedSpoke.spoke) }
+                  })}
+                </div>
+                <div>
+                  <h3
+                    className="text-xl font-bold"
+                    style={{ color: getSpokeColor(selectedSpoke.spoke) }}
+                  >
+                    {selectedSpoke.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">Detaljerad vy</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedSpoke(null)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X size={20} className="text-gray-500" />
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Vänster kolumn: Indikatorer per perspektiv */}
-            <div className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded border border-blue-200">
-                <div className="font-semibold text-blue-900 mb-2">👦 Barnets perspektiv</div>
-                <p className="text-sm text-blue-800">{selectedSpoke.childIndicator}</p>
+          <div className="p-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Left: Perspectives */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                  Perspektiv
+                </h4>
+
+                {[
+                  { key: 'child', emoji: '👦', label: 'Barnets perspektiv', text: selectedSpoke.childIndicator, color: 'blue' },
+                  { key: 'guardian', emoji: '👨‍👩‍👧', label: 'Vårdnadshavares perspektiv', text: selectedSpoke.guardianIndicator, color: 'purple' },
+                  { key: 'professional', emoji: '👩‍🏫', label: 'Professionellt perspektiv', text: selectedSpoke.professionalIndicator, color: 'teal' },
+                ].map((perspective) => (
+                  <div
+                    key={perspective.key}
+                    className={`p-4 rounded-xl border transition-all ${
+                      currentPerspective === perspective.key
+                        ? `bg-${perspective.color}-50 border-${perspective.color}-200 ring-2 ring-${perspective.color}-100`
+                        : 'bg-gray-50 border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 font-semibold text-gray-900 mb-1.5">
+                      <span>{perspective.emoji}</span>
+                      <span className="text-sm">{perspective.label}</span>
+                      {currentPerspective === perspective.key && (
+                        <span className="ml-auto text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                          Aktiv
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-700">{perspective.text}</p>
+                  </div>
+                ))}
+
+                {selectedSpoke.notes && (
+                  <div className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                    <div className="font-semibold text-amber-900 text-sm mb-1.5">📝 Anteckningar</div>
+                    <p className="text-sm text-amber-800">{selectedSpoke.notes}</p>
+                  </div>
+                )}
               </div>
 
-              <div className="bg-purple-50 p-4 rounded border border-purple-200">
-                <div className="font-semibold text-purple-900 mb-2">👨‍👩‍👧 Vårdnadshavares perspektiv</div>
-                <p className="text-sm text-purple-800">{selectedSpoke.guardianIndicator}</p>
-              </div>
-
-              <div className="bg-teal-50 p-4 rounded border border-teal-200">
-                <div className="font-semibold text-teal-900 mb-2">👩‍🏫 Professionellt perspektiv</div>
-                <p className="text-sm text-teal-800">{selectedSpoke.professionalIndicator}</p>
-              </div>
-
-              {/* Anteckningar */}
-              {selectedSpoke.notes && (
-                <div className="bg-gray-50 p-4 rounded border border-gray-200">
-                  <div className="font-semibold text-gray-900 mb-2">📝 Anteckningar</div>
-                  <p className="text-sm text-gray-700">{selectedSpoke.notes}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Höger kolumn: Semantisk mappning & Källor */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-gray-900">Semantisk brygga</h4>
+              {/* Right: Semantic Bridge & History */}
+              <div className="space-y-4">
+                {/* Toggle Semantic Details */}
                 <button
                   onClick={() => setShowSemanticDetails(!showSemanticDetails)}
-                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                  className="w-full flex items-center justify-between p-4 rounded-xl bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition-colors"
                 >
-                  <Info size={14} />
-                  {showSemanticDetails ? 'Dölj' : 'Visa'} detaljer
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={18} className="text-indigo-600" />
+                    <span className="font-semibold text-indigo-900">Semantisk brygga</span>
+                  </div>
+                  <ChevronRight
+                    size={18}
+                    className={`text-indigo-600 transition-transform ${showSemanticDetails ? 'rotate-90' : ''}`}
+                  />
                 </button>
-              </div>
 
-              {showSemanticDetails && (
-                <>
-                  <div className="bg-indigo-50 p-3 rounded border border-indigo-200">
-                    <div className="font-semibold text-indigo-900 text-sm mb-2">ICF-domäner</div>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedSpoke.icfDomains.map((icf, idx) => (
-                        <span key={idx} className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs font-mono">
-                          {icf}
-                        </span>
-                      ))}
+                {showSemanticDetails && (
+                  <div className="space-y-3 animate-in slide-in-from-top-2 duration-200">
+                    <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-100">
+                      <div className="font-semibold text-indigo-900 text-xs mb-2">ICF-domäner</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {selectedSpoke.icfDomains.map((icf, idx) => (
+                          <span key={idx} className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-xs font-mono">
+                            {icf}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+                      <div className="font-semibold text-emerald-900 text-xs mb-2">KSI (Insatser)</div>
+                      <div className="space-y-1">
+                        {selectedSpoke.ksiTargets.map((ksi, idx) => (
+                          <div key={idx} className="text-xs text-emerald-800">• {ksi}</div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-100">
+                      <div className="font-semibold text-amber-900 text-xs mb-2">SS 12000</div>
+                      <div className="space-y-1">
+                        {selectedSpoke.ss12000Source.map((source, idx) => (
+                          <div key={idx} className="text-xs text-amber-800">• {source}</div>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                )}
 
-                  <div className="bg-green-50 p-3 rounded border border-green-200">
-                    <div className="font-semibold text-green-900 text-sm mb-2">KSI (Insatser)</div>
-                    <div className="space-y-1">
-                      {selectedSpoke.ksiTargets.map((ksi, idx) => (
-                        <div key={idx} className="text-xs text-green-800">• {ksi}</div>
-                      ))}
+                {/* History */}
+                {selectedSpoke.history.length > 0 && (
+                  <div className="p-4 rounded-xl bg-gray-50 border border-gray-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <BarChart3 size={16} className="text-gray-500" />
+                      <span className="font-semibold text-gray-900 text-sm">Historik</span>
                     </div>
-                  </div>
-
-                  {selectedSpoke.snomedCT && (
-                    <div className="bg-pink-50 p-3 rounded border border-pink-200">
-                      <div className="font-semibold text-pink-900 text-sm mb-2">SNOMED CT</div>
-                      <p className="text-xs text-pink-800">{selectedSpoke.snomedCT}</p>
-                    </div>
-                  )}
-
-                  <div className="bg-amber-50 p-3 rounded border border-amber-200">
-                    <div className="font-semibold text-amber-900 text-sm mb-2">SS 12000 (Skolans data)</div>
-                    <div className="space-y-1">
-                      {selectedSpoke.ss12000Source.map((source, idx) => (
-                        <div key={idx} className="text-xs text-amber-800">• {source}</div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Historisk trend */}
-              {selectedSpoke.history.length > 0 && (
-                <div className="bg-gray-50 p-4 rounded border border-gray-200">
-                  <div className="font-semibold text-gray-900 mb-3">📊 Historisk trend</div>
-                  <div className="space-y-2">
-                    {selectedSpoke.history.slice(-5).reverse().map((point, idx) => {
-                      const pointColor = getStatusColor(point.value);
-                      return (
-                        <div key={idx} className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">{point.date}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500 capitalize">{point.measurement}</span>
-                            <span
-                              className="px-3 py-1 rounded font-semibold text-xs"
-                              style={{
-                                backgroundColor: pointColor.bg,
-                                color: pointColor.text
-                              }}
-                            >
-                              {pointColor.icon} {point.value}/5
-                            </span>
+                    <div className="space-y-2">
+                      {selectedSpoke.history.slice(-5).reverse().map((point, idx) => {
+                        const pointColor = getStatusColor(point.value);
+                        return (
+                          <div key={idx} className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600 text-xs">{point.date}</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-400 capitalize">{point.measurement}</span>
+                              <span
+                                className="px-2 py-0.5 rounded-full font-semibold text-xs"
+                                style={{ backgroundColor: pointColor.bg, color: pointColor.text }}
+                              >
+                                {pointColor.icon} {point.value}/5
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
