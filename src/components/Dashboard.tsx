@@ -34,26 +34,47 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
       {/* Intro Section - Adapted for Child/Youth */}
       <div>
         {isChild ? (
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 p-6 rounded-xl border border-orange-100">
-             <h2 className="text-2xl font-bold mb-2 text-[#E87C00]">Hej {childProfile.name.split(' ')[0]}! 👋</h2>
-             <p className="text-gray-700 max-w-2xl">
-               Här är din egen sida. Du har rätt att veta vad som skrivs om dig och vara med och bestämma. 
-               Här kan du se din plan och vilka vuxna som stöttar dig.
-             </p>
-             <div className="mt-4 flex gap-2">
-                <span className="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-xs font-bold text-orange-600 shadow-sm border border-orange-100">
+          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-6 rounded-2xl border border-orange-100 shadow-sm">
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-200/30 to-transparent rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-200/30 to-transparent rounded-full translate-y-1/2 -translate-x-1/2" />
+
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white text-2xl shadow-lg">
+                  👋
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Hej {childProfile.name.split(' ')[0]}!</h2>
+                  <p className="text-sm text-orange-600 font-medium">Din egen sida</p>
+                </div>
+              </div>
+              <p className="text-gray-700 max-w-2xl leading-relaxed">
+                Du har rätt att veta vad som skrivs om dig och vara med och bestämma.
+                Här kan du se din plan och vilka vuxna som stöttar dig.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-orange-700 shadow-sm border border-orange-200 hover:bg-white transition-colors cursor-pointer">
                   <Info size={14}/> Din rätt till information
                 </span>
-                <span className="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-xs font-bold text-orange-600 shadow-sm border border-orange-100">
+                <span className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-orange-700 shadow-sm border border-orange-200 hover:bg-white transition-colors cursor-pointer">
                   <MessageCircle size={14}/> Tyck till
                 </span>
-             </div>
+              </div>
+            </div>
           </div>
         ) : (
-          <>
-            <h2 className="text-2xl font-bold mb-2">Översikt</h2>
-            <p className="text-gray-600">Samlad lägesbild över insatser och välbefinnande.</p>
-          </>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">Översikt</h2>
+              <p className="text-gray-600">Samlad lägesbild över insatser och välbefinnande.</p>
+            </div>
+            <div className="hidden md:flex items-center gap-2 text-xs">
+              <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full font-semibold">
+                Professionell vy
+              </span>
+            </div>
+          </div>
         )}
       </div>
 
@@ -243,43 +264,76 @@ const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, s
       )}
 
       {/* KPI Cards - Context Aware */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button
           onClick={() => onNavigate('sip')}
-          className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group ${isChild ? 'hover:border-orange-400' : ''}`}
+          className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 text-left ${
+            isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
+          }`}
         >
-          <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
-            {isChild ? "Min Plan" : "Aktiva Planer"}
-          </div>
-          <div className={`text-3xl font-bold transition-colors ${isChild ? 'text-[#E87C00]' : 'text-[#005595] group-hover:text-[#B00020]'}`}>
-            1 <span className="text-sm font-normal text-gray-500">{isChild ? "Barnets plan / SIP" : "Barnets plan / SIP"}</span>
-          </div>
-        </div>
-        <div className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all group ${isChild ? 'hover:border-orange-400' : ''}`}>
-          <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
-            {isChild ? "Vuxna runt mig" : "Kontaktpersoner"}
-          </div>
-          <div className={`text-3xl font-bold transition-colors ${isChild ? 'text-[#E87C00]' : 'text-[#005595] group-hover:text-[#B00020]'}`}>
-            5
-          </div>
-        </div>
-        {!isChild && (
-          <div
-            onClick={() => onNavigate('shanarri')}
-            className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group"
-          >
-            <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
-              Välbefinnande
+          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
+            isChild ? 'bg-gradient-to-br from-orange-100 to-amber-50' : 'bg-gradient-to-br from-blue-100 to-indigo-50'
+          }`} />
+          <div className="relative">
+            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
+              {isChild ? "Min Plan" : "Aktiva Planer"}
             </div>
-            <div className="text-3xl font-bold text-[#378056]">7/8 <span className="text-sm font-normal text-gray-500">Bra!</span></div>
+            <div className="flex items-baseline gap-1">
+              <span className={`text-3xl font-bold ${isChild ? 'text-orange-500' : 'text-blue-600'}`}>1</span>
+              <span className="text-sm text-gray-500">SIP</span>
+            </div>
           </div>
+        </button>
+
+        <div className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 ${
+          isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
+        }`}>
+          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
+            isChild ? 'bg-gradient-to-br from-amber-100 to-yellow-50' : 'bg-gradient-to-br from-indigo-100 to-purple-50'
+          }`} />
+          <div className="relative">
+            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
+              {isChild ? "Vuxna runt mig" : "Kontaktpersoner"}
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span className={`text-3xl font-bold ${isChild ? 'text-amber-500' : 'text-indigo-600'}`}>5</span>
+              <span className="text-sm text-gray-500">personer</span>
+            </div>
+          </div>
+        </div>
+
+        {!isChild && (
+          <button
+            onClick={() => onNavigate('shanarri')}
+            className="group relative overflow-hidden bg-white p-5 rounded-2xl border-2 border-gray-100 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 text-left"
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110" />
+            <div className="relative">
+              <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
+                Välbefinnande
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-emerald-600">7/8</span>
+                <span className="text-sm text-emerald-600 font-medium">Bra!</span>
+              </div>
+            </div>
+          </button>
         )}
-        <div className={`bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:border-[#005595] hover:shadow-md transition-all group ${isChild ? 'hover:border-orange-400' : ''}`}>
-          <div className="text-gray-600 text-xs font-bold uppercase tracking-wider mb-2">
-            {isChild ? "Vem får se?" : "Samtycken"}
-          </div>
-          <div className={`text-3xl font-bold transition-colors ${isChild ? 'text-[#E87C00]' : 'text-[#005595] group-hover:text-[#B00020]'}`}>
-            3 <span className="text-sm font-normal text-gray-500">{isChild ? "Personer" : "Aktiva"}</span>
+
+        <div className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 ${
+          isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
+        }`}>
+          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
+            isChild ? 'bg-gradient-to-br from-yellow-100 to-orange-50' : 'bg-gradient-to-br from-violet-100 to-purple-50'
+          }`} />
+          <div className="relative">
+            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
+              {isChild ? "Vem får se?" : "Samtycken"}
+            </div>
+            <div className="flex items-baseline gap-1">
+              <span className={`text-3xl font-bold ${isChild ? 'text-yellow-600' : 'text-violet-600'}`}>3</span>
+              <span className="text-sm text-gray-500">{isChild ? "personer" : "aktiva"}</span>
+            </div>
           </div>
         </div>
       </div>
