@@ -16,7 +16,6 @@ import {
   Shield,
   MessageSquare,
   Layers,
-  Target,
   BookOpenCheck,
   Activity,
   ChevronLeft,
@@ -47,12 +46,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'icf-n3', label: 'N3 Samordnad', icon: <Activity size={16} className="text-red-600" />, badge: '🆕', hiddenForChild: true, group: 'icf' },
 
     // Barnets Resa Matris - NYA vyer (markerade med badge)
-    { id: 'optimal-wheel', label: 'Välbefinnandehjul', icon: <Target size={16} />, badge: '⭐', hiddenForChild: true, group: 'matris' },
     { id: 'journey-level', label: 'Nivåhantering', icon: <Layers size={16} />, badge: '⭐', hiddenForChild: true, group: 'matris' },
     { id: 'matrix-overview', label: 'Matrisöversikt', icon: <BookOpenCheck size={16} />, badge: '⭐', hiddenForChild: true, group: 'matris' },
 
     // Ursprungliga vyer
-    { id: 'shanarri', label: 'SHANARRI', icon: <PieChart size={16} />, group: 'views' },
+    { id: 'shanarri', label: 'Välbefinnandehjul', icon: <PieChart size={16} />, group: 'views' },
     { id: 'survey', label: 'Min röst', icon: <MessageSquare size={16} className="text-pink-600" />, group: 'views' },
     { id: 'sip', label: 'Min Plan', icon: <FileText size={16} />, group: 'views' },
 

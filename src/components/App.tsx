@@ -11,7 +11,7 @@ import { JOURNEY_PROFILES } from '../data/journeyMockData';
 
 // Lazy load view components to split code and improve initial load performance
 const Dashboard = lazy(() => import('./Dashboard'));
-const WelfareWheel = lazy(() => import('./WelfareWheel'));
+const MergedWelfareWheel = lazy(() => import('./MergedWelfareWheel'));
 const WellbeingSurvey = lazy(() => import('./WellbeingSurvey'));
 const DataProfile = lazy(() => import('./DataProfile'));
 const QualitySystem = lazy(() => import('./QualitySystem'));
@@ -23,7 +23,6 @@ const ResilienceMatrix = lazy(() => import('./ResilienceMatrix'));
 const AnnualQualityWheel = lazy(() => import('./AnnualQualityWheel'));
 
 // Barnets Resa Matris - Nya komponenter
-const OptimalWelfareWheel = lazy(() => import('./OptimalWelfareWheel'));
 const ChildJourneyLevel = lazy(() => import('./ChildJourneyLevel'));
 const MatrixOverview = lazy(() => import('./MatrixOverview'));
 
@@ -66,7 +65,14 @@ const App: React.FC = () => {
       case 'overview': return <Dashboard currentPerspective={currentPerspective} onNavigate={setCurrentView} selectedProfileId={selectedProfileId} />;
       case 'journal': return <Journal onNavigateToAI={() => setCurrentView('ai-analysis')} />;
       case 'quality': return <QualitySystem />;
-      case 'shanarri': return <WelfareWheel currentPerspective={currentPerspective} selectedProfileId={selectedProfileId} />;
+      case 'shanarri':
+        return (
+          <MergedWelfareWheel
+            currentPerspective={currentPerspective}
+            selectedProfileId={selectedProfileId}
+            journeyProfile={journeyProfile}
+          />
+        );
       case 'survey': return <WellbeingSurvey />;
       case 'ai-analysis': return <AIAnalysis onNavigate={setCurrentView} />;
       case 'dataprofile': return <DataProfile selectedProfileId={selectedProfileId} />;
@@ -76,16 +82,6 @@ const App: React.FC = () => {
       case 'qualitywheel': return <AnnualQualityWheel />;
 
       // Barnets Resa Matris - Nya vyer
-      case 'optimal-wheel':
-        return journeyProfile ? (
-          <OptimalWelfareWheel
-            currentPerspective={currentPerspective}
-            currentLevel={journeyProfile.currentLevel}
-            spokeData={journeyProfile.welfareWheel}
-            onSpokeClick={() => {}}
-          />
-        ) : <div>Ingen journeyprofil hittades</div>;
-
       case 'journey-level':
         return journeyProfile ? (
           <ChildJourneyLevel
