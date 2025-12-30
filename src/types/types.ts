@@ -14,7 +14,6 @@ export type View =
   | 'resilience'
   | 'qualitywheel'
   | 'survey'
-  | 'optimal-wheel'      // Barnets Resa - Optimalt välbefinnandehjul
   | 'journey-level'      // Barnets Resa - Nivåhantering
   | 'matrix-overview'    // Barnets Resa - Matrisöversikt
   | 'icf-demo'           // WHO ICF - Performance/Capacity & Environmental Factors
