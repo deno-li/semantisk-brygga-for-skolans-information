@@ -1,11 +1,23 @@
 
-import React, { useState, useMemo, useCallback, memo } from 'react';
-import { TIMELINE_DATA, QUALITY_CYCLE, NEWS_FEED_DATA, ENHANCED_CHILD_PROFILE } from '../data/constants';
-import { ArrowUpRight, Calendar, AlertCircle, CheckCircle2, ClipboardCheck, ArrowRight, Info, MessageCircle, Newspaper, Image as ImageIcon, Shield, ShieldAlert, TrendingUp, Users, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { TIMELINE_DATA, QUALITY_CYCLE, ENHANCED_CHILD_PROFILE } from '../data/constants';
+import {
+  ArrowRight,
+  Calendar,
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  Users,
+  Heart,
+  Shield,
+  TrendingUp,
+  Sparkles,
+  ChevronRight,
+  Clock,
+  MessageSquare
+} from 'lucide-react';
 import { Perspective, View } from '../types/types';
-import MiniWellBeingWheel from './MiniWellBeingWheel';
 import { useProfileData } from '../hooks/useProfileData';
-import LongitudinalWelfareChart from './LongitudinalWelfareChart';
 import { JOURNEY_PROFILES } from '../data/journeyMockData';
 
 interface DashboardProps {
@@ -15,710 +27,314 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ currentPerspective, onNavigate, selectedProfileId = 'erik' }) => {
-  // Use custom hook to fetch profile data
-  const { shanarriData, riskFactors, protectiveFactors, childProfile, needsAttention } = useProfileData(selectedProfileId);
-  const [showTrendChart, setShowTrendChart] = useState(false);
-
-  // Get journey profile for trend data
+  const { shanarriData, childProfile, needsAttention } = useProfileData(selectedProfileId);
   const journeyProfile = useMemo(() => JOURNEY_PROFILES[selectedProfileId], [selectedProfileId]);
 
-  const nextMeeting = useMemo(() => TIMELINE_DATA[0], []);
-  const currentQualityPhase = useMemo(() => QUALITY_CYCLE.find(q => q.status === 'active') || QUALITY_CYCLE[0], []);
-
   const isChild = currentPerspective === 'child';
-  const isYouth = useMemo(() => isChild && childProfile.age >= 13, [isChild, childProfile.age]); 
+  const greenCount = shanarriData.filter(d => d.status >= 4).length;
+  const yellowCount = shanarriData.filter(d => d.status === 3).length;
+
+  // Quick action cards data
+  const quickActions = isChild ? [
+    { id: 'sip', icon: FileText, label: 'Min Plan', desc: 'Se vad vi jobbar med', color: 'orange' },
+    { id: 'survey', icon: MessageSquare, label: 'Min röst', desc: 'Berätta hur du mår', color: 'pink' },
+    { id: 'shanarri', icon: Heart, label: 'Välbefinnande', desc: 'Hur mår du?', color: 'rose' },
+  ] : [
+    { id: 'sip', icon: FileText, label: 'Aktiv plan', desc: '1 pågående SIP', color: 'blue' },
+    { id: 'shanarri', icon: Heart, label: 'Välbefinnande', desc: `${greenCount}/8 bra`, color: 'emerald' },
+    { id: 'journal', icon: Clock, label: 'Journal', desc: 'Senaste noteringar', color: 'violet' },
+    { id: 'ai-analysis', icon: Sparkles, label: 'AI-analys', desc: 'Insikter & mönster', color: 'amber' },
+  ];
+
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, { bg: string; border: string; text: string; icon: string }> = {
+      orange: { bg: 'bg-orange-50', border: 'border-orange-200 hover:border-orange-400', text: 'text-orange-700', icon: 'text-orange-500' },
+      pink: { bg: 'bg-pink-50', border: 'border-pink-200 hover:border-pink-400', text: 'text-pink-700', icon: 'text-pink-500' },
+      rose: { bg: 'bg-rose-50', border: 'border-rose-200 hover:border-rose-400', text: 'text-rose-700', icon: 'text-rose-500' },
+      blue: { bg: 'bg-blue-50', border: 'border-blue-200 hover:border-blue-400', text: 'text-blue-700', icon: 'text-blue-500' },
+      emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200 hover:border-emerald-400', text: 'text-emerald-700', icon: 'text-emerald-500' },
+      violet: { bg: 'bg-violet-50', border: 'border-violet-200 hover:border-violet-400', text: 'text-violet-700', icon: 'text-violet-500' },
+      amber: { bg: 'bg-amber-50', border: 'border-amber-200 hover:border-amber-400', text: 'text-amber-700', icon: 'text-amber-500' },
+    };
+    return colors[color] || colors.blue;
+  };
 
   return (
-    <div className="space-y-8 animate-fade-in text-[#1F1F1F]">
-      
-      {/* Intro Section - Adapted for Child/Youth */}
-      <div>
+    <div className="max-w-5xl mx-auto space-y-8">
+      {/* Welcome Section */}
+      <section className="text-center py-6">
         {isChild ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-6 rounded-2xl border border-orange-100 shadow-sm">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-200/30 to-transparent rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-200/30 to-transparent rounded-full translate-y-1/2 -translate-x-1/2" />
-
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white text-2xl shadow-lg">
-                  👋
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Hej {childProfile.name.split(' ')[0]}!</h2>
-                  <p className="text-sm text-orange-600 font-medium">Din egen sida</p>
-                </div>
-              </div>
-              <p className="text-gray-700 max-w-2xl leading-relaxed">
-                Du har rätt att veta vad som skrivs om dig och vara med och bestämma.
-                Här kan du se din plan och vilka vuxna som stöttar dig.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-orange-700 shadow-sm border border-orange-200 hover:bg-white transition-colors cursor-pointer">
-                  <Info size={14}/> Din rätt till information
-                </span>
-                <span className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-orange-700 shadow-sm border border-orange-200 hover:bg-white transition-colors cursor-pointer">
-                  <MessageCircle size={14}/> Tyck till
-                </span>
-              </div>
+          <>
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 text-white text-3xl mb-4 shadow-lg">
+              👋
             </div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">Översikt</h2>
-              <p className="text-gray-600">Samlad lägesbild över insatser och välbefinnande.</p>
-            </div>
-            <div className="hidden md:flex items-center gap-2 text-xs">
-              <span className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full font-semibold">
-                Professionell vy
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Well-being Wheel Overview Section */}
-      <div
-        onClick={() => onNavigate('shanarri')}
-        className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden relative min-h-[280px] flex flex-col md:flex-row hover:border-[#005595] hover:shadow-md transition-all cursor-pointer group"
-      >
-        <div className="p-6 md:w-1/3 flex flex-col justify-center relative z-10 bg-white">
-            <h3 className="text-lg font-bold text-[#1F1F1F] mb-2 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[#005595]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2 L12 12 L17 17"/>
-                </svg>
-                {isChild ? "Ditt Välbefinnandehjul" : "Välbefinnandehjul"}
-            </h3>
-            <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                {isChild
-                  ? "Klicka för att se mer."
-                  : "SHANARRI-modellen visar barnets välbefinnande inom 8 dimensioner. Klicka för att utforska."}
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Hej {childProfile.name.split(' ')[0]}!
+            </h1>
+            <p className="text-gray-600 max-w-md mx-auto">
+              Här kan du se din plan och hur det går för dig.
             </p>
-            {!isChild && (
-              <div className="flex items-center gap-2 text-sm">
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-semibold">
-                  {shanarriData.filter(d => d.status >= 4).length} Bra
-                </span>
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded text-xs font-semibold">
-                  {shanarriData.filter(d => d.status === 3).length} OK
-                </span>
-                {needsAttention > 0 && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 rounded text-xs font-semibold">
-                    {needsAttention} Behöver stöd
-                  </span>
-                )}
-              </div>
-            )}
-            <div className="mt-4 flex items-center gap-2 text-[#005595] text-sm font-semibold group-hover:gap-3 transition-all">
-              Se fullständigt hjul <ArrowRight size={16} />
-            </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Översikt för {childProfile.name}
+            </h1>
+            <p className="text-gray-600">
+              {childProfile.age} år • {childProfile.grade} • {childProfile.school}
+            </p>
+          </>
+        )}
+      </section>
 
-        {/* Interactive Well-being Wheel */}
-        <div className="md:w-2/3 bg-gradient-to-br from-blue-50 via-purple-50 to-teal-50 relative min-h-[280px] overflow-hidden flex items-center justify-center p-8">
-            <div className="relative w-full max-w-[380px]">
-              {(() => {
-                const size = 380;
-                const cx = size / 2;
-                const cy = size / 2;
-                const outerR = size / 2 - 20; // Outer radius for main wheel
-                const innerR = size / 6; // Inner circle radius
-                const textR = (outerR + innerR) / 2; // Position for text
-                const indicatorR = outerR - 25; // Position for status indicators
-                const n = shanarriData.length;
-
-                return (
-                  <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full drop-shadow-lg">
-                    {shanarriData.map((dim, i) => {
-                      const startAngle = (i * 360) / n - 90;
-                      const endAngle = ((i + 1) * 360) / n - 90;
-                      const midAngle = (startAngle + endAngle) / 2;
-
-                      const startRad = (startAngle * Math.PI) / 180;
-                      const endRad = (endAngle * Math.PI) / 180;
-
-                      // Wheel segment coordinates
-                      const x1 = cx + Math.cos(startRad) * innerR;
-                      const y1 = cy + Math.sin(startRad) * innerR;
-                      const x2 = cx + Math.cos(startRad) * outerR;
-                      const y2 = cy + Math.sin(startRad) * outerR;
-                      const x3 = cx + Math.cos(endRad) * outerR;
-                      const y3 = cy + Math.sin(endRad) * outerR;
-                      const x4 = cx + Math.cos(endRad) * innerR;
-                      const y4 = cy + Math.sin(endRad) * innerR;
-
-                      const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
-
-                      // Text positioning
-                      const textAngleRad = (midAngle * Math.PI) / 180;
-                      const textX = cx + Math.cos(textAngleRad) * textR;
-                      const textY = cy + Math.sin(textAngleRad) * textR;
-
-                      // Status indicator positioning
-                      const indicatorAngleRad = (midAngle * Math.PI) / 180;
-                      const indicatorX = cx + Math.cos(indicatorAngleRad) * indicatorR;
-                      const indicatorY = cy + Math.sin(indicatorAngleRad) * indicatorR;
-
-                      // Status color based on value
-                      const statusColor = dim.status >= 4 ? '#10b981' : dim.status === 3 ? '#fbbf24' : '#ef4444';
-
-                      return (
-                        <g key={dim.id}>
-                          {/* Wheel segment */}
-                          <path
-                            d={path}
-                            fill={dim.color}
-                            stroke="white"
-                            strokeWidth="3"
-                            opacity="0.9"
-                            className="transition-all group-hover:opacity-100"
-                          />
-
-                          {/* Dimension name */}
-                          <text
-                            x={textX}
-                            y={textY}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fill="white"
-                            fontSize="11"
-                            fontWeight="700"
-                            className="pointer-events-none uppercase tracking-wide"
-                            transform={`rotate(${midAngle + 90}, ${textX}, ${textY})`}
-                          >
-                            {dim.name}
-                          </text>
-
-                          {/* Status indicator circle */}
-                          <circle
-                            cx={indicatorX}
-                            cy={indicatorY}
-                            r="8"
-                            fill={statusColor}
-                            stroke="white"
-                            strokeWidth="2"
-                            className="transition-all"
-                          />
-                        </g>
-                      );
-                    })}
-
-                    {/* Center circle */}
-                    <circle cx={cx} cy={cy} r={innerR} fill="white" stroke="#005595" strokeWidth="3"/>
-
-                    {/* Center text */}
-                    <text
-                      x={cx}
-                      y={cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill="#005595"
-                      fontSize="14"
-                      fontWeight="bold"
-                      className="pointer-events-none"
-                    >
-                      <tspan x={cx} dy="-8">BARNETS</tspan>
-                      <tspan x={cx} dy="16">BÄSTA</tspan>
-                    </text>
-                  </svg>
-                );
-              })()}
-            </div>
-        </div>
-      </div>
-
-      {/* Longitudinal Trend Chart - Collapsible (Professional View Only) */}
-      {!isChild && journeyProfile && journeyProfile.welfareWheel.some(s => s.history && s.history.length > 0) && (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <button
-            onClick={() => setShowTrendChart(!showTrendChart)}
-            className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <BarChart3 size={20} className="text-blue-600" />
-              <div className="text-left">
-                <h3 className="font-bold text-[#1F1F1F]">Välbefinnandetrend över tid</h3>
-                <p className="text-sm text-gray-600">Se hur välbefinnandeekrarna har förändrats</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded">
-                {journeyProfile.welfareWheel.filter(s => s.history && s.history.length > 0).length} ekrar med historik
-              </span>
-              {showTrendChart ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
-            </div>
-          </button>
-
-          {showTrendChart && (
-            <div className="border-t border-gray-200 p-6">
-              <LongitudinalWelfareChart
-                welfareWheel={journeyProfile.welfareWheel}
-                title="Utveckling av välbefinnandeekrar"
-                showComparison
-              />
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* KPI Cards - Context Aware */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Main Welfare Wheel Card */}
+      <section>
         <button
-          onClick={() => onNavigate('sip')}
-          className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 text-left ${
-            isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
-          }`}
+          onClick={() => onNavigate('shanarri')}
+          className="w-full group"
         >
-          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
-            isChild ? 'bg-gradient-to-br from-orange-100 to-amber-50' : 'bg-gradient-to-br from-blue-100 to-indigo-50'
-          }`} />
-          <div className="relative">
-            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
-              {isChild ? "Min Plan" : "Aktiva Planer"}
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-3xl font-bold ${isChild ? 'text-orange-500' : 'text-blue-600'}`}>1</span>
-              <span className="text-sm text-gray-500">SIP</span>
+          <div className="relative bg-white rounded-3xl border-2 border-gray-100 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/50" />
+
+            <div className="relative p-8 flex flex-col md:flex-row items-center gap-8">
+              {/* Wheel visualization */}
+              <div className="w-48 h-48 flex-shrink-0">
+                <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-md">
+                  {shanarriData.map((dim, i) => {
+                    const n = shanarriData.length;
+                    const startAngle = (i * 360) / n - 90;
+                    const endAngle = ((i + 1) * 360) / n - 90;
+                    const midAngle = (startAngle + endAngle) / 2;
+                    const outerR = 95;
+                    const innerR = 40;
+
+                    const startRad = (startAngle * Math.PI) / 180;
+                    const endRad = (endAngle * Math.PI) / 180;
+                    const cx = 100, cy = 100;
+
+                    const x1 = cx + Math.cos(startRad) * innerR;
+                    const y1 = cy + Math.sin(startRad) * innerR;
+                    const x2 = cx + Math.cos(startRad) * outerR;
+                    const y2 = cy + Math.sin(startRad) * outerR;
+                    const x3 = cx + Math.cos(endRad) * outerR;
+                    const y3 = cy + Math.sin(endRad) * outerR;
+                    const x4 = cx + Math.cos(endRad) * innerR;
+                    const y4 = cy + Math.sin(endRad) * innerR;
+
+                    const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
+
+                    return (
+                      <path
+                        key={dim.id}
+                        d={path}
+                        fill={dim.color}
+                        stroke="white"
+                        strokeWidth="2"
+                        className="transition-opacity group-hover:opacity-90"
+                      />
+                    );
+                  })}
+                  <circle cx="100" cy="100" r="38" fill="white" stroke="#e5e7eb" strokeWidth="2" />
+                  <text x="100" y="96" textAnchor="middle" className="fill-gray-900 text-[10px] font-bold">
+                    BARNETS
+                  </text>
+                  <text x="100" y="108" textAnchor="middle" className="fill-gray-900 text-[10px] font-bold">
+                    BÄSTA
+                  </text>
+                </svg>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 text-center md:text-left">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {isChild ? 'Ditt välbefinnandehjul' : 'Välbefinnandehjul'}
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  {isChild
+                    ? 'Se hur det går för dig inom olika områden i livet.'
+                    : 'SHANARRI-modellen visar välbefinnande inom 8 dimensioner.'}
+                </p>
+
+                {!isChild && (
+                  <div className="flex flex-wrap gap-2 mb-4 justify-center md:justify-start">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                      <CheckCircle2 size={14} />
+                      {greenCount} bra
+                    </span>
+                    {yellowCount > 0 && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
+                        {yellowCount} OK
+                      </span>
+                    )}
+                    {needsAttention > 0 && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-medium">
+                        <AlertCircle size={14} />
+                        {needsAttention} att följa upp
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <div className="inline-flex items-center gap-2 text-blue-600 font-semibold group-hover:gap-3 transition-all">
+                  Utforska hjulet
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
             </div>
           </div>
         </button>
+      </section>
 
-        <div className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 ${
-          isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
-        }`}>
-          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
-            isChild ? 'bg-gradient-to-br from-amber-100 to-yellow-50' : 'bg-gradient-to-br from-indigo-100 to-purple-50'
-          }`} />
-          <div className="relative">
-            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
-              {isChild ? "Vuxna runt mig" : "Kontaktpersoner"}
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-3xl font-bold ${isChild ? 'text-amber-500' : 'text-indigo-600'}`}>5</span>
-              <span className="text-sm text-gray-500">personer</span>
-            </div>
-          </div>
+      {/* Quick Actions Grid */}
+      <section>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          {isChild ? 'Snabbval' : 'Snabbåtkomst'}
+        </h2>
+        <div className={`grid gap-4 ${isChild ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+          {quickActions.map((action) => {
+            const colors = getColorClasses(action.color);
+            const Icon = action.icon;
+            return (
+              <button
+                key={action.id}
+                onClick={() => onNavigate(action.id as View)}
+                className={`group p-5 rounded-2xl border-2 ${colors.border} ${colors.bg} text-left transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
+              >
+                <Icon size={24} className={`${colors.icon} mb-3`} />
+                <div className={`font-semibold ${colors.text}`}>{action.label}</div>
+                <div className="text-sm text-gray-600 mt-0.5">{action.desc}</div>
+              </button>
+            );
+          })}
         </div>
+      </section>
 
-        {!isChild && (
-          <button
-            onClick={() => onNavigate('shanarri')}
-            className="group relative overflow-hidden bg-white p-5 rounded-2xl border-2 border-gray-100 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 text-left"
-          >
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-100 to-teal-50 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110" />
-            <div className="relative">
-              <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
-                Välbefinnande
-              </div>
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-emerald-600">7/8</span>
-                <span className="text-sm text-emerald-600 font-medium">Bra!</span>
-              </div>
-            </div>
-          </button>
-        )}
-
-        <div className={`group relative overflow-hidden bg-white p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 ${
-          isChild ? 'border-orange-100 hover:border-orange-300' : 'border-gray-100 hover:border-blue-300'
-        }`}>
-          <div className={`absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-1/2 translate-x-1/2 transition-transform group-hover:scale-110 ${
-            isChild ? 'bg-gradient-to-br from-yellow-100 to-orange-50' : 'bg-gradient-to-br from-violet-100 to-purple-50'
-          }`} />
-          <div className="relative">
-            <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">
-              {isChild ? "Vem får se?" : "Samtycken"}
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-3xl font-bold ${isChild ? 'text-yellow-600' : 'text-violet-600'}`}>3</span>
-              <span className="text-sm text-gray-500">{isChild ? "personer" : "aktiva"}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Feed */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          <div className="grid grid-cols-1 gap-6">
-             {/* Active SIP Card */}
-             <div className={`bg-white rounded-xl border overflow-hidden shadow-sm flex flex-col ${isChild ? 'border-orange-200' : 'border-blue-200'}`}>
-              <div className={`px-4 py-3 flex justify-between items-center text-white ${isChild ? 'bg-[#E87C00]' : 'bg-[#005595]'}`}>
-                 <h3 className="font-bold flex items-center gap-2 text-sm">
-                   <div className={`w-2 h-2 rounded-full animate-pulse ${isChild ? 'bg-white' : 'bg-green-400'}`}></div>
-                   {isChild ? "Min Plan" : "Aktiv"}
-                 </h3>
-                 <button
-                   onClick={() => onNavigate('sip')}
-                   className="text-xs bg-white/20 hover:bg-white/30 px-2 py-0.5 rounded text-white font-semibold transition-colors"
-                 >
-                   {isChild ? "Läs" : "Öppna"}
-                 </button>
-              </div>
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div className={`border-l-4 p-3 mb-4 ${isChild ? 'bg-orange-50 border-[#E87C00]' : 'bg-[#EBF4FA] border-[#005595]'}`}>
-                  <p className="text-[#1F1F1F] font-medium text-sm italic">
-                    "{isChild ? (childProfile.sipGoal?.child || "Målet är att jag ska bli bättre på att läsa och känna mig lugn i skolan.") : (childProfile.sipGoal?.professional || "Erik ska uppnå åldersadekvat läsförmåga och känna trygghet i sin skolsituation senast juni 2026.")}"
-                  </p>
+      {/* Status Section - Only for professionals */}
+      {!isChild && (
+        <section className="grid md:grid-cols-2 gap-6">
+          {/* Active Plan Card */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                  <FileText size={20} className="text-blue-600" />
                 </div>
-                <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
-                  <div className="flex items-center gap-1">
-                     <CheckCircle2 size={14} className="text-[#378056]"/>
-                     <span className="font-semibold text-[#1F1F1F]">
-                       {isChild ? "4 saker pågår" : "4 Insatser"}
-                     </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                     <Calendar size={14} className={isChild ? "text-[#E87C00]" : "text-[#005595]"}/>
-                     <span>{isChild ? "Nästa:" : "Uppföljn:"} <strong className="text-[#1F1F1F]">15 Jan</strong></span>
-                  </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Aktiv plan (SIP)</h3>
+                  <p className="text-sm text-gray-500">Uppdaterad 15 dec 2024</p>
                 </div>
               </div>
-            </div>
-          </div>
-
-           {/* Gävlemodellen Quick Status - Child Adapted */}
-           <div
-             onClick={() => onNavigate('quality')}
-             className={`bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group ${isChild ? 'hover:border-orange-400' : 'hover:border-[#005595]'}`}
-            >
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] flex items-center gap-2">
-                  <ClipboardCheck size={20} className={isChild ? "text-[#E87C00]" : "text-[#005595]"} />
-                  {isChild ? "Du svarade, vi lyssnade!" : "Gävlemodellen & Systematiskt trygghetsarbete"}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  {isChild 
-                    ? "Tack för att du var med i trygghetsenkäten. Just nu jobbar skolan med dina förslag." 
-                    : <><span className="text-gray-500">Vi befinner oss i fas:</span> <strong className="text-[#005595]">{currentQualityPhase.title}</strong></>
-                  }
-                </p>
-              </div>
-              <span className={`text-xs font-bold px-2 py-1 rounded uppercase ${isChild ? 'bg-orange-100 text-[#E87C00]' : 'bg-blue-100 text-[#005595]'}`}>
-                {isChild ? "Pågår nu" : "Läsår 25/26"}
+              <span className="flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Aktiv
               </span>
             </div>
-            
-            <div className="w-full bg-gray-100 rounded-full h-2 mb-4">
-               <div className={`h-2 rounded-full w-[65%] ${isChild ? 'bg-[#E87C00]' : 'bg-[#005595]'}`}></div>
+
+            <div className="bg-gray-50 rounded-xl p-4 mb-4">
+              <p className="text-sm text-gray-700 italic">
+                "{childProfile.sipGoal?.professional || 'Erik ska uppnå åldersadekvat läsförmåga och känna trygghet i sin skolsituation.'}"
+              </p>
             </div>
 
-            <div className="flex items-center gap-4 text-sm">
-               <div className="flex items-center gap-1.5 text-gray-700">
-                 <CheckCircle2 size={16} className="text-[#378056]" />
-                 <span>{isChild ? "Du har svarat" : "Enkät genomförd"}</span>
-               </div>
-               <div className="flex items-center gap-1.5 text-gray-700">
-                 <ArrowRight size={16} className={isChild ? "text-[#E87C00]" : "text-[#005595]"} />
-                 <span>{isChild ? "Skolan planerar aktiviteter" : "Analys pågår (Stigslundsskolan)"}</span>
-               </div>
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center gap-4 text-gray-600">
+                <span className="flex items-center gap-1">
+                  <CheckCircle2 size={14} className="text-emerald-500" />
+                  4 insatser
+                </span>
+                <span className="flex items-center gap-1">
+                  <Calendar size={14} className="text-blue-500" />
+                  Nästa: 15 jan
+                </span>
+              </div>
+              <button
+                onClick={() => onNavigate('sip')}
+                className="text-blue-600 font-medium hover:underline flex items-center gap-1"
+              >
+                Öppna <ChevronRight size={14} />
+              </button>
             </div>
           </div>
 
-          {/* Attention Items */}
-          {needsAttention > 0 && (
-            <div className="bg-[#FFF4F0] rounded-xl border border-[#B00020] shadow-sm">
-               <div className="px-6 py-4 border-b border-[#B00020]/20">
-                 <h3 className="font-bold text-[#B00020] flex items-center gap-2">
-                   <AlertCircle size={20} />
-                   {isChild ? "Saker vi behöver fixa" : "Områden som kräver uppmärksamhet"}
-                 </h3>
-               </div>
-               <div className="divide-y divide-[#B00020]/10">
-                 {shanarriData.filter(d => d.status < 3).map(item => (
-                   <div key={item.id} className="flex items-start gap-4 p-4 hover:bg-white/50 transition-colors">
-                      <div className="w-2 h-2 rounded-full bg-[#B00020] mt-2 shrink-0"></div>
-                      <div className="flex-1">
-                        <div className="font-bold text-[#1F1F1F] text-lg">{item.name} ({item.status}/5)</div>
-                        <p className="text-gray-700 mt-1">{item.notes}</p>
-                        <button 
-                          onClick={() => onNavigate('sip')}
-                          className="text-[#005595] mt-3 font-semibold text-sm hover:underline flex items-center gap-1"
-                        >
-                          {isChild ? "Läs vad vi ska göra" : "Se åtgärdsprogram"} <ArrowUpRight size={14}/>
-                        </button>
-                      </div>
-                   </div>
-                 ))}
-               </div>
+          {/* Team Card */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center">
+                  <Users size={20} className="text-violet-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Team runt {childProfile.name.split(' ')[0]}</h3>
+                  <p className="text-sm text-gray-500">5 involverade</p>
+                </div>
+              </div>
             </div>
-          )}
 
-          {/* Support Level & Risk/Protective Factors - Professional View Only */}
-          {!isChild && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Support Level Card */}
-              <div className="bg-white rounded-xl border border-orange-200 p-6 shadow-sm">
-                <div className="flex items-start justify-between mb-4">
+            <div className="space-y-3">
+              {[
+                { role: 'Mentor', name: 'Anna Karlsson', org: 'Stigslundsskolan' },
+                { role: 'Kurator', name: 'Erik Svensson', org: 'Stigslundsskolan' },
+                { role: 'Socialtjänst', name: 'Maria Lindberg', org: 'Gävle kommun' },
+              ].map((person, i) => (
+                <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                   <div>
-                    <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg">
-                      <TrendingUp size={20} className="text-orange-500" />
-                      Stödnivå
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1">Livsloppsperspektiv</p>
-                  </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 border border-orange-200">
-                    Nivå 3
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-[#1F1F1F]">
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'universal' && 'Universell'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'early-attention' && 'Tidig uppmärksamhet'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'enhanced-support' && 'Förstärkt stöd'}
-                      {ENHANCED_CHILD_PROFILE.supportLevel === 'intensive-support' && 'Intensivt stöd'}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div
-                      className={`h-2 rounded-full ${
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'universal' ? 'w-[25%] bg-green-500' :
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'early-attention' ? 'w-[50%] bg-yellow-500' :
-                        ENHANCED_CHILD_PROFILE.supportLevel === 'enhanced-support' ? 'w-[75%] bg-orange-500' :
-                        'w-[100%] bg-red-500'
-                      }`}
-                    ></div>
-                  </div>
-                </div>
-
-                {ENHANCED_CHILD_PROFILE.activeTriggers && ENHANCED_CHILD_PROFILE.activeTriggers.length > 0 && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                    <div className="text-xs font-bold text-orange-700 mb-1 flex items-center gap-1">
-                      <AlertCircle size={12} />
-                      Aktiv trigger från {ENHANCED_CHILD_PROFILE.activeTriggers[0].triggeredDate}
-                    </div>
-                    <p className="text-xs text-gray-700">
-                      {ENHANCED_CHILD_PROFILE.activeTriggers[0].reason}
-                    </p>
-                  </div>
-                )}
-
-                <div className="mt-4 text-xs text-gray-600 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <Users size={14} className="text-gray-400" />
-                    <span><strong>Primär:</strong> {ENHANCED_CHILD_PROFILE.primarySector === 'elementary-school' ? 'Grundskola' : ENHANCED_CHILD_PROFILE.primarySector}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users size={14} className="text-gray-400" />
-                    <span><strong>Sekundär:</strong> {ENHANCED_CHILD_PROFILE.secondarySectors.join(', ')}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Current Phase Card */}
-              <div className="bg-white rounded-xl border border-blue-200 p-6 shadow-sm">
-                <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg mb-4">
-                  <Calendar size={20} className="text-[#005595]" />
-                  Livsfas
-                </h3>
-
-                <div className="mb-4">
-                  <div className="text-2xl font-bold text-[#005595] mb-1">
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'early-childhood' && 'Tidig barndom'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'preschool' && 'Förskola'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'elementary-school' && 'Grundskola'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'high-school' && 'Gymnasiet'}
-                    {ENHANCED_CHILD_PROFILE.currentPhase === 'young-adult' && 'Ung vuxen'}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    {childProfile.age} år, {childProfile.grade}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-xs text-gray-500 uppercase font-semibold mb-2">Genomgångna faser:</div>
-                  <div className="flex items-center gap-2 text-xs text-green-700 bg-green-50 px-2 py-1 rounded">
-                    <CheckCircle2 size={14} />
-                    <span>BVC/MVC (0-5 år)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-green-700 bg-green-50 px-2 py-1 rounded">
-                    <CheckCircle2 size={14} />
-                    <span>Förskola (1-6 år)</span>
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase font-semibold mt-3 mb-2">Nuvarande fas:</div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#005595] bg-blue-50 px-2 py-1.5 rounded border border-blue-200">
-                    <div className="w-2 h-2 rounded-full bg-[#005595] animate-pulse"></div>
-                    <span>Grundskola (Åk 9, 15 år)</span>
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase font-semibold mt-3 mb-2">Nästa steg:</div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                    <ArrowRight size={14} />
-                    <span>Gymnasiet (hösten 2026)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Risk & Protective Factors - Professional View Only */}
-          {!isChild && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Risk Factors */}
-              <div className="bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
-                <div className="bg-red-50 px-6 py-4 border-b border-red-100">
-                  <h3 className="text-lg font-bold text-red-700 flex items-center gap-2">
-                    <ShieldAlert size={20} />
-                    Riskfaktorer ({riskFactors.filter(rf => rf.status === 'active' || rf.status === 'monitoring').length})
-                  </h3>
-                </div>
-                <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
-                  {riskFactors.filter(rf => rf.status === 'active' || rf.status === 'monitoring').map(risk => (
-                    <div key={risk.id} className="p-4 hover:bg-gray-50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-semibold text-[#1F1F1F] text-sm">{risk.name}</div>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                          risk.severity === 'low' ? 'bg-yellow-100 text-yellow-700' :
-                          risk.severity === 'medium' ? 'bg-orange-100 text-orange-700' :
-                          risk.severity === 'high' ? 'bg-red-100 text-red-700' :
-                          'bg-red-200 text-red-900'
-                        }`}>
-                          {risk.severity === 'low' ? 'Låg' : risk.severity === 'medium' ? 'Medel' : risk.severity === 'high' ? 'Hög' : 'Kritisk'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-2">{risk.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="px-2 py-0.5 bg-gray-100 rounded">
-                          {risk.category === 'individual' ? 'Individ' : risk.category === 'family' ? 'Familj' : 'Miljö'}
-                        </span>
-                        <span>•</span>
-                        <span>ID: {risk.identifiedDate}</span>
-                      </div>
-                      {risk.mitigationActions && risk.mitigationActions.length > 0 && (
-                        <div className="mt-2 text-xs">
-                          <div className="font-semibold text-gray-700 mb-1">Åtgärder:</div>
-                          <ul className="list-disc list-inside text-gray-600 space-y-0.5">
-                            {risk.mitigationActions.slice(0, 2).map((action, idx) => (
-                              <li key={idx}>{action}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Protective Factors */}
-              <div className="bg-white rounded-xl border border-green-200 shadow-sm overflow-hidden">
-                <div className="bg-green-50 px-6 py-4 border-b border-green-100">
-                  <h3 className="text-lg font-bold text-green-700 flex items-center gap-2">
-                    <Shield size={20} />
-                    Skyddsfaktorer ({protectiveFactors.length})
-                  </h3>
-                </div>
-                <div className="divide-y divide-gray-100 max-h-80 overflow-y-auto">
-                  {protectiveFactors.map(protective => (
-                    <div key={protective.id} className="p-4 hover:bg-gray-50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-semibold text-[#1F1F1F] text-sm">{protective.name}</div>
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                          protective.strength === 'weak' ? 'bg-green-50 text-green-600' :
-                          protective.strength === 'moderate' ? 'bg-green-100 text-green-700' :
-                          'bg-green-200 text-green-800'
-                        }`}>
-                          {protective.strength === 'weak' ? 'Svag' : protective.strength === 'moderate' ? 'Måttlig' : 'Stark'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-2">{protective.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="px-2 py-0.5 bg-gray-100 rounded">
-                          {protective.category === 'individual' ? 'Individ' : protective.category === 'family' ? 'Familj' : 'Miljö'}
-                        </span>
-                        <span>•</span>
-                        <span>ID: {protective.identifiedDate}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Next Event */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg">📅 {isChild ? "Händer snart" : "Nästa händelse"}</h3>
-            <div className="flex gap-4 items-start">
-               <div className={`rounded-lg px-4 py-3 text-center min-w-[70px] border ${isChild ? 'bg-orange-50 text-[#E87C00] border-orange-100' : 'bg-[#EBF4FA] text-[#005595] border-blue-100'}`}>
-                 <div className="text-xs font-bold uppercase tracking-wider">Dec</div>
-                 <div className="text-2xl font-bold">12</div>
-               </div>
-               <div>
-                 <div className="font-bold text-[#1F1F1F] text-lg leading-tight mb-1">{nextMeeting.title}</div>
-                 <div className="text-sm text-gray-600 mb-2">Skola • Föräldrar • Mentor</div>
-                 <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded">
-                   Kl 14:00 - 15:00
-                 </span>
-               </div>
-            </div>
-          </div>
-
-          {/* Quick Contacts */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-             <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg">📞 {isChild ? "Dina vuxna" : "Snabbkontakt"}</h3>
-             <div className="space-y-4">
-               <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-                 <div className="flex items-center gap-3">
-                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border ${isChild ? 'bg-orange-50 text-[#E87C00] border-orange-100' : 'bg-[#EBF4FA] text-[#005595] border-blue-100'}`}>LS</div>
-                   <div>
-                     <div className="font-bold text-[#1F1F1F]">Lisa Svensson</div>
-                     <div className="text-xs text-gray-500 font-semibold uppercase">Mentor</div>
-                   </div>
-                 </div>
-                 <button className="text-sm text-[#005595] font-semibold hover:underline">
-                   {isChild ? "Skriv meddelande" : "Meddelande"}
-                 </button>
-               </div>
-               <div className="flex items-center justify-between">
-                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-full bg-green-50 text-[#378056] flex items-center justify-center text-sm font-bold border border-green-100">ME</div>
-                   <div>
-                     <div className="font-bold text-[#1F1F1F]">Maria Ek</div>
-                     <div className="text-xs text-gray-500 font-semibold uppercase">Skolsköterska</div>
-                   </div>
-                 </div>
-                 <button className="text-sm text-[#005595] font-semibold hover:underline">
-                   {isChild ? "Skriv meddelande" : "Meddelande"}
-                 </button>
-               </div>
-             </div>
-          </div>
-
-          {/* Latest News Feed */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-bold text-[#1F1F1F] mb-4 text-lg flex items-center gap-2">
-              <Newspaper size={20} className={isChild ? "text-[#E87C00]" : "text-[#005595]"} />
-              {isChild ? "Nyheter för dig" : "Senaste Nytt"}
-            </h3>
-            <div className="space-y-4">
-              {NEWS_FEED_DATA.map(news => (
-                <div key={news.id} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-                  <div className="flex justify-between items-start mb-1">
-                    <h4 className="font-bold text-sm text-[#1F1F1F]">{news.title}</h4>
-                    <span className="text-[10px] text-gray-500 whitespace-nowrap">{news.date}</span>
-                  </div>
-                  <p className="text-xs text-gray-600 mb-2">{news.snippet}</p>
-                  <div className="flex justify-between items-center">
-                       <span className="text-[10px] font-semibold text-gray-400 uppercase">{news.source}</span>
-                       <button className="text-xs font-semibold text-[#005595] hover:underline flex items-center gap-1">
-                         Läs mer <ArrowUpRight size={12} />
-                       </button>
+                    <div className="text-sm font-medium text-gray-900">{person.name}</div>
+                    <div className="text-xs text-gray-500">{person.role} • {person.org}</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      )}
+
+      {/* Attention Alert - if needed */}
+      {needsAttention > 0 && !isChild && (
+        <section>
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+                <AlertCircle size={20} className="text-red-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-red-900 mb-1">
+                  {needsAttention} område{needsAttention > 1 ? 'n' : ''} behöver uppmärksamhet
+                </h3>
+                <p className="text-sm text-red-700 mb-3">
+                  Vissa välbefinnandeområden visar låga värden och kan behöva uppföljning.
+                </p>
+                <button
+                  onClick={() => onNavigate('shanarri')}
+                  className="text-sm font-medium text-red-700 hover:text-red-900 flex items-center gap-1"
+                >
+                  Visa detaljer <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Child-friendly bottom section */}
+      {isChild && (
+        <section className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-100">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm">
+              <Shield size={24} className="text-orange-500" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900">Dina rättigheter</h3>
+              <p className="text-sm text-gray-600">
+                Du har rätt att veta vad som skrivs om dig och vara med och bestämma.
+              </p>
+            </div>
+            <ChevronRight size={20} className="text-orange-400" />
+          </div>
+        </section>
+      )}
     </div>
   );
 };
 
-export default memo(Dashboard);
+export default Dashboard;
