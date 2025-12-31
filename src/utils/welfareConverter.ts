@@ -41,6 +41,30 @@ const SPOKE_NAME_EN_MAP: Record<string, string> = {
   delaktig: 'Included'
 };
 
+// IBIC mapping for each spoke based on ICF life areas (d1-d9)
+const SPOKE_IBIC_MAP: Record<string, string> = {
+  trygg: 'Känsla av otrygghet, Omgivningsfaktorer, Stöd och relationer',
+  halsa: 'Personlig vård, Sköta sin egen hälsa, Kroppsfunktioner',
+  utvecklas: 'Lärande och tillämpa kunskap, Utbildning',
+  omvardad: 'Att bistå andra, Familjerelationer, Stöd från närstående',
+  aktiv: 'Samhällsgemenskap, socialt och medborgerligt liv, Rekreation och fritid',
+  respekterad: 'Mellanmänskliga interaktioner, Attityder i omgivningen',
+  ansvarstagande: 'Allmänna uppgifter och krav, Handläggning av stress, Handläggning av ansvar',
+  delaktig: 'Samhällsgemenskap, Sociala relationer, Informella relationer'
+};
+
+// SNOMED CT mapping for each spoke
+const SPOKE_SNOMED_MAP: Record<string, string> = {
+  trygg: '371609003 (Känsla av trygghet)',
+  halsa: '271919001 (God hälsa)',
+  utvecklas: '224497003 (Skolprestation)',
+  omvardad: '105455006 (Omsorgsstatus)',
+  aktiv: '256235009 (Fritidsaktivitet)',
+  respekterad: '125678000 (Självkänsla)',
+  ansvarstagande: '288600008 (Förmåga att ta ansvar)',
+  delaktig: '86603000 (Social delaktighet)'
+};
+
 // Default target value for all indicators
 const DEFAULT_TARGET = 4;
 
@@ -123,6 +147,12 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
   // Extract source from ss12000Source array
   const source = spokeData.ss12000Source[0] || 'Bedömning';
 
+  // Get IBIC mapping from lookup table
+  const ibic = SPOKE_IBIC_MAP[spokeKey] || '-';
+
+  // Get SNOMED mapping - prefer data from journey profile, fallback to lookup table
+  const snomed = spokeData.snomedCT || SPOKE_SNOMED_MAP[spokeKey];
+
   // Create the ShanarriIndicator object
   const indicator: ShanarriIndicator = {
     id: spokeId,
@@ -136,16 +166,12 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
     bbic: bbic,
     bbicCategory: bbicCategory,
     bbicArea: bbicArea,
-    ibic: '-', // IBIC mapping not available in Journey Profile format
+    ibic: ibic,
     kva: '-', // KVÅ not provided in Journey Profile format
+    snomed: snomed,
     source: source,
     notes: notes
   };
-
-  // Add optional SNOMED if available
-  if (spokeData.snomedCT) {
-    indicator.snomed = spokeData.snomedCT;
-  }
 
   return indicator;
 }
