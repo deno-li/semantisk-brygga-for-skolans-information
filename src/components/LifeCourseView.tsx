@@ -142,37 +142,37 @@ const LifeCourseView: React.FC<LifeCourseViewProps> = () => {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="max-w-5xl mx-auto space-y-6">
 
       {/* Header */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-        <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2 flex items-center gap-2">
-          <TrendingUp size={28} className="text-[#005595]" />
-          Livsloppsperspektiv
-        </h2>
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white mb-4 shadow-lg">
+          <TrendingUp className="w-8 h-8" />
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Livsloppsperspektiv</h1>
         <p className="text-gray-600">
-          {CHILD_PROFILE.name}s välbefinnande och utveckling genom hela livsloppet - från BVC till nutid
+          {CHILD_PROFILE.name}s välbefinnande och utveckling genom hela livsloppet
         </p>
       </div>
 
       {/* Phase Timeline */}
-      <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-        <h3 className="text-lg font-bold text-[#1F1F1F] mb-6">Livsfaser</h3>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="font-semibold text-gray-900 mb-6">Livsfaser</h3>
         <PhaseTimeline />
       </div>
 
       {/* Longitudinal Data Chart */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">Välbefinnande över tid</h3>
-            <p className="text-sm text-gray-600">
-              Klicka på en dimension i legenden för att fokusera
+            <h3 className="font-semibold text-gray-900 mb-1">Välbefinnande över tid</h3>
+            <p className="text-sm text-gray-500">
+              Klicka på en dimension för att fokusera
             </p>
           </div>
-          <div className="text-right">
+          <div className="text-center px-4 py-2 bg-blue-50 rounded-xl">
+            <div className="text-2xl font-bold text-blue-600">{LONGITUDINAL_DATA.length}</div>
             <div className="text-xs text-gray-500">Datapunkter</div>
-            <div className="text-2xl font-bold text-[#005595]">{LONGITUDINAL_DATA.length}</div>
           </div>
         </div>
 
@@ -223,8 +223,8 @@ const LifeCourseView: React.FC<LifeCourseViewProps> = () => {
       </div>
 
       {/* Detailed Timeline with Risk/Protective Factors */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-        <h3 className="text-lg font-bold text-[#1F1F1F] mb-6">Detaljerad tidslinje</h3>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="font-semibold text-gray-900 mb-6">Detaljerad tidslinje</h3>
 
         <div className="relative">
           {/* Vertical timeline line */}
@@ -301,11 +301,13 @@ const LifeCourseView: React.FC<LifeCourseViewProps> = () => {
       </div>
 
       {/* Transitions */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-        <h3 className="text-lg font-bold text-[#1F1F1F] mb-6 flex items-center gap-2">
-          <ArrowRight size={24} className="text-[#005595]" />
-          Övergångar mellan livsfaser
-        </h3>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+            <ArrowRight className="w-5 h-5 text-blue-600" />
+          </div>
+          <h3 className="font-semibold text-gray-900">Övergångar mellan livsfaser</h3>
+        </div>
 
         <div className="space-y-4">
           {TRANSITIONS.map((transition) => {

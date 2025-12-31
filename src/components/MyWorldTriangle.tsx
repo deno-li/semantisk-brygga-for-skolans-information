@@ -59,42 +59,47 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
     : null;
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#005595] to-[#003D6B] text-white rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-2">My World Triangle (GIRFEC/BBIC/IBIC)</h2>
-        <p className="text-sm opacity-90">
-          Helhetsbedömning i tre dimensioner: Hur jag utvecklas, Vad jag behöver och Min omvärld
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 text-white mb-4 shadow-lg">
+          <Globe className="w-8 h-8" />
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My World Triangle</h1>
+        <p className="text-gray-600">
+          GIRFEC/BBIC/IBIC • Helhetsbedömning i tre dimensioner
         </p>
       </div>
 
       {/* Triangle Overview */}
-      <div className="bg-white rounded-lg border-2 border-[#005595] p-8 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {MY_WORLD_ASSESSMENTS.map((assessment) => (
             <button
               key={assessment.dimension}
               onClick={() => setSelectedDimension(assessment.dimension)}
-              className={`p-6 rounded-lg border-2 transition-all cursor-pointer hover:shadow-lg ${
+              className={`p-5 rounded-xl border-2 transition-all cursor-pointer hover:shadow-md ${
                 getDimensionColor(assessment.dimension)
-              } ${selectedDimension === assessment.dimension ? 'ring-4 ring-[#005595] ring-opacity-50' : ''}`}
+              } ${selectedDimension === assessment.dimension ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
             >
               <div className="flex flex-col items-center text-center space-y-3">
-                {getDimensionIcon(assessment.dimension)}
-                <h3 className="font-bold text-[#1F1F1F] text-lg">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                  assessment.dimension === 'how-i-develop' ? 'bg-blue-100' :
+                  assessment.dimension === 'what-i-need' ? 'bg-purple-100' : 'bg-green-100'
+                }`}>
+                  {getDimensionIcon(assessment.dimension)}
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm">
                   {getDimensionName(assessment.dimension)}
                 </h3>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5">
                   {getRatingStars(assessment.overallRating)}
                 </div>
-                <div className={`text-3xl font-bold ${getRatingColor(assessment.overallRating)}`}>
+                <div className={`text-2xl font-bold ${getRatingColor(assessment.overallRating)}`}>
                   {assessment.overallRating}/5
                 </div>
-                <p className="text-xs text-gray-600">
-                  Senast bedömd: {new Date(assessment.lastAssessed).toLocaleDateString('sv-SE')}
-                </p>
-                <p className="text-xs text-gray-600">
-                  Av: {assessment.assessedBy}
+                <p className="text-xs text-gray-500">
+                  {new Date(assessment.lastAssessed).toLocaleDateString('sv-SE')}
                 </p>
               </div>
             </button>
@@ -104,15 +109,22 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
 
       {/* Detailed View */}
       {selectedAssessment && (
-        <div className="bg-white rounded-lg border-2 border-[#005595] p-6 shadow-sm">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-[#1F1F1F] flex items-center gap-2">
-              {getDimensionIcon(selectedAssessment.dimension)}
-              {getDimensionName(selectedAssessment.dimension)}
-            </h3>
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                selectedAssessment.dimension === 'how-i-develop' ? 'bg-blue-100' :
+                selectedAssessment.dimension === 'what-i-need' ? 'bg-purple-100' : 'bg-green-100'
+              }`}>
+                {getDimensionIcon(selectedAssessment.dimension)}
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {getDimensionName(selectedAssessment.dimension)}
+              </h3>
+            </div>
             <button
               onClick={() => setSelectedDimension(null)}
-              className="text-sm text-gray-600 hover:text-gray-800"
+              className="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
             >
               Stäng
             </button>
@@ -120,7 +132,7 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
 
           {/* Overall Notes */}
           {selectedAssessment.notes && (
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-6">
+            <div className="bg-blue-50 rounded-xl p-4 mb-6">
               <p className="text-sm text-gray-700">
                 <strong>Sammanfattning:</strong> {selectedAssessment.notes}
               </p>
@@ -129,7 +141,7 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
 
           {/* Aspects */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-[#1F1F1F] text-lg">Delområden</h4>
+            <h4 className="font-semibold text-gray-900">Delområden</h4>
             {selectedAssessment.aspects.map((aspect) => (
               <div key={aspect.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <div className="flex items-start justify-between mb-2">
@@ -219,29 +231,24 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
       )}
 
       {/* Explanation */}
-      <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-        <h4 className="font-semibold text-sm text-[#1F1F1F] mb-2">Om My World Triangle</h4>
-        <div className="text-xs text-gray-700 space-y-2">
-          <p>
-            My World Triangle från GIRFEC (Getting It Right For Every Child) kompletterar BBIC & IBIC och ger en strukturerad bedömning i tre huvuddimensioner:
-          </p>
-          <ul className="space-y-1 ml-4">
-            <li className="flex items-start">
-              <span className="mr-2">🔵</span>
-              <span><strong>Hur jag växer och utvecklas:</strong> Barnets utveckling inom lärande, sociala relationer, hälsa, etc.</span>
-            </li>
-            <li className="flex items-start">
-              <span className="mr-2">🟣</span>
-              <span><strong>Vad jag behöver från andra:</strong> Föräldraförmåga, omsorg, emotionellt stöd och stimulans.</span>
-            </li>
-            <li className="flex items-start">
-              <span className="mr-2">🟢</span>
-              <span><strong>Min omvärld:</strong> Skola, fritid, boendemiljö och samhällets påverkan på barnet.</span>
-            </li>
-          </ul>
-          <p>
-            Klicka på en dimension för att se detaljerad bedömning med styrkor, bekymmer och kopplingar till SHANARRI och BBIC.
-          </p>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h4 className="font-semibold text-gray-900 mb-3">Om My World Triangle</h4>
+        <p className="text-sm text-gray-600 mb-4">
+          My World Triangle från GIRFEC kompletterar BBIC & IBIC med en strukturerad bedömning i tre huvuddimensioner:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="p-3 bg-blue-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Hur jag växer</div>
+            <p className="text-xs text-gray-600">Lärande, relationer, hälsa</p>
+          </div>
+          <div className="p-3 bg-purple-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Vad jag behöver</div>
+            <p className="text-xs text-gray-600">Omsorg, stöd, stimulans</p>
+          </div>
+          <div className="p-3 bg-green-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Min omvärld</div>
+            <p className="text-xs text-gray-600">Skola, fritid, miljö</p>
+          </div>
         </div>
       </div>
 
