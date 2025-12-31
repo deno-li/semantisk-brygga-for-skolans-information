@@ -180,25 +180,38 @@ const App: React.FC = () => {
         </ErrorBoundary>
       </main>
 
-      <footer className="bg-[#1F1F1F] text-white py-12 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-           <div>
-             <h4 className="font-bold mb-4 text-lg">En prototyp för gemensam informationsprofil</h4>
-             <p className="text-gray-400 leading-relaxed">
-               Utvecklad för att demonstrera ett kompletterande perspektiv för Kronobarnsmodellen och utvecklingsinitiativet "Barnets rätt till information". 
-               Syftet är att visa hur informationsdelning och samverkan mellan skola, vård och omsorg kan visualiseras genom semantisk brygga ICF som mappar skolans information till Socialstyrelsens informationsstruktur och mängder.
-             </p>
-           </div>
-           
-           <div>
-             <h4 className="font-bold mb-4 text-lg">Kontakt</h4>
-             <p className="text-gray-400">
-               Ansvarig för prototyp: Privat initiativ<br/>
-               <span className="text-white mt-2 block font-semibold">
-                 Stödjer initiativet <a href="https://skr.se/digitaliseringivalfarden/handslagfordigitalisering.8420.html" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">"Handslaget för digitalisering"</a>
-               </span>
-             </p>
-           </div>
+      <footer className="bg-gradient-to-b from-gray-900 to-gray-950 text-white mt-auto">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white font-bold text-sm">
+                  1177
+                </div>
+                <div>
+                  <h4 className="font-bold">Välbefinnandehjul</h4>
+                  <p className="text-xs text-gray-400">Prototyp för gemensam informationsprofil</p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed max-w-md">
+                Demonstrerar hur informationsdelning mellan skola, vård och omsorg kan visualiseras genom semantisk brygga som mappar till nationella standarder.
+              </p>
+            </div>
+
+            <div className="md:text-right">
+              <h4 className="font-semibold mb-3 text-sm">Länkar</h4>
+              <div className="space-y-2">
+                <a href="https://skr.se/digitaliseringivalfarden/handslagfordigitalisering.8420.html" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
+                  Handslaget för digitalisering ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <p>Privat initiativ • Stödjer Kronobarnsmodellen</p>
+            <p>Semantisk brygga för skolans information</p>
+          </div>
         </div>
       </footer>
     </div>

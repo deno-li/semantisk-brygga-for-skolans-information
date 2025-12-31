@@ -632,40 +632,41 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div className={`bg-gradient-to-r ${getHeaderGradient()} text-white rounded-lg p-6`}>
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">N1 Screening - Universell nivå</h1>
-            <p className="text-green-100 text-lg">
-              Performance-bedömning • Automatisk triage • För alla barn
-            </p>
-          </div>
-          <Activity className="w-12 h-12 text-green-200" />
+      <div className="text-center py-6">
+        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${getHeaderGradient()} text-white text-2xl mb-4 shadow-lg`}>
+          <Activity className="w-8 h-8" />
         </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">N1 Screening</h1>
+        <p className="text-gray-600">Universell nivå • Performance-bedömning • Automatisk triage</p>
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-start gap-3">
-          <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+            <Info className="w-5 h-5 text-blue-600" />
+          </div>
           <div>
-            <h3 className="font-semibold text-blue-900 mb-2">Om N1 Screening</h3>
-            <div className="text-sm text-blue-900 space-y-2">
+            <h3 className="font-semibold text-gray-900 mb-2">Om N1 Screening</h3>
+            <div className="text-sm text-gray-600 space-y-2">
               <p>
-                <strong>N1 = Universell nivå</strong> - Enkel screening för alla barn med endast Performance-bedömning (vad barnet GÖR).
+                <strong className="text-gray-900">N1 = Universell nivå</strong> - Enkel screening för alla barn med endast Performance-bedömning (vad barnet GÖR).
               </p>
-              <p>
-                <strong>Automatisk triage:</strong>
-              </p>
-              <ul className="list-disc ml-6 mt-1">
-                <li><strong className="text-green-700">0-1 (Grön):</strong> Inga åtgärder behövs</li>
-                <li><strong className="text-yellow-700">2 (Gul):</strong> Tidig uppmärksamhet, följ upp</li>
-                <li><strong className="text-red-700">3-4 (Röd):</strong> Behöver N2 fördjupad analys (Performance vs Capacity)</li>
-              </ul>
-              <p className="mt-3">
-                <strong>N1 screening tar 5-10 minuter</strong> och ger snabb överblick om barnet behöver fortsatt utredning.
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-medium">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> 0-1: Inga åtgärder
+                </span>
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                  <AlertTriangle className="w-3.5 h-3.5" /> 2: Tidig uppmärksamhet
+                </span>
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-700 rounded-full text-xs font-medium">
+                  <AlertCircle className="w-3.5 h-3.5" /> 3-4: N2 fördjupad analys
+                </span>
+              </div>
+              <p className="text-xs text-gray-500 mt-3">
+                N1 screening tar 5-10 minuter och ger snabb överblick om barnet behöver fortsatt utredning.
               </p>
             </div>
           </div>
@@ -673,51 +674,54 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white border border-gray-300 rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <User className={`w-16 h-16 ${
-            profileData.level === 'N1' ? 'text-green-600' :
-            profileData.level === 'N2' ? 'text-orange-600' :
-            'text-red-600'
-          }`} />
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center gap-5">
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${
+            profileData.level === 'N1' ? 'bg-emerald-100' :
+            profileData.level === 'N2' ? 'bg-amber-100' :
+            'bg-red-100'
+          }`}>
+            <User className={`w-8 h-8 ${
+              profileData.level === 'N1' ? 'text-emerald-600' :
+              profileData.level === 'N2' ? 'text-amber-600' :
+              'text-red-600'
+            }`} />
+          </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-2xl font-bold text-gray-900">{profileData.name}</h2>
-              <span className={`px-2 py-1 text-xs font-medium rounded border ${getLevelBadgeColor()}`}>
-                Aktuell nivå: {profileData.level}
+              <h2 className="text-xl font-bold text-gray-900">{profileData.name}</h2>
+              <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${getLevelBadgeColor()}`}>
+                {profileData.level}
               </span>
             </div>
-            <p className="text-gray-600">{profileData.age} år, {profileData.grade}</p>
+            <p className="text-sm text-gray-500">{profileData.age} år • {profileData.grade}</p>
+          </div>
+        </div>
 
-            <div className={`mt-4 rounded p-4 border ${
-              triage === 'green' ? 'bg-green-50 border-green-300' :
-              triage === 'yellow' ? 'bg-yellow-50 border-yellow-300' :
-              'bg-red-50 border-red-300'
-            }`}>
-              <p className="font-medium text-gray-900 mb-2">📋 Screening-resultat:</p>
-              <p className="text-sm text-gray-700">
-                {profileData.summary}
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                {getTriageBadge(triage)}
-                {profileData.level !== 'N1' && (
-                  <span className="flex items-center gap-1 text-xs text-gray-500">
-                    <ArrowRight className="w-3 h-3" />
-                    Redan eskalerad till {profileData.level}
-                  </span>
-                )}
-              </div>
-            </div>
+        <div className={`mt-5 rounded-xl p-4 ${
+          triage === 'green' ? 'bg-emerald-50' :
+          triage === 'yellow' ? 'bg-amber-50' :
+          'bg-red-50'
+        }`}>
+          <p className="text-sm text-gray-700">{profileData.summary}</p>
+          <div className="mt-3 flex items-center gap-2">
+            {getTriageBadge(triage)}
+            {profileData.level !== 'N1' && (
+              <span className="flex items-center gap-1 text-xs text-gray-500">
+                <ArrowRight className="w-3 h-3" />
+                Eskalerad till {profileData.level}
+              </span>
+            )}
           </div>
         </div>
       </div>
 
       {/* Screening Results */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Screening-bedömningar (Performance)</h3>
-          <p className="text-sm text-gray-600">
-            Klicka på varje bedömning för att se indikator-frågor och anteckningar
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="mb-5">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">Screening-bedömningar</h3>
+          <p className="text-sm text-gray-500">
+            Klicka på varje bedömning för att se detaljer
           </p>
         </div>
 
@@ -725,26 +729,25 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
           {screeningData.map((item, index) => (
             <div
               key={index}
-              className="border border-gray-300 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+              className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-200"
             >
-              {/* Item Header */}
               <button
                 onClick={() => setExpandedItem(expandedItem === index ? null : index)}
-                className="w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                className="w-full px-4 py-3 hover:bg-gray-50 transition-colors text-left"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded flex items-center justify-center text-white font-bold text-lg"
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm"
                       style={{ backgroundColor: getQualifierColor(item.performance) }}
                     >
                       {item.performance}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="font-medium text-gray-900 text-sm">
                         {item.code}: {item.domain}
                       </h4>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-500">
                         {item.spokeName} • {getQualifierDescription(item.performance)}
                       </p>
                     </div>
@@ -760,33 +763,29 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
                 </div>
               </button>
 
-              {/* Expanded Content */}
               {expandedItem === index && (
-                <div className="px-4 py-3 border-t border-gray-200 bg-white space-y-3">
+                <div className="px-4 py-4 border-t border-gray-100 bg-gray-50/50 space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">Indikator-frågor:</p>
-                    <ul className="list-disc ml-6 text-sm text-gray-700 space-y-1">
+                    <p className="text-xs font-medium text-gray-700 mb-2">Indikator-frågor:</p>
+                    <ul className="space-y-1">
                       {item.indicatorQuestions.map((q, qIndex) => (
-                        <li key={qIndex}>{q}</li>
+                        <li key={qIndex} className="flex items-start gap-2 text-sm text-gray-600">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mt-1.5 flex-shrink-0" />
+                          {q}
+                        </li>
                       ))}
                     </ul>
                   </div>
 
                   {item.notes && (
-                    <div className={`p-3 rounded text-sm ${
-                      item.triageLevel === 'red' ? 'bg-red-50 text-red-800' :
-                      item.triageLevel === 'yellow' ? 'bg-yellow-50 text-yellow-800' :
-                      'bg-gray-50 text-gray-700'
+                    <div className={`p-3 rounded-lg text-sm ${
+                      item.triageLevel === 'red' ? 'bg-red-50 text-red-700' :
+                      item.triageLevel === 'yellow' ? 'bg-amber-50 text-amber-700' :
+                      'bg-gray-100 text-gray-600'
                     }`}>
                       <strong>Anteckning:</strong> {item.notes}
                     </div>
                   )}
-
-                  <div className="pt-2 border-t border-gray-200">
-                    <p className="text-xs text-gray-600">
-                      <strong>Performance ({item.performance}):</strong> {getQualifierDescription(item.performance)} i nuvarande miljö
-                    </p>
-                  </div>
                 </div>
               )}
             </div>
@@ -795,45 +794,45 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
       </div>
 
       {/* Overall Summary */}
-      <div className={`border rounded-lg p-6 ${
-        triage === 'green' ? 'bg-green-50 border-green-300' :
-        triage === 'yellow' ? 'bg-yellow-50 border-yellow-300' :
-        'bg-red-50 border-red-300'
-      }`}>
-        <h4 className="font-semibold text-gray-900 mb-3">Sammanfattning och rekommendation</h4>
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="text-center">
-            <p className="text-sm text-gray-700 font-medium">Gröna (0-1)</p>
-            <p className="text-3xl font-bold text-green-600">{greenCount}</p>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h4 className="font-semibold text-gray-900 mb-4">Sammanfattning</h4>
+        <div className="grid grid-cols-3 gap-4 mb-5">
+          <div className="text-center p-4 bg-emerald-50 rounded-xl">
+            <p className="text-xs text-emerald-600 font-medium mb-1">Gröna (0-1)</p>
+            <p className="text-2xl font-bold text-emerald-600">{greenCount}</p>
           </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-700 font-medium">Gula (2)</p>
-            <p className="text-3xl font-bold text-yellow-600">{yellowCount}</p>
+          <div className="text-center p-4 bg-amber-50 rounded-xl">
+            <p className="text-xs text-amber-600 font-medium mb-1">Gula (2)</p>
+            <p className="text-2xl font-bold text-amber-600">{yellowCount}</p>
           </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-700 font-medium">Röda (3-4)</p>
-            <p className="text-3xl font-bold text-red-600">{redCount}</p>
+          <div className="text-center p-4 bg-red-50 rounded-xl">
+            <p className="text-xs text-red-600 font-medium mb-1">Röda (3-4)</p>
+            <p className="text-2xl font-bold text-red-600">{redCount}</p>
           </div>
         </div>
 
-        <div className="bg-white rounded p-4 border border-gray-300">
-          <p className="font-medium text-gray-900 mb-2">Rekommenderad åtgärd:</p>
+        <div className={`rounded-xl p-4 ${
+          triage === 'green' ? 'bg-emerald-50' :
+          triage === 'yellow' ? 'bg-amber-50' :
+          'bg-red-50'
+        }`}>
+          <p className="font-medium text-gray-900 mb-2 text-sm">Rekommenderad åtgärd</p>
           {profileData.recommendation === 'stay-n1' && (
             <p className="text-sm text-gray-700">
-              ✅ <strong>Inga åtgärder behövs.</strong> Fortsätt ordinarie uppföljning. Nästa N1 screening om 6-12 månader.
+              Inga åtgärder behövs. Fortsätt ordinarie uppföljning. Nästa N1 screening om 6-12 månader.
             </p>
           )}
           {profileData.recommendation === 'monitor' && (
             <p className="text-sm text-gray-700">
-              ⚠️ <strong>Tidig uppmärksamhet.</strong> Följ upp inom 1-3 månader. Överväg riktade insatser i de gula områdena. Om inga förbättringar, gå vidare till N2 fördjupad analys.
+              Tidig uppmärksamhet. Följ upp inom 1-3 månader. Överväg riktade insatser i de gula områdena.
             </p>
           )}
           {profileData.recommendation === 'proceed-n2' && (
             <p className="text-sm text-gray-700">
-              🔴 <strong>N2 Fördjupad analys rekommenderas.</strong> Barnet visar stora svårigheter (3-4) i ett eller flera områden. Behöver Performance vs Capacity-bedömning för att identifiera om anpassningar kan hjälpa.
+              N2 Fördjupad analys rekommenderas. Barnet visar stora svårigheter i ett eller flera områden.
               {profileData.level !== 'N1' && (
-                <span className="block mt-2 font-medium">
-                  → {profileData.name} har redan eskalerat till {profileData.level} baserat på denna screening.
+                <span className="block mt-2 text-xs font-medium text-gray-500">
+                  {profileData.name} har redan eskalerat till {profileData.level}
                 </span>
               )}
             </p>
@@ -843,35 +842,35 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
 
       {/* N1→N2 Progression info */}
       {triage !== 'green' && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-            <ArrowRight className="w-5 h-5" />
-            Vad händer vid N2 Fördjupad analys?
-          </h4>
-          <div className="text-sm text-blue-900 space-y-2">
-            <p>
-              Vid N2 görs en djupare bedömning där vi jämför:
-            </p>
-            <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Performance:</strong> Vad barnet GÖR i nuvarande miljö med anpassningar</li>
-              <li><strong>Capacity:</strong> Vad barnet KAN göra utan anpassningar</li>
-              <li><strong>Gap-analys:</strong> Om gapet är negativt fungerar anpassningarna!</li>
-              <li><strong>Environmental Factors:</strong> Vilka barriärer och skyddsfaktorer finns?</li>
-            </ul>
-            <p className="mt-3">
-              N2 ger en tydligare bild av om nuvarande insatser fungerar eller om de behöver justeras.
-            </p>
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <ArrowRight className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Nästa steg: N2 Fördjupad analys</h4>
+              <p className="text-sm text-gray-600 mb-3">
+                Vid N2 görs en djupare bedömning där vi jämför:
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="p-2 bg-gray-50 rounded-lg text-xs">
+                  <span className="font-medium text-gray-900">Performance</span>
+                  <span className="text-gray-500 block">Vad barnet GÖR</span>
+                </div>
+                <div className="p-2 bg-gray-50 rounded-lg text-xs">
+                  <span className="font-medium text-gray-900">Capacity</span>
+                  <span className="text-gray-500 block">Vad barnet KAN</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {/* Footer */}
-      <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 text-center">
-        <p className="text-sm text-gray-700">
-          <strong>N1 Screening</strong> är en enkel och snabb bedömning som ger automatisk triage-rekommendation.
-        </p>
-        <p className="text-xs text-gray-600 mt-2">
-          Baserat på WHO ICF Beginner's Guide (2002) och praktiska riktlinjer för svensk välfärd.
+      <div className="text-center py-4">
+        <p className="text-xs text-gray-400">
+          N1 Screening • Baserat på WHO ICF • Automatisk triage-rekommendation
         </p>
       </div>
     </div>
