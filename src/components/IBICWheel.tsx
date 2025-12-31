@@ -5,17 +5,27 @@
  */
 
 import React from 'react';
-import { IBIC_LIFE_AREAS, SHANARRI_DATA } from '../data/constants';
-import { User, Info } from 'lucide-react';
+import { IBIC_LIFE_AREAS } from '../data/constants';
+import { User, Info, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useProfileData } from '../hooks/useProfileData';
 
 interface IBICWheelProps {
   selectedProfileId?: string;
 }
 
 const IBICWheel: React.FC<IBICWheelProps> = ({ selectedProfileId }) => {
+  // Get profile-specific SHANARRI data which includes IBIC mappings
+  const { shanarriData, childProfile } = useProfileData(selectedProfileId || 'erik');
+
   // Get SHANARRI dimensions by ID for linking
   const getShanarriByIds = (ids: string[]) => {
-    return SHANARRI_DATA.filter(dim => ids.includes(dim.id));
+    return shanarriData.filter(dim => ids.includes(dim.id));
+  };
+
+  // Get status icon
+  const getStatusIcon = (status: number) => {
+    if (status >= 3) return <CheckCircle2 className="w-3 h-3" />;
+    return <AlertCircle className="w-3 h-3" />;
   };
 
   // Calculate position on wheel for each segment
@@ -62,6 +72,11 @@ const IBICWheel: React.FC<IBICWheelProps> = ({ selectedProfileId }) => {
         <p className="text-sm text-gray-600">
           Strukturerad bedömning av behov enligt ICF:s livsområden
         </p>
+        {childProfile && (
+          <p className="text-xs text-gray-500 mt-1">
+            Visar data för: <span className="font-semibold text-gray-700">{childProfile.name}</span>
+          </p>
+        )}
       </div>
 
       {/* Wheel Visualization */}
@@ -161,17 +176,19 @@ const IBICWheel: React.FC<IBICWheelProps> = ({ selectedProfileId }) => {
                 ))}
               </div>
 
-              {/* Linked SHANARRI dimensions */}
+              {/* Linked SHANARRI dimensions with status */}
               {linkedDimensions.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2 pt-2 border-t border-gray-100">
                   {linkedDimensions.map((dim) => (
                     <span
                       key={dim.id}
-                      className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold text-white"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold text-white"
                       style={{ backgroundColor: dim.color }}
-                      title={`SHANARRI: ${dim.name}`}
+                      title={`${dim.name}: Nivå ${dim.status}/5 - ${dim.ibic || 'IBIC-koppling'}`}
                     >
+                      {getStatusIcon(dim.status)}
                       {dim.name}
+                      <span className="bg-white/30 px-1 rounded">{dim.status}</span>
                     </span>
                   ))}
                 </div>
@@ -191,16 +208,18 @@ const IBICWheel: React.FC<IBICWheelProps> = ({ selectedProfileId }) => {
             </h4>
             <p className="text-xs text-gray-700 mb-3">
               IBIC använder ICF:s aktivitets- och delaktighetsdomäner (d1-d9) för att strukturera bedömningen.
-              De färgade SHANARRI-märkena visar vilka välbefinnandedimensioner som kopplas till varje livsområde.
+              Siffrorna visar nuvarande statusnivå för {childProfile?.name || 'vald profil'}.
             </p>
             <div className="flex flex-wrap gap-2">
-              {SHANARRI_DATA.map((dim) => (
+              {shanarriData.map((dim) => (
                 <div key={dim.id} className="flex items-center gap-1.5">
                   <span
-                    className="inline-block w-2.5 h-2.5 rounded-full"
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold text-white"
                     style={{ backgroundColor: dim.color }}
-                  ></span>
-                  <span className="text-xs text-gray-700">{dim.name}</span>
+                  >
+                    {dim.name}
+                    <span className="bg-white/30 px-1 rounded">{dim.status}</span>
+                  </span>
                 </div>
               ))}
             </div>
