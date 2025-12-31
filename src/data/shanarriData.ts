@@ -163,6 +163,102 @@ export const SHANARRI_DATA: ShanarriIndicator[] = [
   }
 ];
 
+// IBIC Life Areas - Individens Behov i Centrum (från Socialstyrelsen)
+// IBIC strukturerar bedömning efter ICF:s livsområden
+export interface IBICLifeArea {
+  id: string;
+  title: string;
+  description: string;
+  icfChapter: string;          // ICF kapitel (d1-d9)
+  linkedShanarri: string[];    // SHANARRI dimension IDs
+  color: string;
+  examples: string[];          // Exempel på behov/aktiviteter
+}
+
+export const IBIC_LIFE_AREAS: IBICLifeArea[] = [
+  {
+    id: 'learning',
+    title: 'Lärande och att tillämpa kunskap',
+    description: 'Att lära sig nya saker, tillämpa kunskap, lösa problem och fatta beslut',
+    icfChapter: 'd1',
+    linkedShanarri: ['achieving'],
+    color: '#C12143',
+    examples: ['Läsa', 'Skriva', 'Räkna', 'Lösa problem', 'Fatta beslut']
+  },
+  {
+    id: 'general-tasks',
+    title: 'Allmänna uppgifter och krav',
+    description: 'Genomföra daglig rutin, hantera stress och andra krav',
+    icfChapter: 'd2',
+    linkedShanarri: ['responsible'],
+    color: '#00838F',
+    examples: ['Daglig rutin', 'Hantera stress', 'Hantera ansvar', 'Genomföra uppgifter']
+  },
+  {
+    id: 'communication',
+    title: 'Kommunikation',
+    description: 'Ta emot och förmedla budskap, samtala och använda kommunikationshjälpmedel',
+    icfChapter: 'd3',
+    linkedShanarri: ['included', 'respected'],
+    color: '#6A2A5B',
+    examples: ['Förstå talat språk', 'Tala', 'Samtala', 'Använda kommunikationshjälpmedel']
+  },
+  {
+    id: 'mobility',
+    title: 'Förflyttning',
+    description: 'Ändra och bibehålla kroppsställning, förflytta sig, använda transportmedel',
+    icfChapter: 'd4',
+    linkedShanarri: ['active'],
+    color: '#E87C00',
+    examples: ['Gå', 'Springa', 'Använda transportmedel', 'Förflytta sig i hemmet']
+  },
+  {
+    id: 'self-care',
+    title: 'Personlig vård',
+    description: 'Tvätta sig, sköta kroppsvård, klä sig, äta och dricka, sköta sin hälsa',
+    icfChapter: 'd5',
+    linkedShanarri: ['healthy'],
+    color: '#378056',
+    examples: ['Tvätta sig', 'Sköta kroppsvård', 'Klä sig', 'Äta', 'Sköta sin hälsa']
+  },
+  {
+    id: 'domestic-life',
+    title: 'Hemliv',
+    description: 'Skaffa varor och tjänster, hushållsarbete, ta hand om hemmet',
+    icfChapter: 'd6',
+    linkedShanarri: ['nurtured'],
+    color: '#B00020',
+    examples: ['Handla', 'Laga mat', 'Städa', 'Ta hand om hemmet']
+  },
+  {
+    id: 'relationships',
+    title: 'Mellanmänskliga relationer',
+    description: 'Interagera med andra, formella och informella relationer, familjerelationer',
+    icfChapter: 'd7',
+    linkedShanarri: ['included', 'respected', 'safe'],
+    color: '#005595',
+    examples: ['Grundläggande interaktioner', 'Vänskap', 'Familjerelationer', 'Formella relationer']
+  },
+  {
+    id: 'major-life-areas',
+    title: 'Viktiga livsområden',
+    description: 'Utbildning, arbete, ekonomi och ekonomisk trygghet',
+    icfChapter: 'd8',
+    linkedShanarri: ['achieving', 'responsible'],
+    color: '#7B1FA2',
+    examples: ['Skola/utbildning', 'Arbete', 'Ekonomi']
+  },
+  {
+    id: 'community',
+    title: 'Samhällsgemenskap, socialt och medborgerligt liv',
+    description: 'Samhällsliv, rekreation, fritid, religion och politik',
+    icfChapter: 'd9',
+    linkedShanarri: ['active', 'included'],
+    color: '#F57C00',
+    examples: ['Rekreation och fritid', 'Samhällsdeltagande', 'Föreningsliv']
+  }
+];
+
 // BBIC Triangle - Barns Behov i Centrum (från Socialstyrelsen)
 export const BBIC_TRIANGLE: BBICTriangleArea[] = [
   {

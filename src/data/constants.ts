@@ -1,6 +1,7 @@
 
 // Re-exports from modular data files for backward compatibility
-export { SHANARRI_DATA, BBIC_TRIANGLE } from './shanarriData';
+export { SHANARRI_DATA, BBIC_TRIANGLE, IBIC_LIFE_AREAS } from './shanarriData';
+export type { IBICLifeArea } from './shanarriData';
 export { TIMELINE_DATA, QUALITY_CYCLE, SAFETY_TREND_DATA } from './timelineQualityData';
 
 // ICF Integration - Phase 1-2 exports

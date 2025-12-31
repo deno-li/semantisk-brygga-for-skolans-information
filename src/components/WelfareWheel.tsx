@@ -456,7 +456,8 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
               <div className="flex gap-2 flex-wrap mb-4 px-2">
                 {[
                   { name: 'ICF', color: 'purple', desc: 'Funktionstillstånd' },
-                  { name: 'BBIC', color: 'blue', desc: 'Barns behov' },
+                  { name: 'BBIC', color: 'red', desc: 'Barns behov' },
+                  { name: 'IBIC', color: 'orange', desc: 'Individens behov' },
                   { name: 'Snomed CT', color: 'teal', desc: 'Klinisk terminologi' },
                   { name: 'KSI', color: 'amber', desc: 'Insatskoder' },
                 ].map((item) => (
@@ -506,7 +507,7 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
                   </div>
 
                   {/* Mappings grid */}
-                  <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="p-4 grid grid-cols-2 md:grid-cols-5 gap-3">
                     {/* ICF */}
                     <div className="space-y-1">
                       <div className="text-[10px] font-bold text-purple-600 uppercase tracking-wide">ICF</div>
@@ -518,9 +519,17 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
 
                     {/* BBIC */}
                     <div className="space-y-1">
-                      <div className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">BBIC</div>
-                      <div className="text-xs text-gray-700 bg-blue-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                      <div className="text-[10px] font-bold text-red-600 uppercase tracking-wide">BBIC</div>
+                      <div className="text-xs text-gray-700 bg-red-50 rounded-lg px-2 py-1.5 line-clamp-2">
                         {row.bbic}
+                      </div>
+                    </div>
+
+                    {/* IBIC */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-orange-600 uppercase tracking-wide">IBIC</div>
+                      <div className="text-xs text-gray-700 bg-orange-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.ibic || '—'}
                       </div>
                     </div>
 
@@ -547,8 +556,10 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100 mt-4">
                 <p className="text-xs text-gray-600 leading-relaxed">
                   <strong className="text-blue-700">Om semantisk brygga:</strong>{' '}
-                  Kopplar barnets upplevda behov till nationella kodverk för informationsdelning
-                  mellan skola, socialtjänst och hälso- och sjukvård.
+                  Kopplar barnets upplevda behov till nationella kodverk och ramverk för informationsdelning
+                  mellan skola, socialtjänst och hälso- och sjukvård.{' '}
+                  <span className="text-red-600 font-medium">BBIC</span> används för barn,{' '}
+                  <span className="text-orange-600 font-medium">IBIC</span> för vuxna och ungdomar med funktionsstöd.
                 </p>
               </div>
             </div>

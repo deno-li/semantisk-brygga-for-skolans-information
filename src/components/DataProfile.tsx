@@ -3,6 +3,7 @@ import React, { useState, memo, useMemo } from 'react';
 import { SHANARRI_DATA } from '../data/constants';
 import { X, BookOpen, ExternalLink, Info, Database, Layers, FileText, Settings, ArrowRight } from 'lucide-react';
 import BBICTriangle from './BBICTriangle';
+import IBICWheel from './IBICWheel';
 
 interface CodeStandardInfo {
   type: 'classification' | 'framework'; // New field to distinguish type
@@ -320,6 +321,9 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
 
       {/* BBIC Triangle Visualization */}
       <BBICTriangle selectedProfileId={selectedProfileId} />
+
+      {/* IBIC Wheel Visualization */}
+      <IBICWheel selectedProfileId={selectedProfileId} />
 
       {/* Code Details Modal */}
       {selectedCode && STANDARD_INFO[selectedCode.type] && (

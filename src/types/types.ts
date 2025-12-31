@@ -103,7 +103,7 @@ export interface TrendData {
 }
 
 export interface AiSuggestion {
-  standard: 'ICF' | 'BBIC' | 'KVÅ';
+  standard: 'ICF' | 'BBIC' | 'IBIC' | 'KVÅ' | 'KSI';
   code: string;
   confidence: number;
   reasoning: string;

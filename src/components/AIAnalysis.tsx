@@ -58,6 +58,10 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         // No strict format, but shouldn't be empty
         if (cleanCode.length < 2) return "Ange ett giltigt BBIC-område.";
         break;
+      case 'IBIC':
+        // IBIC uses ICF life areas (d1-d9) or descriptive text
+        if (cleanCode.length < 2) return "Ange ett giltigt IBIC-livsområde.";
+        break;
     }
     return null;
   };
@@ -72,6 +76,8 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
         return 'Format: SCA eller SCA-PM-2';
       case 'BBIC':
         return 'Format: kort domännamn, t.ex. Skola & Lärande';
+      case 'IBIC':
+        return 'Format: livsområde, t.ex. Personlig vård, Lärande, Kommunikation';
       default:
         return 'Ange en kod i standardens format.';
     }
@@ -378,13 +384,14 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                   {/* Top Row: Standard & Confidence */}
                   <div className="flex justify-between items-start mb-2">
                     {isEditing ? (
-                      <select 
+                      <select
                         value={item.standard}
                         onChange={(e) => handleResultChange(idx, 'standard', e.target.value)}
                         className="text-xs font-bold uppercase tracking-wide border border-gray-300 rounded px-2 py-1 bg-gray-50 focus:ring-2 focus:ring-purple-500 outline-none"
                       >
                         <option value="ICF">ICF</option>
                         <option value="BBIC">BBIC</option>
+                        <option value="IBIC">IBIC</option>
                         <option value="KVÅ">KVÅ</option>
                         <option value="KSI">KSI</option>
                       </select>
@@ -392,6 +399,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                       <div className={`px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide border ${
                         item.standard === 'ICF' ? 'bg-purple-50 text-purple-700 border-purple-100' :
                         item.standard === 'BBIC' ? 'bg-red-50 text-red-700 border-red-100' :
+                        item.standard === 'IBIC' ? 'bg-orange-50 text-orange-700 border-orange-100' :
                         item.standard === 'KVÅ' ? 'bg-green-50 text-green-700 border-green-100' :
                         item.standard === 'KSI' ? 'bg-gray-100 text-gray-700 border-gray-200' :
                         'bg-blue-50 text-blue-700 border-blue-200'
