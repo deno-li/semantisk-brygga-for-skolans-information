@@ -403,162 +403,158 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-red-800 text-white rounded-lg p-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">N3 Samordnad plan - SIP</h1>
-            <p className="text-red-100 text-lg">
-              Tvärsektoriell samverkan - Skola, Vård, Socialtjänst
-            </p>
-          </div>
-          <Layers className="w-12 h-12 text-red-200" />
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-rose-600 text-white text-2xl mb-4 shadow-lg">
+          <Layers className="w-8 h-8" />
         </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
+        <p className="text-gray-600">SIP • Tvärsektoriell samverkan • Skola, Vård, Socialtjänst</p>
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-start gap-3">
-          <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+            <Info className="w-5 h-5 text-red-600" />
+          </div>
           <div>
-            <h3 className="font-semibold text-blue-900 mb-2">Om N3 Samordnad plan</h3>
-            <div className="text-sm text-blue-900 space-y-2">
+            <h3 className="font-semibold text-gray-900 mb-2">Om N3 Samordnad plan</h3>
+            <div className="text-sm text-gray-600 space-y-2">
               <p>
-                <strong>N3 = Samordningsnivå</strong> - För barn med komplexa behov som kräver samordnade insatser
-                över huvudmannagränser (skola, socialtjänst, hälso- och sjukvård).
+                <strong className="text-gray-900">N3 = Samordningsnivå</strong> - För barn med komplexa behov som kräver samordnade insatser över huvudmannagränser.
               </p>
-              <p>
-                <strong>N3 inkluderar:</strong>
-              </p>
-              <ul className="list-disc ml-6 mt-1">
-                <li><strong>SIP-liknande plan:</strong> Gemensamma mål och ansvarsfördelning</li>
-                <li><strong>ICF-baserade mål:</strong> Specifika targets per domän (t.ex. d820.2→d820.1)</li>
-                <li><strong>Koordineringsteam:</strong> Representanter från alla involverade sektorer</li>
-                <li><strong>Regelbunden uppföljning:</strong> SIP-möten var 3:e månad</li>
-                <li><strong>Barnets röst:</strong> Dokumenterad delaktighet</li>
-              </ul>
+              <div className="flex flex-wrap gap-2 mt-3">
+                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">SIP-plan</span>
+                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">ICF-mål</span>
+                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">Koordineringsteam</span>
+                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">Barnets röst</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white border border-gray-300 rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <User className="w-16 h-16 text-red-600" />
-          <div className="flex-1">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
-              <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium border border-red-300">
-                N3 Samordning
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center gap-5 mb-5">
+          <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center">
+            <User className="w-8 h-8 text-red-600" />
+          </div>
+          <div>
+            <div className="flex items-center gap-3 mb-1">
+              <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
+              <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
+                N3
               </span>
             </div>
-            <p className="text-gray-600">{profile.age} år, {profile.grade}</p>
-
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gray-50 border border-gray-200 rounded p-4">
-                <p className="font-medium text-gray-900 mb-2">Diagnos:</p>
-                <p className="text-sm text-gray-700">{profile.background.diagnosis}</p>
-              </div>
-              <div className="bg-gray-50 border border-gray-200 rounded p-4">
-                <p className="font-medium text-gray-900 mb-2">Aktuell situation:</p>
-                <p className="text-sm text-gray-700">{profile.background.currentSituation}</p>
-              </div>
-            </div>
-
-            {/* Sofia's voice */}
-            <div className="mt-4 bg-green-50 border border-green-300 rounded p-4">
-              <p className="font-medium text-green-900 mb-2">
-                <MessageSquare className="w-4 h-4 inline mr-1" />
-                Sofias röst:
-              </p>
-              <p className="text-sm text-green-900 italic">"{profile.childsVoice.goals}"</p>
-              <p className="text-xs text-green-800 mt-2">{profile.childsVoice.howFeeling}</p>
-            </div>
+            <p className="text-sm text-gray-500">{profile.age} år • {profile.grade}</p>
           </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="font-medium text-gray-900 mb-1 text-sm">Diagnos</p>
+            <p className="text-xs text-gray-600">{profile.background.diagnosis}</p>
+          </div>
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="font-medium text-gray-900 mb-1 text-sm">Aktuell situation</p>
+            <p className="text-xs text-gray-600">{profile.background.currentSituation}</p>
+          </div>
+        </div>
+
+        <div className="bg-emerald-50 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare className="w-4 h-4 text-emerald-600" />
+            <p className="font-medium text-gray-900 text-sm">Sofias röst</p>
+          </div>
+          <p className="text-sm text-gray-700 italic">"{profile.childsVoice.goals}"</p>
+          <p className="text-xs text-gray-500 mt-2">{profile.childsVoice.howFeeling}</p>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white border border-gray-300 rounded-lg overflow-hidden">
-        <div className="flex border-b border-gray-200">
-          {[
-            { id: 'overview', label: 'Översikt', icon: <Target className="w-4 h-4" /> },
-            { id: 'team', label: 'Koordineringsteam', icon: <Users className="w-4 h-4" /> },
-            { id: 'goals', label: 'Samordnade mål', icon: <FileText className="w-4 h-4" /> },
-            { id: 'icf', label: 'ICF & Gap-analys', icon: <Activity className="w-4 h-4" /> }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedTab(tab.id as typeof selectedTab)}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                selectedTab === tab.id
-                  ? 'border-red-600 text-red-600 bg-red-50'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
-          ))}
-        </div>
+      <div className="flex gap-2 flex-wrap">
+        {[
+          { id: 'overview', label: 'Översikt', icon: <Target className="w-4 h-4" /> },
+          { id: 'team', label: 'Team', icon: <Users className="w-4 h-4" /> },
+          { id: 'goals', label: 'Mål', icon: <FileText className="w-4 h-4" /> },
+          { id: 'icf', label: 'ICF', icon: <Activity className="w-4 h-4" /> }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setSelectedTab(tab.id as typeof selectedTab)}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
+              selectedTab === tab.id
+                ? 'bg-red-500 text-white shadow-md'
+                : 'bg-white border border-gray-200 text-gray-600 hover:border-red-300 hover:bg-red-50'
+            }`}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
 
         <div className="p-6">
           {/* Overview Tab */}
           {selectedTab === 'overview' && (
             <div className="space-y-6">
               {/* Quick Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                  <Users className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Involverade sektorer</p>
-                  <p className="text-2xl font-bold text-gray-900">4</p>
+              <div className="grid grid-cols-4 gap-3">
+                <div className="text-center p-4 bg-blue-50 rounded-xl">
+                  <Users className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                  <p className="text-xl font-bold text-gray-900">4</p>
+                  <p className="text-xs text-gray-500">Sektorer</p>
                 </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                  <Target className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Samordnade mål</p>
-                  <p className="text-2xl font-bold text-gray-900">{profile.coordinatedGoals.length}</p>
+                <div className="text-center p-4 bg-emerald-50 rounded-xl">
+                  <Target className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
+                  <p className="text-xl font-bold text-gray-900">{profile.coordinatedGoals.length}</p>
+                  <p className="text-xs text-gray-500">Mål</p>
                 </div>
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
-                  <Shield className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Risk/Skydd-balans</p>
-                  <p className="text-2xl font-bold text-green-600">+{profile.riskProtectionBalance.balance}</p>
+                <div className="text-center p-4 bg-purple-50 rounded-xl">
+                  <Shield className="w-6 h-6 text-purple-600 mx-auto mb-2" />
+                  <p className="text-xl font-bold text-emerald-600">+{profile.riskProtectionBalance.balance}</p>
+                  <p className="text-xs text-gray-500">Balans</p>
                 </div>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
-                  <Calendar className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">Nästa SIP-möte</p>
-                  <p className="text-lg font-bold text-gray-900">2025-03-15</p>
+                <div className="text-center p-4 bg-amber-50 rounded-xl">
+                  <Calendar className="w-6 h-6 text-amber-600 mx-auto mb-2" />
+                  <p className="text-sm font-bold text-gray-900">15 mar</p>
+                  <p className="text-xs text-gray-500">SIP-möte</p>
                 </div>
               </div>
 
               {/* Goal Progress */}
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <div>
                 <h4 className="font-semibold text-gray-900 mb-4">Måluppfyllnad</h4>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {profile.coordinatedGoals.map((goal) => (
-                    <div key={goal.id} className="border border-gray-200 rounded p-4">
-                      <div className="flex items-start justify-between mb-2">
+                    <div key={goal.id} className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
+                      <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900">{goal.text}</p>
+                          <p className="font-medium text-gray-900 text-sm">{goal.text}</p>
                           <p className="text-xs text-gray-500 mt-1">
-                            ICF Target: {goal.icfTarget} | Deadline: {goal.targetDate}
+                            {goal.icfTarget} • {goal.targetDate}
                           </p>
                         </div>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${getSectorColor(goal.responsible)}`}>
+                        <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getSectorColor(goal.responsible)}`}>
                           {getSectorIcon(goal.responsible)}
                         </span>
                       </div>
-                      <div className="mt-3">
-                        <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-gray-600">Progress</span>
-                          <span className="font-medium">{goal.progress}%</span>
+                      <div>
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-gray-500">Progress</span>
+                          <span className="font-medium text-gray-700">{goal.progress}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-gray-100 rounded-full h-1.5">
                           <div
-                            className={`h-2 rounded-full ${
-                              goal.progress >= 70 ? 'bg-green-500' :
-                              goal.progress >= 40 ? 'bg-yellow-500' : 'bg-orange-500'
+                            className={`h-1.5 rounded-full ${
+                              goal.progress >= 70 ? 'bg-emerald-500' :
+                              goal.progress >= 40 ? 'bg-amber-500' : 'bg-red-400'
                             }`}
                             style={{ width: `${goal.progress}%` }}
                           />
@@ -570,32 +566,29 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
               </div>
 
               {/* Upcoming Meetings */}
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <div>
                 <h4 className="font-semibold text-gray-900 mb-4">SIP-möten</h4>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {profile.meetings.map((meeting, index) => (
                     <div
                       key={index}
-                      className={`flex items-center gap-4 p-4 rounded border ${
+                      className={`flex items-center gap-3 p-3 rounded-xl ${
                         meeting.status === 'completed'
-                          ? 'bg-green-50 border-green-200'
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-emerald-50'
+                          : 'bg-gray-50'
                       }`}
                     >
-                      <Calendar className={`w-5 h-5 ${
-                        meeting.status === 'completed' ? 'text-green-600' : 'text-gray-400'
+                      <Calendar className={`w-4 h-4 ${
+                        meeting.status === 'completed' ? 'text-emerald-600' : 'text-gray-400'
                       }`} />
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900">{meeting.type}</p>
-                        <p className="text-sm text-gray-600">{meeting.date}</p>
-                        {meeting.summary && (
-                          <p className="text-xs text-gray-500 mt-1">{meeting.summary}</p>
-                        )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 text-sm">{meeting.type}</p>
+                        <p className="text-xs text-gray-500">{meeting.date}</p>
                       </div>
                       {meeting.status === 'completed' ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-600" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                       ) : (
-                        <Clock className="w-5 h-5 text-gray-400" />
+                        <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
                       )}
                     </div>
                   ))}
@@ -742,46 +735,42 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
         </div>
       </div>
 
-      {/* Escalation/De-escalation Recommendation */}
-      <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-6">
-        <h4 className="font-semibold text-yellow-900 mb-2">
-          <TrendingUp className="w-5 h-5 inline mr-2" />
-          Utvärdering och prognos
-        </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div className="bg-white rounded p-4 border border-yellow-200">
-            <p className="font-medium text-gray-900 mb-2">Positiva faktorer:</p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>+ Risk/Skydd-balans är positiv (+4)</li>
-              <li>+ KBT och medicinering visar effekt (gap: -1)</li>
-              <li>+ Närvaro har ökat från 50% till 60%</li>
-              <li>+ Sofia är delaktig och motiverad</li>
+      {/* Evaluation */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <TrendingUp className="w-5 h-5 text-amber-600" />
+          <h4 className="font-semibold text-gray-900">Utvärdering och prognos</h4>
+        </div>
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="bg-emerald-50 rounded-xl p-4">
+            <p className="font-medium text-gray-900 mb-2 text-sm">Positiva faktorer</p>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Balans positiv (+4)</li>
+              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Behandling visar effekt</li>
+              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Närvaro ökat till 60%</li>
+              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Sofia är motiverad</li>
             </ul>
           </div>
-          <div className="bg-white rounded p-4 border border-yellow-200">
-            <p className="font-medium text-gray-900 mb-2">Utmaningar kvar:</p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>- Skolnärvaro fortfarande under mål (60% vs 80%)</li>
-              <li>- Familjesituation behöver fortsatt stöd</li>
-              <li>- Social situation i skolan kräver arbete</li>
+          <div className="bg-amber-50 rounded-xl p-4">
+            <p className="font-medium text-gray-900 mb-2 text-sm">Utmaningar kvar</p>
+            <ul className="text-xs text-gray-600 space-y-1">
+              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Närvaro under mål</li>
+              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Familjesituation</li>
+              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Social situation</li>
             </ul>
           </div>
         </div>
-        <div className="mt-4 p-4 bg-green-100 border border-green-300 rounded">
-          <p className="text-sm text-green-900">
-            <strong>Rekommendation:</strong> Fortsätt N3-samordning. Vid måluppfyllnad (närvaro &gt;80%)
-            inom 3 månader kan nedtrappning till N2 övervägas. Nästa utvärdering: 2025-03-15.
+        <div className="bg-emerald-50 rounded-xl p-4">
+          <p className="text-sm text-emerald-800">
+            <strong>Rekommendation:</strong> Fortsätt N3. Vid närvaro &gt;80% kan N2 övervägas.
           </p>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 text-center">
-        <p className="text-sm text-gray-700">
-          <strong>N3 Samordnad plan (SIP)</strong> ger tvärsektoriell samverkan för barn med komplexa behov.
-        </p>
-        <p className="text-xs text-gray-600 mt-2">
-          Baserat på WHO ICF-ramverk - Performance vs Capacity - Environmental Factors - Lagstiftning: SoL 2 kap. 7§, HSL
+      <div className="text-center py-4">
+        <p className="text-xs text-gray-400">
+          N3 Samordnad plan (SIP) • WHO ICF • SoL 2 kap. 7§, HSL
         </p>
       </div>
     </div>
