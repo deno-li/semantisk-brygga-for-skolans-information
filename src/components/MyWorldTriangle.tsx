@@ -1,7 +1,8 @@
 import React, { useState, memo, useMemo } from 'react';
-import { MY_WORLD_ASSESSMENTS } from '../data/constants';
-import { User, Users, Globe, Star, AlertCircle } from 'lucide-react';
+import { MY_WORLD_ASSESSMENTS, SHANARRI_DATA, IBIC_LIFE_AREAS } from '../data/constants';
+import { User, Users, Globe, Star, AlertCircle, Info } from 'lucide-react';
 import BBICTriangle from './BBICTriangle';
+import IBICWheel from './IBICWheel';
 
 interface MyWorldTriangleProps {
   selectedProfileId?: string;
@@ -9,6 +10,18 @@ interface MyWorldTriangleProps {
 
 const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) => {
   const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
+
+  // Get SHANARRI data by ID
+  const getShanarriByIds = (ids: string[]) => {
+    return SHANARRI_DATA.filter(dim => ids.includes(dim.id));
+  };
+
+  // Get IBIC areas linked to SHANARRI dimensions
+  const getIBICAreasForShanarri = (shanarriIds: string[]) => {
+    return IBIC_LIFE_AREAS.filter(area =>
+      area.linkedShanarri.some(id => shanarriIds.includes(id))
+    );
+  };
 
   const getDimensionIcon = (dimension: string) => {
     switch (dimension) {
@@ -159,16 +172,21 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
                   </div>
                 </div>
 
-                {/* BBIC and ICF Codes */}
+                {/* BBIC, IBIC and ICF Codes */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {aspect.bbicCode && (
-                    <span className="text-xs px-2 py-1 rounded bg-purple-100 text-purple-800 border border-purple-300">
+                    <span className="text-xs px-2 py-1 rounded bg-red-50 text-red-800 border border-red-200 font-medium">
                       BBIC: {aspect.bbicCode}
                     </span>
                   )}
+                  {aspect.shanarriLinks && getIBICAreasForShanarri(aspect.shanarriLinks).slice(0, 2).map((ibicArea) => (
+                    <span key={ibicArea.id} className="text-xs px-2 py-1 rounded bg-orange-50 text-orange-800 border border-orange-200 font-medium">
+                      IBIC: {ibicArea.icfChapter} {ibicArea.title.split(' ')[0]}
+                    </span>
+                  ))}
                   {aspect.icfCodes && aspect.icfCodes.length > 0 && (
                     aspect.icfCodes.map((code, idx) => (
-                      <span key={idx} className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800 border border-blue-300">
+                      <span key={idx} className="text-xs px-2 py-1 rounded bg-purple-50 text-purple-800 border border-purple-200 font-medium">
                         ICF: {code}
                       </span>
                     ))
@@ -213,12 +231,16 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
 
                 {/* SHANARRI Links */}
                 {aspect.shanarriLinks && aspect.shanarriLinks.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-gray-300">
-                    <p className="text-xs text-gray-600 mb-1">Kopplat till SHANARRI-dimensioner:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {aspect.shanarriLinks.map((link, idx) => (
-                        <span key={idx} className="text-xs px-2 py-0.5 rounded bg-white border border-gray-300">
-                          {link}
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <p className="text-xs text-gray-600 mb-2">Kopplat till SHANARRI-dimensioner:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {getShanarriByIds(aspect.shanarriLinks).map((dim) => (
+                        <span
+                          key={dim.id}
+                          className="text-[10px] px-2 py-1 rounded-full text-white font-medium"
+                          style={{ backgroundColor: dim.color }}
+                        >
+                          {dim.name}
                         </span>
                       ))}
                     </div>
@@ -230,30 +252,63 @@ const MyWorldTriangle: React.FC<MyWorldTriangleProps> = ({ selectedProfileId }) 
         </div>
       )}
 
-      {/* Explanation */}
+      {/* Explanation - BBIC & IBIC Integration */}
       <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h4 className="font-semibold text-gray-900 mb-3">Om My World Triangle</h4>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center">
+            <Info className="w-5 h-5 text-teal-600" />
+          </div>
+          <h4 className="font-semibold text-gray-900">Om My World Triangle & Ramverkskopplingar</h4>
+        </div>
         <p className="text-sm text-gray-600 mb-4">
-          My World Triangle från GIRFEC kompletterar BBIC & IBIC med en strukturerad bedömning i tre huvuddimensioner:
+          My World Triangle från GIRFEC ger en strukturerad helhetsbedömning som integreras med svenska ramverk:
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="p-3 bg-blue-50 rounded-xl">
-            <div className="font-medium text-gray-900 text-sm mb-1">Hur jag växer</div>
-            <p className="text-xs text-gray-600">Lärande, relationer, hälsa</p>
+
+        {/* GIRFEC Dimensions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+          <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
+            <div className="font-medium text-gray-900 text-sm mb-1">Hur jag växer och utvecklas</div>
+            <p className="text-xs text-gray-600 mb-2">Lärande, relationer, hälsa</p>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-red-100 text-red-700 font-medium">
+              BBIC: Barnets utveckling
+            </span>
           </div>
-          <div className="p-3 bg-purple-50 rounded-xl">
-            <div className="font-medium text-gray-900 text-sm mb-1">Vad jag behöver</div>
-            <p className="text-xs text-gray-600">Omsorg, stöd, stimulans</p>
+          <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
+            <div className="font-medium text-gray-900 text-sm mb-1">Vad jag behöver från andra</div>
+            <p className="text-xs text-gray-600 mb-2">Omsorg, stöd, stimulans</p>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-red-100 text-red-700 font-medium">
+              BBIC: Föräldrarnas förmåga
+            </span>
           </div>
-          <div className="p-3 bg-green-50 rounded-xl">
+          <div className="p-3 bg-green-50 rounded-xl border border-green-100">
             <div className="font-medium text-gray-900 text-sm mb-1">Min omvärld</div>
-            <p className="text-xs text-gray-600">Skola, fritid, miljö</p>
+            <p className="text-xs text-gray-600 mb-2">Skola, fritid, miljö</p>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-red-100 text-red-700 font-medium">
+              BBIC: Familj och miljö
+            </span>
+          </div>
+        </div>
+
+        {/* Framework comparison */}
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs font-semibold text-red-700 mb-1">BBIC (Barns Behov i Centrum)</p>
+              <p className="text-xs text-gray-600">Triangelmodell för barn och ungas socialtjänst</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-orange-700 mb-1">IBIC (Individens Behov i Centrum)</p>
+              <p className="text-xs text-gray-600">Hjulmodell baserad på ICF:s livsområden (d1-d9)</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* BBIC Triangle Visualization */}
       <BBICTriangle selectedProfileId={selectedProfileId} />
+
+      {/* IBIC Wheel Visualization */}
+      <IBICWheel selectedProfileId={selectedProfileId} />
     </div>
   );
 };
