@@ -425,109 +425,130 @@ const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selecte
 
       {/* Semantic Bridge Matrix - Only for professional view */}
       {!isChild && (
-        <div className="mt-12">
+        <div className="mt-8">
           <button
             onClick={() => setShowMatrix(!showMatrix)}
-            className="w-full bg-white border-2 border-gray-200 rounded-lg p-4 hover:border-[#005595] hover:bg-gray-50 transition-all group"
+            className="w-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-5 hover:from-indigo-100 hover:to-purple-100 transition-all group"
           >
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Database size={20} className="text-[#005595]" />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center">
+                  <Database size={24} className="text-indigo-600" />
+                </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-bold text-gray-800">
-                    Gemensam Informationsprofil - Från Behov till Struktur
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Semantisk brygga
                   </h3>
-                  <p className="text-sm text-gray-500">
-                    {showMatrix ? 'Dölj' : 'Visa'} den semantiska bryggan mellan behov och kodverk
+                  <p className="text-sm text-gray-600">
+                    Koppling mellan behov och nationella kodverk
                   </p>
                 </div>
               </div>
-              {showMatrix ? (
-                <ChevronUp size={24} className="text-gray-400 group-hover:text-[#005595] transition-colors" />
-              ) : (
-                <ChevronDown size={24} className="text-gray-400 group-hover:text-[#005595] transition-colors" />
-              )}
+              <div className={`p-2 rounded-full bg-white shadow-sm transition-transform ${showMatrix ? 'rotate-180' : ''}`}>
+                <ChevronDown size={20} className="text-indigo-600" />
+              </div>
             </div>
           </button>
 
           {showMatrix && (
-            <div className="mt-6 animate-fade-in">
-              <div className="mb-4">
-                <p className="text-sm text-gray-500">
-                  Tvärsektoriell datamodell
-                </p>
+            <div className="mt-4 space-y-3 animate-fade-in">
+              {/* Header row showing what each standard is */}
+              <div className="flex gap-2 flex-wrap mb-4 px-2">
+                {[
+                  { name: 'ICF', color: 'purple', desc: 'Funktionstillstånd' },
+                  { name: 'BBIC', color: 'blue', desc: 'Barns behov' },
+                  { name: 'Snomed CT', color: 'teal', desc: 'Klinisk terminologi' },
+                  { name: 'KSI', color: 'amber', desc: 'Insatskoder' },
+                ].map((item) => (
+                  <span
+                    key={item.name}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-${item.color}-100 text-${item.color}-700`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full bg-${item.color}-500`} />
+                    {item.name}
+                  </span>
+                ))}
               </div>
 
-          <div className="overflow-x-auto border rounded-lg shadow-sm bg-white">
-            <table className="w-full text-sm text-left border-collapse">
-              <thead className="bg-gray-50 text-gray-700 font-medium">
-                <tr>
-                  <th className="p-3 border-b border-r min-w-[150px]">Behovskompass</th>
-                  <th className="p-3 border-b bg-purple-50 text-purple-800 border-r border-purple-100 min-w-[150px]">ICF</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">BBIC</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">IBIC</th>
-                  <th className="p-3 border-b border-r min-w-[120px]">KVÅ</th>
-                  <th className="p-3 border-b bg-red-50 text-red-800 border-r border-red-100 min-w-[130px]">ICD-10/11 (Diagnos)</th>
-                  <th className="p-3 border-b border-r bg-teal-50 text-teal-800 border-teal-100 min-w-[150px]">Snomed CT</th>
-                  <th className="p-3 border-b min-w-[120px]">KSI</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y text-gray-700">
-                {shanarriData.map((row) => (
-                  <tr key={row.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-3 border-r font-medium">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: row.color }}></div>
-                        <span>{row.name}</span>
+              {/* Card-based rows for each dimension */}
+              {shanarriData.map((row) => (
+                <div
+                  key={row.id}
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  {/* Dimension header */}
+                  <div
+                    className="px-4 py-3 flex items-center gap-3 border-b"
+                    style={{ backgroundColor: row.color + '10' }}
+                  >
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: row.color + '20' }}
+                    >
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: row.color }}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <span className="font-semibold text-gray-900">{row.name}</span>
+                      <span className="text-xs text-gray-500 ml-2">({row.nameEn})</span>
+                    </div>
+                    <div
+                      className="px-2 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        backgroundColor: row.status >= 4 ? '#dcfce7' : row.status === 3 ? '#fef3c7' : '#fee2e2',
+                        color: row.status >= 4 ? '#166534' : row.status === 3 ? '#92400e' : '#991b1b'
+                      }}
+                    >
+                      {row.status >= 4 ? 'Bra' : row.status === 3 ? 'OK' : 'Stöd'}
+                    </div>
+                  </div>
+
+                  {/* Mappings grid */}
+                  <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {/* ICF */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-purple-600 uppercase tracking-wide">ICF</div>
+                      <div className="text-xs font-mono text-gray-700 bg-purple-50 rounded-lg px-2 py-1.5">
+                        {row.icf.split(',').slice(0, 2).join(', ')}
+                        {row.icf.split(',').length > 2 && <span className="text-purple-400"> +{row.icf.split(',').length - 2}</span>}
                       </div>
-                    </td>
+                    </div>
 
-                    {/* ICF Cell */}
-                    <td className="p-3 border-r font-mono text-xs bg-purple-50/30 text-purple-700">
-                      {row.icf}
-                    </td>
+                    {/* BBIC */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">BBIC</div>
+                      <div className="text-xs text-gray-700 bg-blue-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.bbic}
+                      </div>
+                    </div>
 
-                    {/* BBIC Cell */}
-                    <td className="p-3 border-r text-xs">
-                      {row.bbic}
-                    </td>
+                    {/* Snomed CT */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-teal-600 uppercase tracking-wide">Snomed CT</div>
+                      <div className="text-xs text-gray-700 bg-teal-50 rounded-lg px-2 py-1.5 truncate">
+                        {row.snomed || '—'}
+                      </div>
+                    </div>
 
-                    {/* IBIC Cell */}
-                    <td className="p-3 border-r text-xs">
-                      {row.ibic}
-                    </td>
+                    {/* KSI */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-amber-600 uppercase tracking-wide">KSI-insats</div>
+                      <div className="text-xs text-gray-700 bg-amber-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.ksi.split('|')[0].replace('Target:', '').trim()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
 
-                    {/* KVÅ Cell */}
-                    <td className="p-3 border-r text-xs font-mono text-gray-600">
-                      {row.kva}
-                    </td>
-
-                    {/* ICD Cell */}
-                    <td className="p-3 border-r text-xs font-mono bg-red-50/30 text-red-700">
-                      {row.icd || '—'}
-                    </td>
-
-                    {/* Snomed CT Cell */}
-                    <td className="p-3 border-r text-xs font-mono bg-teal-50/30 text-teal-700">
-                      {row.snomed}
-                    </td>
-
-                    {/* KSI Cell */}
-                    <td className="p-3 text-xs font-mono text-gray-500">
-                      {row.ksi}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-              <div className="mt-4 bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-xs text-gray-700">
-                  <strong className="block mb-1 text-blue-800">Om den semantiska bryggan</strong>
-                  Denna matris visar hur barnets upplevda behov (Behovskompass/SHANARRI) kopplas till olika sektorers arbetssätt
-                  och kodverk. Detta möjliggör informationsdelning mellan skola, socialtjänst och hälso- och sjukvård
-                  samtidigt som vi behåller det pedagogiska gränssnittet för barnet.
+              {/* Info footer */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100 mt-4">
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  <strong className="text-blue-700">Om semantisk brygga:</strong>{' '}
+                  Kopplar barnets upplevda behov till nationella kodverk för informationsdelning
+                  mellan skola, socialtjänst och hälso- och sjukvård.
                 </p>
               </div>
             </div>
