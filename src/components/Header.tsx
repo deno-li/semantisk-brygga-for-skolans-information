@@ -156,9 +156,9 @@ const Header: React.FC<HeaderProps> = ({
   const currentPerspectiveConfig = PERSPECTIVE_CONFIG[currentPerspective];
 
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-sm">
+    <header className="bg-white sticky top-0 z-50 border-b border-gray-100">
       {/* Top gradient line */}
-      <div className="h-1 bg-gradient-to-r from-red-600 via-red-500 to-rose-600" />
+      <div className="h-0.5 bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-500" />
 
       {/* Utility Bar */}
       <div className="bg-gray-50 border-b border-gray-100 py-1.5 hidden md:block">
@@ -168,8 +168,8 @@ const Header: React.FC<HeaderProps> = ({
             <span>Prototyp för sammanhållen planering</span>
           </div>
           <div className="flex gap-4 text-xs font-medium">
-            <span className="text-gray-500 cursor-pointer hover:text-blue-600 transition-colors">Om 1177</span>
-            <span className="text-gray-500 cursor-pointer hover:text-blue-600 transition-colors">Hjälp</span>
+            <span className="text-gray-500 cursor-pointer hover:text-teal-600 transition-colors">Om 1177</span>
+            <span className="text-gray-500 cursor-pointer hover:text-teal-600 transition-colors">Hjälp</span>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@ const Header: React.FC<HeaderProps> = ({
           {/* Logo Area */}
           <div className="flex items-center gap-3 shrink-0">
             <div className="relative">
-              <div className="w-11 h-11 bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center text-white font-bold text-lg rounded-lg shadow-md">
+              <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg rounded-xl shadow-md">
                 1177
               </div>
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
@@ -202,7 +202,7 @@ const Header: React.FC<HeaderProps> = ({
             <div className={`relative transition-all duration-200 ${isSearchFocused ? 'scale-[1.02]' : ''}`}>
               <Search
                 className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${
-                  isSearchFocused ? 'text-blue-500' : 'text-gray-400'
+                  isSearchFocused ? 'text-teal-500' : 'text-gray-400'
                 }`}
                 size={18}
               />
@@ -211,9 +211,9 @@ const Header: React.FC<HeaderProps> = ({
                 placeholder="Sök journal, dokument, händelser..."
                 className={`
                   w-full pl-10 pr-10 py-2.5 rounded-xl text-sm
-                  border-2 transition-all duration-200
+                  border transition-all duration-200
                   ${isSearchFocused
-                    ? 'border-blue-500 bg-white shadow-lg shadow-blue-100'
+                    ? 'border-teal-400 bg-white shadow-lg ring-2 ring-teal-100'
                     : 'border-gray-200 bg-gray-50 hover:border-gray-300'
                   }
                   focus:outline-none
@@ -228,7 +228,7 @@ const Header: React.FC<HeaderProps> = ({
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(''); setSearchResults([]); setShowResults(false); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <X size={14} className="text-gray-400" />
                 </button>
@@ -237,10 +237,10 @@ const Header: React.FC<HeaderProps> = ({
 
             {/* Search Dropdown */}
             {showResults && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden max-h-[400px] overflow-y-auto z-50 animate-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden max-h-[400px] overflow-y-auto z-50">
                 {searchResults.length > 0 ? (
                   <div className="py-2">
-                    <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <div className="px-4 py-2 text-xs font-medium text-gray-400 uppercase tracking-wide">
                       {searchResults.length} resultat
                     </div>
                     {searchResults.map((result, idx) => (
@@ -249,19 +249,19 @@ const Header: React.FC<HeaderProps> = ({
                         onClick={() => handleResultClick(result)}
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors flex items-start gap-3 group"
                       >
-                        <div className="p-2 rounded-lg bg-gray-100 text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                        <div className="p-2 rounded-lg bg-gray-100 text-gray-500 group-hover:bg-teal-100 group-hover:text-teal-600 transition-colors">
                           <FileText size={16} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-medium text-sm text-gray-900 truncate">{result.title}</div>
                           <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
-                            <span className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px] font-semibold uppercase">
+                            <span className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px] font-medium uppercase">
                               {result.type}
                             </span>
                             {result.subtitle && <span>{result.subtitle}</span>}
                           </div>
                         </div>
-                        <ArrowRight size={14} className="text-gray-300 group-hover:text-blue-500 self-center transition-colors" />
+                        <ArrowRight size={14} className="text-gray-300 group-hover:text-teal-500 self-center transition-colors" />
                       </button>
                     ))}
                   </div>
@@ -280,11 +280,11 @@ const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
               className={`
-                flex items-center gap-2 px-3 py-2 rounded-xl
-                border-2 transition-all duration-200
+                flex items-center gap-2.5 px-3 py-2 rounded-xl
+                border transition-all duration-200
                 ${showProfileDropdown
-                  ? 'border-blue-500 bg-blue-50 shadow-lg'
-                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                  ? 'border-teal-400 bg-teal-50 shadow-md'
+                  : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                 }
               `}
             >
@@ -309,9 +309,9 @@ const Header: React.FC<HeaderProps> = ({
 
             {/* Profile Dropdown */}
             {showProfileDropdown && (
-              <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden min-w-[300px] z-50 animate-in slide-in-from-top-2 duration-200">
-                <div className="px-4 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-wider">Välj profil</div>
+              <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden min-w-[300px] z-50">
+                <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Välj profil</div>
                 </div>
                 <div className="py-2 max-h-[300px] overflow-y-auto">
                   {Object.keys(CHILD_PROFILES).map((profileId) => {
@@ -330,13 +330,13 @@ const Header: React.FC<HeaderProps> = ({
                           w-full text-left px-4 py-3 transition-all duration-200
                           flex items-center gap-3
                           ${isSelected
-                            ? 'bg-blue-50 border-l-4 border-l-blue-500'
-                            : 'hover:bg-gray-50 border-l-4 border-l-transparent'
+                            ? 'bg-teal-50 border-l-3 border-l-teal-500'
+                            : 'hover:bg-gray-50 border-l-3 border-l-transparent'
                           }
                         `}
                       >
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg border-2 shrink-0 shadow-sm"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg border-2 shrink-0"
                           style={{
                             backgroundColor: metadata.colorScheme.background,
                             borderColor: getSupportLevelColor(metadata.supportLevel),
@@ -345,7 +345,7 @@ const Header: React.FC<HeaderProps> = ({
                           {metadata.emoji}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-sm text-gray-900">{profile.name}</div>
+                          <div className="font-medium text-sm text-gray-900">{profile.name}</div>
                           <div className="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5">
                             <span>{profile.age} år</span>
                             <span className="w-1 h-1 rounded-full bg-gray-300" />
@@ -353,7 +353,7 @@ const Header: React.FC<HeaderProps> = ({
                           </div>
                         </div>
                         {profile.sipActive && (
-                          <span className="text-[10px] font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                          <span className="text-[10px] font-medium text-teal-700 bg-teal-100 px-2 py-1 rounded-lg">
                             Aktiv plan
                           </span>
                         )}
@@ -367,7 +367,7 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Perspective Switcher */}
           <div className="shrink-0">
-            <div className="inline-flex p-1 bg-gray-100 rounded-xl">
+            <div className="inline-flex p-1 bg-gray-100 rounded-xl gap-1">
               {(Object.keys(PERSPECTIVE_CONFIG) as Perspective[]).map((perspective) => {
                 const config = PERSPECTIVE_CONFIG[perspective];
                 const Icon = config.icon;
@@ -378,15 +378,15 @@ const Header: React.FC<HeaderProps> = ({
                     key={perspective}
                     onClick={() => onPerspectiveChange(perspective)}
                     className={`
-                      flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold
+                      flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium
                       transition-all duration-200
                       ${isActive
-                        ? `${config.bgActive} ${config.textActive} shadow-md`
-                        : `text-gray-600 ${config.bgHover}`
+                        ? `${config.bgActive} ${config.textActive} shadow-sm`
+                        : `text-gray-600 hover:bg-gray-200`
                       }
                     `}
                   >
-                    <Icon size={16} className={isActive ? '' : 'opacity-70'} />
+                    <Icon size={16} className={isActive ? '' : 'opacity-60'} />
                     <span className="hidden sm:inline">{config.shortLabel}</span>
                   </button>
                 );
@@ -399,14 +399,14 @@ const Header: React.FC<HeaderProps> = ({
       {/* User Context Strip */}
       <div className={`
         border-t transition-colors
-        ${currentPerspective === 'guardian' ? 'bg-blue-50 border-blue-100' : ''}
-        ${currentPerspective === 'child' ? 'bg-orange-50 border-orange-100' : ''}
-        ${currentPerspective === 'professional' ? 'bg-emerald-50 border-emerald-100' : ''}
+        ${currentPerspective === 'guardian' ? 'bg-blue-50/50 border-blue-100' : ''}
+        ${currentPerspective === 'child' ? 'bg-orange-50/50 border-orange-100' : ''}
+        ${currentPerspective === 'professional' ? 'bg-emerald-50/50 border-emerald-100' : ''}
       `}>
-        <div className="max-w-7xl mx-auto px-4 py-2.5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center gap-3 text-sm">
             <div className={`
-              w-8 h-8 rounded-full flex items-center justify-center text-lg
+              w-8 h-8 rounded-lg flex items-center justify-center text-lg
               ${currentPerspective === 'guardian' ? 'bg-blue-100' : ''}
               ${currentPerspective === 'child' ? 'bg-orange-100' : ''}
               ${currentPerspective === 'professional' ? 'bg-emerald-100' : ''}
@@ -416,7 +416,7 @@ const Header: React.FC<HeaderProps> = ({
             <div>
               <span className="font-medium text-gray-900">{userContext.name}</span>
               <span className={`
-                ml-2 text-xs font-bold uppercase px-2 py-0.5 rounded-full
+                ml-2 text-xs font-medium uppercase px-2 py-0.5 rounded-md
                 ${currentPerspective === 'guardian' ? 'bg-blue-100 text-blue-700' : ''}
                 ${currentPerspective === 'child' ? 'bg-orange-100 text-orange-700' : ''}
                 ${currentPerspective === 'professional' ? 'bg-emerald-100 text-emerald-700' : ''}
@@ -425,7 +425,7 @@ const Header: React.FC<HeaderProps> = ({
               </span>
             </div>
           </div>
-          <button className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+          <button className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors px-2 py-1 rounded-lg hover:bg-white/50">
             <LogOut size={14} />
             <span className="hidden sm:inline font-medium">Logga ut</span>
           </button>
