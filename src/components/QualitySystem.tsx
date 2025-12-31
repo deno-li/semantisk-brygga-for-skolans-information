@@ -121,39 +121,53 @@ const QualitySystem: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      
-      {/* Header with context */}
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between gap-6 items-start">
-        <div>
-          <h2 className="text-2xl font-bold text-[#1F1F1F] mb-2">Gävlemodellen & Systematiskt Trygghetsarbete</h2>
-          <p className="text-gray-600 max-w-2xl">
-            Skolans arbete för trygghet och studiero följer en systematisk process (PDCA). 
-            Här ser du hur Eriks individuella upplevelser bidrar till skolans utveckling och hur vi arbetar förebyggande.
-          </p>
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white mb-4 shadow-lg">
+          <ClipboardCheck className="w-8 h-8" />
         </div>
-        <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg">
-           <div className="text-sm font-bold text-[#005595] uppercase tracking-wider mb-1">Aktuell Fas</div>
-           <div className="text-xl font-bold text-[#1F1F1F] flex items-center gap-2">
-             <Clock size={20} className="text-[#005595]"/>
-             Analys & Åtgärd
-           </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Trygghet & Kvalitetsarbete</h1>
+        <p className="text-gray-600">
+          Gävlemodellen • Systematiskt trygghetsarbete enligt PDCA
+        </p>
+      </div>
+
+      {/* Current Phase Card */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex flex-col md:flex-row justify-between gap-6 items-start">
+          <div className="flex-1">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Systematiskt kvalitetsarbete</h2>
+            <p className="text-sm text-gray-600">
+              Skolans arbete för trygghet och studiero följer en systematisk process (PDCA).
+              Här ser du hur Eriks individuella upplevelser bidrar till skolans utveckling och hur vi arbetar förebyggande.
+            </p>
+          </div>
+          <div className="bg-teal-50 px-5 py-4 rounded-xl border border-teal-100">
+             <div className="text-xs font-medium text-teal-600 uppercase tracking-wide mb-1">Aktuell Fas</div>
+             <div className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+               <Clock size={18} className="text-teal-600"/>
+               Analys & Åtgärd
+             </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
         {/* Main Cycle Visualization */}
-        <div className="lg:col-span-2 space-y-8">
-           
+        <div className="lg:col-span-2 space-y-6">
+
            {/* Trend Chart Section */}
-           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex justify-between items-center mb-6">
-                 <h3 className="font-bold text-lg text-[#1F1F1F] flex items-center gap-2">
-                   <TrendingUp className="text-[#378056]" />
-                   Trend: Upplevd Trygghet (Stigslundsskolan)
-                 </h3>
-                 <span className="text-xs text-gray-500">Källa: Gävlemodellenkät (aggregerat)</span>
+                 <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                     <TrendingUp className="w-5 h-5 text-emerald-600" />
+                   </div>
+                   <h3 className="font-semibold text-gray-900">Trend: Upplevd Trygghet</h3>
+                 </div>
+                 <span className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-lg">Gävlemodellenkät</span>
               </div>
               <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -194,24 +208,24 @@ const QualitySystem: React.FC = () => {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="mt-4 flex gap-4 text-xs justify-center">
-                 <button 
+              <div className="mt-4 flex gap-3 text-xs justify-center">
+                 <button
                    onClick={() => setShowMyYear(!showMyYear)}
-                   className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all border ${
-                     showMyYear 
-                       ? 'bg-blue-50 border-blue-200 text-[#005595] font-semibold' 
-                       : 'bg-gray-50 border-gray-200 text-gray-400 opacity-60'
+                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
+                     showMyYear
+                       ? 'bg-blue-50 text-blue-700 font-medium'
+                       : 'bg-gray-50 text-gray-400'
                    }`}
                  >
-                    <div className={`w-3 h-3 rounded-full ${showMyYear ? 'bg-[#005595]' : 'bg-gray-400'}`}></div>
+                    <div className={`w-2.5 h-2.5 rounded-full ${showMyYear ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
                     <span>Eriks Årskurs</span>
                  </button>
-                 <button 
+                 <button
                    onClick={() => setShowSchoolAvg(!showSchoolAvg)}
-                   className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all border ${
-                     showSchoolAvg 
-                       ? 'bg-gray-100 border-gray-300 text-gray-700 font-semibold' 
-                       : 'bg-gray-50 border-gray-200 text-gray-400 opacity-60'
+                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
+                     showSchoolAvg
+                       ? 'bg-gray-100 text-gray-700 font-medium'
+                       : 'bg-gray-50 text-gray-400'
                    }`}
                  >
                     <div className="w-4 h-0 border-t-2 border-dashed border-current"></div>
@@ -221,12 +235,12 @@ const QualitySystem: React.FC = () => {
            </div>
 
            {/* The PDCA Cycle & Gävlemodellen Timeline */}
-           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-             <div className="flex flex-col md:flex-row justify-between items-start mb-6">
-                <h3 className="font-bold text-lg text-[#1F1F1F] flex items-center gap-2">
-                    <RefreshCcw className="text-[#005595]" />
-                    Förbättringshjul (PDCA)
-                </h3>
+           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+             <div className="flex items-center gap-3 mb-6">
+               <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                 <RefreshCcw className="w-5 h-5 text-blue-600" />
+               </div>
+               <h3 className="font-semibold text-gray-900">Förbättringshjul (PDCA)</h3>
              </div>
 
              <div className="flex flex-col md:flex-row items-center gap-8">
@@ -237,39 +251,39 @@ const QualitySystem: React.FC = () => {
 
                  {/* Right: Linear Timeline */}
                  <div className="flex-1 w-full relative">
-                    <div className="absolute left-6 top-2 bottom-6 w-1 bg-gray-300 -translate-x-1/2 -z-0 rounded-full"></div>
-                    <div className="space-y-6">
+                    <div className="absolute left-6 top-2 bottom-6 w-0.5 bg-gray-200 -translate-x-1/2 -z-0 rounded-full"></div>
+                    <div className="space-y-5">
                         {QUALITY_CYCLE.map((phase, index) => {
                         const isActive = phase.status === 'active';
                         const isCompleted = phase.status === 'completed';
                         const isHovered = hoveredPhase === phase.id;
-                        
+
                         return (
-                            <div 
-                              key={phase.id} 
-                              className={`relative flex gap-4 transition-all duration-300 cursor-pointer p-2 rounded-lg ${isHovered ? 'bg-gray-50' : ''} ${isActive || isHovered ? 'opacity-100' : 'opacity-70'}`}
+                            <div
+                              key={phase.id}
+                              className={`relative flex gap-4 transition-all duration-300 cursor-pointer p-2 rounded-xl ${isHovered ? 'bg-gray-50' : ''} ${isActive || isHovered ? 'opacity-100' : 'opacity-70'}`}
                               onMouseEnter={() => setHoveredPhase(phase.id)}
                               onMouseLeave={() => setHoveredPhase(null)}
                             >
-                                <div className={`z-10 w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-4 transition-all bg-white ${
-                                isActive 
-                                    ? 'bg-[#005595] text-white border-blue-100 scale-105 shadow' 
-                                    : isCompleted 
-                                    ? 'bg-[#378056] text-white border-green-100' 
+                                <div className={`z-10 w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all ${
+                                isActive
+                                    ? 'bg-blue-600 text-white shadow-md'
+                                    : isCompleted
+                                    ? 'bg-emerald-500 text-white'
                                     : isHovered
-                                    ? 'border-[#005595] text-[#005595]'
-                                    : 'text-gray-400 border-gray-200'
+                                    ? 'bg-blue-100 text-blue-600'
+                                    : 'bg-gray-100 text-gray-400'
                                 }`}>
-                                {isCompleted ? <CheckCircle2 size={20} /> : <span className="font-bold text-sm">{index + 1}</span>}
+                                {isCompleted ? <CheckCircle2 size={18} /> : <span className="font-semibold text-sm">{index + 1}</span>}
                                 </div>
                                 <div>
-                                    <h4 className={`font-bold text-sm transition-colors ${isActive || isHovered ? 'text-[#005595]' : 'text-gray-700'}`}>
+                                    <h4 className={`font-semibold text-sm transition-colors ${isActive || isHovered ? 'text-blue-600' : 'text-gray-700'}`}>
                                       {phase.title}
                                     </h4>
                                     <span className="text-xs text-gray-500 block mb-1">{phase.period}</span>
                                     <div className="flex flex-wrap gap-1">
                                         {phase.activities.slice(0, 2).map(act => (
-                                            <span key={act} className="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-600 border border-gray-200">{act}</span>
+                                            <span key={act} className="text-[10px] bg-gray-100 px-2 py-0.5 rounded-md text-gray-600">{act}</span>
                                         ))}
                                     </div>
                                 </div>
@@ -285,57 +299,59 @@ const QualitySystem: React.FC = () => {
         {/* Individual Contribution Side Panel */}
         <div className="space-y-6">
            {/* My Contribution */}
-           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-              <h3 className="font-bold text-lg text-[#1F1F1F] mb-4 flex items-center gap-2">
-                 <Users size={20} className="text-[#E87C00]" />
-                 Min del i systemet
-              </h3>
-              <p className="text-sm text-gray-600 mb-6">
-                Så här bidrar Erik till skolans gemensamma kvalitetsarbete. All data anonymiseras på gruppnivå.
+           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-orange-600" />
+                </div>
+                <h3 className="font-semibold text-gray-900">Min del i systemet</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-5">
+                Så här bidrar Erik till skolans gemensamma kvalitetsarbete.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-3 bg-[#EBF4FA] rounded border border-blue-100">
-                  <CheckCircle2 size={18} className="text-[#378056] mt-0.5" />
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-xl">
+                  <CheckCircle2 size={16} className="text-emerald-600 mt-0.5" />
                   <div>
-                    <div className="font-bold text-sm text-[#1F1F1F]">Trygghetsenkät v.42</div>
-                    <div className="text-xs text-gray-600">Genomförd 2025-10-14. Erik signalerade hög trivsel men viss oro på raster.</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-center py-2 text-gray-400">
-                  <ArrowRight size={16} className="rotate-90" />
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded border border-gray-200">
-                  <BarChart3 size={18} className="text-[#005595] mt-0.5" />
-                  <div>
-                    <div className="font-bold text-sm text-[#1F1F1F]">Klassanalys Åk 4</div>
-                    <div className="text-xs text-gray-600">Resultatet visade att flera elever upplever rasten otrygg.</div>
+                    <div className="font-medium text-sm text-gray-900">Trygghetsenkät v.42</div>
+                    <div className="text-xs text-gray-600 mt-0.5">Genomförd 2025-10-14. Hög trivsel men viss oro på raster.</div>
                   </div>
                 </div>
 
-                 <div className="flex items-center justify-center py-2 text-gray-400">
-                  <ArrowRight size={16} className="rotate-90" />
+                <div className="flex items-center justify-center py-1 text-gray-300">
+                  <ArrowRight size={14} className="rotate-90" />
                 </div>
 
-                <div className="flex items-start gap-3 p-3 bg-green-50 rounded border border-green-100">
-                  <ClipboardCheck size={18} className="text-[#378056] mt-0.5" />
+                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                  <BarChart3 size={16} className="text-blue-600 mt-0.5" />
                   <div>
-                    <div className="font-bold text-sm text-[#1F1F1F]">Åtgärd: Rastaktiviteter</div>
-                    <div className="text-xs text-gray-600">Skolan har infört styrda rastaktiviteter och fler vuxna ute (Trygghetsvärdar).</div>
+                    <div className="font-medium text-sm text-gray-900">Klassanalys Åk 4</div>
+                    <div className="text-xs text-gray-600 mt-0.5">Flera elever upplever rasten otrygg.</div>
+                  </div>
+                </div>
+
+                 <div className="flex items-center justify-center py-1 text-gray-300">
+                  <ArrowRight size={14} className="rotate-90" />
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
+                  <ClipboardCheck size={16} className="text-emerald-600 mt-0.5" />
+                  <div>
+                    <div className="font-medium text-sm text-gray-900">Åtgärd: Rastaktiviteter</div>
+                    <div className="text-xs text-gray-600 mt-0.5">Styrda aktiviteter och fler vuxna (Trygghetsvärdar).</div>
                   </div>
                 </div>
               </div>
            </div>
 
            {/* Documentation Link */}
-           <div className="bg-[#FFF4F0] rounded-lg border border-[#B00020] p-6">
-              <h3 className="font-bold text-[#B00020] mb-2">Likabehandlingsplan</h3>
-              <p className="text-sm text-gray-700 mb-4">
-                Stigslundsskolans plan mot diskriminering och kränkande behandling gäller hela läsåret.
+           <div className="bg-red-50 rounded-2xl border border-red-200 p-5">
+              <h3 className="font-semibold text-red-700 mb-2">Likabehandlingsplan</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Stigslundsskolans plan mot diskriminering och kränkande behandling.
               </p>
-              <button className="text-sm bg-white border border-[#B00020] text-[#B00020] px-4 py-2 rounded font-semibold hover:bg-[#B00020] hover:text-white transition-colors w-full">
+              <button className="text-sm bg-white border border-red-200 text-red-700 px-4 py-2.5 rounded-xl font-medium hover:bg-red-600 hover:text-white hover:border-red-600 transition-all w-full">
                 Läs planen (PDF)
               </button>
            </div>
@@ -344,31 +360,34 @@ const QualitySystem: React.FC = () => {
       </div>
 
       {/* Gävlemodellens Kvalitetsindikatorer */}
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-[#1F1F1F] mb-2 flex items-center gap-2">
-              <Target size={24} className="text-[#005595]" />
-              Uppföljning av systematiskt trygghetsarbete enligt Gävlemodellens hörnstenar
-            </h2>
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+              <Target className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-gray-900">Kvalitetsindikatorer</h2>
+              <p className="text-sm text-gray-500">Gävlemodellens hörnstenar</p>
+            </div>
           </div>
-          <span className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-200">
+          <span className="text-xs text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg">
             Uppdaterad: Nov 2025
           </span>
         </div>
 
         {/* Tabs for indicator types */}
-        <div className="flex gap-2 mb-6 border-b border-gray-200">
-          <button className="px-4 py-2 text-sm font-semibold text-[#005595] border-b-2 border-[#005595]">
-            Alla indikatorer
+        <div className="flex gap-1 mb-6 p-1 bg-gray-100 rounded-xl w-fit">
+          <button className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg">
+            Alla
           </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
+          <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">
             Process
           </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
+          <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">
             Resultat
           </button>
-          <button className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-[#005595] border-b-2 border-transparent">
+          <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">
             Långsiktig
           </button>
         </div>
@@ -383,16 +402,16 @@ const QualitySystem: React.FC = () => {
             return (
               <div
                 key={indicator.id}
-                className={`bg-white rounded-lg border-2 p-4 hover:shadow-md transition-all ${
-                  meetsTarget ? 'border-green-200 bg-green-50/30' :
-                  isNearTarget ? 'border-yellow-200 bg-yellow-50/30' :
+                className={`bg-white rounded-xl border p-4 hover:shadow-md transition-all ${
+                  meetsTarget ? 'border-emerald-200 bg-emerald-50/50' :
+                  isNearTarget ? 'border-amber-200 bg-amber-50/50' :
                   'border-gray-200'
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`text-xs px-2 py-0.5 rounded-md font-medium ${
                         indicator.type === 'process' ? 'bg-blue-100 text-blue-700' :
                         indicator.type === 'result' ? 'bg-purple-100 text-purple-700' :
                         'bg-orange-100 text-orange-700'
@@ -402,15 +421,15 @@ const QualitySystem: React.FC = () => {
                          'Långsiktig'}
                       </span>
                       {indicator.gavleModelPillar && (
-                        <span className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">
-                          {indicator.gavleModelPillar === 'mapping' ? '🗺️ Kartläggning' :
-                           indicator.gavleModelPillar === 'collaboration' ? '🤝 Samverkan' :
-                           indicator.gavleModelPillar === 'followup' ? '📊 Uppföljning' :
-                           '🚀 Utveckling'}
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-gray-100 text-gray-600">
+                          {indicator.gavleModelPillar === 'mapping' ? '🗺️' :
+                           indicator.gavleModelPillar === 'collaboration' ? '🤝' :
+                           indicator.gavleModelPillar === 'followup' ? '📊' :
+                           '🚀'}
                         </span>
                       )}
                     </div>
-                    <h4 className="font-bold text-sm text-[#1F1F1F] leading-tight">
+                    <h4 className="font-semibold text-sm text-gray-900 leading-tight">
                       {indicator.name}
                     </h4>
                   </div>
@@ -422,19 +441,19 @@ const QualitySystem: React.FC = () => {
 
                 {/* Progress visualization */}
                 <div className="mb-3">
-                  <div className="flex items-baseline justify-between mb-1">
-                    <span className="text-2xl font-bold text-[#1F1F1F]">
+                  <div className="flex items-baseline justify-between mb-1.5">
+                    <span className="text-xl font-bold text-gray-900">
                       {indicator.current}{indicator.unit}
                     </span>
                     <span className="text-xs text-gray-500">
                       Mål: {indicator.target}{indicator.unit}
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className={`h-2 rounded-full transition-all ${
-                        meetsTarget ? 'bg-green-500' :
-                        isNearTarget ? 'bg-yellow-500' :
+                      className={`h-1.5 rounded-full transition-all ${
+                        meetsTarget ? 'bg-emerald-500' :
+                        isNearTarget ? 'bg-amber-500' :
                         'bg-orange-500'
                       }`}
                       style={{ width: `${Math.min(progress, 100)}%` }}
@@ -444,32 +463,32 @@ const QualitySystem: React.FC = () => {
 
                 {/* Trend indicator */}
                 <div className="flex items-center justify-between text-xs">
-                  <div className={`flex items-center gap-1 font-semibold ${
-                    indicator.trend === 'improving' ? 'text-green-600' :
-                    indicator.trend === 'stable' ? 'text-gray-600' :
+                  <div className={`flex items-center gap-1 font-medium ${
+                    indicator.trend === 'improving' ? 'text-emerald-600' :
+                    indicator.trend === 'stable' ? 'text-gray-500' :
                     'text-red-600'
                   }`}>
                     {indicator.trend === 'improving' ? (
                       <>
-                        <TrendingUp size={14} />
+                        <TrendingUp size={12} />
                         <span>Förbättras</span>
                       </>
                     ) : indicator.trend === 'stable' ? (
                       <>
-                        <Activity size={14} />
+                        <Activity size={12} />
                         <span>Stabil</span>
                       </>
                     ) : (
                       <>
-                        <TrendingUp size={14} className="rotate-180" />
+                        <TrendingUp size={12} className="rotate-180" />
                         <span>Försämras</span>
                       </>
                     )}
                   </div>
                   {meetsTarget && (
-                    <div className="flex items-center gap-1 text-green-600">
-                      <Award size={14} />
-                      <span className="font-semibold">Uppnått</span>
+                    <div className="flex items-center gap-1 text-emerald-600">
+                      <Award size={12} />
+                      <span className="font-medium">Uppnått</span>
                     </div>
                   )}
                 </div>
@@ -479,38 +498,38 @@ const QualitySystem: React.FC = () => {
         </div>
 
         {/* Summary Statistics */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-xl">
           <div className="text-center">
-            <div className="text-2xl font-bold text-[#005595]">
+            <div className="text-2xl font-bold text-blue-600">
               {QUALITY_INDICATORS.filter(qi => qi.current >= qi.target).length}
             </div>
-            <div className="text-xs text-gray-600 mt-1">Uppnådda mål</div>
+            <div className="text-xs text-gray-500 mt-1">Uppnådda mål</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-emerald-600">
               {QUALITY_INDICATORS.filter(qi => qi.trend === 'improving').length}
             </div>
-            <div className="text-xs text-gray-600 mt-1">Förbättras</div>
+            <div className="text-xs text-gray-500 mt-1">Förbättras</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-600">
+            <div className="text-2xl font-bold text-gray-500">
               {QUALITY_INDICATORS.filter(qi => qi.trend === 'stable').length}
             </div>
-            <div className="text-xs text-gray-600 mt-1">Stabila</div>
+            <div className="text-xs text-gray-500 mt-1">Stabila</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-[#005595]">
+            <div className="text-2xl font-bold text-purple-600">
               {Math.round(QUALITY_INDICATORS.reduce((sum, qi) => sum + (qi.current / qi.target) * 100, 0) / QUALITY_INDICATORS.length)}%
             </div>
-            <div className="text-xs text-gray-600 mt-1">Snittuppfyllelse</div>
+            <div className="text-xs text-gray-500 mt-1">Snittuppfyllelse</div>
           </div>
         </div>
 
         {/* Improvement focus */}
         {improvementAreas.length > 0 && (
           <div className="mt-6">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#B00020] mb-3">
-              <AlertTriangle size={16} />
+            <div className="flex items-center gap-2 text-sm font-medium text-red-600 mb-3">
+              <AlertTriangle size={14} />
               Identifierade förbättringsområden
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -519,20 +538,20 @@ const QualitySystem: React.FC = () => {
                 return (
                   <div
                     key={indicator.id}
-                    className="bg-[#FFF4F0] border border-[#FECACA] rounded-lg p-3 shadow-sm"
+                    className="bg-red-50 border border-red-200 rounded-xl p-3"
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <h4 className="font-semibold text-sm text-[#1F1F1F] leading-tight">
+                      <h4 className="font-medium text-sm text-gray-900 leading-tight">
                         {indicator.name}
                       </h4>
-                      <span className="text-xs font-bold text-[#B00020] bg-white border border-[#FECACA] rounded px-2 py-0.5">
+                      <span className="text-xs font-medium text-red-600 bg-white border border-red-200 rounded-md px-2 py-0.5">
                         {gapPercent}% kvar
                       </span>
                     </div>
-                    <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                    <p className="text-xs text-gray-600 leading-relaxed mb-2">
                       {indicator.description}
                     </p>
-                    <div className="flex items-center justify-between text-xs text-gray-700">
+                    <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>Nu: {indicator.current}{indicator.unit}</span>
                       <span>Mål: {indicator.target}{indicator.unit}</span>
                     </div>

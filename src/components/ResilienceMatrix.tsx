@@ -61,29 +61,32 @@ const ResilienceMatrix: React.FC<ResilienceMatrixProps> = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#005595] to-[#003D6B] text-white rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-2">Resilience Matrix (GIRFEC)</h2>
-        <p className="text-sm opacity-90">
-          Bedömning av motståndskraft baserat på motgångar, sårbarheter och skyddande miljö
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white mb-4 shadow-lg">
+          <Shield className="w-8 h-8" />
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Resilience Matrix</h1>
+        <p className="text-gray-600">
+          GIRFEC • Motgångar, sårbarheter och skyddande miljö
         </p>
       </div>
 
       {/* Resilience Score */}
-      <div className="bg-white rounded-lg border-2 border-[#005595] p-6 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold text-[#1F1F1F] mb-1">Sammanvägd resiliens</h3>
-            <p className="text-sm text-gray-600">
-              Beräknad motståndskraft baserat på alla faktorer
+            <h3 className="font-semibold text-gray-900 mb-1">Sammanvägd resiliens</h3>
+            <p className="text-sm text-gray-500">
+              Beräknad motståndskraft
             </p>
           </div>
-          <div className="text-center">
-            <div className={`text-5xl font-bold ${getResilienceColor(resilienceScore)}`}>
+          <div className="text-center px-6 py-3 bg-emerald-50 rounded-xl">
+            <div className={`text-4xl font-bold ${getResilienceColor(resilienceScore)}`}>
               {resilienceScore}/10
             </div>
-            <div className={`text-sm font-semibold mt-1 ${getResilienceColor(resilienceScore)}`}>
+            <div className={`text-sm font-medium mt-1 ${getResilienceColor(resilienceScore)}`}>
               {getResilienceLevel(resilienceScore)}
             </div>
           </div>
@@ -91,13 +94,15 @@ const ResilienceMatrix: React.FC<ResilienceMatrixProps> = () => {
       </div>
 
       {/* Matrix Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Adversity (Motgångar) */}
-        <div className="bg-white rounded-lg border-2 border-red-200 p-6 shadow-sm">
-          <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg mb-4">
-            <AlertTriangle size={20} className="text-red-600" />
-            Motgångar (Adversity)
-          </h3>
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Motgångar</h3>
+          </div>
           <div className="space-y-3">
             {adversity.map((factor) => (
               <div key={factor.id} className="bg-red-50 rounded-lg p-3 border border-red-200">
@@ -136,11 +141,13 @@ const ResilienceMatrix: React.FC<ResilienceMatrixProps> = () => {
         </div>
 
         {/* Vulnerability (Sårbarhet) */}
-        <div className="bg-white rounded-lg border-2 border-yellow-200 p-6 shadow-sm">
-          <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg mb-4">
-            <ShieldAlert size={20} className="text-yellow-600" />
-            Sårbarhet (Vulnerability)
-          </h3>
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+              <ShieldAlert className="w-5 h-5 text-amber-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Sårbarhet</h3>
+          </div>
           <div className="space-y-3">
             {vulnerability.map((factor) => (
               <div key={factor.id} className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
@@ -176,11 +183,13 @@ const ResilienceMatrix: React.FC<ResilienceMatrixProps> = () => {
         </div>
 
         {/* Protective Environment (Skyddande miljö) */}
-        <div className="bg-white rounded-lg border-2 border-green-200 p-6 shadow-sm">
-          <h3 className="font-bold text-[#1F1F1F] flex items-center gap-2 text-lg mb-4">
-            <Shield size={20} className="text-green-600" />
-            Skyddande miljö (Protective Environment)
-          </h3>
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+              <Shield className="w-5 h-5 text-emerald-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Skyddande miljö</h3>
+          </div>
           <div className="space-y-3">
             {protectiveEnvironment.map((factor) => (
               <div key={factor.id} className="bg-green-50 rounded-lg p-3 border border-green-200">
@@ -213,13 +222,26 @@ const ResilienceMatrix: React.FC<ResilienceMatrixProps> = () => {
       </div>
 
       {/* Explanation */}
-      <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-        <h4 className="font-semibold text-sm text-[#1F1F1F] mb-2">Om Resilience Matrix</h4>
-        <p className="text-xs text-gray-700">
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <h4 className="font-semibold text-gray-900 mb-3">Om Resilience Matrix</h4>
+        <p className="text-sm text-gray-600 mb-4">
           Resilience Matrix från GIRFEC (Getting It Right For Every Child) används vid mer komplexa situationer för att
-          bedöma barnets motståndskraft. Den väger samman <strong>motgångar</strong> (adversity), <strong>sårbarheter</strong> (vulnerability)
-          och <strong>skyddande miljöfaktorer</strong> (protective environment) för att ge en helhetsbild av barnets situation och resiliens.
+          bedöma barnets motståndskraft. Den väger samman tre huvudområden för att ge en helhetsbild av barnets situation och resiliens:
         </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="p-3 bg-red-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Motgångar</div>
+            <p className="text-xs text-gray-600">Adversity - utmaningar och svårigheter</p>
+          </div>
+          <div className="p-3 bg-amber-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Sårbarheter</div>
+            <p className="text-xs text-gray-600">Vulnerability - känslighet och risker</p>
+          </div>
+          <div className="p-3 bg-emerald-50 rounded-xl">
+            <div className="font-medium text-gray-900 text-sm mb-1">Skyddande miljö</div>
+            <p className="text-xs text-gray-600">Protective environment - stöd och resurser</p>
+          </div>
+        </div>
       </div>
     </div>
   );

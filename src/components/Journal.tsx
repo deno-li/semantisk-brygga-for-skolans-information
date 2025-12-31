@@ -128,43 +128,66 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
   const currentData = JOURNAL_DATA[selectedDomain];
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 animate-fade-in h-[calc(100vh-250px)] min-h-[600px]">
-      
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="text-center py-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white mb-4 shadow-lg">
+          <BookOpen className="w-8 h-8" />
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Journal</h1>
+        <p className="text-gray-600">
+          Dokumentation och observationer från olika domäner
+        </p>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-6">
+
       {/* Sidebar - Domain Selection */}
       <div className="w-full lg:w-64 flex flex-col gap-2 shrink-0">
-        <div className="font-bold text-[#1F1F1F] mb-2 px-2 uppercase text-xs tracking-wider">Välj Domän</div>
-        {Object.keys(JOURNAL_DATA).map(domain => (
-          <button
-            key={domain}
-            onClick={() => setSelectedDomain(domain)}
-            className={`flex items-center gap-3 p-4 rounded-lg text-left transition-all border ${
-              selectedDomain === domain 
-                ? `${domainColors[domain]} shadow-sm border-current` 
-                : 'bg-white hover:bg-gray-50 border-transparent text-gray-600'
-            }`}
-          >
-            <div className={selectedDomain === domain ? 'opacity-100' : 'opacity-50'}>
-              {domainIcons[domain] || <BookOpen size={20} />}
-            </div>
-            <span className="font-semibold text-sm">{domain}</span>
-          </button>
-        ))}
+        <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+          <div className="font-semibold text-gray-900 mb-3 text-sm">Välj Domän</div>
+          <div className="space-y-2">
+            {Object.keys(JOURNAL_DATA).map(domain => (
+              <button
+                key={domain}
+                onClick={() => setSelectedDomain(domain)}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
+                  selectedDomain === domain
+                    ? `${domainColors[domain]} shadow-sm`
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-600'
+                }`}
+              >
+                <div className={selectedDomain === domain ? 'opacity-100' : 'opacity-50'}>
+                  {domainIcons[domain] || <BookOpen size={18} />}
+                </div>
+                <span className="font-medium text-sm">{domain}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col overflow-hidden">
-        
+      <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col overflow-hidden">
+
         {/* Header */}
-        <div className="p-6 border-b border-gray-100 flex justify-between items-start bg-gray-50">
+        <div className="p-5 border-b border-gray-100 flex justify-between items-start">
           <div>
-             <div className="flex items-center gap-2 mb-1">
-                {domainIcons[selectedDomain]}
-                <h2 className="text-xl font-bold text-[#1F1F1F]">
-                  Domän: {selectedDomain}
+             <div className="flex items-center gap-3 mb-2">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                  selectedDomain === 'Skola' ? 'bg-blue-100' :
+                  selectedDomain === 'Socialtjänst' ? 'bg-red-100' :
+                  selectedDomain === 'Hälso- och sjukvård' ? 'bg-green-100' :
+                  selectedDomain === 'Omsorg' ? 'bg-orange-100' : 'bg-yellow-100'
+                }`}>
+                  {domainIcons[selectedDomain]}
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {selectedDomain}
                 </h2>
              </div>
-             
-             <div className="flex flex-wrap gap-4 mt-2 text-xs text-gray-500 font-medium">
+
+             <div className="flex flex-wrap gap-4 text-xs text-gray-500">
                <div className="flex items-center gap-1.5">
                   <Building2 size={14} className="text-gray-400" />
                   {currentData.unit}
@@ -175,17 +198,17 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
                </div>
                <div className="flex items-center gap-1.5">
                   <Clock size={14} className="text-gray-400" />
-                  Uppdaterad: {currentData.lastUpdated}
+                  {currentData.lastUpdated}
                </div>
              </div>
           </div>
-          
-          <button 
+
+          <button
             onClick={() => { setIsDrafting(!isDrafting); setFormError(null); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm shrink-0 ${
-              isDrafting 
-                ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
-                : 'bg-[#005595] text-white hover:bg-blue-800'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all shrink-0 ${
+              isDrafting
+                ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:shadow-md'
             }`}
           >
             {isDrafting ? (
@@ -195,41 +218,40 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
             ) : (
               <>
                 <Plus size={16} /> Ny Anteckning
-                <span className="w-px h-4 bg-white/30 mx-1"></span>
-                <Sparkles size={14} className="text-purple-200" />
+                <Sparkles size={14} className="opacity-80" />
               </>
             )}
           </button>
         </div>
 
         {/* Content Grid */}
-        <div className="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-          
+        <div className="p-5 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4 relative flex-1">
+
           {/* Draft Area Overlay/Insertion */}
           {isDrafting && (
-            <div className="col-span-1 md:col-span-2 bg-white rounded-lg border-2 border-[#005595] shadow-lg p-5 mb-2 animate-fade-in relative z-10">
-               <div className="flex justify-between items-center mb-3">
-                 <h3 className="font-bold text-[#005595] flex items-center gap-2">
-                   <Edit size={18} />
-                   Utkast: Ny Anteckning ({selectedDomain})
+            <div className="col-span-1 md:col-span-2 bg-amber-50 rounded-xl border border-amber-200 p-5 mb-2 animate-fade-in relative z-10">
+               <div className="flex justify-between items-center mb-4">
+                 <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                   <Edit size={18} className="text-amber-600" />
+                   Ny Anteckning – {selectedDomain}
                  </h3>
                </div>
                
                {/* AI Suggestions Banner */}
                {aiSuggestions && (
-                 <div className="mb-4 bg-purple-50 border border-purple-200 rounded-lg p-4 animate-fade-in">
+                 <div className="mb-4 bg-violet-50 border border-violet-200 rounded-xl p-4 animate-fade-in">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h4 className="font-bold text-purple-800 text-sm flex items-center gap-2">
+                        <h4 className="font-semibold text-violet-800 text-sm flex items-center gap-2">
                           <CheckCircle size={16} /> Analys klar!
                         </h4>
-                        <p className="text-xs text-purple-700 mt-1">
+                        <p className="text-xs text-violet-600 mt-1">
                           AI har identifierat {aiSuggestions.length} möjliga kodningar baserat på din text.
                         </p>
                       </div>
-                      <button 
+                      <button
                         onClick={applySuggestions}
-                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2 rounded shadow-sm transition-colors flex items-center gap-2"
+                        className="bg-gradient-to-r from-violet-500 to-purple-600 hover:shadow-md text-white text-xs font-medium px-4 py-2 rounded-lg transition-all flex items-center gap-2"
                       >
                         <Sparkles size={14} /> Infoga koder
                       </button>
@@ -239,20 +261,20 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
 
                <div className="relative">
                   {/* Rich Text Editor Container */}
-                  <div className={`border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#005595] transition-all bg-white ${formError ? 'border-red-500' : 'border-gray-300'}`}>
+                  <div className={`border rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-amber-400 transition-all bg-white ${formError ? 'border-red-400' : 'border-gray-200'}`}>
                     {/* Toolbar */}
-                    <div className="flex items-center gap-1 p-2 border-b border-gray-200 bg-gray-50">
-                        <button onClick={() => execCmd('bold')} className="p-1.5 hover:bg-gray-200 rounded text-gray-700" title="Fetstil"><Bold size={16}/></button>
-                        <button onClick={() => execCmd('italic')} className="p-1.5 hover:bg-gray-200 rounded text-gray-700" title="Kursiv"><Italic size={16}/></button>
-                        <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                        <button onClick={() => execCmd('insertUnorderedList')} className="p-1.5 hover:bg-gray-200 rounded text-gray-700" title="Punktlista"><List size={16}/></button>
+                    <div className="flex items-center gap-1 p-2 border-b border-gray-100 bg-gray-50">
+                        <button onClick={() => execCmd('bold')} className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-600" title="Fetstil"><Bold size={16}/></button>
+                        <button onClick={() => execCmd('italic')} className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-600" title="Kursiv"><Italic size={16}/></button>
+                        <div className="w-px h-4 bg-gray-200 mx-1"></div>
+                        <button onClick={() => execCmd('insertUnorderedList')} className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-600" title="Punktlista"><List size={16}/></button>
                     </div>
-                    
+
                     {/* Editable Area */}
                     <div
                         ref={editorRef}
                         contentEditable
-                        className={`w-full p-4 min-h-[160px] outline-none text-sm max-h-[400px] overflow-y-auto ${formError ? 'bg-red-50' : 'bg-white'}`}
+                        className={`w-full p-4 min-h-[140px] outline-none text-sm max-h-[300px] overflow-y-auto ${formError ? 'bg-red-50' : 'bg-white'}`}
                         onInput={(e) => {
                             setDraftText(e.currentTarget.innerHTML);
                             if(e.currentTarget.innerText.trim()) setFormError(null);
@@ -261,37 +283,37 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
                   </div>
 
                   {formError && (
-                    <div className="absolute bottom-3 right-3 flex items-center gap-1 text-xs text-red-600 font-bold bg-white px-2 py-1 rounded shadow-sm border border-red-100 animate-pulse">
+                    <div className="absolute bottom-3 right-3 flex items-center gap-1 text-xs text-red-600 font-medium bg-white px-2 py-1 rounded-lg shadow-sm border border-red-100">
                       <AlertCircle size={12} /> {formError}
                     </div>
                   )}
                </div>
 
-               <div className="flex flex-col sm:flex-row justify-between items-center bg-blue-50 p-3 rounded border border-blue-100 gap-3 mt-4">
-                  <span className="text-xs text-blue-800 flex items-center gap-1">
-                    <Sparkles size={14} className="shrink-0" />
-                    AI kan hjälpa dig att hitta rätt kodning.
+               <div className="flex flex-col sm:flex-row justify-between items-center bg-white rounded-xl p-3 border border-gray-200 gap-3 mt-4">
+                  <span className="text-xs text-gray-600 flex items-center gap-1.5">
+                    <Sparkles size={14} className="shrink-0 text-violet-500" />
+                    AI kan hjälpa dig att hitta rätt kodning
                   </span>
-                  
-                  <div className="flex items-center gap-3 w-full sm:w-auto">
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
                     {saveStatus ? (
-                       <div className="flex items-center gap-2 text-[#378056] font-bold text-sm px-4">
+                       <div className="flex items-center gap-2 text-emerald-600 font-medium text-sm px-4">
                          <CheckCircle size={16} /> {saveStatus}
                        </div>
                     ) : (
                       <>
-                        <button 
+                        <button
                           onClick={handleSaveDraft}
-                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm text-[#005595] bg-white border border-blue-200 hover:bg-blue-50 transition-all"
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all"
                         >
                           <Save size={16} /> Spara
                         </button>
-                        <button 
+                        <button
                           onClick={handleAnalyzeDraft}
-                          className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all whitespace-nowrap ${
-                            !editorRef.current?.innerText.trim() 
-                             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                             : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-md hover:scale-105' 
+                          className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
+                            !editorRef.current?.innerText.trim()
+                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                             : 'bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:shadow-md'
                           }`}
                         >
                           <Sparkles size={16} /> Analysera & Koda
@@ -304,37 +326,38 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
           )}
           
           {/* Kontext */}
-          <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
-             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 border-b border-gray-200 pb-2">Kontext (Miljö & Bakgrund)</h3>
-             <p className="text-[#1F1F1F] leading-relaxed text-sm">{currentData.Kontext}</p>
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Kontext</h3>
+             <p className="text-gray-700 leading-relaxed text-sm">{currentData.Kontext}</p>
           </div>
 
           {/* Funktion */}
-          <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
-             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 border-b border-gray-200 pb-2">Funktion (Förmåga)</h3>
-             <p className="text-[#1F1F1F] leading-relaxed text-sm">{currentData.Funktion}</p>
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Funktion</h3>
+             <p className="text-gray-700 leading-relaxed text-sm">{currentData.Funktion}</p>
           </div>
 
            {/* Delaktighet */}
-           <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
-             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 border-b border-gray-200 pb-2">Delaktighet</h3>
-             <p className="text-[#1F1F1F] leading-relaxed text-sm">{currentData.Delaktighet}</p>
+           <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Delaktighet</h3>
+             <p className="text-gray-700 leading-relaxed text-sm">{currentData.Delaktighet}</p>
           </div>
 
            {/* Insats */}
-           <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
-             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 border-b border-gray-200 pb-2">Insatser & Åtgärder</h3>
-             <p className="text-[#1F1F1F] leading-relaxed text-sm">{currentData.Insats}</p>
+           <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Insatser & Åtgärder</h3>
+             <p className="text-gray-700 leading-relaxed text-sm">{currentData.Insats}</p>
           </div>
 
         </div>
 
-        <div className="p-4 bg-gray-50 border-t border-gray-200 text-center text-xs text-gray-400">
+        <div className="p-3 bg-gray-50 border-t border-gray-100 text-center text-xs text-gray-400">
            Data hämtad via federation (SDK)
         </div>
 
       </div>
 
+      </div>
     </div>
   );
 };
