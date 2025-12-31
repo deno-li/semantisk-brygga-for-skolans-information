@@ -156,39 +156,39 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-[105px] z-40 hidden md:block">
+      <nav className="bg-white border-b border-gray-100 sticky top-[105px] z-40 hidden md:block">
         <div className="max-w-7xl mx-auto px-4 relative">
           {/* Scroll buttons */}
           {canScrollLeft && (
             <button
               onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-white shadow-lg rounded-full border border-gray-200 hover:bg-gray-50 transition-all"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-white/90 backdrop-blur-sm shadow-md rounded-full border border-gray-100 hover:bg-gray-50 transition-all"
               aria-label="Scrolla vänster"
             >
-              <ChevronLeft size={18} className="text-gray-600" />
+              <ChevronLeft size={16} className="text-gray-500" />
             </button>
           )}
           {canScrollRight && (
             <button
               onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-white shadow-lg rounded-full border border-gray-200 hover:bg-gray-50 transition-all"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-white/90 backdrop-blur-sm shadow-md rounded-full border border-gray-100 hover:bg-gray-50 transition-all"
               aria-label="Scrolla höger"
             >
-              <ChevronRight size={18} className="text-gray-600" />
+              <ChevronRight size={16} className="text-gray-500" />
             </button>
           )}
 
           <div
             ref={scrollRef}
             onScroll={checkScroll}
-            className="flex items-center gap-1 py-2 overflow-x-auto scrollbar-hide"
+            className="flex items-center gap-1.5 py-3 overflow-x-auto scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {TAB_GROUPS.filter(g => groupedTabs[g.id]).map((group, groupIndex) => (
               <React.Fragment key={group.id}>
-                {/* Group separator */}
+                {/* Group separator - subtle dot */}
                 {groupIndex > 0 && (
-                  <div className="h-6 w-px bg-gray-200 mx-1 flex-shrink-0" />
+                  <div className="w-1 h-1 rounded-full bg-gray-200 mx-2 flex-shrink-0" />
                 )}
 
                 {/* Group tabs */}
@@ -202,11 +202,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
                         key={tab.id}
                         onClick={() => onViewChange(tab.id)}
                         className={`
-                          group relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium
+                          group relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium
                           whitespace-nowrap transition-all duration-200
                           ${isActive
-                            ? `${colors.active} ring-1 shadow-sm`
-                            : `text-gray-600 ${colors.hover}`
+                            ? `${colors.active} shadow-sm`
+                            : `text-gray-500 hover:text-gray-700 hover:bg-gray-50`
                           }
                         `}
                       >
@@ -215,7 +215,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
                         </span>
                         <span>{tab.label}</span>
                         {tab.badge && (
-                          <span className="text-[10px] -mt-2 -mr-1">{tab.badge}</span>
+                          <span className="text-[9px] px-1.5 py-0.5 bg-white/80 rounded-full -mt-1 -mr-0.5 shadow-sm">{tab.badge}</span>
                         )}
                       </button>
                     );
@@ -228,57 +228,54 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-[105px] z-40 md:hidden">
-        <div className="px-4 py-2.5 flex items-center justify-between">
+      <nav className="bg-white border-b border-gray-100 sticky top-[105px] z-40 md:hidden">
+        <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Current view indicator */}
             {(() => {
               const currentTab = visibleTabs.find(t => t.id === currentView);
               const colors = currentTab ? getTabColorClasses(currentTab, true) : { active: 'bg-gray-100' };
               return (
-                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${colors.active}`}>
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${colors.active}`}>
                   {currentTab?.icon}
-                  <span className="font-semibold text-sm">{currentTab?.label}</span>
+                  <span className="font-medium text-sm">{currentTab?.label}</span>
                 </div>
               );
             })()}
           </div>
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className={`p-2 rounded-xl transition-all ${
+            className={`p-2.5 rounded-xl transition-all duration-200 ${
               showMobileMenu
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-gray-900 text-white shadow-lg'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
             }`}
             aria-label="Öppna meny"
           >
-            {showMobileMenu ? <X size={22} /> : <Menu size={22} />}
+            {showMobileMenu ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
         {/* Mobile dropdown menu */}
         {showMobileMenu && (
-          <div className="absolute left-0 right-0 bg-white border-b border-gray-200 shadow-xl max-h-[70vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200">
-            <div className="p-3 space-y-3">
+          <div className="absolute left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-lg max-h-[70vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200">
+            <div className="p-4 space-y-4">
               {TAB_GROUPS.filter(g => groupedTabs[g.id]).map((group) => (
-                <div key={group.id} className="space-y-1">
+                <div key={group.id} className="space-y-2">
                   {/* Group header */}
                   <button
                     onClick={() => setExpandedGroup(expandedGroup === group.id ? null : group.id)}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${group.gradient}`} />
-                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${group.gradient}`} />
+                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                         {group.label}
-                      </span>
-                      <span className="text-xs text-gray-400">
-                        ({groupedTabs[group.id]?.length})
                       </span>
                     </div>
                     <ChevronDown
-                      size={16}
-                      className={`text-gray-400 transition-transform ${
+                      size={14}
+                      className={`text-gray-400 transition-transform duration-200 ${
                         expandedGroup === group.id || activeGroup === group.id ? 'rotate-180' : ''
                       }`}
                     />
@@ -286,7 +283,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
 
                   {/* Group items - expanded by default if active group */}
                   {(expandedGroup === group.id || activeGroup === group.id || expandedGroup === null) && (
-                    <div className="grid grid-cols-2 gap-1.5 pl-2">
+                    <div className="grid grid-cols-2 gap-2">
                       {groupedTabs[group.id]?.map((tab) => {
                         const isActive = currentView === tab.id;
                         const colors = getTabColorClasses(tab, isActive);
@@ -302,15 +299,15 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
                               flex items-center gap-2 px-3 py-2.5 rounded-xl text-left
                               transition-all duration-200
                               ${isActive
-                                ? `${colors.active} ring-1 shadow-sm`
-                                : `text-gray-700 hover:bg-gray-100`
+                                ? `${colors.active} shadow-sm`
+                                : `text-gray-600 hover:bg-gray-50`
                               }
                             `}
                           >
-                            <span className={isActive ? 'scale-110' : ''}>{tab.icon}</span>
+                            <span className={`transition-transform ${isActive ? 'scale-110' : ''}`}>{tab.icon}</span>
                             <span className="font-medium text-sm truncate">{tab.label}</span>
                             {tab.badge && (
-                              <span className="text-[10px] ml-auto">{tab.badge}</span>
+                              <span className="text-[9px] ml-auto opacity-60">{tab.badge}</span>
                             )}
                           </button>
                         );
