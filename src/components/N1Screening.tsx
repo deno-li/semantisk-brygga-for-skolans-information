@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { Activity, TrendingUp, CheckCircle2, AlertTriangle, AlertCircle, Info, User, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Activity, TrendingUp, CheckCircle2, AlertTriangle, AlertCircle, Info, User, ArrowRight, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import { ICFQualifierValue } from '../types/icf-types';
 import { WelfareWheelSpoke } from '../types/types';
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
@@ -795,19 +795,46 @@ const N1Screening: React.FC<N1ScreeningProps> = ({ selectedProfileId }) => {
 
       {/* Overall Summary */}
       <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h4 className="font-semibold text-gray-900 mb-4">Sammanfattning</h4>
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4 text-gray-600" />
+          <h4 className="font-semibold text-gray-900">Sammanfattning</h4>
+        </div>
         <div className="grid grid-cols-3 gap-4 mb-5">
-          <div className="text-center p-4 bg-emerald-50 rounded-xl">
-            <p className="text-xs text-emerald-600 font-medium mb-1">Gröna (0-1)</p>
-            <p className="text-2xl font-bold text-emerald-600">{greenCount}</p>
+          <div className="p-4 bg-emerald-50 rounded-xl">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-emerald-600 font-medium">Gröna (0-1)</p>
+              <p className="text-2xl font-bold text-emerald-600">{greenCount}</p>
+            </div>
+            <div className="h-1.5 bg-emerald-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                style={{ width: `${(greenCount / screeningData.length) * 100}%` }}
+              />
+            </div>
           </div>
-          <div className="text-center p-4 bg-amber-50 rounded-xl">
-            <p className="text-xs text-amber-600 font-medium mb-1">Gula (2)</p>
-            <p className="text-2xl font-bold text-amber-600">{yellowCount}</p>
+          <div className="p-4 bg-amber-50 rounded-xl">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-amber-600 font-medium">Gula (2)</p>
+              <p className="text-2xl font-bold text-amber-600">{yellowCount}</p>
+            </div>
+            <div className="h-1.5 bg-amber-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                style={{ width: `${(yellowCount / screeningData.length) * 100}%` }}
+              />
+            </div>
           </div>
-          <div className="text-center p-4 bg-red-50 rounded-xl">
-            <p className="text-xs text-red-600 font-medium mb-1">Röda (3-4)</p>
-            <p className="text-2xl font-bold text-red-600">{redCount}</p>
+          <div className="p-4 bg-red-50 rounded-xl">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs text-red-600 font-medium">Röda (3-4)</p>
+              <p className="text-2xl font-bold text-red-600">{redCount}</p>
+            </div>
+            <div className="h-1.5 bg-red-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-red-500 rounded-full transition-all duration-500"
+                style={{ width: `${(redCount / screeningData.length) * 100}%` }}
+              />
+            </div>
           </div>
         </div>
 
