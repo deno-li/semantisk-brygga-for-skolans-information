@@ -166,10 +166,11 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <Navigation 
-        currentView={currentView} 
-        onViewChange={setCurrentView} 
+      <Navigation
+        currentView={currentView}
+        onViewChange={setCurrentView}
         currentPerspective={currentPerspective}
+        selectedProfileId={selectedProfileId}
       />
 
       <main className="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
