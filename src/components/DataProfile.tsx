@@ -362,12 +362,12 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
                     {index + 1}
                   </span>
                   <div>
-                    <span className="text-sm text-red-900 font-medium">{factor.factor}</span>
+                    <span className="text-sm text-red-900 font-medium">{factor.name}</span>
                     <span className="text-xs text-red-600 ml-2 px-2 py-0.5 bg-red-100 rounded-full">
-                      {factor.severity === 'high' ? 'Hög' : factor.severity === 'medium' ? 'Medel' : 'Låg'}
+                      {factor.severity === 'high' ? 'Hög' : factor.severity === 'medium' ? 'Medel' : factor.severity === 'critical' ? 'Kritisk' : 'Låg'}
                     </span>
-                    {factor.notes && (
-                      <p className="text-xs text-red-700 mt-1">{factor.notes}</p>
+                    {factor.description && (
+                      <p className="text-xs text-red-700 mt-1">{factor.description}</p>
                     )}
                   </div>
                 </li>
@@ -391,12 +391,12 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
                     {index + 1}
                   </span>
                   <div>
-                    <span className="text-sm text-green-900 font-medium">{factor.factor}</span>
+                    <span className="text-sm text-green-900 font-medium">{factor.name}</span>
                     <span className="text-xs text-green-600 ml-2 px-2 py-0.5 bg-green-100 rounded-full">
                       {factor.strength === 'strong' ? 'Stark' : factor.strength === 'moderate' ? 'Måttlig' : 'Svag'}
                     </span>
-                    {factor.notes && (
-                      <p className="text-xs text-green-700 mt-1">{factor.notes}</p>
+                    {factor.description && (
+                      <p className="text-xs text-green-700 mt-1">{factor.description}</p>
                     )}
                   </div>
                 </li>
