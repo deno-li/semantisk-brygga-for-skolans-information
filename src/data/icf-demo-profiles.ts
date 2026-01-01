@@ -616,25 +616,389 @@ export const ELSA_COMPLETE_PROFILE = {
 };
 
 // ==========================================
-// Ytterligare demo-profiler (använd befintliga)
+// ERIK A., 15 år - Universell nivå (N1)
 // ==========================================
 
-// Erik A., 15 år - Universell nivå (Placeholder för N1 demo)
+/**
+ * Erik A., 15 år - Universell nivå
+ * Inga identifierade svårigheter. Fungerar väl i skolan och hemma.
+ * Används för att demonstrera ett barn som inte behöver eskalering.
+ */
+
+export const ERIK_ICF_ASSESSMENTS: ICFAssessment[] = [
+  {
+    code: 'd820',
+    domain: 'Skolutbildning',
+    capacity: { value: 0, description: 'Inga svårigheter' },
+    performance: { value: 0, description: 'Inga svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Erik deltar aktivt i undervisningen och har god närvaro (>95%).'
+  },
+  {
+    code: 'd140',
+    domain: 'Lära sig läsa',
+    capacity: { value: 0, description: 'Inga svårigheter' },
+    performance: { value: 0, description: 'Inga svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'assessment',
+    notes: 'Läser på åldersadekvat nivå, god läsförståelse.'
+  },
+  {
+    code: 'd240',
+    domain: 'Hantera stress',
+    capacity: { value: 1, description: 'Lätta svårigheter' },
+    performance: { value: 0, description: 'Inga svårigheter' },
+    gap: -1,
+    gapInterpretation: 'facilitators-work',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Hanterar stress väl med stöd av idrottsaktiviteter och god social krets.'
+  },
+  {
+    code: 'd710',
+    domain: 'Grundläggande mellanmänskliga interaktioner',
+    capacity: { value: 0, description: 'Inga svårigheter' },
+    performance: { value: 0, description: 'Inga svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'God social förmåga, många kamrater.'
+  }
+];
+
+export const ERIK_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
+  {
+    code: 'e310',
+    domain: 'Närmaste familjen',
+    type: 'facilitator',
+    level: 3,
+    description: 'Stabil familjesituation med engagerade föräldrar',
+    relatedSpokes: ['trygg', 'omvardad'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'home',
+    status: 'active'
+  },
+  {
+    code: 'e325',
+    domain: 'Kamrater och bekanta',
+    type: 'facilitator',
+    level: 2,
+    description: 'Stark kamratgrupp, deltar i fotbollslag',
+    relatedSpokes: ['respekterad', 'delaktig'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'school',
+    status: 'active'
+  },
+  {
+    code: 'e585',
+    domain: 'Utbildningstjänster',
+    type: 'facilitator',
+    level: 1,
+    description: 'Tillgång till studiehandledning vid behov',
+    relatedSpokes: ['ansvarstagande'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'school',
+    status: 'active'
+  }
+];
+
+export const ERIK_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
+  barriers: [],
+  facilitators: ERIK_ENVIRONMENTAL_FACTORS,
+  riskScore: 0,
+  protectionScore: 6,  // 3+2+1
+  balance: 6,
+  interpretation: 'protection-dominates',
+  spokeBalances: [
+    { spoke: 'trygg', riskScore: 0, protectionScore: 3, balance: 3 },
+    { spoke: 'omvardad', riskScore: 0, protectionScore: 3, balance: 3 },
+    { spoke: 'respekterad', riskScore: 0, protectionScore: 2, balance: 2 },
+    { spoke: 'ansvarstagande', riskScore: 0, protectionScore: 1, balance: 1 }
+  ]
+};
+
+export const ERIK_GAP_TREND_SCHOOL: GapTrend = {
+  icfCode: 'd820',
+  domain: 'Skolutbildning',
+  dataPoints: [
+    {
+      date: '2024-09-01',
+      capacity: 0,
+      performance: 0,
+      gap: 0,
+      activeInterventions: [],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-01-15',
+      capacity: 0,
+      performance: 0,
+      gap: 0,
+      activeInterventions: [],
+      assessedBy: 'elementary-school'
+    }
+  ],
+  trend: 'stable',
+  startDate: '2024-09-01',
+  endDate: '2025-01-15',
+  interpretation: 'Erik visar stabilt god funktion utan behov av särskilda anpassningar.'
+};
+
 export const ERIK_PROFILE = {
   name: 'Erik A.',
   age: 15,
   grade: 'Åk 9',
+  schoolYear: '2024/2025',
   level: 'N1' as const,
-  // N1 screening-data implementeras i N1Screening-komponenten
+
+  icfAssessments: ERIK_ICF_ASSESSMENTS,
+  environmentalFactors: ERIK_ENVIRONMENTAL_FACTORS,
+  riskProtectionBalance: ERIK_RISK_PROTECTION_BALANCE,
+
+  gapTrends: {
+    school: ERIK_GAP_TREND_SCHOOL
+  },
+
+  summary: {
+    primaryConcerns: [],
+    strengths: ['Stabil familjesituation', 'God social förmåga', 'Akademiskt stark'],
+    interventionsWorking: true,
+    nextSteps: [
+      'Fortsätt ordinarie uppföljning',
+      'Nästa N1 screening om 12 månader'
+    ]
+  },
+
+  childsVoice: {
+    goals: 'Jag vill komma in på det gymnasieprogram jag vill gå. Jag gillar matte och NO.',
+    howFeeling: 'Det går bra i skolan. Jag har bra kompisar och vi spelar fotboll tillsammans.',
+    whatHelps: 'Mina föräldrar hjälper mig om jag behöver det, men jag klarar det mesta själv.'
+  }
 };
 
-// Omar H., 11 år - Tidig uppmärksamhet (Placeholder)
+// ==========================================
+// OMAR H., 11 år - Tidig uppmärksamhet (N1)
+// ==========================================
+
+/**
+ * Omar H., 11 år - N1 med tidig uppmärksamhet
+ * Nyligen anländ till Sverige, språksvårigheter påverkar skolarbete.
+ * Visar gula indikatorer men ingen eskalering ännu.
+ */
+
+export const OMAR_ICF_ASSESSMENTS: ICFAssessment[] = [
+  {
+    code: 'd140',
+    domain: 'Lära sig läsa',
+    capacity: { value: 1, description: 'Lätta svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: 1,
+    gapInterpretation: 'barriers-exist',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'assessment',
+    notes: 'Språkbarriär påverkar läsning på svenska. Läser bra på arabiska. Behöver mer svenskträning.'
+  },
+  {
+    code: 'd820',
+    domain: 'Skolutbildning',
+    capacity: { value: 1, description: 'Lätta svårigheter' },
+    performance: { value: 1, description: 'Lätta svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'God närvaro, motiverad elev. Deltar aktivt trots språkutmaningar.'
+  },
+  {
+    code: 'd240',
+    domain: 'Hantera stress',
+    capacity: { value: 2, description: 'Måttliga svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Viss oro vid muntliga presentationer och situationer med höga språkliga krav.'
+  },
+  {
+    code: 'd710',
+    domain: 'Grundläggande mellanmänskliga interaktioner',
+    capacity: { value: 1, description: 'Lätta svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: 1,
+    gapInterpretation: 'barriers-exist',
+    assessedDate: '2025-01-15',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Språkbarriär påverkar sociala interaktioner. Har hittat några nära kamrater.'
+  }
+];
+
+export const OMAR_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
+  {
+    code: 'e310',
+    domain: 'Närmaste familjen',
+    type: 'facilitator',
+    level: 2,
+    description: 'Engagerad familj som stöttar med läxor och integration',
+    relatedSpokes: ['trygg', 'omvardad'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'home',
+    status: 'active'
+  },
+  {
+    code: 'e1301',
+    domain: 'Läromedel för utbildning',
+    type: 'facilitator',
+    level: 1,
+    description: 'Studiehandledning på modersmål 2h/vecka',
+    relatedSpokes: ['ansvarstagande'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'school',
+    status: 'active'
+  },
+  {
+    code: 'e355',
+    domain: 'Hälso- och sjukvårdspersonal',
+    type: 'facilitator',
+    level: 1,
+    description: 'Skolsköterska tillgänglig vid behov',
+    relatedSpokes: ['halsa'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'school',
+    status: 'active'
+  },
+  {
+    code: 'e140',
+    domain: 'Produkter och teknik för kultur',
+    type: 'barrier',
+    level: 1,
+    description: 'Begränsad tillgång till böcker och media på svenska hemma',
+    relatedSpokes: ['ansvarstagande'],
+    identifiedDate: '2025-01-15',
+    identifiedBy: 'elementary-school',
+    context: 'home',
+    status: 'monitoring'
+  }
+];
+
+export const OMAR_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
+  barriers: OMAR_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'barrier'),
+  facilitators: OMAR_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'facilitator'),
+  riskScore: 1,
+  protectionScore: 4,  // 2+1+1
+  balance: 3,
+  interpretation: 'protection-dominates',
+  spokeBalances: [
+    { spoke: 'trygg', riskScore: 0, protectionScore: 2, balance: 2 },
+    { spoke: 'omvardad', riskScore: 0, protectionScore: 2, balance: 2 },
+    { spoke: 'ansvarstagande', riskScore: 1, protectionScore: 1, balance: 0 },
+    { spoke: 'halsa', riskScore: 0, protectionScore: 1, balance: 1 }
+  ]
+};
+
+export const OMAR_GAP_TREND_READING: GapTrend = {
+  icfCode: 'd140',
+  domain: 'Lära sig läsa',
+  dataPoints: [
+    {
+      date: '2024-09-01',
+      capacity: 2,
+      performance: 3,
+      gap: 1,
+      activeInterventions: [],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2024-12-01',
+      capacity: 1,
+      performance: 2,
+      gap: 1,
+      activeInterventions: ['Studiehandledning på modersmål'],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-01-15',
+      capacity: 1,
+      performance: 2,
+      gap: 1,
+      activeInterventions: ['Studiehandledning på modersmål', 'Extra svenskträning'],
+      assessedBy: 'elementary-school'
+    }
+  ],
+  trend: 'improving',
+  startDate: '2024-09-01',
+  endDate: '2025-01-15',
+  interpretation: 'Omars läsförmåga förbättras stadigt. Capacity har gått från 2 till 1. Gap kvarstår men minskar gradvis med stöd.'
+};
+
 export const OMAR_PROFILE = {
   name: 'Omar H.',
   age: 11,
   grade: 'Åk 5',
+  schoolYear: '2024/2025',
   level: 'N1' as const,
-  // TODO: Implementera om behövs
+
+  icfAssessments: OMAR_ICF_ASSESSMENTS,
+  environmentalFactors: OMAR_ENVIRONMENTAL_FACTORS,
+  riskProtectionBalance: OMAR_RISK_PROTECTION_BALANCE,
+
+  gapTrends: {
+    reading: OMAR_GAP_TREND_READING
+  },
+
+  summary: {
+    primaryConcerns: ['Språkinlärning', 'Social integration'],
+    strengths: ['Motiverad', 'Engagerad familj', 'God kapacitet'],
+    interventionsWorking: true,
+    nextSteps: [
+      'Fortsätt studiehandledning på modersmål',
+      'Utöka svenskträning',
+      'Uppföljning om 3 månader',
+      'Överväg N2 om ej förbättring'
+    ]
+  },
+
+  childsVoice: {
+    goals: 'Jag vill lära mig svenska bättre så jag kan prata med alla kompisar. Och jag vill spela fotboll i ett lag.',
+    howFeeling: 'Det är svårt ibland när jag inte förstår allt, men min lärare hjälper mig. Jag har några bra kompisar nu.',
+    whatHelps: 'När läraren förklarar på arabiska förstår jag bättre. Mina föräldrar hjälper mig med läxor hemma.'
+  }
 };
 
 // Sofia B., 16 år - Samordningsnivå (N3)

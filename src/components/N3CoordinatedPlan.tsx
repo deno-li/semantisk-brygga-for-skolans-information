@@ -47,21 +47,123 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
     return Object.values(profile.gapTrends) as GapTrend[];
   }, [profile]);
 
-  // Only show full N3 for profiles with N3 level and complete data
-  if (!profile || profile.level !== 'N3' || !profile.icfAssessments) {
+  // Get level-specific gradient
+  const getLevelGradient = (level: string) => {
+    switch (level) {
+      case 'N1': return 'from-emerald-500 via-emerald-600 to-emerald-700';
+      case 'N2': return 'from-amber-500 via-orange-500 to-orange-600';
+      case 'N3': return 'from-rose-500 via-red-500 to-red-600';
+      default: return 'from-rose-500 to-red-600';
+    }
+  };
+
+  // If profile doesn't have ICF data, show placeholder
+  if (!profile || !profile.icfAssessments) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-red-50 border border-red-300 rounded-lg p-8 text-center">
-          <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-red-900 mb-2">N3 Samordnad plan</h2>
-          <p className="text-red-800">
-            N3 Samordnad plan är för närvarande endast implementerad för <strong>Sofia B.</strong>
+      <div className="max-w-5xl mx-auto space-y-6">
+        <div className="text-center py-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white text-2xl mb-4 shadow-lg">
+            <Users className="w-8 h-8" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
+          <p className="text-gray-600">Tvärsektoriell koordinering • SIP • Team-baserad planering</p>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
+          <div className="w-16 h-16 rounded-2xl bg-rose-100 flex items-center justify-center mx-auto mb-4">
+            <Info className="w-8 h-8 text-rose-600" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">ICF-data inte tillgänglig</h2>
+          <p className="text-gray-600 mb-4">
+            N3 Samordnad plan kräver ICF-bedömningar för att visa koordineringsdata.
           </p>
-          <p className="text-sm text-red-700 mt-2">
-            Välj Sofia B. från profil-menyn för att se N3 samordnad plan med tvärsektoriell koordinering.
+          <p className="text-sm text-gray-500">
+            Alla profiler med ICF-data kan visas här.
           </p>
-          <p className="text-xs text-red-600 mt-4">
-            N3 är för barn som behöver samordnade insatser över huvudmannagränser (SIP).
+        </div>
+      </div>
+    );
+  }
+
+  // Check if profile has full N3 coordination data
+  const hasCoordinationData = profile.level === 'N3' && profile.coordinationTeam && profile.coordinatedGoals;
+
+  // For non-N3 profiles, show simplified view with ICF data
+  if (!hasCoordinationData) {
+    return (
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center py-6">
+          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${getLevelGradient(profile.level)} text-white text-2xl mb-4 shadow-lg`}>
+            <Users className="w-8 h-8" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
+          <p className="text-gray-600">
+            {profile.level === 'N1' ? 'Universell nivå' : profile.level === 'N2' ? 'Stödprofil' : 'Samordnad nivå'} • ICF-översikt
+          </p>
+        </div>
+
+        {/* Info about N3 */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <Info className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Om N3 Samordnad plan</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                <strong>{profile.name}</strong> är för närvarande på nivå <strong>{profile.level}</strong>.
+                {profile.level === 'N1' && ' Inga behov av samordnade insatser identifierade.'}
+                {profile.level === 'N2' && ' Vid behov kan N3 aktiveras för tvärsektoriell samordning.'}
+              </p>
+              <div className="p-3 bg-gray-50 rounded-xl text-xs text-gray-600">
+                <p><strong>N3 aktiveras när:</strong></p>
+                <ul className="list-disc ml-4 mt-1 space-y-1">
+                  <li>Barnet behöver insatser från flera huvudmän (skola, socialtjänst, vård)</li>
+                  <li>En samordnad individuell plan (SIP) behövs</li>
+                  <li>Komplexa behov kräver koordinerat team</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${getLevelGradient(profile.level)}`}>
+              <User className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
+              <p className="text-sm text-gray-500">{profile.age} år • {profile.grade} • Nivå {profile.level}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ICF Data */}
+        <ICFGapAnalysis assessments={profile.icfAssessments} />
+
+        {/* Risk Protection */}
+        {profile.riskProtectionBalance && (
+          <RiskProtectionBalance
+            balance={profile.riskProtectionBalance}
+            environmentalFactors={profile.environmentalFactors}
+          />
+        )}
+
+        {/* Gap Trend if available */}
+        {profileGapTrends.length > 0 && (
+          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+            <h3 className="font-semibold text-gray-900 mb-4">Longitudinell trend</h3>
+            <GapTrendChart trends={profileGapTrends} />
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="text-center py-4">
+          <p className="text-xs text-gray-400">
+            N3 Samordnad Plan • WHO ICF-integration
           </p>
         </div>
       </div>

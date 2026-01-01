@@ -27,18 +27,38 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
     return Object.values(profile.gapTrends) as GapTrend[];
   }, [profile]);
 
-  // If profile doesn't have N2 ICF data yet, show placeholder
-  if (!profile || !profile.icfAssessments || profile.level !== 'N2') {
+  // Get level-specific gradient
+  const getLevelGradient = (level: string) => {
+    switch (level) {
+      case 'N1': return 'from-emerald-500 via-emerald-600 to-emerald-700';
+      case 'N2': return 'from-amber-500 via-orange-500 to-orange-600';
+      case 'N3': return 'from-rose-500 via-red-500 to-red-600';
+      default: return 'from-amber-500 to-orange-600';
+    }
+  };
+
+  // If profile doesn't have ICF data, show placeholder
+  if (!profile || !profile.icfAssessments) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-8 text-center">
-          <Info className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-yellow-900 mb-2">N2 Fördjupad analys inte tillgänglig</h2>
-          <p className="text-yellow-800">
-            N2 Fördjupad analys är för närvarande implementerad för <strong>Lisa J.</strong> och <strong>Elsa Bergström</strong>.
+      <div className="max-w-5xl mx-auto space-y-6">
+        <div className="text-center py-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white text-2xl mb-4 shadow-lg">
+            <Activity className="w-8 h-8" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">N2 Fördjupad analys</h1>
+          <p className="text-gray-600">Riktad nivå • Performance vs Capacity • Gap-analys</p>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
+          <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Info className="w-8 h-8 text-amber-600" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">ICF-data inte tillgänglig</h2>
+          <p className="text-gray-600 mb-4">
+            N2 Fördjupad analys kräver ICF-bedömningar med Performance vs Capacity.
           </p>
-          <p className="text-sm text-yellow-700 mt-2">
-            Välj Lisa eller Elsa från profil-menyn för att se N2-nivå med Performance vs Capacity gap-analys.
+          <p className="text-sm text-gray-500">
+            Alla profiler med ICF-data kan visas här.
           </p>
         </div>
       </div>
@@ -51,11 +71,13 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center py-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white text-2xl mb-4 shadow-lg">
+        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${getLevelGradient(profile.level)} text-white text-2xl mb-4 shadow-lg`}>
           <Activity className="w-8 h-8" />
         </div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">N2 Fördjupad analys</h1>
-        <p className="text-gray-600">Riktad nivå • Performance vs Capacity • Gap-analys</p>
+        <p className="text-gray-600">
+          {profile.level === 'N1' ? 'Tidig uppmärksamhet' : profile.level === 'N3' ? 'Samordnad nivå' : 'Riktad nivå'} • Performance vs Capacity • Gap-analys
+        </p>
       </div>
 
       {/* Info Box */}

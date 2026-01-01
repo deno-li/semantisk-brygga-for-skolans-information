@@ -75,17 +75,17 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
 
     switch (tabId) {
       case 'icf-demo':
-        // Show checkmark if profile has ICF assessments
+        // Show checkmark if profile has ICF assessments (all profiles now have)
         return hasIcfData ? '✓' : undefined;
       case 'icf-n1':
         // All profiles have N1 screening data
         return '✓';
       case 'icf-n2':
-        // Show checkmark only for N2 profiles with ICF data
-        return (profileLevel === 'N2' && hasIcfData) ? '✓' : undefined;
+        // Show checkmark for all profiles with ICF data (N2 view now supports all)
+        return hasIcfData ? '✓' : undefined;
       case 'icf-n3':
-        // Show checkmark only for N3 profiles with ICF data
-        return (profileLevel === 'N3' && hasIcfData) ? '✓' : undefined;
+        // Show checkmark for all profiles with ICF data (N3 view now supports all)
+        return hasIcfData ? '✓' : undefined;
       default:
         return undefined;
     }
