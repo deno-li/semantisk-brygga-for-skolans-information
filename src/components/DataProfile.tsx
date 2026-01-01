@@ -4,6 +4,8 @@ import { X, BookOpen, ExternalLink, Info, Database, Layers, FileText, Settings, 
 import { useProfileData } from '../hooks/useProfileData';
 import BBICTriangle from './BBICTriangle';
 import IBICWheel from './IBICWheel';
+import SemanticBridgeVisualization from './SemanticBridgeVisualization';
+import ShanarriTimeline from './ShanarriTimeline';
 
 interface CodeStandardInfo {
   type: 'classification' | 'framework'; // New field to distinguish type
@@ -79,7 +81,7 @@ interface DataProfileProps {
 
 const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' }) => {
   const [selectedCode, setSelectedCode] = useState<{ type: string; code: string } | null>(null);
-  const { shanarriData, childProfile } = useProfileData(selectedProfileId);
+  const { shanarriData, childProfile, riskFactors, protectiveFactors } = useProfileData(selectedProfileId);
 
   const handleCloseModal = () => setSelectedCode(null);
 
@@ -325,11 +327,90 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
         </div>
       </div>
 
+      {/* Interactive Semantic Bridge Visualization */}
+      <SemanticBridgeVisualization shanarriData={shanarriData} selectedProfileId={selectedProfileId} />
+
       {/* BBIC Triangle Visualization */}
       <BBICTriangle selectedProfileId={selectedProfileId} />
 
       {/* IBIC Wheel Visualization */}
       <IBICWheel selectedProfileId={selectedProfileId} />
+
+      {/* Risk and Protective Factors */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+            <Settings className="w-5 h-5 text-amber-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900">Risk- och skyddsfaktorer</h3>
+            <p className="text-sm text-gray-500">Faktorer som påverkar barnets välbefinnande</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Risk Factors */}
+          <div className="bg-red-50 rounded-xl p-4 border border-red-100">
+            <h4 className="font-semibold text-red-800 mb-3 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-red-200 flex items-center justify-center text-xs">⚠️</span>
+              Riskfaktorer ({riskFactors.length})
+            </h4>
+            <ul className="space-y-2">
+              {riskFactors.map((factor, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-red-200 text-red-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <span className="text-sm text-red-900 font-medium">{factor.name}</span>
+                    <span className="text-xs text-red-600 ml-2 px-2 py-0.5 bg-red-100 rounded-full">
+                      {factor.severity === 'high' ? 'Hög' : factor.severity === 'medium' ? 'Medel' : factor.severity === 'critical' ? 'Kritisk' : 'Låg'}
+                    </span>
+                    {factor.description && (
+                      <p className="text-xs text-red-700 mt-1">{factor.description}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+              {riskFactors.length === 0 && (
+                <li className="text-sm text-red-600 italic">Inga riskfaktorer identifierade</li>
+              )}
+            </ul>
+          </div>
+
+          {/* Protective Factors */}
+          <div className="bg-green-50 rounded-xl p-4 border border-green-100">
+            <h4 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center text-xs">🛡️</span>
+              Skyddsfaktorer ({protectiveFactors.length})
+            </h4>
+            <ul className="space-y-2">
+              {protectiveFactors.map((factor, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-green-200 text-green-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <span className="text-sm text-green-900 font-medium">{factor.name}</span>
+                    <span className="text-xs text-green-600 ml-2 px-2 py-0.5 bg-green-100 rounded-full">
+                      {factor.strength === 'strong' ? 'Stark' : factor.strength === 'moderate' ? 'Måttlig' : 'Svag'}
+                    </span>
+                    {factor.description && (
+                      <p className="text-xs text-green-700 mt-1">{factor.description}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+              {protectiveFactors.length === 0 && (
+                <li className="text-sm text-green-600 italic">Inga skyddsfaktorer identifierade</li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* SHANARRI Timeline */}
+      <ShanarriTimeline selectedProfileId={selectedProfileId} />
 
       {/* Code Details Modal */}
       {selectedCode && STANDARD_INFO[selectedCode.type] && (

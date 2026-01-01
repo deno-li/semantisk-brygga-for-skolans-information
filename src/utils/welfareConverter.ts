@@ -65,6 +65,18 @@ const SPOKE_SNOMED_MAP: Record<string, string> = {
   delaktig: '86603000 (Social delaktighet)'
 };
 
+// KVÅ (Klassifikation av Vårdåtgärder) mapping for each spoke
+const SPOKE_KVA_MAP: Record<string, string> = {
+  trygg: 'GD001 (Stödsamtal), GB009 (Krisintervention)',
+  halsa: 'AU120 (Hälsobesök EMI), QV001 (Råd om fysisk aktivitet)',
+  utvecklas: 'DU011 (Logopedutredning), QA010 (Pedagogisk kartläggning)',
+  omvardad: 'XS005 (Social utredning), GB001 (Familjerådgivning)',
+  aktiv: 'QV001 (Råd om fys. aktivitet), XV001 (Fritidsaktivitet)',
+  respekterad: 'GD005 (Stödsamtal), GB010 (Psykosocialt stöd)',
+  ansvarstagande: 'GB010 (Psykosocialt stöd), QA001 (Strukturerad observation)',
+  delaktig: 'UX001 (Nätverkskarta), GD001 (Stödsamtal)'
+};
+
 // Default target value for all indicators
 const DEFAULT_TARGET = 4;
 
@@ -153,6 +165,9 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
   // Get SNOMED mapping - prefer data from journey profile, fallback to lookup table
   const snomed = spokeData.snomedCT || SPOKE_SNOMED_MAP[spokeKey];
 
+  // Get KVÅ mapping from lookup table
+  const kva = SPOKE_KVA_MAP[spokeKey] || '-';
+
   // Create the ShanarriIndicator object
   const indicator: ShanarriIndicator = {
     id: spokeId,
@@ -167,7 +182,7 @@ export function convertWelfareWheelToShanarri(spokeData: WelfareWheelSpokeData):
     bbicCategory: bbicCategory,
     bbicArea: bbicArea,
     ibic: ibic,
-    kva: '-', // KVÅ not provided in Journey Profile format
+    kva: kva,
     snomed: snomed,
     source: source,
     notes: notes

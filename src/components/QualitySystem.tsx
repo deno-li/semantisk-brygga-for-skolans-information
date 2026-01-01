@@ -1,9 +1,14 @@
 
 import React, { useState, memo, useMemo } from 'react';
 import { QUALITY_CYCLE, SAFETY_TREND_DATA, QUALITY_INDICATORS } from '../data/constants';
-import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle } from 'lucide-react';
+import { CHILD_PROFILES } from '../data/childProfiles';
+import { CheckCircle2, Clock, ArrowRight, BarChart3, Users, ClipboardCheck, TrendingUp, RefreshCcw, Target, Activity, Award, AlertTriangle, User } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell } from 'recharts';
 import { QualityIndicator } from '../types/types';
+
+interface QualitySystemProps {
+  selectedProfileId?: string;
+}
 
 const getProgressRatio = (indicator: QualityIndicator) => {
   const safeTarget = indicator.target <= 0 ? 0 : indicator.target;
@@ -15,7 +20,8 @@ const getProgressRatio = (indicator: QualityIndicator) => {
 const getGapPercent = (indicator: QualityIndicator) =>
   indicator.target <= 0 ? 0 : Math.max(0, Math.round((1 - getProgressRatio(indicator)) * 100));
 
-const QualitySystem: React.FC = () => {
+const QualitySystem: React.FC<QualitySystemProps> = ({ selectedProfileId = 'erik' }) => {
+  const childProfile = CHILD_PROFILES[selectedProfileId];
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [showMyYear, setShowMyYear] = useState(true);
   const [showSchoolAvg, setShowSchoolAvg] = useState(true);

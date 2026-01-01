@@ -63,8 +63,8 @@ const App: React.FC = () => {
   const renderView = () => {
     switch (currentView) {
       case 'overview': return <Dashboard currentPerspective={currentPerspective} onNavigate={setCurrentView} selectedProfileId={selectedProfileId} />;
-      case 'journal': return <Journal onNavigateToAI={() => setCurrentView('ai-analysis')} />;
-      case 'quality': return <QualitySystem />;
+      case 'journal': return <Journal onNavigateToAI={() => setCurrentView('ai-analysis')} selectedProfileId={selectedProfileId} />;
+      case 'quality': return <QualitySystem selectedProfileId={selectedProfileId} />;
       case 'shanarri':
         return (
           <MergedWelfareWheel
