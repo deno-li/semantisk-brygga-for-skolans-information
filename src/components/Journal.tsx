@@ -1,14 +1,19 @@
 
-import React, { useState, useEffect, useRef, memo } from 'react';
-import { JOURNAL_DATA } from '../data/constants';
+import React, { useState, useEffect, useRef, memo, useMemo } from 'react';
+import { getJournalDataByProfile } from '../data/journalProfileData';
+import { CHILD_PROFILES } from '../data/childProfiles';
 import { BookOpen, Plus, Sparkles, User, GraduationCap, Stethoscope, Building2, Home, X, Edit, Clock, MapPin, CheckCircle, Save, AlertCircle, Bold, Italic, List } from 'lucide-react';
 import { AiSuggestion } from '../types/types';
 
 interface JournalProps {
   onNavigateToAI: () => void;
+  selectedProfileId?: string;
 }
 
-const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
+const Journal: React.FC<JournalProps> = ({ onNavigateToAI, selectedProfileId = 'erik' }) => {
+  // Get profile-specific journal data
+  const journalData = useMemo(() => getJournalDataByProfile(selectedProfileId), [selectedProfileId]);
+  const childProfile = CHILD_PROFILES[selectedProfileId];
   const [selectedDomain, setSelectedDomain] = useState<string>('Skola');
   const [isDrafting, setIsDrafting] = useState(false);
   const [draftText, setDraftText] = useState(''); // Stores HTML content
@@ -125,7 +130,7 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
     'Barn och vårdnadshavare': 'border-l-yellow-500 text-yellow-700 bg-yellow-50'
   };
 
-  const currentData = JOURNAL_DATA[selectedDomain];
+  const currentData = journalData[selectedDomain];
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -138,6 +143,11 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
         <p className="text-gray-600">
           Dokumentation och observationer från olika domäner
         </p>
+        {childProfile && (
+          <p className="text-sm text-gray-500 mt-2">
+            Visar journal för: <span className="font-semibold text-amber-700">{childProfile.name}</span>
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -147,7 +157,7 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI }) => {
         <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
           <div className="font-semibold text-gray-900 mb-3 text-sm">Välj Domän</div>
           <div className="space-y-2">
-            {Object.keys(JOURNAL_DATA).map(domain => (
+            {Object.keys(journalData).map(domain => (
               <button
                 key={domain}
                 onClick={() => setSelectedDomain(domain)}
