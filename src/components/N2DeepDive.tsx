@@ -4,12 +4,13 @@
  * Based on WHO ICF N2 level - for children identified in N1 screening or with known concerns
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Activity, Shield, TrendingUp, Info, User, Target, BarChart3 } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
 import GapTrendChart from './GapTrendChart';
-import { ICF_DEMO_PROFILES, LISA_GAP_TREND_LEARNING } from '../data/icf-demo-profiles';
+import { ICF_DEMO_PROFILES, LISA_GAP_TREND_LEARNING, ELSA_GAP_TREND_READING } from '../data/icf-demo-profiles';
+import { GapTrend } from '../types/icf-types';
 
 interface N2DeepDiveProps {
   selectedProfileId: string;
@@ -19,6 +20,12 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
   const [selectedView, setSelectedView] = useState<'gap' | 'risk' | 'both' | 'trend'>('both');
 
   const profile = ICF_DEMO_PROFILES[selectedProfileId];
+
+  // Get gap trends for the current profile
+  const profileGapTrends = useMemo((): GapTrend[] => {
+    if (!profile || !profile.gapTrends) return [];
+    return Object.values(profile.gapTrends) as GapTrend[];
+  }, [profile]);
 
   // If profile doesn't have N2 ICF data yet, show placeholder
   if (!profile || !profile.icfAssessments || profile.level !== 'N2') {
@@ -209,7 +216,7 @@ const N2DeepDive: React.FC<N2DeepDiveProps> = ({ selectedProfileId }) => {
 
         {selectedView === 'trend' && (
           <GapTrendChart
-            trends={selectedProfileId === 'lisa' ? [LISA_GAP_TREND_LEARNING] : []}
+            trends={profileGapTrends}
             title="Gap-trendanalys över tid"
             showInterventions={true}
           />
