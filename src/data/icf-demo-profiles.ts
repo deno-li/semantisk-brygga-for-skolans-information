@@ -502,6 +502,53 @@ export const ELSA_PROFILE: ICFChildProfile = {
   riskProtectionBalance: 4  // Barriers: 2+1=3, Facilitators: 3+2+2=7, Balance: 7-3=+4
 };
 
+// Longitudinell gap-trend för Elsa (läsning)
+export const ELSA_GAP_TREND_READING: GapTrend = {
+  icfCode: 'd140',
+  domain: 'Lära sig läsa',
+
+  dataPoints: [
+    {
+      date: '2025-03-01',
+      capacity: 3,
+      performance: 3,
+      gap: 0,
+      activeInterventions: [],  // Inga anpassningar än
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-06-01',
+      capacity: 3,
+      performance: 3,
+      gap: 0,
+      activeInterventions: ['Utredning påbörjad'],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-09-01',
+      capacity: 3,
+      performance: 2,
+      gap: -1,
+      activeInterventions: ['Ljudböcker via Legimus', 'Specialpedagog 2h/vecka', 'Bildstöd'],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-11-15',
+      capacity: 3,
+      performance: 2,
+      gap: -1,
+      activeInterventions: ['Ljudböcker', 'Specialpedagog', 'Bildstöd', 'Digitala läromedel'],
+      assessedBy: 'elementary-school'
+    }
+  ],
+
+  trend: 'improving',
+  startDate: '2025-03-01',
+  endDate: '2025-11-15',
+
+  interpretation: 'Anpassningar har KRAFTIG effekt. Elsa har förbättrats från Performance 3 till 2. Capacity är oförändrad (3), vilket är förväntat vid dyslexi. Gap -1 visar att anpassningar fungerar väl.'
+};
+
 // Complete Elsa profile with same structure as LISA_PROFILE for ICFDemo component
 export const ELSA_COMPLETE_PROFILE = {
   name: 'Elsa Bergström',
@@ -540,6 +587,11 @@ export const ELSA_COMPLETE_PROFILE = {
         balance: 2
       }
     ]
+  },
+
+  // Longitudinell data
+  gapTrends: {
+    reading: ELSA_GAP_TREND_READING
   },
 
   // Sammanfattning
@@ -585,13 +637,396 @@ export const OMAR_PROFILE = {
   // TODO: Implementera om behövs
 };
 
-// Sofia B., 16 år - Samordningsnivå (Placeholder för N3)
+// Sofia B., 16 år - Samordningsnivå (N3)
+// Cross-sectoral coordination for children with complex needs
+
+export const SOFIA_ICF_ASSESSMENTS: ICFAssessment[] = [
+  {
+    code: 'd820',
+    domain: 'Skolutbildning',
+    capacity: { value: 2, description: 'Måttliga svårigheter' },
+    performance: { value: 3, description: 'Stora svårigheter' },
+    gap: 1,
+    gapInterpretation: 'barriers-exist',
+    assessedDate: '2025-01-20',
+    assessedBy: 'elementary-school',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Sofia har kapacitet men ångest hindrar närvaro. Gap visar att barriärer (ångest, miljö) är starkare än anpassningar.'
+  },
+  {
+    code: 'd240',
+    domain: 'Hantera stress och psykologiska krav',
+    capacity: { value: 3, description: 'Stora svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: -1,
+    gapInterpretation: 'facilitators-work',
+    assessedDate: '2025-01-20',
+    assessedBy: 'bup',
+    timeSpan: 'Senaste 2 veckorna',
+    context: 'healthcare',
+    source: 'assessment',
+    notes: 'KBT och SSRI har positiv effekt. Sofia hanterar stress bättre med dessa insatser.'
+  },
+  {
+    code: 'd720',
+    domain: 'Komplexa mellanmänskliga interaktioner',
+    capacity: { value: 2, description: 'Måttliga svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: 0,
+    gapInterpretation: 'neutral',
+    assessedDate: '2025-01-20',
+    assessedBy: 'student-health',
+    timeSpan: 'Senaste 4 veckorna',
+    context: 'school',
+    source: 'observation',
+    notes: 'Sociala situationer är utmanande men Sofia arbetar aktivt med detta i terapi.'
+  },
+  {
+    code: 'b152',
+    domain: 'Känslofunktioner',
+    capacity: { value: 3, description: 'Stora svårigheter' },
+    performance: { value: 2, description: 'Måttliga svårigheter' },
+    gap: -1,
+    gapInterpretation: 'facilitators-work',
+    assessedDate: '2025-01-20',
+    assessedBy: 'bup',
+    timeSpan: 'Senaste 2 veckorna',
+    context: 'healthcare',
+    source: 'assessment',
+    notes: 'Ångest och känsloreglering förbättras med behandling.'
+  }
+];
+
+export const SOFIA_ENVIRONMENTAL_FACTORS: EnvironmentalFactor[] = [
+  // FACILITATORS
+  {
+    code: 'e580',
+    domain: 'BUP - KBT och medicinering',
+    type: 'facilitator',
+    level: 2,
+    description: 'KBT varannan vecka + SSRI har tydlig positiv effekt på ångest',
+    relatedSpokes: ['halsa', 'trygg'],
+    identifiedDate: '2024-09-01',
+    identifiedBy: 'bup',
+    context: 'healthcare',
+    status: 'active'
+  },
+  {
+    code: 'e330',
+    domain: 'Kurator - Stödsamtal',
+    type: 'facilitator',
+    level: 2,
+    description: 'Stödsamtal 2ggr/vecka ger trygghet och coping-strategier',
+    relatedSpokes: ['trygg', 'ansvarstagande'],
+    identifiedDate: '2024-09-01',
+    identifiedBy: 'student-health',
+    context: 'school',
+    status: 'active'
+  },
+  {
+    code: 'e355',
+    domain: 'Kontaktperson från socialtjänst',
+    type: 'facilitator',
+    level: 1,
+    description: 'Stöd kring vardagsstruktur och familjesituation',
+    relatedSpokes: ['omvardad', 'trygg'],
+    identifiedDate: '2024-11-01',
+    identifiedBy: 'social-services',
+    context: 'home',
+    status: 'active'
+  },
+  {
+    code: 'e585',
+    domain: 'Anpassad studieplan',
+    type: 'facilitator',
+    level: 1,
+    description: 'Reducerad kursbelastning och flexibla deadlines',
+    relatedSpokes: ['ansvarstagande'],
+    identifiedDate: '2024-09-01',
+    identifiedBy: 'elementary-school',
+    context: 'school',
+    status: 'active'
+  },
+  // BARRIERS
+  {
+    code: 'e310',
+    domain: 'Familjesituation (separation)',
+    type: 'barrier',
+    level: 1,
+    description: 'Växelvis boende och föräldrakonflikt skapar osäkerhet',
+    relatedSpokes: ['omvardad', 'trygg'],
+    identifiedDate: '2022-06-01',
+    identifiedBy: 'social-services',
+    context: 'home',
+    status: 'monitoring'
+  },
+  {
+    code: 'e460',
+    domain: 'Samhälleliga attityder',
+    type: 'barrier',
+    level: 1,
+    description: 'Stigma kring psykisk ohälsa och skolfrånvaro',
+    relatedSpokes: ['delaktig', 'respekterad'],
+    identifiedDate: '2024-03-01',
+    identifiedBy: 'student-health',
+    context: 'school',
+    status: 'monitoring'
+  }
+];
+
+export const SOFIA_RISK_PROTECTION_BALANCE: RiskProtectionBalance = {
+  barriers: SOFIA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'barrier'),
+  facilitators: SOFIA_ENVIRONMENTAL_FACTORS.filter(ef => ef.type === 'facilitator'),
+  riskScore: 2,  // 1+1
+  protectionScore: 6,  // 2+2+1+1
+  balance: 4,  // 6-2
+  interpretation: 'protection-dominates',
+  spokeBalances: [
+    {
+      spoke: 'halsa',
+      riskScore: 0,
+      protectionScore: 2,  // e580(+2)
+      balance: 2
+    },
+    {
+      spoke: 'trygg',
+      riskScore: 1,  // e310(.1)
+      protectionScore: 5,  // e580(+2) + e330(+2) + e355(+1)
+      balance: 4
+    },
+    {
+      spoke: 'ansvarstagande',
+      riskScore: 0,
+      protectionScore: 3,  // e330(+2) + e585(+1)
+      balance: 3
+    },
+    {
+      spoke: 'omvardad',
+      riskScore: 1,  // e310(.1)
+      protectionScore: 1,  // e355(+1)
+      balance: 0
+    }
+  ]
+};
+
+// Gap-trend för Sofia (skolnärvaro)
+export const SOFIA_GAP_TREND_SCHOOL: GapTrend = {
+  icfCode: 'd820',
+  domain: 'Skolutbildning',
+  dataPoints: [
+    {
+      date: '2024-03-01',
+      capacity: 2,
+      performance: 4,
+      gap: 2,
+      activeInterventions: [],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2024-06-01',
+      capacity: 2,
+      performance: 4,
+      gap: 2,
+      activeInterventions: ['KBT påbörjad'],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2024-09-01',
+      capacity: 2,
+      performance: 3,
+      gap: 1,
+      activeInterventions: ['KBT', 'SSRI', 'Stödsamtal', 'Anpassad studieplan'],
+      assessedBy: 'elementary-school'
+    },
+    {
+      date: '2025-01-20',
+      capacity: 2,
+      performance: 3,
+      gap: 1,
+      activeInterventions: ['KBT', 'SSRI', 'Stödsamtal', 'Anpassad studieplan', 'Kontaktperson'],
+      assessedBy: 'elementary-school'
+    }
+  ],
+  trend: 'improving',
+  startDate: '2024-03-01',
+  endDate: '2025-01-20',
+  interpretation: 'Närvaron har förbättrats från ca 40% till 60%. Gap minskat från 2 till 1, vilket visar att insatserna har viss effekt men barriärer kvarstår.'
+};
+
 export const SOFIA_PROFILE = {
   name: 'Sofia B.',
   age: 16,
-  grade: 'TE 1',
+  grade: 'TE 1 (Gymnasiet)',
+  schoolYear: '2024/2025',
   level: 'N3' as const,
-  // TODO: N3 samordnad plan implementeras senare
+
+  // Background
+  background: {
+    diagnosis: 'F90.0 ADHD, F41.1 Generaliserat ångestsyndrom',
+    history: 'Skolfrånvaro >50% under VT-24. Ångest och panikattacker. Svårt med sociala situationer. Bor växelvis hos mamma och pappa (separerade 2022).',
+    currentSituation: 'Börjat gymnasiet HT-24 med intensivt stöd. Fortfarande låg närvaro (~60%) men positiv trend. Deltar i samtal med kurator 2ggr/vecka och har kontakt med BUP.'
+  },
+
+  // Cross-sectoral coordination team
+  coordinationTeam: [
+    {
+      sector: 'elementary-school' as const,
+      role: 'Mentor & SYV',
+      name: 'Maria Lindström',
+      organization: 'NTI Gymnasiet',
+      contact: 'maria.lindstrom@nti.se',
+      responsibilities: [
+        'Daglig kontakt och uppföljning av närvaro',
+        'Anpassad studieplan',
+        'Koordinering med ämneslärare'
+      ]
+    },
+    {
+      sector: 'student-health' as const,
+      role: 'Kurator',
+      name: 'Erik Johansson',
+      organization: 'Elevhälsan NTI',
+      contact: 'erik.johansson@nti.se',
+      responsibilities: [
+        'Stödsamtal 2ggr/vecka',
+        'Ångesthantering och coping-strategier',
+        'Samordning med BUP'
+      ]
+    },
+    {
+      sector: 'bup' as const,
+      role: 'Behandlande psykolog',
+      name: 'Dr. Anna Svensson',
+      organization: 'BUP Mottagning',
+      contact: 'anna.svensson@region.se',
+      responsibilities: [
+        'KBT-behandling varannan vecka',
+        'Medicinuppföljning (SSRI)',
+        'Bedömning av funktionsnivå'
+      ]
+    },
+    {
+      sector: 'social-services' as const,
+      role: 'Socialsekreterare',
+      name: 'Karin Andersson',
+      organization: 'Socialtjänsten',
+      contact: 'karin.andersson@kommun.se',
+      responsibilities: [
+        'Stöd kring familjesituation',
+        'Kontaktperson',
+        'Samordningsansvar (SIP-koordinator)'
+      ]
+    }
+  ],
+
+  // ICF-data
+  icfAssessments: SOFIA_ICF_ASSESSMENTS,
+  environmentalFactors: SOFIA_ENVIRONMENTAL_FACTORS,
+  riskProtectionBalance: SOFIA_RISK_PROTECTION_BALANCE,
+
+  // Longitudinell data
+  gapTrends: {
+    school: SOFIA_GAP_TREND_SCHOOL
+  },
+
+  // Coordinated goals (SIP-style)
+  coordinatedGoals: [
+    {
+      id: 'goal-1',
+      text: 'Öka skolnärvaro från 60% till 80% inom 3 månader',
+      targetDate: '2025-04-30',
+      icfTarget: 'd820.2 → d820.1',
+      relatedSpokes: ['ansvarstagande'],
+      responsible: 'elementary-school' as const,
+      supporting: ['student-health', 'bup'],
+      status: 'in-progress' as const,
+      progress: 40,
+      actions: [
+        'Daglig incheckning med mentor (skola)',
+        'Ångesthanteringsstrategier före skoldagen (kurator)',
+        'Justering av medicinering vid behov (BUP)'
+      ]
+    },
+    {
+      id: 'goal-2',
+      text: 'Minska ångestnivå och panikattacker med 50%',
+      targetDate: '2025-06-30',
+      icfTarget: 'b152.3 → b152.1',
+      relatedSpokes: ['halsa', 'trygg'],
+      responsible: 'bup' as const,
+      supporting: ['student-health'],
+      status: 'in-progress' as const,
+      progress: 60,
+      actions: [
+        'KBT varannan vecka (BUP)',
+        'SSRI-behandling (BUP)',
+        'Coping-strategier i vardagen (kurator)'
+      ]
+    },
+    {
+      id: 'goal-3',
+      text: 'Stabilisera familjesituation och minska konflikter',
+      targetDate: '2025-05-31',
+      icfTarget: 'e310: .1 → +0',
+      relatedSpokes: ['omvardad', 'trygg'],
+      responsible: 'social-services' as const,
+      supporting: [],
+      status: 'in-progress' as const,
+      progress: 30,
+      actions: [
+        'Stöd till föräldrar via kontaktperson',
+        'Strukturstöd för växelvist boende',
+        'Familjesamtal vid behov'
+      ]
+    }
+  ],
+
+  // Meeting schedule
+  meetings: [
+    {
+      date: '2025-01-15',
+      type: 'SIP-uppföljning',
+      participants: ['Skola', 'BUP', 'Socialtjänst', 'Sofia', 'Föräldrar'],
+      status: 'completed' as const,
+      summary: 'Positiv trend i närvaro. Fortsatt fokus på ångesthantering.'
+    },
+    {
+      date: '2025-03-15',
+      type: 'SIP-uppföljning',
+      participants: ['Skola', 'BUP', 'Socialtjänst', 'Sofia', 'Föräldrar'],
+      status: 'planned' as const
+    },
+    {
+      date: '2025-05-15',
+      type: 'SIP-utvärdering',
+      participants: ['Skola', 'BUP', 'Socialtjänst', 'Sofia', 'Föräldrar'],
+      status: 'planned' as const
+    }
+  ],
+
+  // Sammanfattning
+  summary: {
+    primaryConcerns: ['Skolfrånvaro', 'Ångest', 'Social isolering', 'Familjesituation'],
+    strengths: ['Motiverad', 'Behandling visar effekt', 'Bra samverkan mellan aktörer'],
+    interventionsWorking: true,
+    nextSteps: [
+      'Fortsätt KBT och SSRI (fungerar!)',
+      'Fortsätt stödsamtal med kurator',
+      'Överväg gradvis ökning av skolnärvaro',
+      'Förstärk stöd kring familjesituation',
+      'Uppföljning vid SIP-möte 15 mars'
+    ]
+  },
+
+  // Sofias röst
+  childsVoice: {
+    goals: 'Jag vill kunna gå till skolan utan att få panik. Och jag vill ha vänner att äta lunch med.',
+    howFeeling: 'Det är jobbigt att vara så orolig hela tiden. Men det blir lite bättre nu. Samtalen med kuratorn hjälper och medicinerna gör att jag sover bättre.',
+    whatHelps: 'När jag får ta det lugnt och inte behöver svara på frågor framför hela klassen. Och när jag kan gå ut en stund om det blir för mycket.',
+    worries: 'Att alla ska tycka jag är konstig för att jag inte kan vara i skolan som alla andra.'
+  }
 };
 
 // Export alla profiler
