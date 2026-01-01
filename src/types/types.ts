@@ -19,7 +19,8 @@ export type View =
   | 'icf-demo'           // WHO ICF - Performance/Capacity & Environmental Factors
   | 'icf-n1'             // WHO ICF - N1 Universell screening
   | 'icf-n2'             // WHO ICF - N2 Fördjupad analys
-  | 'icf-n3';            // WHO ICF - N3 Samordnad plan (SIP)
+  | 'icf-n3'             // WHO ICF - N3 Samordnad plan (SIP)
+  | 'scenario-generator'; // Interaktiv "tänk om..."-scenarioskiss
 
 export interface ShanarriIndicator {
   id: string;
