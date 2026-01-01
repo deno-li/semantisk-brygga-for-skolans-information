@@ -263,6 +263,99 @@ const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ currentPhase, progr
   );
 };
 
+// ============================================
+// MY WORLD TRIANGLE DIMENSIONS
+// ============================================
+const MY_WORLD_DIMENSIONS = [
+  {
+    key: 'howIGrow',
+    name: 'How I Grow',
+    nameSwedish: 'Hur jag växer',
+    description: 'Barnets utveckling, hälsa och lärande',
+    color: 'text-emerald-600',
+    bgColor: 'bg-emerald-500',
+    position: { x: 50, y: 10 },
+  },
+  {
+    key: 'whatINeed',
+    name: 'What I Need',
+    nameSwedish: 'Vad jag behöver',
+    description: 'Omsorg, stöd och vägledning från föräldrar',
+    color: 'text-rose-600',
+    bgColor: 'bg-rose-500',
+    position: { x: 10, y: 85 },
+  },
+  {
+    key: 'myWorld',
+    name: 'My World',
+    nameSwedish: 'Min värld',
+    description: 'Familj, samhälle och omgivning',
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-500',
+    position: { x: 90, y: 85 },
+  },
+];
+
+// ============================================
+// SPOKE COLORS FOR WHEEL (HSL values)
+// ============================================
+const SPOKE_COLORS: Record<string, string> = {
+  trygg: 'hsl(205, 100%, 30%)',
+  halsa: 'hsl(145, 45%, 35%)',
+  utvecklas: 'hsl(350, 70%, 45%)',
+  omvardad: 'hsl(340, 100%, 35%)',
+  aktiv: 'hsl(28, 80%, 45%)',
+  respekterad: 'hsl(280, 50%, 40%)',
+  ansvarstagande: 'hsl(185, 70%, 35%)',
+  delaktig: 'hsl(45, 100%, 50%)',
+};
+
+// ============================================
+// ICF CODES FOR SHANARRI DIMENSIONS
+// ============================================
+const ICF_CODES: Record<string, { codes: string[]; category: string; description: string }> = {
+  trygg: {
+    codes: ['b1522', 'd7102', 'e310'],
+    category: 'Trygghet & säkerhet',
+    description: 'Känsla av trygghet, integritet och skydd',
+  },
+  halsa: {
+    codes: ['b130', 'b134', 'd570'],
+    category: 'Hälsa & välbefinnande',
+    description: 'Fysisk och psykisk hälsa, energinivå',
+  },
+  utvecklas: {
+    codes: ['b164', 'd820', 'd825'],
+    category: 'Lärande & utveckling',
+    description: 'Kognitiva funktioner och skolprestation',
+  },
+  omvardad: {
+    codes: ['e310', 'e320', 'd760'],
+    category: 'Omsorg & stöd',
+    description: 'Familjerelationer och omvårdnad',
+  },
+  aktiv: {
+    codes: ['d920', 'd880', 'b455'],
+    category: 'Aktivitet & deltagande',
+    description: 'Lek, fritid och fysisk aktivitet',
+  },
+  respekterad: {
+    codes: ['d710', 'd720', 'b1266'],
+    category: 'Respekt & relationer',
+    description: 'Självkänsla och sociala interaktioner',
+  },
+  ansvarstagande: {
+    codes: ['d250', 'd240', 'b1641'],
+    category: 'Ansvar & initiativ',
+    description: 'Självständighet och problemlösning',
+  },
+  delaktig: {
+    codes: ['d910', 'd920', 'e430'],
+    category: 'Delaktighet & inkludering',
+    description: 'Social inkludering och deltagande',
+  },
+};
+
 // SHANARRI spoke configuration
 const SHANARRI_SPOKES = [
   { id: 'trygg', name: 'TRYGG', nameEn: 'Safe', color: '#005595', icon: '🛡️' },
@@ -457,6 +550,18 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
     ansvarstagande: 1,
     delaktig: 0,
   });
+
+  // My World Triangle state (for lifecycle mode)
+  const [myWorldScores, setMyWorldScores] = useState<Record<string, number>>({
+    howIGrow: 7,
+    whatINeed: 8,
+    myWorld: 6,
+  });
+  const [selectedMyWorldDimension, setSelectedMyWorldDimension] = useState<string | null>(null);
+
+  // Spoke detail panel state
+  const [selectedSpokeDetail, setSelectedSpokeDetail] = useState<string | null>(null);
+  const [showWheelView, setShowWheelView] = useState(false);
 
   // Calculate derived metrics
   const metrics = useMemo(() => {
@@ -738,93 +843,371 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
     }
   };
 
-  // Scenario Mode (original functionality)
+  // Scenario Mode (original functionality with wheel toggle)
   const renderScenarioMode = () => (
-    <div className="grid grid-cols-12 gap-6">
-      {/* Left: SHANARRI Sliders */}
-      <div className="col-span-7 bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50">
-        <h3 className="font-bold text-gray-900 text-lg mb-6">SHANARRI-ekrar</h3>
+    <div className="space-y-6">
+      {/* View Toggle */}
+      <div className="flex justify-end">
+        <div className="inline-flex items-center gap-1 p-1 bg-white/70 backdrop-blur-xl rounded-xl border border-white/50">
+          <button
+            onClick={() => setShowWheelView(false)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              !showWheelView ? 'bg-violet-100 text-violet-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Layers className="w-4 h-4" />
+            Reglage
+          </button>
+          <button
+            onClick={() => setShowWheelView(true)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              showWheelView ? 'bg-violet-100 text-violet-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Target className="w-4 h-4" />
+            Hjul
+          </button>
+        </div>
+      </div>
 
-        <div className="space-y-5">
-          {SHANARRI_SPOKES.map((spoke) => {
-            const value = spokeValues[spoke.id];
-            const baseValue = baselineValues[spoke.id];
-            const change = value - baseValue;
+      <div className="grid grid-cols-12 gap-6">
+        {/* Left: SHANARRI Visualization */}
+        <div className="col-span-7 bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50">
+          {!showWheelView ? (
+            <>
+              <h3 className="font-bold text-gray-900 text-lg mb-6">SHANARRI-ekrar</h3>
+              <div className="space-y-5">
+                {SHANARRI_SPOKES.map((spoke) => {
+                  const value = spokeValues[spoke.id];
+                  const baseValue = baselineValues[spoke.id];
+                  const change = value - baseValue;
 
-            return (
-              <div key={spoke.id} className="group">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg transition-transform group-hover:scale-110"
-                      style={{ background: `linear-gradient(135deg, ${spoke.color}, ${spoke.color}dd)` }}
-                    >
-                      {spoke.icon}
+                  return (
+                    <div key={spoke.id} className="group">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => setSelectedSpokeDetail(selectedSpokeDetail === spoke.id ? null : spoke.id)}
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg transition-transform group-hover:scale-110 ${
+                              selectedSpokeDetail === spoke.id ? 'ring-2 ring-offset-2 ring-violet-500' : ''
+                            }`}
+                            style={{ background: `linear-gradient(135deg, ${spoke.color}, ${spoke.color}dd)` }}
+                          >
+                            {spoke.icon}
+                          </button>
+                          <div>
+                            <span className="font-semibold text-gray-900">{spoke.name}</span>
+                            <span className="text-xs text-gray-400 ml-2">({spoke.nameEn})</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {change !== 0 && (
+                            <span className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg ${
+                              change > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                              {change > 0 ? '+' : ''}{change}
+                            </span>
+                          )}
+                          <span className={`text-2xl font-bold ${getValueColor(value)}`}>
+                            {value}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="relative">
+                        <div className="absolute inset-0 h-3 rounded-full bg-gray-100" />
+                        <div
+                          className={`absolute h-3 rounded-full transition-all duration-300 ${getValueBg(value)}`}
+                          style={{ width: `${(value / 5) * 100}%` }}
+                        />
+                        <input
+                          type="range"
+                          min="1"
+                          max="5"
+                          value={value}
+                          onChange={(e) => handleSpokeChange(spoke.id, parseInt(e.target.value))}
+                          className="relative w-full h-3 appearance-none bg-transparent cursor-pointer z-10
+                            [&::-webkit-slider-thumb]:appearance-none
+                            [&::-webkit-slider-thumb]:w-6
+                            [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:rounded-full
+                            [&::-webkit-slider-thumb]:bg-white
+                            [&::-webkit-slider-thumb]:shadow-lg
+                            [&::-webkit-slider-thumb]:border-2
+                            [&::-webkit-slider-thumb]:border-gray-300
+                            [&::-webkit-slider-thumb]:cursor-grab
+                            [&::-webkit-slider-thumb]:active:cursor-grabbing
+                            [&::-webkit-slider-thumb]:transition-transform
+                            [&::-webkit-slider-thumb]:hover:scale-125"
+                        />
+                      </div>
+
+                      <div className="flex justify-between mt-1 px-1">
+                        <span className="text-[10px] text-red-400 font-medium">Kritisk</span>
+                        <span className="text-[10px] text-amber-400 font-medium">Bekymmer</span>
+                        <span className="text-[10px] text-gray-400 font-medium">OK</span>
+                        <span className="text-[10px] text-emerald-400 font-medium">Bra</span>
+                        <span className="text-[10px] text-teal-400 font-medium">Utmärkt</span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="font-semibold text-gray-900">{spoke.name}</span>
-                      <span className="text-xs text-gray-400 ml-2">({spoke.nameEn})</span>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <>
+              <h3 className="font-bold text-gray-900 text-lg mb-6 text-center">SHANARRI Välbefinnandehjul</h3>
+
+              {/* Interactive SVG Wheel */}
+              <div className="flex justify-center">
+                <svg width="380" height="380" viewBox="-40 -40 420 420" className="overflow-visible">
+                  {/* Background ring */}
+                  <circle cx="170" cy="170" r="160" fill="none" stroke="hsl(0, 0%, 90%)" strokeWidth="1" />
+
+                  {/* Spoke segments */}
+                  {SHANARRI_SPOKES.map((spoke, index) => {
+                    const value = spokeValues[spoke.id];
+                    const spokeAngle = 360 / 8;
+                    const startAngle = (index * spokeAngle - 90) * (Math.PI / 180);
+                    const endAngle = ((index + 1) * spokeAngle - 90) * (Math.PI / 180);
+                    const centerRadius = 50;
+                    const maxRadius = 160;
+                    const fillPercent = (value / 5) * 100;
+                    const outerRadius = centerRadius + (maxRadius - centerRadius) * (fillPercent / 100);
+                    const isSelected = selectedSpokeDetail === spoke.id;
+
+                    // Calculate path points
+                    const x1 = 170 + centerRadius * Math.cos(startAngle);
+                    const y1 = 170 + centerRadius * Math.sin(startAngle);
+                    const x2 = 170 + outerRadius * Math.cos(startAngle);
+                    const y2 = 170 + outerRadius * Math.sin(startAngle);
+                    const x3 = 170 + outerRadius * Math.cos(endAngle);
+                    const y3 = 170 + outerRadius * Math.sin(endAngle);
+                    const x4 = 170 + centerRadius * Math.cos(endAngle);
+                    const y4 = 170 + centerRadius * Math.sin(endAngle);
+
+                    // Full segment path
+                    const fullX2 = 170 + maxRadius * Math.cos(startAngle);
+                    const fullY2 = 170 + maxRadius * Math.sin(startAngle);
+                    const fullX3 = 170 + maxRadius * Math.cos(endAngle);
+                    const fullY3 = 170 + maxRadius * Math.sin(endAngle);
+
+                    // Icon position
+                    const iconAngle = (index * spokeAngle + spokeAngle / 2 - 90) * (Math.PI / 180);
+                    const iconRadius = centerRadius + (maxRadius - centerRadius) * 0.55;
+                    const iconX = 170 + iconRadius * Math.cos(iconAngle);
+                    const iconY = 170 + iconRadius * Math.sin(iconAngle);
+
+                    // Label position
+                    const labelRadius = maxRadius + 25;
+                    const labelX = 170 + labelRadius * Math.cos(iconAngle);
+                    const labelY = 170 + labelRadius * Math.sin(iconAngle);
+
+                    return (
+                      <g
+                        key={spoke.id}
+                        className="cursor-pointer transition-all duration-200"
+                        onClick={() => setSelectedSpokeDetail(isSelected ? null : spoke.id)}
+                      >
+                        {/* Background segment */}
+                        <path
+                          d={`M ${x1} ${y1} L ${fullX2} ${fullY2} A ${maxRadius} ${maxRadius} 0 0 1 ${fullX3} ${fullY3} L ${x4} ${y4} A ${centerRadius} ${centerRadius} 0 0 0 ${x1} ${y1}`}
+                          fill={SPOKE_COLORS[spoke.id]}
+                          opacity="0.15"
+                        />
+
+                        {/* Filled segment */}
+                        <path
+                          d={`M ${x1} ${y1} L ${x2} ${y2} A ${outerRadius} ${outerRadius} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${centerRadius} ${centerRadius} 0 0 0 ${x1} ${y1}`}
+                          fill={SPOKE_COLORS[spoke.id]}
+                          opacity={isSelected ? 1 : 0.8}
+                          className="transition-all duration-300 hover:opacity-100"
+                          style={{ filter: isSelected ? 'brightness(1.1)' : undefined }}
+                        />
+
+                        {/* Segment border */}
+                        <path
+                          d={`M ${x1} ${y1} L ${fullX2} ${fullY2} A ${maxRadius} ${maxRadius} 0 0 1 ${fullX3} ${fullY3} L ${x4} ${y4} A ${centerRadius} ${centerRadius} 0 0 0 ${x1} ${y1}`}
+                          fill="none"
+                          stroke={isSelected ? SPOKE_COLORS[spoke.id] : 'white'}
+                          strokeWidth={isSelected ? 2 : 0.5}
+                          opacity={isSelected ? 1 : 0.5}
+                        />
+
+                        {/* Icon text */}
+                        <text
+                          x={iconX}
+                          y={iconY}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize="18"
+                          className="pointer-events-none"
+                        >
+                          {spoke.icon}
+                        </text>
+
+                        {/* Label */}
+                        <text
+                          x={labelX}
+                          y={labelY}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          className={`fill-gray-700 font-medium pointer-events-none ${isSelected ? 'font-bold' : ''}`}
+                          fontSize="11"
+                        >
+                          {spoke.name}
+                        </text>
+                      </g>
+                    );
+                  })}
+
+                  {/* Center circle */}
+                  <circle cx="170" cy="170" r="50" fill="white" stroke="hsl(0, 0%, 90%)" strokeWidth="2" />
+                  <text x="170" y="165" textAnchor="middle" dominantBaseline="middle" className="fill-gray-900 font-bold" fontSize="14">
+                    SHANARRI
+                  </text>
+                  <text x="170" y="182" textAnchor="middle" dominantBaseline="middle" className="fill-gray-500" fontSize="10">
+                    Välbefinnande
+                  </text>
+                </svg>
+              </div>
+
+              {/* Value adjustment for selected spoke */}
+              {selectedSpokeDetail && (
+                <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.icon}</span>
+                      <span className="font-bold text-gray-900">{SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.name}</span>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {change !== 0 && (
-                      <span className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg ${
-                        change > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
-                      }`}>
-                        {change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                        {change > 0 ? '+' : ''}{change}
-                      </span>
-                    )}
-                    <span className={`text-2xl font-bold ${getValueColor(value)}`}>
-                      {value}
+                    <span className={`text-2xl font-bold ${getValueColor(spokeValues[selectedSpokeDetail])}`}>
+                      {spokeValues[selectedSpokeDetail]}
                     </span>
                   </div>
-                </div>
-
-                <div className="relative">
-                  <div className="absolute inset-0 h-3 rounded-full bg-gray-100" />
-                  <div
-                    className={`absolute h-3 rounded-full transition-all duration-300 ${getValueBg(value)}`}
-                    style={{ width: `${(value / 5) * 100}%` }}
-                  />
                   <input
                     type="range"
                     min="1"
                     max="5"
-                    value={value}
-                    onChange={(e) => handleSpokeChange(spoke.id, parseInt(e.target.value))}
-                    className="relative w-full h-3 appearance-none bg-transparent cursor-pointer z-10
-                      [&::-webkit-slider-thumb]:appearance-none
-                      [&::-webkit-slider-thumb]:w-6
-                      [&::-webkit-slider-thumb]:h-6
-                      [&::-webkit-slider-thumb]:rounded-full
-                      [&::-webkit-slider-thumb]:bg-white
-                      [&::-webkit-slider-thumb]:shadow-lg
-                      [&::-webkit-slider-thumb]:border-2
-                      [&::-webkit-slider-thumb]:border-gray-300
-                      [&::-webkit-slider-thumb]:cursor-grab
-                      [&::-webkit-slider-thumb]:active:cursor-grabbing
-                      [&::-webkit-slider-thumb]:transition-transform
-                      [&::-webkit-slider-thumb]:hover:scale-125"
+                    value={spokeValues[selectedSpokeDetail]}
+                    onChange={(e) => handleSpokeChange(selectedSpokeDetail, parseInt(e.target.value))}
+                    className="w-full h-3 rounded-full appearance-none bg-gray-200 cursor-pointer"
                   />
+                  <div className="flex justify-between mt-1 text-xs text-gray-400">
+                    <span>Kritisk</span>
+                    <span>Bekymmer</span>
+                    <span>OK</span>
+                    <span>Bra</span>
+                    <span>Utmärkt</span>
+                  </div>
                 </div>
+              )}
 
-                <div className="flex justify-between mt-1 px-1">
-                  <span className="text-[10px] text-red-400 font-medium">Kritisk</span>
-                  <span className="text-[10px] text-amber-400 font-medium">Bekymmer</span>
-                  <span className="text-[10px] text-gray-400 font-medium">OK</span>
-                  <span className="text-[10px] text-emerald-400 font-medium">Bra</span>
-                  <span className="text-[10px] text-teal-400 font-medium">Utmärkt</span>
+              {/* Legend when spoke selected */}
+              {selectedSpokeDetail && (
+                <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: SPOKE_COLORS[selectedSpokeDetail] }}
+                    />
+                    <span className="font-medium text-sm text-gray-900">
+                      {SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.name}
+                    </span>
+                    <span className="text-gray-400 text-sm">•</span>
+                    <span className="text-sm text-gray-600">
+                      {spokeValues[selectedSpokeDetail] === 5 ? 'Utmärkt' :
+                       spokeValues[selectedSpokeDetail] === 4 ? 'Bra' :
+                       spokeValues[selectedSpokeDetail] === 3 ? 'OK' :
+                       spokeValues[selectedSpokeDetail] === 2 ? 'Bekymmer' : 'Kritisk'}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              )}
+            </>
+          )}
         </div>
-      </div>
 
-      {/* Right: Derived Metrics */}
-      <div className="col-span-5 space-y-6">
-        {renderMetricsPanel()}
+        {/* Right: Derived Metrics + Spoke Detail Panel */}
+        <div className="col-span-5 space-y-6">
+          {/* Spoke Detail Panel with ICF codes */}
+          {selectedSpokeDetail && (
+            <div
+              className="bg-white/70 backdrop-blur-xl rounded-2xl border-l-4 border border-white/50 p-5 shadow-xl animate-fade-in"
+              style={{ borderLeftColor: SPOKE_COLORS[selectedSpokeDetail] }}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="p-3 rounded-xl"
+                    style={{ backgroundColor: `${SPOKE_COLORS[selectedSpokeDetail]}20` }}
+                  >
+                    <span className="text-2xl">{SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.icon}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg">
+                      {SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.name}
+                    </h4>
+                    <p className="text-sm text-gray-500">
+                      {SHANARRI_SPOKES.find(s => s.id === selectedSpokeDetail)?.nameEn}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedSpokeDetail(null)}
+                  className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  <X className="w-4 h-4 text-gray-400" />
+                </button>
+              </div>
+
+              {/* Status badge */}
+              <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-4 ${
+                spokeValues[selectedSpokeDetail] >= 4 ? 'bg-emerald-100 text-emerald-700' :
+                spokeValues[selectedSpokeDetail] === 3 ? 'bg-amber-100 text-amber-700' :
+                'bg-red-100 text-red-700'
+              }`}>
+                {spokeValues[selectedSpokeDetail] >= 4 ? 'Bra/Utmärkt' :
+                 spokeValues[selectedSpokeDetail] === 3 ? 'OK - Uppmärksamhet' :
+                 'Bekymmer/Kritisk'}
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-gray-600 mb-4">
+                {ICF_CODES[selectedSpokeDetail]?.description}
+              </p>
+
+              {/* ICF Codes Section */}
+              <div className="pt-4 border-t border-gray-200">
+                <h5 className="font-medium text-sm text-gray-500 uppercase tracking-wide mb-2 flex items-center gap-2">
+                  <GitBranch className="w-4 h-4" />
+                  ICF-kopplingar
+                </h5>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {ICF_CODES[selectedSpokeDetail]?.codes.map((code) => (
+                    <span
+                      key={code}
+                      className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-mono font-medium"
+                    >
+                      {code}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500">
+                  Kategori: {ICF_CODES[selectedSpokeDetail]?.category}
+                </p>
+              </div>
+
+              {/* View full assessment button */}
+              <button className="w-full mt-4 flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group">
+                <span className="font-medium text-sm text-gray-700">Visa fullständig bedömning</span>
+                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          )}
+
+          {renderMetricsPanel()}
+        </div>
       </div>
     </div>
   );
@@ -1113,6 +1496,216 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
               );
             })}
           </div>
+        </div>
+      </div>
+
+      {/* My World Triangle - Child-centered visualization */}
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+        <h3 className="font-bold text-gray-900 text-lg mb-4 text-center">Min Värld - Barnets perspektiv</h3>
+
+        <div className="flex flex-col items-center">
+          {/* Triangle SVG */}
+          <div className="relative w-80 h-72">
+            <svg viewBox="0 0 300 270" className="w-full h-full overflow-visible">
+              {/* Gradient definitions */}
+              <defs>
+                <linearGradient id="triangleGradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.1" />
+                </linearGradient>
+                <linearGradient id="triangleGradientFill" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.3" />
+                </linearGradient>
+              </defs>
+
+              {/* Outer triangle */}
+              <polygon
+                points="150,30 40,230 260,230"
+                fill="url(#triangleGradientBg)"
+                stroke="hsl(260, 30%, 70%)"
+                strokeWidth="2"
+              />
+
+              {/* Filled triangle based on average score */}
+              {(() => {
+                const avgScore = (myWorldScores.howIGrow + myWorldScores.whatINeed + myWorldScores.myWorld) / 3;
+                const fillRatio = avgScore / 10;
+                const centerY = 130;
+                const innerTopY = 30 + (centerY - 30) * (1 - fillRatio);
+                const innerBottomY = centerY + (230 - centerY) * fillRatio;
+                const innerLeftX = 40 + (150 - 40) * (1 - fillRatio);
+                const innerRightX = 260 - (260 - 150) * (1 - fillRatio);
+                return (
+                  <polygon
+                    points={`150,${innerTopY} ${innerLeftX},${innerBottomY} ${innerRightX},${innerBottomY}`}
+                    fill="url(#triangleGradientFill)"
+                    stroke="hsl(260, 60%, 50%)"
+                    strokeWidth="1.5"
+                  />
+                );
+              })()}
+
+              {/* Center label */}
+              <text x="150" y="140" textAnchor="middle" className="fill-gray-700 font-medium text-sm">
+                Barnet
+              </text>
+
+              {/* Dimension nodes */}
+              {MY_WORLD_DIMENSIONS.map((dim, index) => {
+                const nodePositions = [
+                  { x: 150, y: 20 },
+                  { x: 30, y: 240 },
+                  { x: 270, y: 240 },
+                ];
+                const pos = nodePositions[index];
+                const score = myWorldScores[dim.key];
+                const isSelected = selectedMyWorldDimension === dim.key;
+
+                return (
+                  <g key={dim.key}>
+                    {/* Connection line */}
+                    <line
+                      x1={pos.x}
+                      y1={pos.y}
+                      x2={150}
+                      y2={130}
+                      stroke="hsl(260, 30%, 80%)"
+                      strokeWidth="1"
+                      strokeDasharray="4,4"
+                      opacity="0.5"
+                    />
+
+                    {/* Node circle */}
+                    <circle
+                      cx={pos.x}
+                      cy={pos.y}
+                      r={isSelected ? 28 : 24}
+                      className={`cursor-pointer transition-all duration-200 ${
+                        isSelected ? 'fill-violet-500 stroke-white' : 'fill-white stroke-gray-300 hover:fill-gray-50'
+                      }`}
+                      strokeWidth="2"
+                      onClick={() => setSelectedMyWorldDimension(isSelected ? null : dim.key)}
+                    />
+
+                    {/* Score in node */}
+                    <text
+                      x={pos.x}
+                      y={pos.y + 5}
+                      textAnchor="middle"
+                      className={`font-bold pointer-events-none ${
+                        isSelected ? 'fill-white' :
+                        score >= 7 ? 'fill-emerald-600' :
+                        score >= 5 ? 'fill-amber-600' : 'fill-red-600'
+                      }`}
+                      fontSize="14"
+                    >
+                      {score}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Dimension Labels */}
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'howIGrow' ? null : 'howIGrow')}
+              className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'howIGrow' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <GraduationCap className="w-5 h-5 text-emerald-600" />
+              <span className="text-xs font-medium text-gray-600">Hur jag växer</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'whatINeed' ? null : 'whatINeed')}
+              className={`absolute bottom-0 left-0 translate-y-8 flex items-center gap-1 p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'whatINeed' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <Heart className="w-5 h-5 text-rose-600" />
+              <span className="text-xs font-medium text-gray-600">Vad jag behöver</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'myWorld' ? null : 'myWorld')}
+              className={`absolute bottom-0 right-0 translate-y-8 flex items-center gap-1 p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'myWorld' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <Users className="w-5 h-5 text-blue-600" />
+              <span className="text-xs font-medium text-gray-600">Min värld</span>
+            </button>
+          </div>
+
+          {/* Selected dimension detail */}
+          {selectedMyWorldDimension && (
+            <div className="mt-8 w-full max-w-md p-4 bg-gray-50 rounded-xl animate-fade-in">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-bold text-gray-900">
+                  {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.nameSwedish}
+                </h4>
+                <button
+                  onClick={() => setSelectedMyWorldDimension(null)}
+                  className="p-1 rounded-full hover:bg-gray-200"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.description}
+              </p>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-600">Poäng:</span>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={myWorldScores[selectedMyWorldDimension]}
+                  onChange={(e) => setMyWorldScores(prev => ({
+                    ...prev,
+                    [selectedMyWorldDimension]: parseInt(e.target.value)
+                  }))}
+                  className="flex-1 h-2 rounded-full appearance-none bg-gray-200 cursor-pointer"
+                />
+                <span className={`text-lg font-bold ${
+                  myWorldScores[selectedMyWorldDimension] >= 7 ? 'text-emerald-600' :
+                  myWorldScores[selectedMyWorldDimension] >= 5 ? 'text-amber-600' : 'text-red-600'
+                }`}>
+                  {myWorldScores[selectedMyWorldDimension]}/10
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Summary bar when no dimension selected */}
+          {!selectedMyWorldDimension && (
+            <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-md">
+              {MY_WORLD_DIMENSIONS.map((dim) => {
+                const score = myWorldScores[dim.key];
+                const IconComponent = dim.key === 'howIGrow' ? GraduationCap :
+                                      dim.key === 'whatINeed' ? Heart : Users;
+                return (
+                  <button
+                    key={dim.key}
+                    onClick={() => setSelectedMyWorldDimension(dim.key)}
+                    className="p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all text-center group"
+                  >
+                    <IconComponent className={`h-5 w-5 mx-auto mb-1 ${dim.color}`} />
+                    <p className={`text-lg font-bold ${
+                      score >= 7 ? 'text-emerald-600' : score >= 5 ? 'text-amber-600' : 'text-red-600'
+                    }`}>
+                      {score}
+                    </p>
+                    <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
+                      {dim.nameSwedish}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -1428,54 +2021,153 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
   // Data Minimization Mode
   const renderDataMinMode = () => (
     <div className="space-y-6">
-      {/* Level selector */}
+      {/* Level selector with ProfileCard-style badges */}
       <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
         <h3 className="font-bold text-gray-900 text-lg mb-4">Dataminimering vid nivåbyten</h3>
 
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Nuvarande nivå</label>
-            <div className="flex gap-3">
-              {(['N1', 'N2', 'N3'] as const).map((level) => (
-                <button
-                  key={level}
-                  onClick={() => {
-                    setCurrentLevel(level);
-                    updateDataVisibility(level);
-                  }}
-                  className={`flex-1 py-3 rounded-xl font-bold transition-all ${
-                    currentLevel === level
-                      ? level === 'N1' ? 'bg-emerald-500 text-white' :
-                        level === 'N2' ? 'bg-amber-500 text-white' : 'bg-rose-500 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {level}
-                </button>
-              ))}
+            <label className="block text-sm font-medium text-gray-600 mb-3">Nuvarande nivå</label>
+            <div className="space-y-2">
+              {(['N1', 'N2', 'N3'] as const).map((level) => {
+                const levelInfo = JOURNEY_LEVELS[level];
+                const isSelected = currentLevel === level;
+                const levelColors = {
+                  N1: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', icon: CheckCircle2 },
+                  N2: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', icon: AlertTriangle },
+                  N3: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', icon: Target },
+                };
+                const colors = levelColors[level];
+                const Icon = colors.icon;
+
+                return (
+                  <button
+                    key={level}
+                    onClick={() => {
+                      setCurrentLevel(level);
+                      updateDataVisibility(level);
+                    }}
+                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      isSelected
+                        ? `${colors.bg} ${colors.border} shadow-md`
+                        : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        isSelected ? colors.bg : 'bg-gray-100'
+                      }`}>
+                        <Icon className={`w-5 h-5 ${isSelected ? colors.text : 'text-gray-400'}`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`font-bold ${isSelected ? colors.text : 'text-gray-900'}`}>
+                            {levelInfo.name}
+                          </span>
+                          {isSelected && (
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${colors.bg} ${colors.text} font-medium`}>
+                              Aktiv
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-0.5">{levelInfo.description}</p>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">Målnivå (vid eskalering)</label>
-            <div className="flex gap-3">
-              {(['N1', 'N2', 'N3'] as const).map((level) => (
-                <button
-                  key={level}
-                  onClick={() => setTargetLevel(level)}
-                  className={`flex-1 py-3 rounded-xl font-bold transition-all ${
-                    targetLevel === level
-                      ? level === 'N1' ? 'bg-emerald-500 text-white' :
-                        level === 'N2' ? 'bg-amber-500 text-white' : 'bg-rose-500 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {level}
-                </button>
-              ))}
+            <label className="block text-sm font-medium text-gray-600 mb-3">Målnivå (vid eskalering)</label>
+            <div className="space-y-2">
+              {(['N1', 'N2', 'N3'] as const).map((level) => {
+                const levelInfo = JOURNEY_LEVELS[level];
+                const isSelected = targetLevel === level;
+                const isEscalation = level > currentLevel;
+                const isDeescalation = level < currentLevel;
+                const levelColors = {
+                  N1: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', icon: CheckCircle2 },
+                  N2: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', icon: AlertTriangle },
+                  N3: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', icon: Target },
+                };
+                const colors = levelColors[level];
+                const Icon = colors.icon;
+
+                return (
+                  <button
+                    key={level}
+                    onClick={() => setTargetLevel(level)}
+                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      isSelected
+                        ? `${colors.bg} ${colors.border} shadow-md`
+                        : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        isSelected ? colors.bg : 'bg-gray-100'
+                      }`}>
+                        <Icon className={`w-5 h-5 ${isSelected ? colors.text : 'text-gray-400'}`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`font-bold ${isSelected ? colors.text : 'text-gray-900'}`}>
+                            {levelInfo.name}
+                          </span>
+                          {isSelected && isEscalation && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-medium flex items-center gap-1">
+                              <ArrowUpRight className="w-3 h-3" />
+                              Eskalering
+                            </span>
+                          )}
+                          {isSelected && isDeescalation && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium flex items-center gap-1">
+                              <TrendingDown className="w-3 h-3" />
+                              Deeskalering
+                            </span>
+                          )}
+                          {isSelected && level === currentLevel && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium">
+                              Samma
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-0.5">{levelInfo.description}</p>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
+
+        {/* Escalation summary */}
+        {currentLevel !== targetLevel && (
+          <div className={`mt-6 p-4 rounded-xl ${
+            targetLevel > currentLevel ? 'bg-rose-50 border border-rose-200' : 'bg-emerald-50 border border-emerald-200'
+          }`}>
+            <div className="flex items-center gap-3">
+              {targetLevel > currentLevel ? (
+                <ArrowUpRight className="w-5 h-5 text-rose-600" />
+              ) : (
+                <TrendingDown className="w-5 h-5 text-emerald-600" />
+              )}
+              <div>
+                <p className={`font-medium ${targetLevel > currentLevel ? 'text-rose-700' : 'text-emerald-700'}`}>
+                  {targetLevel > currentLevel ? 'Eskalering' : 'Deeskalering'}: {currentLevel} → {targetLevel}
+                </p>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  {targetLevel > currentLevel
+                    ? 'Fler datapunkter aktiveras för samordning'
+                    : 'Färre datapunkter synliga - principen om minsta nödvändiga'}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Data points visualization */}
