@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { View, Perspective } from '../types/types';
+import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import {
   LayoutDashboard,
   PieChart,
@@ -20,13 +21,15 @@ import {
   ChevronRight,
   Menu,
   X,
-  ChevronDown
+  ChevronDown,
+  CheckCircle2
 } from 'lucide-react';
 
 interface NavigationProps {
   currentView: View;
   onViewChange: (view: View) => void;
   currentPerspective?: Perspective;
+  selectedProfileId?: string;
 }
 
 interface TabItem {
@@ -54,12 +57,39 @@ const TAB_GROUPS: TabGroup[] = [
   { id: 'analysis', label: 'Analys', color: 'amber', gradient: 'from-amber-500 to-orange-600' },
 ];
 
-const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, currentPerspective }) => {
+const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, currentPerspective, selectedProfileId }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Get current profile data for dynamic badges
+  const profile = selectedProfileId ? ICF_DEMO_PROFILES[selectedProfileId] : null;
+  const profileLevel = profile?.level;
+  const hasIcfData = profile && 'icfAssessments' in profile && profile.icfAssessments;
+
+  // Determine badges based on profile data
+  const getIcfBadge = (tabId: string): string | undefined => {
+    if (!profileLevel) return undefined;
+
+    switch (tabId) {
+      case 'icf-demo':
+        // Show checkmark if profile has ICF assessments
+        return hasIcfData ? '✓' : undefined;
+      case 'icf-n1':
+        // All profiles have N1 screening data
+        return '✓';
+      case 'icf-n2':
+        // Show checkmark only for N2 profiles with ICF data
+        return (profileLevel === 'N2' && hasIcfData) ? '✓' : undefined;
+      case 'icf-n3':
+        // Show checkmark only for N3 profiles with ICF data
+        return (profileLevel === 'N3' && hasIcfData) ? '✓' : undefined;
+      default:
+        return undefined;
+    }
+  };
 
   const tabs: TabItem[] = [
     { id: 'overview', label: 'Översikt', icon: <LayoutDashboard size={16} />, group: 'main' },
@@ -69,11 +99,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'survey', label: 'Min röst', icon: <MessageSquare size={16} />, group: 'views', color: 'pink' },
     { id: 'sip', label: 'Min Plan', icon: <FileText size={16} />, group: 'views', color: 'indigo' },
 
-    // WHO ICF Integration
-    { id: 'icf-demo', label: 'ICF Gap-analys', icon: <Activity size={16} />, badge: '🆕', hiddenForChild: true, group: 'icf', color: 'blue' },
-    { id: 'icf-n1', label: 'N1 Screening', icon: <Activity size={16} />, badge: '🆕', hiddenForChild: true, group: 'icf', color: 'green' },
-    { id: 'icf-n2', label: 'N2 Fördjupad', icon: <Activity size={16} />, badge: '🆕', hiddenForChild: true, group: 'icf', color: 'orange' },
-    { id: 'icf-n3', label: 'N3 Samordnad', icon: <Activity size={16} />, badge: '🆕', hiddenForChild: true, group: 'icf', color: 'red' },
+    // WHO ICF Integration - dynamic badges based on profile
+    { id: 'icf-demo', label: 'ICF Gap-analys', icon: <Activity size={16} />, badge: getIcfBadge('icf-demo'), hiddenForChild: true, group: 'icf', color: 'blue' },
+    { id: 'icf-n1', label: 'N1 Screening', icon: <Activity size={16} />, badge: getIcfBadge('icf-n1'), hiddenForChild: true, group: 'icf', color: 'green' },
+    { id: 'icf-n2', label: 'N2 Fördjupad', icon: <Activity size={16} />, badge: getIcfBadge('icf-n2'), hiddenForChild: true, group: 'icf', color: 'orange' },
+    { id: 'icf-n3', label: 'N3 Samordnad', icon: <Activity size={16} />, badge: getIcfBadge('icf-n3'), hiddenForChild: true, group: 'icf', color: 'red' },
 
     // Barnets Resa Matris
     { id: 'journey-level', label: 'Nivåhantering', icon: <Layers size={16} />, badge: '⭐', hiddenForChild: true, group: 'matris', color: 'purple' },
@@ -215,7 +245,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
                         </span>
                         <span>{tab.label}</span>
                         {tab.badge && (
-                          <span className="text-[9px] px-1.5 py-0.5 bg-white/80 rounded-full -mt-1 -mr-0.5 shadow-sm">{tab.badge}</span>
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full -mt-1 -mr-0.5 shadow-sm ${
+                            tab.badge === '✓'
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-white/80'
+                          }`}>{tab.badge}</span>
                         )}
                       </button>
                     );
@@ -307,7 +341,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
                             <span className={`transition-transform ${isActive ? 'scale-110' : ''}`}>{tab.icon}</span>
                             <span className="font-medium text-sm truncate">{tab.label}</span>
                             {tab.badge && (
-                              <span className="text-[9px] ml-auto opacity-60">{tab.badge}</span>
+                              <span className={`text-[9px] ml-auto px-1.5 py-0.5 rounded-full ${
+                                tab.badge === '✓'
+                                  ? 'bg-emerald-100 text-emerald-700'
+                                  : 'opacity-60'
+                              }`}>{tab.badge}</span>
                             )}
                           </button>
                         );
