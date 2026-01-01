@@ -4,23 +4,31 @@
  * Uses the selected child profile from the system
  */
 
-import React, { useState } from 'react';
-import { Activity, Shield, TrendingUp, Info, User, BookOpen } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Activity, Shield, TrendingUp, Info, User, BookOpen, BarChart3 } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
+import GapTrendChart from './GapTrendChart';
 import LevelIndicator from './LevelIndicator';
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import { WelfareWheelSpoke } from '../types/types';
+import { GapTrend } from '../types/icf-types';
 
 interface ICFDemoProps {
   selectedProfileId: string;
 }
 
 const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
-  const [selectedTab, setSelectedTab] = useState<'overview' | 'gap' | 'risk'>('overview');
+  const [selectedTab, setSelectedTab] = useState<'overview' | 'gap' | 'risk' | 'trend'>('overview');
   const [selectedSpoke, setSelectedSpoke] = useState<WelfareWheelSpoke | undefined>(undefined);
 
   const profile = ICF_DEMO_PROFILES[selectedProfileId];
+
+  // Get gap trends for the current profile
+  const profileGapTrends = useMemo((): GapTrend[] => {
+    if (!profile || !profile.gapTrends) return [];
+    return Object.values(profile.gapTrends) as GapTrend[];
+  }, [profile]);
 
   // If profile doesn't have ICF data yet, show placeholder
   if (!profile || !profile.icfAssessments) {
@@ -28,12 +36,17 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
       <div className="max-w-7xl mx-auto">
         <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-8 text-center">
           <Info className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-yellow-900 mb-2">ICF-data inte tillgänglig än</h2>
+          <h2 className="text-2xl font-bold text-yellow-900 mb-2">ICF-data inte tillgänglig</h2>
           <p className="text-yellow-800">
-            ICF Gap-analys är för närvarande endast implementerad för <strong>Lisa J.</strong>
+            ICF Gap-analys är implementerad för följande profiler:
           </p>
-          <p className="text-sm text-yellow-700 mt-2">
-            Välj Lisa J. från profil-menyn för att se WHO ICF-integration.
+          <div className="flex justify-center gap-4 mt-4">
+            <span className="px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">Lisa J. (N2)</span>
+            <span className="px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">Elsa B. (N2)</span>
+            <span className="px-3 py-1.5 bg-red-100 text-red-800 rounded-full text-sm font-medium">Sofia B. (N3)</span>
+          </div>
+          <p className="text-sm text-yellow-700 mt-4">
+            Välj en av profilerna ovan för att se WHO ICF-integration.
           </p>
         </div>
       </div>
@@ -175,6 +188,21 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
               Risk/Skydd-balans
             </div>
           </button>
+          {profileGapTrends.length > 0 && (
+            <button
+              onClick={() => setSelectedTab('trend')}
+              className={`px-4 py-2 font-medium transition-colors ${
+                selectedTab === 'trend'
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Gap-trend
+              </div>
+            </button>
+          )}
         </div>
       </div>
 
@@ -237,6 +265,34 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
             showBySpoke={true}
             selectedSpoke={selectedSpoke}
           />
+        )}
+
+        {selectedTab === 'trend' && profileGapTrends.length > 0 && (
+          <div className="space-y-6">
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <p className="text-sm text-purple-900 font-medium mb-2">Gap-trendanalys över tid</p>
+              <p className="text-sm text-purple-800">
+                Visar hur gap mellan Performance och Capacity har förändrats över tid.
+                <strong> Negativa gap (↓)</strong> visar att anpassningar fungerar.
+                <strong> Positiva gap (↑)</strong> visar att barriärer finns.
+              </p>
+            </div>
+
+            <GapTrendChart
+              trends={profileGapTrends}
+              title={`${profile.name.split(' ')[0]}s utveckling över tid`}
+              showInterventions={true}
+            />
+
+            {profileGapTrends.map((trend, index) => (
+              <div key={index} className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p className="font-medium text-gray-900 mb-2 text-sm">
+                  Tolkning: {trend.domain} ({trend.icfCode})
+                </p>
+                <p className="text-sm text-gray-700">{trend.interpretation}</p>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

@@ -4,17 +4,19 @@
  * Based on WHO ICF N3 level - SIP-like coordinated planning across school, social services, and healthcare
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Activity, Shield, Users, FileText, Target, Calendar,
   CheckCircle2, AlertCircle, Info, User, Building2, Heart,
   GraduationCap, Home, Clock, ArrowRight, MessageSquare,
-  Layers, TrendingUp
+  Layers, TrendingUp, BarChart3
 } from 'lucide-react';
 import { ICF_DEMO_PROFILES } from '../data/icf-demo-profiles';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
+import GapTrendChart from './GapTrendChart';
 import { ActorSector, WelfareWheelSpoke } from '../types/types';
+import { GapTrend } from '../types/icf-types';
 
 interface N3CoordinatedPlanProps {
   selectedProfileId: string;
@@ -34,10 +36,16 @@ interface CoordinatedGoal {
 }
 
 const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId }) => {
-  const [selectedTab, setSelectedTab] = useState<'overview' | 'team' | 'goals' | 'icf'>('overview');
+  const [selectedTab, setSelectedTab] = useState<'overview' | 'team' | 'goals' | 'icf' | 'trend'>('overview');
 
   // Get profile from shared ICF_DEMO_PROFILES
   const profile = ICF_DEMO_PROFILES[selectedProfileId];
+
+  // Get gap trends for the current profile
+  const profileGapTrends = useMemo((): GapTrend[] => {
+    if (!profile || !profile.gapTrends) return [];
+    return Object.values(profile.gapTrends) as GapTrend[];
+  }, [profile]);
 
   // Only show full N3 for profiles with N3 level and complete data
   if (!profile || profile.level !== 'N3' || !profile.icfAssessments) {
@@ -174,7 +182,8 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
           { id: 'overview', label: 'Översikt', icon: <Target className="w-4 h-4" /> },
           { id: 'team', label: 'Team', icon: <Users className="w-4 h-4" /> },
           { id: 'goals', label: 'Mål', icon: <FileText className="w-4 h-4" /> },
-          { id: 'icf', label: 'ICF', icon: <Activity className="w-4 h-4" /> }
+          { id: 'icf', label: 'ICF', icon: <Activity className="w-4 h-4" /> },
+          { id: 'trend', label: 'Gap-trend', icon: <BarChart3 className="w-4 h-4" /> }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -424,6 +433,32 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
                 environmentalFactors={profile.environmentalFactors}
                 showBySpoke={true}
               />
+            </div>
+          )}
+
+          {/* Gap Trend Tab */}
+          {selectedTab === 'trend' && (
+            <div className="space-y-6">
+              <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 mb-4">
+                <p className="text-sm text-purple-800 font-medium mb-2">Gap-trendanalys över tid</p>
+                <p className="text-sm text-gray-700">
+                  Visar hur gap mellan Performance och Capacity har förändrats över tid.
+                  Negativa gap (↓) visar att anpassningar fungerar. Positiva gap (↑) visar att barriärer finns.
+                </p>
+              </div>
+
+              <GapTrendChart
+                trends={profileGapTrends}
+                title="Sofias utveckling över tid"
+                showInterventions={true}
+              />
+
+              {profileGapTrends.length > 0 && profileGapTrends[0].interpretation && (
+                <div className="bg-emerald-50 rounded-xl p-4">
+                  <p className="font-medium text-gray-900 mb-2 text-sm">Tolkning</p>
+                  <p className="text-sm text-gray-700">{profileGapTrends[0].interpretation}</p>
+                </div>
+              )}
             </div>
           )}
         </div>
