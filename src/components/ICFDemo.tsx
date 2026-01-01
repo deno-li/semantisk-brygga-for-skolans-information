@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { Activity, Shield, TrendingUp, Info, User, BookOpen, BarChart3 } from 'lucide-react';
+import { Activity, Shield, TrendingUp, Info, User, BookOpen, BarChart3, ArrowRight, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
 import ICFGapAnalysis from './ICFGapAnalysis';
 import RiskProtectionBalance from './RiskProtectionBalance';
 import GapTrendChart from './GapTrendChart';
@@ -30,24 +30,120 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
     return Object.values(profile.gapTrends) as GapTrend[];
   }, [profile]);
 
+  // Level-specific styling
+  const getLevelGradient = (level: string) => {
+    switch (level) {
+      case 'N1': return 'from-emerald-500 via-emerald-600 to-emerald-700';
+      case 'N2': return 'from-amber-500 via-orange-500 to-orange-600';
+      case 'N3': return 'from-rose-500 via-red-500 to-red-600';
+      default: return 'from-blue-600 to-blue-800';
+    }
+  };
+
+  const getLevelBadgeStyle = (level: string) => {
+    switch (level) {
+      case 'N1': return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+      case 'N2': return 'bg-amber-100 text-amber-800 border-amber-300';
+      case 'N3': return 'bg-rose-100 text-rose-800 border-rose-300';
+      default: return 'bg-blue-100 text-blue-800 border-blue-300';
+    }
+  };
+
+  const getLevelDescription = (level: string) => {
+    switch (level) {
+      case 'N1': return 'Universell';
+      case 'N2': return 'Stödprofil';
+      case 'N3': return 'Samordnad (SIP)';
+      default: return level;
+    }
+  };
+
   // If profile doesn't have ICF data yet, show placeholder
   if (!profile || !profile.icfAssessments) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-8 text-center">
-          <Info className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-yellow-900 mb-2">ICF-data inte tillgänglig</h2>
-          <p className="text-yellow-800">
-            ICF Gap-analys är implementerad för följande profiler:
-          </p>
-          <div className="flex justify-center gap-4 mt-4">
-            <span className="px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">Lisa J. (N2)</span>
-            <span className="px-3 py-1.5 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">Elsa B. (N2)</span>
-            <span className="px-3 py-1.5 bg-red-100 text-red-800 rounded-full text-sm font-medium">Sofia B. (N3)</span>
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center py-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white text-2xl mb-4 shadow-lg">
+            <Activity className="w-8 h-8" />
           </div>
-          <p className="text-sm text-yellow-700 mt-4">
-            Välj en av profilerna ovan för att se WHO ICF-integration.
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">WHO ICF-integration</h1>
+          <p className="text-gray-600">Performance vs Capacity • Environmental Factors • Gap-analys</p>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+          <div className="text-center">
+            <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center mx-auto mb-4">
+              <Info className="w-8 h-8 text-amber-600" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-3">ICF-data inte tillgänglig</h2>
+            <p className="text-gray-600 mb-6">
+              ICF Gap-analys är implementerad för följande profiler:
+            </p>
+
+            {/* Level progression visualization */}
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-2 mb-6">
+              <div className="flex items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">N2</div>
+                <div className="text-left">
+                  <p className="font-medium text-gray-900 text-sm">Lisa J.</p>
+                  <p className="text-xs text-gray-500">Stödprofil</p>
+                </div>
+              </div>
+
+              <ArrowRight className="w-5 h-5 text-gray-300 hidden md:block" />
+
+              <div className="flex items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">N2</div>
+                <div className="text-left">
+                  <p className="font-medium text-gray-900 text-sm">Elsa B.</p>
+                  <p className="text-xs text-gray-500">Stödprofil</p>
+                </div>
+              </div>
+
+              <ArrowRight className="w-5 h-5 text-gray-300 hidden md:block" />
+
+              <div className="flex items-center gap-3 px-4 py-3 bg-rose-50 border border-rose-200 rounded-xl">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-red-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">N3</div>
+                <div className="text-left">
+                  <p className="font-medium text-gray-900 text-sm">Sofia B.</p>
+                  <p className="text-xs text-gray-500">Samordnad (SIP)</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-500">
+              Välj en av profilerna ovan för att se WHO ICF-integration.
+            </p>
+          </div>
+        </div>
+
+        {/* Level explanation */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+          <h3 className="font-semibold text-gray-900 mb-4">Nivåer i WHO ICF-ramverket</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white font-bold text-xs">N1</div>
+                <span className="font-medium text-emerald-900">Universell</span>
+              </div>
+              <p className="text-xs text-emerald-800">Enkel screening för alla barn. Endast Performance-bedömning.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs">N2</div>
+                <span className="font-medium text-amber-900">Stödprofil</span>
+              </div>
+              <p className="text-xs text-amber-800">Fördjupad analys med Performance vs Capacity och gap-analys.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-rose-50 border border-rose-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-red-600 flex items-center justify-center text-white font-bold text-xs">N3</div>
+                <span className="font-medium text-rose-900">Samordnad</span>
+              </div>
+              <p className="text-xs text-rose-800">Tvärsektoriell samordning (SIP). Full ICF-integration.</p>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -56,148 +152,175 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
   const { icfAssessments, environmentalFactors, riskProtectionBalance, summary, childsVoice } = profile;
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">ICF-integration enligt WHO</h1>
-            <p className="text-blue-100 text-lg">
-              Performance vs Capacity • Environmental Factors • Gap-analys
-            </p>
-          </div>
-          <Activity className="w-12 h-12 text-blue-200" />
+    <div className="max-w-5xl mx-auto space-y-6">
+      {/* Modern Header with Level-specific gradient */}
+      <div className="text-center py-6">
+        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${getLevelGradient(profile.level)} text-white text-2xl mb-4 shadow-lg`}>
+          <Activity className="w-8 h-8" />
         </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">WHO ICF-integration</h1>
+        <p className="text-gray-600">Performance vs Capacity • Environmental Factors • Gap-analys</p>
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-start gap-3">
-          <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+            <Info className="w-5 h-5 text-blue-600" />
+          </div>
           <div>
-            <h3 className="font-semibold text-blue-900 mb-2">Om WHO ICF-ramverket</h3>
-            <div className="text-sm text-blue-900 space-y-2">
-              <p>
-                <strong>Performance</strong> = vad barnet GÖR i sin nuvarande miljö med anpassningar (t.ex. bildstöd, lugnrum).
-              </p>
-              <p>
-                <strong>Capacity</strong> = vad barnet KAN göra i standardmiljö utan hjälpmedel eller personligt stöd.
-              </p>
-              <p>
-                <strong>Gap-analys</strong> (Performance - Capacity) visar om anpassningar fungerar:
-              </p>
-              <ul className="list-disc ml-6 mt-1">
-                <li><strong>Negativ gap:</strong> Anpassningar FUNGERAR (Performance bättre än Capacity)</li>
-                <li><strong>Positiv gap:</strong> Barriärer finns (Performance sämre än Capacity)</li>
-                <li><strong>Gap = 0:</strong> Neutral (Performance = Capacity)</li>
-              </ul>
-              <p className="mt-3">
-                <strong>Environmental Factors</strong> (e-koder) kvantifierar hinder och möjliggörare:
-              </p>
-              <ul className="list-disc ml-6 mt-1">
-                <li><strong>Barriers (.1-.4):</strong> Hinder i miljön som begränsar delaktighet</li>
-                <li><strong>Facilitators (+1-+4):</strong> Möjliggörare som förbättrar delaktighet</li>
-              </ul>
+            <h3 className="font-semibold text-gray-900 mb-3">Om WHO ICF-ramverket</h3>
+            <div className="text-sm text-gray-700 space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="p-3 bg-gray-50 rounded-xl">
+                  <p className="font-medium text-gray-900 text-xs uppercase tracking-wide mb-1">Performance</p>
+                  <p className="text-gray-600 text-sm">Vad barnet <strong>GÖR</strong> i sin nuvarande miljö med anpassningar</p>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-xl">
+                  <p className="font-medium text-gray-900 text-xs uppercase tracking-wide mb-1">Capacity</p>
+                  <p className="text-gray-600 text-sm">Vad barnet <strong>KAN</strong> göra utan hjälpmedel eller stöd</p>
+                </div>
+              </div>
+
+              <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
+                <p className="font-medium text-purple-900 text-xs uppercase tracking-wide mb-2">Gap-analys (Performance - Capacity)</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium">
+                    <CheckCircle2 className="w-3 h-3" /> Negativ: Anpassningar fungerar
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">
+                    <AlertTriangle className="w-3 h-3" /> Positiv: Barriärer finns
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                    Gap = 0: Neutral
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white border border-gray-300 rounded-lg p-6">
-        <div className="flex items-start gap-4">
-          <User className="w-16 h-16 text-blue-600" />
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center gap-5">
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br ${getLevelGradient(profile.level)} shadow-lg`}>
+            <User className="w-8 h-8 text-white" />
+          </div>
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
-            <p className="text-gray-600">{profile.age} år, {profile.grade} • Nivå: {profile.level} ({profile.level === 'N2' ? 'Stödprofil' : profile.level === 'N1' ? 'Universell' : 'Samordnad'})</p>
-
-            <div className="mt-4 bg-yellow-50 border border-yellow-300 rounded p-4">
-              <p className="font-medium text-yellow-900 mb-2">📖 Sammanfattning:</p>
-              <p className="text-sm text-yellow-900">{summary.primaryConcerns.join(', ')}</p>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-xs font-semibold text-yellow-900 mb-1">Styrkor:</p>
-                  <ul className="text-xs text-yellow-800 space-y-0.5">
-                    {summary.strengths.map((s, i) => (
-                      <li key={i}>✓ {s}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-yellow-900 mb-1">Nästa steg:</p>
-                  <ul className="text-xs text-yellow-800 space-y-0.5">
-                    {summary.nextSteps.map((s, i) => (
-                      <li key={i}>→ {s}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+            <div className="flex items-center gap-3 mb-1">
+              <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
+              <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getLevelBadgeStyle(profile.level)}`}>
+                {profile.level}
+              </span>
             </div>
-
-            {/* Barnets röst */}
-            {childsVoice && (
-              <div className="mt-4 bg-green-50 border border-green-300 rounded p-4">
-                <p className="font-medium text-green-900 mb-2">💬 {profile.name.split(' ')[0]}s röst:</p>
-                <p className="text-sm text-green-900 italic">"{childsVoice.goals}"</p>
-                <p className="text-xs text-green-800 mt-2">{childsVoice.howFeeling}</p>
-              </div>
-            )}
+            <p className="text-sm text-gray-500">{profile.age} år • {profile.grade} • {getLevelDescription(profile.level)}</p>
           </div>
         </div>
+
+        {/* Summary with animated progress indicator */}
+        <div className="mt-5 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <BookOpen className="w-4 h-4 text-amber-600" />
+            <p className="font-medium text-amber-900 text-sm">Sammanfattning</p>
+          </div>
+          <p className="text-sm text-amber-800 mb-3">{summary.primaryConcerns.join(', ')}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white/60 rounded-lg p-3">
+              <p className="text-xs font-semibold text-emerald-800 mb-2 flex items-center gap-1">
+                <Sparkles className="w-3 h-3" /> Styrkor
+              </p>
+              <ul className="text-xs text-gray-700 space-y-1">
+                {summary.strengths.slice(0, 3).map((s, i) => (
+                  <li key={i} className="flex items-start gap-1.5">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white/60 rounded-lg p-3">
+              <p className="text-xs font-semibold text-blue-800 mb-2 flex items-center gap-1">
+                <ArrowRight className="w-3 h-3" /> Nästa steg
+              </p>
+              <ul className="text-xs text-gray-700 space-y-1">
+                {summary.nextSteps.slice(0, 3).map((s, i) => (
+                  <li key={i} className="flex items-start gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Barnets röst */}
+        {childsVoice && (
+          <div className="mt-4 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-sm">💬</div>
+              <p className="font-medium text-emerald-900 text-sm">{profile.name.split(' ')[0]}s röst</p>
+            </div>
+            <p className="text-sm text-emerald-800 italic mb-2">"{childsVoice.goals}"</p>
+            <p className="text-xs text-emerald-700">{childsVoice.howFeeling}</p>
+          </div>
+        )}
       </div>
 
-      {/* Tabs */}
-      <div className="border-b border-gray-300">
-        <div className="flex gap-4">
+      {/* Modern Tabs */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-1.5 shadow-sm">
+        <div className="flex gap-1">
           <button
             onClick={() => setSelectedTab('overview')}
-            className={`px-4 py-2 font-medium transition-colors ${
+            className={`flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
               selectedTab === 'overview'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-gray-900 text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <BookOpen className="w-4 h-4" />
               Översikt
             </div>
           </button>
           <button
             onClick={() => setSelectedTab('gap')}
-            className={`px-4 py-2 font-medium transition-colors ${
+            className={`flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
               selectedTab === 'gap'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-gray-900 text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Activity className="w-4 h-4" />
               Gap-analys
             </div>
           </button>
           <button
             onClick={() => setSelectedTab('risk')}
-            className={`px-4 py-2 font-medium transition-colors ${
+            className={`flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
               selectedTab === 'risk'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-gray-900 text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Shield className="w-4 h-4" />
-              Risk/Skydd-balans
+              Risk/Skydd
             </div>
           </button>
           {profileGapTrends.length > 0 && (
             <button
               onClick={() => setSelectedTab('trend')}
-              className={`px-4 py-2 font-medium transition-colors ${
+              className={`flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
                 selectedTab === 'trend'
-                  ? 'border-b-2 border-blue-600 text-blue-600'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Gap-trend
               </div>
@@ -216,33 +339,65 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
               nextReview={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()}
             />
 
-            {/* Quick Stats */}
+            {/* Quick Stats with animated progress indicators */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white border border-gray-300 rounded-lg p-6 text-center">
-                <Activity className="w-10 h-10 text-blue-600 mx-auto mb-2" />
-                <p className="text-sm text-gray-600 mb-1">ICF Assessments</p>
-                <p className="text-3xl font-bold text-gray-900">{icfAssessments.length}</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  {icfAssessments.filter(a => a.gapInterpretation === 'facilitators-work').length} med fungerar anpassningar
-                </p>
+              <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <span className="text-3xl font-bold text-gray-900">{icfAssessments.length}</span>
+                </div>
+                <p className="text-sm font-medium text-gray-900 mb-1">ICF Bedömningar</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                      style={{ width: `${(icfAssessments.filter(a => a.gapInterpretation === 'facilitators-work').length / icfAssessments.length) * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {icfAssessments.filter(a => a.gapInterpretation === 'facilitators-work').length} fungerar
+                  </span>
+                </div>
               </div>
 
-              <div className="bg-white border border-gray-300 rounded-lg p-6 text-center">
-                <Shield className="w-10 h-10 text-green-600 mx-auto mb-2" />
-                <p className="text-sm text-gray-600 mb-1">Skyddsfaktorer</p>
-                <p className="text-3xl font-bold text-green-600">+{riskProtectionBalance.protectionScore}</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  {riskProtectionBalance.facilitators.length} facilitators
-                </p>
+              <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <span className="text-3xl font-bold text-emerald-600">+{riskProtectionBalance.protectionScore}</span>
+                </div>
+                <p className="text-sm font-medium text-gray-900 mb-1">Skyddsfaktorer</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min((riskProtectionBalance.protectionScore / 10) * 100, 100)}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-500">{riskProtectionBalance.facilitators.length} aktiva</span>
+                </div>
               </div>
 
-              <div className="bg-white border border-gray-300 rounded-lg p-6 text-center">
-                <TrendingUp className="w-10 h-10 text-orange-600 mx-auto mb-2" />
-                <p className="text-sm text-gray-600 mb-1">Riskfaktorer</p>
-                <p className="text-3xl font-bold text-orange-600">{riskProtectionBalance.riskScore}</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  {riskProtectionBalance.barriers.length} barriers
-                </p>
+              <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-amber-600" />
+                  </div>
+                  <span className="text-3xl font-bold text-amber-600">{riskProtectionBalance.riskScore}</span>
+                </div>
+                <p className="text-sm font-medium text-gray-900 mb-1">Riskfaktorer</p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min((riskProtectionBalance.riskScore / 5) * 100, 100)}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-500">{riskProtectionBalance.barriers.length} hinder</span>
+                </div>
               </div>
             </div>
 
@@ -297,12 +452,12 @@ const ICFDemo: React.FC<ICFDemoProps> = ({ selectedProfileId }) => {
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 text-center">
-        <p className="text-sm text-gray-700">
-          <strong>Referenser:</strong> WHO (2002). ICF Beginner's Guide • Världshälsoorganisationen (2001). ICF: International Classification of Functioning, Disability and Health
+      <div className="text-center py-6">
+        <p className="text-xs text-gray-400">
+          WHO (2002). ICF Beginner's Guide • Världshälsoorganisationen (2001). ICF
         </p>
-        <p className="text-xs text-gray-600 mt-2">
-          Detta är en prototyp för demonstration. Baserad på exempel från praktiska guiden för ICF-integration i svensk välfärd.
+        <p className="text-xs text-gray-400 mt-1">
+          Prototyp för demonstration av ICF-integration i svensk välfärd
         </p>
       </div>
     </div>
