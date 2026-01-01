@@ -289,10 +289,9 @@ const Header: React.FC<HeaderProps> = ({
               `}
             >
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-sm border-2"
+                className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold text-white shadow-md ring-2 ring-white/50"
                 style={{
-                  backgroundColor: currentMetadata.colorScheme.background,
-                  borderColor: getSupportLevelColor(currentMetadata.supportLevel),
+                  background: currentMetadata.colorScheme.background,
                 }}
               >
                 {currentMetadata.emoji}
@@ -327,7 +326,7 @@ const Header: React.FC<HeaderProps> = ({
                           setShowProfileDropdown(false);
                         }}
                         className={`
-                          w-full text-left px-4 py-3 transition-all duration-200
+                          group w-full text-left px-4 py-3 transition-all duration-200
                           flex items-center gap-3
                           ${isSelected
                             ? 'bg-teal-50 border-l-3 border-l-teal-500'
@@ -336,10 +335,9 @@ const Header: React.FC<HeaderProps> = ({
                         `}
                       >
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-lg border-2 shrink-0"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-md ring-2 ring-white/50 shrink-0 transition-transform group-hover:scale-105"
                           style={{
-                            backgroundColor: metadata.colorScheme.background,
-                            borderColor: getSupportLevelColor(metadata.supportLevel),
+                            background: metadata.colorScheme.background,
                           }}
                         >
                           {metadata.emoji}

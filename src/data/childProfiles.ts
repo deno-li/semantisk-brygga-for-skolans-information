@@ -99,10 +99,10 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     supportLevel: 'universal',
     currentPhase: 'elementary-school',
     description: 'Universell nivå - Allt fungerar bra',
-    emoji: '👦',
+    emoji: 'EA',
     colorScheme: {
       primary: '#378056',
-      background: '#E8F5E9'
+      background: 'linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%)'
     }
   },
 
@@ -111,10 +111,10 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     supportLevel: 'enhanced-support',
     currentPhase: 'elementary-school',
     description: 'Stödprofil - Stödsamtal och social träning',
-    emoji: '👧',
+    emoji: 'LJ',
     colorScheme: {
       primary: '#E87C00',
-      background: '#FFF4E6'
+      background: 'linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%)'
     }
   },
 
@@ -123,10 +123,10 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     supportLevel: 'enhanced-support',
     currentPhase: 'elementary-school',
     description: 'Stödprofil - Dyslexi med anpassningar (ICF-exempel)',
-    emoji: '👧🏼',
+    emoji: 'EB',
     colorScheme: {
       primary: '#E87C00',
-      background: '#FFF4E6'
+      background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%)'
     }
   },
 
@@ -135,10 +135,10 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     supportLevel: 'early-attention',
     currentPhase: 'elementary-school',
     description: 'Tidig uppmärksamhet - Språksvårigheter och social oro',
-    emoji: '👦🏽',
+    emoji: 'OH',
     colorScheme: {
       primary: '#FFC107',
-      background: '#FFFEF7'
+      background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)'
     }
   },
 
@@ -147,10 +147,10 @@ export const PROFILE_METADATA: {[key: string]: ChildProfileMetadata} = {
     supportLevel: 'intensive-support',
     currentPhase: 'high-school',
     description: 'Samordning - BUP, socialtjänst och skola samverkar',
-    emoji: '👧🏼',
+    emoji: 'SB',
     colorScheme: {
       primary: '#B00020',
-      background: '#FFEBEE'
+      background: 'linear-gradient(135deg, #f472b6 0%, #ec4899 50%, #db2777 100%)'
     }
   }
 };
