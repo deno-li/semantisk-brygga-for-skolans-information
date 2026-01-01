@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Sparkles,
   Activity,
@@ -34,9 +34,234 @@ import {
   ChevronUp,
   ArrowUpRight,
   GraduationCap,
-  Heart
+  Heart,
+  X,
+  ClipboardList,
+  BarChart3
 } from 'lucide-react';
 import { SHANARRI_DATA } from '../data/shanarriData';
+
+// ============================================
+// ICF QUALIFIER LABELS (0-4 scale from WHO ICF)
+// ============================================
+const ICF_QUALIFIER_LABELS: Record<number, { label: string; description: string; color: string }> = {
+  0: { label: 'Inget problem', description: '0-4%', color: 'bg-emerald-500' },
+  1: { label: 'Lätt problem', description: '5-24%', color: 'bg-lime-500' },
+  2: { label: 'Måttligt problem', description: '25-49%', color: 'bg-amber-500' },
+  3: { label: 'Gravt problem', description: '50-95%', color: 'bg-orange-500' },
+  4: { label: 'Totalt problem', description: '96-100%', color: 'bg-red-500' },
+};
+
+// ============================================
+// JOURNEY LEVELS CONFIGURATION
+// ============================================
+const JOURNEY_LEVELS = {
+  N1: { name: 'N1 Universell', description: 'Hälsofrämjande insatser för alla barn', color: 'emerald' },
+  N2: { name: 'N2 Stödprofil', description: 'Riktade insatser för barn med behov', color: 'amber' },
+  N3: { name: 'N3 Samordning', description: 'Koordinerade insatser över huvudmannagränser', color: 'rose' },
+};
+
+// ============================================
+// ESCALATION ALERT COMPONENT
+// ============================================
+interface EscalationAlertProps {
+  currentLevel: 'N1' | 'N2' | 'N3';
+  suggestedLevel: 'N1' | 'N2' | 'N3';
+  reasons: string[];
+  onConfirm: (newLevel: 'N1' | 'N2' | 'N3') => void;
+  onDismiss: () => void;
+}
+
+const EscalationAlert: React.FC<EscalationAlertProps> = ({
+  currentLevel,
+  suggestedLevel,
+  reasons,
+  onConfirm,
+  onDismiss,
+}) => {
+  const currentInfo = JOURNEY_LEVELS[currentLevel];
+  const suggestedInfo = JOURNEY_LEVELS[suggestedLevel];
+
+  return (
+    <div className="bg-gradient-to-r from-rose-50 to-pink-50 border-2 border-rose-200 rounded-3xl p-6 mb-6 shadow-lg animate-pulse">
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-rose-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <AlertTriangle className="w-6 h-6 text-white" />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-bold text-rose-800 text-lg mb-2">Eskaleringsvarning</h3>
+          <p className="text-sm text-rose-700 mb-4">
+            Baserat på de justerade värdena har automatiska eskaleringskriterier utlösts.
+            En uppflyttning till högre stödnivå rekommenderas.
+          </p>
+
+          {/* Level Transition */}
+          <div className="flex items-center justify-center gap-4 py-4 bg-white/50 rounded-2xl mb-4">
+            <div className="text-center">
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium bg-${currentInfo.color}-100 text-${currentInfo.color}-700 mb-2`}>
+                Nuvarande
+              </span>
+              <p className="font-bold text-gray-900">{currentInfo.name}</p>
+            </div>
+            <ArrowRight className="w-6 h-6 text-rose-500" />
+            <div className="text-center">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-rose-500 text-white mb-2">
+                Rekommenderad
+              </span>
+              <p className="font-bold text-gray-900">{suggestedInfo.name}</p>
+            </div>
+          </div>
+
+          {/* Reasons */}
+          <div className="bg-white/70 rounded-xl p-4 mb-4">
+            <p className="text-sm font-semibold text-rose-800 mb-2">Utlösande orsaker:</p>
+            <ul className="space-y-1">
+              {reasons.map((reason, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-rose-700">
+                  <span className="text-rose-500 mt-0.5">•</span>
+                  {reason}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3">
+            <button
+              onClick={() => onConfirm(suggestedLevel)}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-rose-500 text-white font-medium rounded-xl hover:bg-rose-600 transition-colors shadow-lg"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              Bekräfta eskalering
+            </button>
+            <button
+              onClick={onDismiss}
+              className="flex items-center gap-2 px-4 py-3 bg-white text-rose-700 font-medium rounded-xl border-2 border-rose-200 hover:bg-rose-50 transition-colors"
+            >
+              <X className="w-4 h-4" />
+              Ignorera
+            </button>
+          </div>
+
+          <p className="text-xs text-rose-600 text-center mt-4">
+            Vid akut oro, kontakta alltid ansvarig chef eller socialtjänst direkt.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// STATISTICS SUMMARY COMPONENT
+// ============================================
+interface StatisticsSummaryProps {
+  spokeValues: Record<string, number>;
+  baselineValues: Record<string, number>;
+}
+
+const StatisticsSummary: React.FC<StatisticsSummaryProps> = ({ spokeValues, baselineValues }) => {
+  const stats = useMemo(() => {
+    const values = Object.values(spokeValues);
+    const baseValues = Object.values(baselineValues);
+
+    return {
+      totalSpokes: values.length,
+      criticalCount: values.filter(v => v <= 1).length,
+      concernCount: values.filter(v => v === 2).length,
+      okCount: values.filter(v => v === 3).length,
+      goodCount: values.filter(v => v >= 4).length,
+      average: (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1),
+      improved: Object.keys(spokeValues).filter(k => spokeValues[k] > baselineValues[k]).length,
+      declined: Object.keys(spokeValues).filter(k => spokeValues[k] < baselineValues[k]).length,
+    };
+  }, [spokeValues, baselineValues]);
+
+  return (
+    <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-white/50 p-5 shadow-lg">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shadow-lg">
+          <BarChart3 className="w-5 h-5 text-white" />
+        </div>
+        <h4 className="font-semibold text-gray-900">Statistiksammanställning</h4>
+      </div>
+
+      <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="text-center p-3 bg-red-50 rounded-xl">
+          <span className="text-2xl font-bold text-red-600">{stats.criticalCount}</span>
+          <p className="text-xs text-red-600">Kritisk</p>
+        </div>
+        <div className="text-center p-3 bg-orange-50 rounded-xl">
+          <span className="text-2xl font-bold text-orange-600">{stats.concernCount}</span>
+          <p className="text-xs text-orange-600">Bekymmer</p>
+        </div>
+        <div className="text-center p-3 bg-amber-50 rounded-xl">
+          <span className="text-2xl font-bold text-amber-600">{stats.okCount}</span>
+          <p className="text-xs text-amber-600">OK</p>
+        </div>
+        <div className="text-center p-3 bg-emerald-50 rounded-xl">
+          <span className="text-2xl font-bold text-emerald-600">{stats.goodCount}</span>
+          <p className="text-xs text-emerald-600">Bra/Utmärkt</p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="w-4 h-4 text-emerald-500" />
+          <span className="text-emerald-700">{stats.improved} förbättrade</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <TrendingDown className="w-4 h-4 text-red-500" />
+          <span className="text-red-700">{stats.declined} försämrade</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// WORKFLOW PROGRESS COMPONENT
+// ============================================
+interface WorkflowProgressProps {
+  currentPhase: 'intake' | 'assessment' | 'review' | 'complete';
+  progress: number;
+}
+
+const WorkflowProgress: React.FC<WorkflowProgressProps> = ({ currentPhase, progress }) => {
+  const phases = [
+    { id: 'intake', label: 'Introduktion' },
+    { id: 'assessment', label: 'Bedömning' },
+    { id: 'review', label: 'Granskning' },
+    { id: 'complete', label: 'Klar' },
+  ];
+
+  return (
+    <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-white/50 p-4 shadow-lg mb-6">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-medium text-gray-600">Framsteg</span>
+        <span className="text-sm font-bold text-gray-900">{Math.round(progress)}%</span>
+      </div>
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-3">
+        <div
+          className="h-full bg-gradient-to-r from-violet-500 to-purple-500 rounded-full transition-all duration-500"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <div className="flex justify-between">
+        {phases.map((phase) => (
+          <span
+            key={phase.id}
+            className={`text-xs font-medium transition-colors ${
+              currentPhase === phase.id ? 'text-violet-600' : 'text-gray-400'
+            }`}
+          >
+            {phase.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // SHANARRI spoke configuration
 const SHANARRI_SPOKES = [
@@ -212,6 +437,27 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
   const [trendDirection, setTrendDirection] = useState<'improving' | 'stable' | 'declining'>('stable');
   const [suggestedActions, setSuggestedActions] = useState<string[]>([]);
 
+  // Escalation alert state
+  const [showEscalationAlert, setShowEscalationAlert] = useState(false);
+  const [escalationReasons, setEscalationReasons] = useState<string[]>([]);
+  const [previousRecommendedLevel, setPreviousRecommendedLevel] = useState<'N1' | 'N2' | 'N3'>('N1');
+
+  // Workflow phase state (for PDCA mode)
+  const [workflowPhase, setWorkflowPhase] = useState<'intake' | 'assessment' | 'review' | 'complete'>('intake');
+  const [workflowProgress, setWorkflowProgress] = useState(25);
+
+  // ICF Qualifier assessments
+  const [icfQualifiers, setIcfQualifiers] = useState<Record<string, number>>({
+    trygg: 0,
+    halsa: 0,
+    utvecklas: 1,
+    omvardad: 0,
+    aktiv: 1,
+    respekterad: 0,
+    ansvarstagande: 1,
+    delaktig: 0,
+  });
+
   // Calculate derived metrics
   const metrics = useMemo(() => {
     const values = Object.values(spokeValues);
@@ -272,6 +518,64 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
     });
     return diffs;
   }, [perspectives]);
+
+  // Detect escalation triggers
+  useEffect(() => {
+    const newLevel = metrics.recommendedLevel;
+
+    // Check if we should show escalation alert
+    if (newLevel !== previousRecommendedLevel) {
+      const levelOrder = { 'N1': 1, 'N2': 2, 'N3': 3 };
+
+      // Only trigger alert when escalating UP (not de-escalating)
+      if (levelOrder[newLevel] > levelOrder[previousRecommendedLevel]) {
+        const reasons: string[] = [];
+        const values = Object.entries(spokeValues);
+
+        // Generate reasons based on values
+        const criticalSpokes = values.filter(([_, v]) => v <= 1);
+        const concernSpokes = values.filter(([_, v]) => v === 2);
+
+        if (criticalSpokes.length > 0) {
+          reasons.push(`${criticalSpokes.length} dimension(er) på kritisk nivå (1)`);
+        }
+        if (concernSpokes.length >= 3) {
+          reasons.push(`${concernSpokes.length} dimensioner visar bekymmer (≤2)`);
+        }
+        if (metrics.balance < -2) {
+          reasons.push('Riskfaktorer överväger skyddsfaktorer markant');
+        }
+        if (metrics.resilience <= 3) {
+          reasons.push('Mycket låg motståndskraft (Resilience ≤3)');
+        }
+
+        if (reasons.length > 0) {
+          setEscalationReasons(reasons);
+          setShowEscalationAlert(true);
+        }
+      }
+
+      setPreviousRecommendedLevel(newLevel);
+    }
+  }, [metrics.recommendedLevel, metrics.balance, metrics.resilience, spokeValues, previousRecommendedLevel]);
+
+  // Handle escalation confirmation
+  const handleEscalationConfirm = useCallback((newLevel: 'N1' | 'N2' | 'N3') => {
+    setCurrentLevel(newLevel);
+    setShowEscalationAlert(false);
+    setEscalationReasons([]);
+  }, []);
+
+  // Handle escalation dismissal
+  const handleEscalationDismiss = useCallback(() => {
+    setShowEscalationAlert(false);
+    setEscalationReasons([]);
+  }, []);
+
+  // Handle ICF qualifier change
+  const handleICFQualifierChange = useCallback((spokeId: string, value: number) => {
+    setIcfQualifiers(prev => ({ ...prev, [spokeId]: value }));
+  }, []);
 
   // Handle slider change
   const handleSpokeChange = useCallback((spokeId: string, value: number) => {
@@ -834,6 +1138,9 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
   // PDCA Mode (Mikroloopar)
   const renderPDCAMode = () => (
     <div className="space-y-6">
+      {/* Workflow Progress */}
+      <WorkflowProgress currentPhase={workflowPhase} progress={workflowProgress} />
+
       {/* Spoke selector */}
       <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
         <h3 className="font-bold text-gray-900 text-lg mb-4">Välj dimension för PDCA-mikroloop</h3>
@@ -1034,6 +1341,70 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* ICF Qualifier Sliders */}
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-bold text-gray-900">ICF-kvalifikatorer (0-4 skala)</h4>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Activity className="w-4 h-4" />
+            <span>WHO ICF standardbedömning</span>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {SHANARRI_SPOKES.map((spoke) => {
+            const qualifier = icfQualifiers[spoke.id] ?? 0;
+            const qualifierInfo = ICF_QUALIFIER_LABELS[qualifier];
+
+            return (
+              <div key={spoke.id} className="p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">{spoke.icon}</span>
+                    <span className="font-medium text-gray-900">{spoke.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-3 py-1 rounded-full text-white text-sm font-medium ${qualifierInfo.color}`}>
+                      {qualifier} - {qualifierInfo.label}
+                    </span>
+                    <span className="text-xs text-gray-500">{qualifierInfo.description}</span>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max="4"
+                    step="1"
+                    value={qualifier}
+                    onChange={(e) => handleICFQualifierChange(spoke.id, parseInt(e.target.value))}
+                    className="w-full h-3 rounded-full appearance-none cursor-pointer bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500"
+                  />
+                  <div className="flex justify-between mt-1 text-xs text-gray-400">
+                    <span>0</span>
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 p-4 bg-blue-50 rounded-xl">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-blue-500 mt-0.5" />
+            <div className="text-sm text-blue-700">
+              <p className="font-medium mb-1">WHO ICF Qualifier Scale</p>
+              <p>0=Inget problem (0-4%), 1=Lätt (5-24%), 2=Måttligt (25-49%), 3=Gravt (50-95%), 4=Totalt (96-100%)</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1462,6 +1833,9 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
         </div>
       </div>
 
+      {/* Statistics Summary */}
+      <StatisticsSummary spokeValues={spokeValues} baselineValues={baselineValues} />
+
       {/* Insights */}
       <button
         onClick={() => setShowDetails(!showDetails)}
@@ -1545,6 +1919,17 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
             "Tänk om..." • Interaktiv simulering • SHANARRI × ICF × Resilience
           </p>
         </div>
+
+        {/* Escalation Alert - triggered when level change is recommended */}
+        {showEscalationAlert && (
+          <EscalationAlert
+            currentLevel={currentLevel}
+            suggestedLevel={metrics.recommendedLevel}
+            reasons={escalationReasons}
+            onConfirm={handleEscalationConfirm}
+            onDismiss={handleEscalationDismiss}
+          />
+        )}
 
         {/* Mode tabs */}
         <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-4 shadow-xl">
