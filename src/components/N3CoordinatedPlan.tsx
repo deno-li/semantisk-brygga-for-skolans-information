@@ -147,7 +147,6 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
         {/* Risk Protection */}
         {profile.riskProtectionBalance && (
           <RiskProtectionBalance
-            balance={profile.riskProtectionBalance}
             environmentalFactors={profile.environmentalFactors}
           />
         )}
