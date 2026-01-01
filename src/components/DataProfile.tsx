@@ -1,7 +1,7 @@
 
-import React, { useState, memo, useMemo } from 'react';
-import { SHANARRI_DATA } from '../data/constants';
+import React, { useState, memo } from 'react';
 import { X, BookOpen, ExternalLink, Info, Database, Layers, FileText, Settings, ArrowRight } from 'lucide-react';
+import { useProfileData } from '../hooks/useProfileData';
 import BBICTriangle from './BBICTriangle';
 import IBICWheel from './IBICWheel';
 
@@ -79,6 +79,7 @@ interface DataProfileProps {
 
 const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' }) => {
   const [selectedCode, setSelectedCode] = useState<{ type: string; code: string } | null>(null);
+  const { shanarriData, childProfile } = useProfileData(selectedProfileId);
 
   const handleCloseModal = () => setSelectedCode(null);
 
@@ -93,6 +94,11 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
         <p className="text-gray-600">
           Tvärsektoriell datamodell • Semantisk brygga
         </p>
+        {childProfile && (
+          <p className="text-sm text-gray-500 mt-2">
+            Visar data för: <span className="font-semibold text-purple-700">{childProfile.name}</span>
+          </p>
+        )}
       </div>
 
       {/* Semantic Bridge Flow Visualization */}
@@ -230,7 +236,7 @@ const DataProfile: React.FC<DataProfileProps> = ({ selectedProfileId = 'erik' })
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-gray-700">
-              {SHANARRI_DATA.map((row) => (
+              {shanarriData.map((row) => (
                 <tr key={row.id} className="hover:bg-gray-50 group transition-colors">
                   <td className="p-3 border-r border-gray-200 font-medium">
                     <div className="flex items-center gap-2">
