@@ -47,39 +47,61 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
     return Object.values(profile.gapTrends) as GapTrend[];
   }, [profile]);
 
-  // Get level-specific gradient
+  // Get level-specific gradient - modern
   const getLevelGradient = (level: string) => {
     switch (level) {
-      case 'N1': return 'from-emerald-500 via-emerald-600 to-emerald-700';
-      case 'N2': return 'from-amber-500 via-orange-500 to-orange-600';
-      case 'N3': return 'from-rose-500 via-red-500 to-red-600';
-      default: return 'from-rose-500 to-red-600';
+      case 'N1': return 'from-emerald-400 via-teal-500 to-cyan-600';
+      case 'N2': return 'from-amber-400 via-orange-500 to-rose-500';
+      case 'N3': return 'from-rose-400 via-pink-500 to-purple-600';
+      default: return 'from-rose-400 via-pink-500 to-purple-600';
+    }
+  };
+
+  // Get level-specific background gradient
+  const getLevelBgGradient = (level: string) => {
+    switch (level) {
+      case 'N1': return 'from-emerald-50/80 via-teal-50/60 to-cyan-50/40';
+      case 'N2': return 'from-amber-50/80 via-orange-50/60 to-rose-50/40';
+      case 'N3': return 'from-rose-50/80 via-pink-50/60 to-purple-50/40';
+      default: return 'from-rose-50/80 via-pink-50/60 to-purple-50/40';
     }
   };
 
   // If profile doesn't have ICF data, show placeholder
   if (!profile || !profile.icfAssessments) {
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
-        <div className="text-center py-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white text-2xl mb-4 shadow-lg">
-            <Users className="w-8 h-8" />
+      <div className="min-h-screen bg-gradient-to-br from-rose-50/80 via-pink-50/60 to-purple-50/40">
+        <div className="max-w-5xl mx-auto space-y-8 py-8 px-4">
+          {/* Decorative background */}
+          <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+            <div className="absolute top-20 -right-32 w-96 h-96 rounded-full bg-gradient-to-br from-rose-200/20 to-pink-200/20 blur-3xl" />
+            <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-pink-200/20 to-purple-200/20 blur-3xl" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
-          <p className="text-gray-600">Tvärsektoriell koordinering • SIP • Team-baserad planering</p>
-        </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm text-center">
-          <div className="w-16 h-16 rounded-2xl bg-rose-100 flex items-center justify-center mx-auto mb-4">
-            <Info className="w-8 h-8 text-rose-600" />
+          <div className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-400 via-pink-500 to-purple-600 text-white mb-6 shadow-2xl shadow-rose-200/50 transform hover:scale-105 transition-transform duration-300">
+              <Users className="w-10 h-10" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-3 tracking-tight">
+              N3 Samordnad plan
+            </h1>
+            <p className="text-gray-500 text-lg font-light tracking-wide">
+              Tvärsektoriell koordinering • SIP • Team-baserad planering
+            </p>
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-3">ICF-data inte tillgänglig</h2>
-          <p className="text-gray-600 mb-4">
-            N3 Samordnad plan kräver ICF-bedömningar för att visa koordineringsdata.
-          </p>
-          <p className="text-sm text-gray-500">
-            Alla profiler med ICF-data kan visas här.
-          </p>
+
+          <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-10 shadow-xl shadow-gray-100/50 text-center">
+            <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-rose-200/50">
+              <Info className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">ICF-data inte tillgänglig</h2>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              N3 Samordnad plan kräver ICF-bedömningar för att visa koordineringsdata.
+            </p>
+            <p className="text-sm text-gray-400">
+              Alla profiler med ICF-data kan visas här.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -91,79 +113,89 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
   // For non-N3 profiles, show simplified view with ICF data
   if (!hasCoordinationData) {
     return (
-      <div className="max-w-5xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="text-center py-6">
-          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${getLevelGradient(profile.level)} text-white text-2xl mb-4 shadow-lg`}>
-            <Users className="w-8 h-8" />
+      <div className={`min-h-screen bg-gradient-to-br ${getLevelBgGradient(profile.level)}`}>
+        <div className="max-w-5xl mx-auto space-y-8 py-8 px-4">
+          {/* Decorative background elements */}
+          <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+            <div className="absolute top-20 -right-32 w-96 h-96 rounded-full bg-gradient-to-br from-rose-200/20 to-pink-200/20 blur-3xl" />
+            <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-pink-200/20 to-purple-200/20 blur-3xl" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
-          <p className="text-gray-600">
-            {profile.level === 'N1' ? 'Universell nivå' : profile.level === 'N2' ? 'Stödprofil' : 'Samordnad nivå'} • ICF-översikt
-          </p>
-        </div>
 
-        {/* Info about N3 */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-              <Info className="w-5 h-5 text-blue-600" />
+          {/* Header */}
+          <div className="text-center py-8">
+            <div className={`inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br ${getLevelGradient(profile.level)} text-white mb-6 shadow-2xl shadow-rose-200/50 transform hover:scale-105 transition-transform duration-300`}>
+              <Users className="w-10 h-10" />
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Om N3 Samordnad plan</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                <strong>{profile.name}</strong> är för närvarande på nivå <strong>{profile.level}</strong>.
-                {profile.level === 'N1' && ' Inga behov av samordnade insatser identifierade.'}
-                {profile.level === 'N2' && ' Vid behov kan N3 aktiveras för tvärsektoriell samordning.'}
-              </p>
-              <div className="p-3 bg-gray-50 rounded-xl text-xs text-gray-600">
-                <p><strong>N3 aktiveras när:</strong></p>
-                <ul className="list-disc ml-4 mt-1 space-y-1">
-                  <li>Barnet behöver insatser från flera huvudmän (skola, socialtjänst, vård)</li>
-                  <li>En samordnad individuell plan (SIP) behövs</li>
-                  <li>Komplexa behov kräver koordinerat team</li>
-                </ul>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-3 tracking-tight">
+              N3 Samordnad plan
+            </h1>
+            <p className="text-gray-500 text-lg font-light tracking-wide">
+              {profile.level === 'N1' ? 'Universell nivå' : profile.level === 'N2' ? 'Stödprofil' : 'Samordnad nivå'} • ICF-översikt
+            </p>
+          </div>
+
+          {/* Info about N3 - Glass morphism */}
+          <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-start gap-5">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-200/50">
+                <Info className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">Om N3 Samordnad plan</h3>
+                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                  <strong>{profile.name}</strong> är för närvarande på nivå <strong>{profile.level}</strong>.
+                  {profile.level === 'N1' && ' Inga behov av samordnade insatser identifierade.'}
+                  {profile.level === 'N2' && ' Vid behov kan N3 aktiveras för tvärsektoriell samordning.'}
+                </p>
+                <div className="p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl border border-gray-100">
+                  <p className="font-semibold text-gray-900 mb-2 text-sm">N3 aktiveras när:</p>
+                  <ul className="text-sm text-gray-600 space-y-2">
+                    <li className="flex items-start gap-2"><span className="text-rose-500 font-bold">•</span> Barnet behöver insatser från flera huvudmän (skola, socialtjänst, vård)</li>
+                    <li className="flex items-start gap-2"><span className="text-rose-500 font-bold">•</span> En samordnad individuell plan (SIP) behövs</li>
+                    <li className="flex items-start gap-2"><span className="text-rose-500 font-bold">•</span> Komplexa behov kräver koordinerat team</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Profile Card */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${getLevelGradient(profile.level)}`}>
-              <User className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
-              <p className="text-sm text-gray-500">{profile.age} år • {profile.grade} • Nivå {profile.level}</p>
+          {/* Profile Card - Glass morphism */}
+          <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-300">
+            <div className="flex items-center gap-6">
+              <div className={`w-20 h-20 rounded-3xl flex items-center justify-center bg-gradient-to-br ${getLevelGradient(profile.level)} shadow-xl`}>
+                <User className="w-10 h-10 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+                <p className="text-gray-500 font-medium mt-1">{profile.age} år • {profile.grade} • Nivå {profile.level}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ICF Data */}
-        <ICFGapAnalysis assessments={profile.icfAssessments} />
+          {/* ICF Data */}
+          <ICFGapAnalysis assessments={profile.icfAssessments} />
 
-        {/* Risk Protection */}
-        {profile.riskProtectionBalance && (
-          <RiskProtectionBalance
-            environmentalFactors={profile.environmentalFactors}
-          />
-        )}
+          {/* Risk Protection */}
+          {profile.riskProtectionBalance && (
+            <RiskProtectionBalance
+              environmentalFactors={profile.environmentalFactors}
+            />
+          )}
 
-        {/* Gap Trend if available */}
-        {profileGapTrends.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-gray-900 mb-4">Longitudinell trend</h3>
-            <GapTrendChart trends={profileGapTrends} />
+          {/* Gap Trend if available - Glass morphism */}
+          {profileGapTrends.length > 0 && (
+            <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50">
+              <h3 className="font-bold text-gray-900 mb-5 text-lg">Longitudinell trend</h3>
+              <GapTrendChart trends={profileGapTrends} />
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="text-center py-6">
+            <p className="text-sm text-gray-400 font-light tracking-wide">
+              N3 Samordnad Plan • WHO ICF-integration
+            </p>
           </div>
-        )}
-
-        {/* Footer */}
-        <div className="text-center py-4">
-          <p className="text-xs text-gray-400">
-            N3 Samordnad Plan • WHO ICF-integration
-          </p>
         </div>
       </div>
     );
@@ -206,159 +238,180 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="text-center py-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-rose-600 text-white text-2xl mb-4 shadow-lg">
-          <Layers className="w-8 h-8" />
+    <div className="min-h-screen bg-gradient-to-br from-rose-50/80 via-pink-50/60 to-purple-50/40">
+      <div className="max-w-5xl mx-auto space-y-8 py-8 px-4">
+        {/* Decorative background elements */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+          <div className="absolute top-20 -right-32 w-96 h-96 rounded-full bg-gradient-to-br from-rose-200/20 to-pink-200/20 blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-pink-200/20 to-purple-200/20 blur-3xl" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">N3 Samordnad plan</h1>
-        <p className="text-gray-600">SIP • Tvärsektoriell samverkan • Skola, Vård, Socialtjänst</p>
-      </div>
 
-      {/* Info Box */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-            <Info className="w-5 h-5 text-red-600" />
+        {/* Header */}
+        <div className="text-center py-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-400 via-pink-500 to-purple-600 text-white mb-6 shadow-2xl shadow-rose-200/50 transform hover:scale-105 transition-transform duration-300">
+            <Layers className="w-10 h-10" />
           </div>
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Om N3 Samordnad plan</h3>
-            <div className="text-sm text-gray-600 space-y-2">
-              <p>
-                <strong className="text-gray-900">N3 = Samordningsnivå</strong> - För barn med komplexa behov som kräver samordnade insatser över huvudmannagränser.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">SIP-plan</span>
-                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">ICF-mål</span>
-                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">Koordineringsteam</span>
-                <span className="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium">Barnets röst</span>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-3 tracking-tight">
+            N3 Samordnad plan
+          </h1>
+          <p className="text-gray-500 text-lg font-light tracking-wide">
+            SIP • Tvärsektoriell samverkan • Skola, Vård, Socialtjänst
+          </p>
+        </div>
+
+        {/* Info Box - Glass morphism */}
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-start gap-5">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-rose-200/50">
+              <Info className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3 text-lg">Om N3 Samordnad plan</h3>
+              <div className="text-sm text-gray-600 space-y-3">
+                <p>
+                  <strong className="text-gray-900">N3 = Samordningsnivå</strong> - För barn med komplexa behov som kräver samordnade insatser över huvudmannagränser.
+                </p>
+                <div className="flex flex-wrap gap-3 mt-4">
+                  <span className="px-4 py-2 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700 rounded-2xl text-xs font-medium border border-rose-100 shadow-sm">SIP-plan</span>
+                  <span className="px-4 py-2 bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-700 rounded-2xl text-xs font-medium border border-purple-100 shadow-sm">ICF-mål</span>
+                  <span className="px-4 py-2 bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 rounded-2xl text-xs font-medium border border-blue-100 shadow-sm">Koordineringsteam</span>
+                  <span className="px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-2xl text-xs font-medium border border-emerald-100 shadow-sm">Barnets röst</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Profile Card */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <div className="flex items-center gap-5 mb-5">
-          <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center">
-            <User className="w-8 h-8 text-red-600" />
-          </div>
-          <div>
-            <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
-              <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">
-                N3
-              </span>
+        {/* Profile Card - Glass morphism */}
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center gap-6 mb-6">
+            <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-400 via-pink-500 to-purple-600 flex items-center justify-center shadow-xl">
+              <User className="w-10 h-10 text-white" />
             </div>
-            <p className="text-sm text-gray-500">{profile.age} år • {profile.grade}</p>
+            <div>
+              <div className="flex items-center gap-4 mb-2">
+                <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+                <span className="px-3 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-lg">
+                  N3
+                </span>
+              </div>
+              <p className="text-gray-500 font-medium">{profile.age} år • {profile.grade}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl p-5 border border-gray-100">
+              <p className="font-semibold text-gray-900 mb-2">Diagnos</p>
+              <p className="text-sm text-gray-600 leading-relaxed">{profile.background.diagnosis}</p>
+            </div>
+            <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-2xl p-5 border border-gray-100">
+              <p className="font-semibold text-gray-900 mb-2">Aktuell situation</p>
+              <p className="text-sm text-gray-600 leading-relaxed">{profile.background.currentSituation}</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 rounded-2xl p-5 border border-emerald-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                <MessageSquare className="w-4 h-4 text-white" />
+              </div>
+              <p className="font-semibold text-gray-900">Sofias röst</p>
+            </div>
+            <p className="text-sm text-gray-700 italic leading-relaxed">"{profile.childsVoice.goals}"</p>
+            <p className="text-xs text-gray-500 mt-3">{profile.childsVoice.howFeeling}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="font-medium text-gray-900 mb-1 text-sm">Diagnos</p>
-            <p className="text-xs text-gray-600">{profile.background.diagnosis}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="font-medium text-gray-900 mb-1 text-sm">Aktuell situation</p>
-            <p className="text-xs text-gray-600">{profile.background.currentSituation}</p>
-          </div>
+        {/* Tab Navigation - Modern tabs */}
+        <div className="flex gap-3 flex-wrap">
+          {[
+            { id: 'overview', label: 'Översikt', icon: <Target className="w-4 h-4" /> },
+            { id: 'team', label: 'Team', icon: <Users className="w-4 h-4" /> },
+            { id: 'goals', label: 'Mål', icon: <FileText className="w-4 h-4" /> },
+            { id: 'icf', label: 'ICF', icon: <Activity className="w-4 h-4" /> },
+            { id: 'trend', label: 'Gap-trend', icon: <BarChart3 className="w-4 h-4" /> }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setSelectedTab(tab.id as typeof selectedTab)}
+              className={`flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-2xl transition-all duration-300 ${
+                selectedTab === tab.id
+                  ? 'bg-gradient-to-r from-rose-400 via-pink-500 to-purple-600 text-white shadow-lg shadow-rose-200/50 transform scale-105'
+                  : 'bg-white/70 backdrop-blur-sm border border-white/50 text-gray-600 hover:border-rose-200 hover:bg-rose-50/50 hover:shadow-md'
+              }`}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        <div className="bg-emerald-50 rounded-xl p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <MessageSquare className="w-4 h-4 text-emerald-600" />
-            <p className="font-medium text-gray-900 text-sm">Sofias röst</p>
-          </div>
-          <p className="text-sm text-gray-700 italic">"{profile.childsVoice.goals}"</p>
-          <p className="text-xs text-gray-500 mt-2">{profile.childsVoice.howFeeling}</p>
-        </div>
-      </div>
+        {/* Tab Content - Glass morphism */}
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 shadow-xl shadow-gray-100/50 overflow-hidden">
 
-      {/* Tab Navigation */}
-      <div className="flex gap-2 flex-wrap">
-        {[
-          { id: 'overview', label: 'Översikt', icon: <Target className="w-4 h-4" /> },
-          { id: 'team', label: 'Team', icon: <Users className="w-4 h-4" /> },
-          { id: 'goals', label: 'Mål', icon: <FileText className="w-4 h-4" /> },
-          { id: 'icf', label: 'ICF', icon: <Activity className="w-4 h-4" /> },
-          { id: 'trend', label: 'Gap-trend', icon: <BarChart3 className="w-4 h-4" /> }
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setSelectedTab(tab.id as typeof selectedTab)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
-              selectedTab === tab.id
-                ? 'bg-red-500 text-white shadow-md'
-                : 'bg-white border border-gray-200 text-gray-600 hover:border-red-300 hover:bg-red-50'
-            }`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-
-        <div className="p-6">
+          <div className="p-8">
           {/* Overview Tab */}
           {selectedTab === 'overview' && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Quick Stats */}
-              <div className="grid grid-cols-4 gap-3">
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <Users className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <p className="text-xl font-bold text-gray-900">4</p>
-                  <p className="text-xs text-gray-500">Sektorer</p>
+              <div className="grid grid-cols-4 gap-4">
+                <div className="text-center p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-200/50">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">4</p>
+                  <p className="text-xs text-gray-500 font-medium mt-1">Sektorer</p>
                 </div>
-                <div className="text-center p-4 bg-emerald-50 rounded-xl">
-                  <Target className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
-                  <p className="text-xl font-bold text-gray-900">{profile.coordinatedGoals.length}</p>
-                  <p className="text-xs text-gray-500">Mål</p>
+                <div className="text-center p-5 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-200/50">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">{profile.coordinatedGoals.length}</p>
+                  <p className="text-xs text-gray-500 font-medium mt-1">Mål</p>
                 </div>
-                <div className="text-center p-4 bg-purple-50 rounded-xl">
-                  <Shield className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-                  <p className="text-xl font-bold text-emerald-600">+{profile.riskProtectionBalance.balance}</p>
-                  <p className="text-xs text-gray-500">Balans</p>
+                <div className="text-center p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-purple-200/50">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-2xl font-bold text-emerald-600">+{profile.riskProtectionBalance.balance}</p>
+                  <p className="text-xs text-gray-500 font-medium mt-1">Balans</p>
                 </div>
-                <div className="text-center p-4 bg-amber-50 rounded-xl">
-                  <Calendar className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-                  <p className="text-sm font-bold text-gray-900">15 mar</p>
-                  <p className="text-xs text-gray-500">SIP-möte</p>
+                <div className="text-center p-5 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-amber-200/50">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <p className="text-lg font-bold text-gray-900">15 mar</p>
+                  <p className="text-xs text-gray-500 font-medium mt-1">SIP-möte</p>
                 </div>
               </div>
 
               {/* Goal Progress */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Måluppfyllnad</h4>
-                <div className="space-y-3">
+                <h4 className="font-bold text-gray-900 mb-5 text-lg">Måluppfyllnad</h4>
+                <div className="space-y-4">
                   {profile.coordinatedGoals.map((goal) => (
-                    <div key={goal.id} className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
-                      <div className="flex items-start justify-between mb-3">
+                    <div key={goal.id} className="bg-white/60 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 text-sm">{goal.text}</p>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="font-semibold text-gray-900">{goal.text}</p>
+                          <p className="text-sm text-gray-500 mt-1">
                             {goal.icfTarget} • {goal.targetDate}
                           </p>
                         </div>
-                        <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getSectorColor(goal.responsible)}`}>
+                        <span className={`px-3 py-2 rounded-xl text-xs font-medium ${getSectorColor(goal.responsible)}`}>
                           {getSectorIcon(goal.responsible)}
                         </span>
                       </div>
                       <div>
-                        <div className="flex items-center justify-between text-xs mb-1">
-                          <span className="text-gray-500">Progress</span>
-                          <span className="font-medium text-gray-700">{goal.progress}%</span>
+                        <div className="flex items-center justify-between text-sm mb-2">
+                          <span className="text-gray-500 font-medium">Progress</span>
+                          <span className="font-bold text-gray-700">{goal.progress}%</span>
                         </div>
-                        <div className="w-full bg-gray-100 rounded-full h-1.5">
+                        <div className="w-full bg-gray-100 rounded-full h-2.5">
                           <div
-                            className={`h-1.5 rounded-full ${
-                              goal.progress >= 70 ? 'bg-emerald-500' :
-                              goal.progress >= 40 ? 'bg-amber-500' : 'bg-red-400'
+                            className={`h-2.5 rounded-full transition-all duration-700 ${
+                              goal.progress >= 70 ? 'bg-gradient-to-r from-emerald-400 to-teal-500' :
+                              goal.progress >= 40 ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-gradient-to-r from-red-400 to-rose-500'
                             }`}
                             style={{ width: `${goal.progress}%` }}
                           />
@@ -371,28 +424,34 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
 
               {/* Upcoming Meetings */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-4">SIP-möten</h4>
-                <div className="space-y-2">
+                <h4 className="font-bold text-gray-900 mb-5 text-lg">SIP-möten</h4>
+                <div className="space-y-3">
                   {profile.meetings.map((meeting, index) => (
                     <div
                       key={index}
-                      className={`flex items-center gap-3 p-3 rounded-xl ${
+                      className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 hover:shadow-md ${
                         meeting.status === 'completed'
-                          ? 'bg-emerald-50'
-                          : 'bg-gray-50'
+                          ? 'bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border-emerald-100'
+                          : 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-100'
                       }`}
                     >
-                      <Calendar className={`w-4 h-4 ${
-                        meeting.status === 'completed' ? 'text-emerald-600' : 'text-gray-400'
-                      }`} />
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        meeting.status === 'completed'
+                          ? 'bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-200/50'
+                          : 'bg-gray-200'
+                      }`}>
+                        <Calendar className={`w-5 h-5 ${
+                          meeting.status === 'completed' ? 'text-white' : 'text-gray-500'
+                        }`} />
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 text-sm">{meeting.type}</p>
-                        <p className="text-xs text-gray-500">{meeting.date}</p>
+                        <p className="font-semibold text-gray-900">{meeting.type}</p>
+                        <p className="text-sm text-gray-500">{meeting.date}</p>
                       </div>
                       {meeting.status === 'completed' ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                        <CheckCircle2 className="w-6 h-6 text-emerald-500 flex-shrink-0" />
                       ) : (
-                        <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                        <Clock className="w-6 h-6 text-gray-400 flex-shrink-0" />
                       )}
                     </div>
                   ))}
@@ -565,43 +624,46 @@ const N3CoordinatedPlan: React.FC<N3CoordinatedPlanProps> = ({ selectedProfileId
         </div>
       </div>
 
-      {/* Evaluation */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-amber-600" />
-          <h4 className="font-semibold text-gray-900">Utvärdering och prognos</h4>
-        </div>
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-emerald-50 rounded-xl p-4">
-            <p className="font-medium text-gray-900 mb-2 text-sm">Positiva faktorer</p>
-            <ul className="text-xs text-gray-600 space-y-1">
-              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Balans positiv (+4)</li>
-              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Behandling visar effekt</li>
-              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Närvaro ökat till 60%</li>
-              <li className="flex items-start gap-1"><span className="text-emerald-500">+</span> Sofia är motiverad</li>
-            </ul>
+        {/* Evaluation - Glass morphism */}
+        <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-8 shadow-xl shadow-gray-100/50">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-200/50">
+              <TrendingUp className="w-5 h-5 text-white" />
+            </div>
+            <h4 className="font-bold text-gray-900 text-lg">Utvärdering och prognos</h4>
           </div>
-          <div className="bg-amber-50 rounded-xl p-4">
-            <p className="font-medium text-gray-900 mb-2 text-sm">Utmaningar kvar</p>
-            <ul className="text-xs text-gray-600 space-y-1">
-              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Närvaro under mål</li>
-              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Familjesituation</li>
-              <li className="flex items-start gap-1"><span className="text-amber-500">-</span> Social situation</li>
-            </ul>
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-2xl p-5 border border-emerald-100">
+              <p className="font-semibold text-gray-900 mb-3">Positiva faktorer</p>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold">+</span> Balans positiv (+4)</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold">+</span> Behandling visar effekt</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold">+</span> Närvaro ökat till 60%</li>
+                <li className="flex items-start gap-2"><span className="text-emerald-500 font-bold">+</span> Sofia är motiverad</li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50/80 to-orange-50/80 rounded-2xl p-5 border border-amber-100">
+              <p className="font-semibold text-gray-900 mb-3">Utmaningar kvar</p>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li className="flex items-start gap-2"><span className="text-amber-500 font-bold">-</span> Närvaro under mål</li>
+                <li className="flex items-start gap-2"><span className="text-amber-500 font-bold">-</span> Familjesituation</li>
+                <li className="flex items-start gap-2"><span className="text-amber-500 font-bold">-</span> Social situation</li>
+              </ul>
+            </div>
+          </div>
+          <div className="bg-gradient-to-r from-emerald-50/80 to-teal-50/80 rounded-2xl p-5 border border-emerald-100">
+            <p className="text-sm text-emerald-800 leading-relaxed">
+              <strong>Rekommendation:</strong> Fortsätt N3. Vid närvaro &gt;80% kan N2 övervägas.
+            </p>
           </div>
         </div>
-        <div className="bg-emerald-50 rounded-xl p-4">
-          <p className="text-sm text-emerald-800">
-            <strong>Rekommendation:</strong> Fortsätt N3. Vid närvaro &gt;80% kan N2 övervägas.
+
+        {/* Footer */}
+        <div className="text-center py-6">
+          <p className="text-sm text-gray-400 font-light tracking-wide">
+            N3 Samordnad plan (SIP) • WHO ICF • SoL 2 kap. 7§, HSL
           </p>
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="text-center py-4">
-        <p className="text-xs text-gray-400">
-          N3 Samordnad plan (SIP) • WHO ICF • SoL 2 kap. 7§, HSL
-        </p>
       </div>
     </div>
   );
