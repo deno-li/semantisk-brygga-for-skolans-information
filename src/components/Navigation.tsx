@@ -53,6 +53,7 @@ const TAB_GROUPS: TabGroup[] = [
   { id: 'main', label: 'Start', color: 'gray', gradient: 'from-gray-500 to-gray-600' },
   { id: 'views', label: 'Barnets vy', color: 'blue', gradient: 'from-blue-500 to-indigo-600' },
   { id: 'icf', label: 'ICF-verktyg', color: 'emerald', gradient: 'from-emerald-500 to-teal-600' },
+  { id: 'scenario', label: 'Scenarion', color: 'violet', gradient: 'from-violet-500 to-purple-600' },
   { id: 'matris', label: 'Barnets resa', color: 'purple', gradient: 'from-purple-500 to-pink-600' },
   { id: 'analysis', label: 'Analys', color: 'amber', gradient: 'from-amber-500 to-orange-600' },
 ];
@@ -104,6 +105,9 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'icf-n1', label: 'N1 Screening', icon: <Activity size={16} />, badge: getIcfBadge('icf-n1'), hiddenForChild: true, group: 'icf', color: 'green' },
     { id: 'icf-n2', label: 'N2 Fördjupad', icon: <Activity size={16} />, badge: getIcfBadge('icf-n2'), hiddenForChild: true, group: 'icf', color: 'orange' },
     { id: 'icf-n3', label: 'N3 Samordnad', icon: <Activity size={16} />, badge: getIcfBadge('icf-n3'), hiddenForChild: true, group: 'icf', color: 'red' },
+
+    // Scenario Generator
+    { id: 'scenario-generator', label: 'Scenarioskiss', icon: <Sparkles size={16} />, badge: '✨', hiddenForChild: true, group: 'scenario', color: 'violet' },
 
     // Barnets Resa Matris
     { id: 'journey-level', label: 'Nivåhantering', icon: <Layers size={16} />, badge: '⭐', hiddenForChild: true, group: 'matris', color: 'purple' },

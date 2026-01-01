@@ -32,6 +32,9 @@ const N1Screening = lazy(() => import('./N1Screening'));
 const N2DeepDive = lazy(() => import('./N2DeepDive'));
 const N3CoordinatedPlan = lazy(() => import('./N3CoordinatedPlan'));
 
+// Scenario Generator
+const ScenarioGenerator = lazy(() => import('./ScenarioGenerator'));
+
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
   const [currentView, setCurrentView] = useState<View>('overview');
@@ -106,6 +109,9 @@ const App: React.FC = () => {
       case 'icf-n3':
         return <N3CoordinatedPlan selectedProfileId={selectedProfileId} />;
 
+      case 'scenario-generator':
+        return <ScenarioGenerator selectedProfileId={selectedProfileId} />;
+
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">
            <div className="mb-4 text-4xl">🚧</div>
@@ -133,11 +139,9 @@ const App: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
              <div className="flex items-center gap-6">
                <div
-                 className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm border-2"
+                 className="w-20 h-20 rounded-2xl flex items-center justify-center text-xl font-bold shadow-lg ring-4 ring-white/50 text-white"
                  style={{
-                   backgroundColor: profileMetadata.colorScheme.background,
-                   borderColor: getSupportLevelColor(profileMetadata.supportLevel),
-                   color: getSupportLevelColor(profileMetadata.supportLevel)
+                   background: profileMetadata.colorScheme.background,
                  }}
                >
                  {profileMetadata.emoji}
