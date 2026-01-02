@@ -1499,234 +1499,213 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
         </div>
       </div>
 
-      {/* My World Triangle - Harmonized with Välbefinnandehjul style */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-lg overflow-hidden">
-        {/* Header - matching Välbefinnandehjul */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg">Min Värld</h3>
-                <p className="text-sm text-gray-500">Barnets perspektiv & triangel</p>
-              </div>
-            </div>
+      {/* My World Triangle - Child-centered visualization */}
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+        <h3 className="font-bold text-gray-900 text-lg mb-4 text-center">Min Värld - Barnets perspektiv</h3>
 
-            {/* Status indicator like "8/8 gröna" */}
-            <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                {Object.values(myWorldScores).filter(s => s >= 7).length}/3 gröna
-              </span>
-            </div>
-          </div>
-        </div>
+        <div className="flex flex-col items-center">
+          {/* Triangle SVG */}
+          <div className="relative w-80 h-72">
+            <svg viewBox="0 0 300 270" className="w-full h-full overflow-visible">
+              {/* Gradient definitions */}
+              <defs>
+                <linearGradient id="triangleGradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.1" />
+                </linearGradient>
+                <linearGradient id="triangleGradientFill" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.3" />
+                </linearGradient>
+              </defs>
 
-        {/* Progress bar style component */}
-        <div className="px-6 py-4 bg-gradient-to-r from-violet-600 to-purple-600">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-white font-semibold">MIN VÄRLD TRIANGEL</p>
-              <p className="text-white/80 text-sm flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                3 dimensioner
-              </p>
-            </div>
-          </div>
-        </div>
+              {/* Outer triangle */}
+              <polygon
+                points="150,30 40,230 260,230"
+                fill="url(#triangleGradientBg)"
+                stroke="hsl(260, 30%, 70%)"
+                strokeWidth="2"
+              />
 
-        <div className="p-6">
-          {/* Description text like in Välbefinnandehjul */}
-          <p className="text-sm text-gray-600 mb-6">
-            Klicka på en dimension för att se detaljer och justera poäng. Triangeln visar barnets perspektiv
-            på utveckling, behov och omvärld.
-          </p>
-
-          <div className="flex flex-col items-center">
-            {/* Triangle SVG with status dots like Välbefinnandehjul */}
-            <div className="relative w-80 h-72">
-              <svg viewBox="0 0 300 270" className="w-full h-full overflow-visible">
-                {/* Gradient definitions */}
-                <defs>
-                  <linearGradient id="triangleGradientBgNew" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="hsl(260, 60%, 60%)" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-
-                {/* Triangle segments with colors matching Välbefinnandehjul */}
-                {/* Top segment - Hur jag växer (emerald) */}
-                <path
-                  d="M 150 30 L 95 130 L 205 130 Z"
-                  fill={selectedMyWorldDimension === 'howIGrow' ? 'hsl(160, 84%, 39%)' : 'hsl(160, 60%, 45%)'}
-                  className="cursor-pointer transition-all hover:opacity-90"
-                  onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'howIGrow' ? null : 'howIGrow')}
-                />
-
-                {/* Bottom left segment - Vad jag behöver (rose) */}
-                <path
-                  d="M 40 230 L 95 130 L 150 230 Z"
-                  fill={selectedMyWorldDimension === 'whatINeed' ? 'hsl(350, 89%, 50%)' : 'hsl(350, 70%, 55%)'}
-                  className="cursor-pointer transition-all hover:opacity-90"
-                  onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'whatINeed' ? null : 'whatINeed')}
-                />
-
-                {/* Bottom right segment - Min värld (blue) */}
-                <path
-                  d="M 260 230 L 205 130 L 150 230 Z"
-                  fill={selectedMyWorldDimension === 'myWorld' ? 'hsl(217, 91%, 50%)' : 'hsl(217, 70%, 55%)'}
-                  className="cursor-pointer transition-all hover:opacity-90"
-                  onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'myWorld' ? null : 'myWorld')}
-                />
-
-                {/* Center circle with "BARNETS BÄSTA" */}
-                <circle cx="150" cy="163" r="45" fill="white" stroke="hsl(0, 0%, 90%)" strokeWidth="2" />
-                <text x="150" y="158" textAnchor="middle" className="fill-gray-800 font-bold" fontSize="11">
-                  BARNETS
-                </text>
-                <text x="150" y="172" textAnchor="middle" className="fill-gray-800 font-bold" fontSize="11">
-                  BÄSTA
-                </text>
-
-                {/* Status dots on each segment (like green dots in Välbefinnandehjul) */}
-                {MY_WORLD_DIMENSIONS.map((dim, index) => {
-                  const dotPositions = [
-                    { x: 150, y: 60 },   // Top
-                    { x: 75, y: 195 },   // Bottom left
-                    { x: 225, y: 195 },  // Bottom right
-                  ];
-                  const pos = dotPositions[index];
-                  const score = myWorldScores[dim.key];
-                  const isGood = score >= 7;
-
-                  return (
-                    <g key={dim.key}>
-                      {/* Status dot */}
-                      <circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r="12"
-                        fill="white"
-                        stroke={isGood ? 'hsl(142, 76%, 36%)' : score >= 5 ? 'hsl(45, 93%, 47%)' : 'hsl(0, 84%, 60%)'}
-                        strokeWidth="3"
-                      />
-                      <circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r="6"
-                        fill={isGood ? 'hsl(142, 76%, 36%)' : score >= 5 ? 'hsl(45, 93%, 47%)' : 'hsl(0, 84%, 60%)'}
-                      />
-                    </g>
-                  );
-                })}
-
-                {/* Dimension labels on segments */}
-                <text x="150" y="95" textAnchor="middle" fill="white" fontSize="11" fontWeight="600" className="pointer-events-none">
-                  HUR JAG VÄXER
-                </text>
-                <text x="85" y="185" textAnchor="middle" fill="white" fontSize="10" fontWeight="600" className="pointer-events-none">
-                  VAD JAG
-                </text>
-                <text x="85" y="197" textAnchor="middle" fill="white" fontSize="10" fontWeight="600" className="pointer-events-none">
-                  BEHÖVER
-                </text>
-                <text x="215" y="185" textAnchor="middle" fill="white" fontSize="11" fontWeight="600" className="pointer-events-none">
-                  MIN VÄRLD
-                </text>
-              </svg>
-            </div>
-
-            {/* Selected dimension detail panel */}
-            {selectedMyWorldDimension && (
-              <div className="mt-6 w-full max-w-md p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    {selectedMyWorldDimension === 'howIGrow' && <GraduationCap className="w-5 h-5 text-emerald-600" />}
-                    {selectedMyWorldDimension === 'whatINeed' && <Heart className="w-5 h-5 text-rose-600" />}
-                    {selectedMyWorldDimension === 'myWorld' && <Users className="w-5 h-5 text-blue-600" />}
-                    <h4 className="font-bold text-gray-900">
-                      {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.nameSwedish}
-                    </h4>
-                  </div>
-                  <button
-                    onClick={() => setSelectedMyWorldDimension(null)}
-                    className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"
-                  >
-                    <X className="w-4 h-4 text-gray-400" />
-                  </button>
-                </div>
-                <p className="text-sm text-gray-600 mb-4">
-                  {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.description}
-                </p>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-600">Poäng:</span>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={myWorldScores[selectedMyWorldDimension]}
-                    onChange={(e) => setMyWorldScores(prev => ({
-                      ...prev,
-                      [selectedMyWorldDimension]: parseInt(e.target.value)
-                    }))}
-                    className="flex-1 h-2 rounded-full appearance-none bg-gray-200 cursor-pointer"
+              {/* Filled triangle based on average score */}
+              {(() => {
+                const avgScore = (myWorldScores.howIGrow + myWorldScores.whatINeed + myWorldScores.myWorld) / 3;
+                const fillRatio = avgScore / 10;
+                const centerY = 130;
+                const innerTopY = 30 + (centerY - 30) * (1 - fillRatio);
+                const innerBottomY = centerY + (230 - centerY) * fillRatio;
+                const innerLeftX = 40 + (150 - 40) * (1 - fillRatio);
+                const innerRightX = 260 - (260 - 150) * (1 - fillRatio);
+                return (
+                  <polygon
+                    points={`150,${innerTopY} ${innerLeftX},${innerBottomY} ${innerRightX},${innerBottomY}`}
+                    fill="url(#triangleGradientFill)"
+                    stroke="hsl(260, 60%, 50%)"
+                    strokeWidth="1.5"
                   />
-                  <span className={`text-lg font-bold ${
-                    myWorldScores[selectedMyWorldDimension] >= 7 ? 'text-emerald-600' :
-                    myWorldScores[selectedMyWorldDimension] >= 5 ? 'text-amber-600' : 'text-red-600'
-                  }`}>
-                    {myWorldScores[selectedMyWorldDimension]}/10
-                  </span>
-                </div>
-              </div>
-            )}
+                );
+              })()}
 
-            {/* Summary bar when no dimension selected - styled like Välbefinnandehjul */}
-            {!selectedMyWorldDimension && (
-              <div className="mt-6 w-full max-w-md">
-                <p className="text-sm text-gray-500 mb-3 text-center">Klicka på en tårtbit för att justera</p>
-                <div className="grid grid-cols-3 gap-3">
-                  {MY_WORLD_DIMENSIONS.map((dim) => {
-                    const score = myWorldScores[dim.key];
-                    const IconComponent = dim.key === 'howIGrow' ? GraduationCap :
-                                          dim.key === 'whatINeed' ? Heart : Users;
-                    const isGood = score >= 7;
-                    return (
-                      <button
-                        key={dim.key}
-                        onClick={() => setSelectedMyWorldDimension(dim.key)}
-                        className="p-3 rounded-xl bg-white border border-gray-200 hover:border-gray-300 hover:shadow transition-all text-center group"
-                      >
-                        <div className="flex items-center justify-center gap-2 mb-1">
-                          <IconComponent className={`h-4 w-4 ${dim.color}`} />
-                          <span className={`w-2.5 h-2.5 rounded-full ${
-                            isGood ? 'bg-emerald-500' : score >= 5 ? 'bg-amber-500' : 'bg-red-500'
-                          }`}></span>
-                        </div>
-                        <p className={`text-lg font-bold ${
-                          isGood ? 'text-emerald-600' : score >= 5 ? 'text-amber-600' : 'text-red-600'
-                        }`}>
-                          {score}
-                        </p>
-                        <p className="text-xs text-gray-500">{dim.nameSwedish}</p>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+              {/* Center label */}
+              <text x="150" y="140" textAnchor="middle" className="fill-gray-700 font-medium text-sm">
+                Barnet
+              </text>
 
-            {/* Link like "Utforska hjulet →" */}
-            <button className="mt-4 text-sm text-violet-600 hover:text-violet-700 font-medium flex items-center gap-1">
-              Utforska triangeln
-              <ArrowRight className="w-4 h-4" />
+              {/* Dimension nodes */}
+              {MY_WORLD_DIMENSIONS.map((dim, index) => {
+                const nodePositions = [
+                  { x: 150, y: 20 },
+                  { x: 30, y: 240 },
+                  { x: 270, y: 240 },
+                ];
+                const pos = nodePositions[index];
+                const score = myWorldScores[dim.key];
+                const isSelected = selectedMyWorldDimension === dim.key;
+
+                return (
+                  <g key={dim.key}>
+                    {/* Connection line */}
+                    <line
+                      x1={pos.x}
+                      y1={pos.y}
+                      x2={150}
+                      y2={130}
+                      stroke="hsl(260, 30%, 80%)"
+                      strokeWidth="1"
+                      strokeDasharray="4,4"
+                      opacity="0.5"
+                    />
+
+                    {/* Node circle */}
+                    <circle
+                      cx={pos.x}
+                      cy={pos.y}
+                      r={isSelected ? 28 : 24}
+                      className={`cursor-pointer transition-all duration-200 ${
+                        isSelected ? 'fill-violet-500 stroke-white' : 'fill-white stroke-gray-300 hover:fill-gray-50'
+                      }`}
+                      strokeWidth="2"
+                      onClick={() => setSelectedMyWorldDimension(isSelected ? null : dim.key)}
+                    />
+
+                    {/* Score in node */}
+                    <text
+                      x={pos.x}
+                      y={pos.y + 5}
+                      textAnchor="middle"
+                      className={`font-bold pointer-events-none ${
+                        isSelected ? 'fill-white' :
+                        score >= 7 ? 'fill-emerald-600' :
+                        score >= 5 ? 'fill-amber-600' : 'fill-red-600'
+                      }`}
+                      fontSize="14"
+                    >
+                      {score}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Dimension Labels */}
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'howIGrow' ? null : 'howIGrow')}
+              className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'howIGrow' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <GraduationCap className="w-5 h-5 text-emerald-600" />
+              <span className="text-xs font-medium text-gray-600">Hur jag växer</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'whatINeed' ? null : 'whatINeed')}
+              className={`absolute bottom-0 left-0 translate-y-8 flex items-center gap-1 p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'whatINeed' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <Heart className="w-5 h-5 text-rose-600" />
+              <span className="text-xs font-medium text-gray-600">Vad jag behöver</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedMyWorldDimension(selectedMyWorldDimension === 'myWorld' ? null : 'myWorld')}
+              className={`absolute bottom-0 right-0 translate-y-8 flex items-center gap-1 p-2 rounded-lg transition-all hover:bg-gray-100 ${
+                selectedMyWorldDimension === 'myWorld' ? 'bg-violet-100' : ''
+              }`}
+            >
+              <Users className="w-5 h-5 text-blue-600" />
+              <span className="text-xs font-medium text-gray-600">Min värld</span>
             </button>
           </div>
+
+          {/* Selected dimension detail */}
+          {selectedMyWorldDimension && (
+            <div className="mt-8 w-full max-w-md p-4 bg-gray-50 rounded-xl animate-fade-in">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-bold text-gray-900">
+                  {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.nameSwedish}
+                </h4>
+                <button
+                  onClick={() => setSelectedMyWorldDimension(null)}
+                  className="p-1 rounded-full hover:bg-gray-200"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                {MY_WORLD_DIMENSIONS.find(d => d.key === selectedMyWorldDimension)?.description}
+              </p>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-600">Poäng:</span>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={myWorldScores[selectedMyWorldDimension]}
+                  onChange={(e) => setMyWorldScores(prev => ({
+                    ...prev,
+                    [selectedMyWorldDimension]: parseInt(e.target.value)
+                  }))}
+                  className="flex-1 h-2 rounded-full appearance-none bg-gray-200 cursor-pointer"
+                />
+                <span className={`text-lg font-bold ${
+                  myWorldScores[selectedMyWorldDimension] >= 7 ? 'text-emerald-600' :
+                  myWorldScores[selectedMyWorldDimension] >= 5 ? 'text-amber-600' : 'text-red-600'
+                }`}>
+                  {myWorldScores[selectedMyWorldDimension]}/10
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Summary bar when no dimension selected */}
+          {!selectedMyWorldDimension && (
+            <div className="mt-8 grid grid-cols-3 gap-3 w-full max-w-md">
+              {MY_WORLD_DIMENSIONS.map((dim) => {
+                const score = myWorldScores[dim.key];
+                const IconComponent = dim.key === 'howIGrow' ? GraduationCap :
+                                      dim.key === 'whatINeed' ? Heart : Users;
+                return (
+                  <button
+                    key={dim.key}
+                    onClick={() => setSelectedMyWorldDimension(dim.key)}
+                    className="p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all text-center group"
+                  >
+                    <IconComponent className={`h-5 w-5 mx-auto mb-1 ${dim.color}`} />
+                    <p className={`text-lg font-bold ${
+                      score >= 7 ? 'text-emerald-600' : score >= 5 ? 'text-amber-600' : 'text-red-600'
+                    }`}>
+                      {score}
+                    </p>
+                    <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
+                      {dim.nameSwedish}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -1749,227 +1728,133 @@ const ScenarioGenerator: React.FC<ScenarioGeneratorProps> = () => {
     </div>
   );
 
-  // PDCA Mode (Mikroloopar) - Harmonized with Välbefinnandehjul style
+  // PDCA Mode (Mikroloopar)
   const renderPDCAMode = () => (
     <div className="space-y-6">
-      {/* Main PDCA Card - styled like Välbefinnandehjul */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-lg overflow-hidden">
-        {/* Header - matching Välbefinnandehjul */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg">
-                <RefreshCw className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-lg">PDCA-mikroloop</h3>
-                <p className="text-sm text-gray-500">Kontinuerlig förbättring</p>
-              </div>
-            </div>
+      {/* Workflow Progress */}
+      <WorkflowProgress currentPhase={workflowPhase} progress={workflowProgress} />
 
-            {/* Status indicator */}
-            <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                Fas {PDCA_PHASES.findIndex(p => p.id === pdcaPhase) + 1}/4
+      {/* Spoke selector */}
+      <div className="bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+        <h3 className="font-bold text-gray-900 text-lg mb-4">Välj dimension för PDCA-mikroloop</h3>
+        <div className="flex flex-wrap gap-3">
+          {SHANARRI_SPOKES.map((spoke) => (
+            <button
+              key={spoke.id}
+              onClick={() => setSelectedSpoke(spoke.id)}
+              className={`flex items-center gap-2 px-4 py-3 rounded-xl transition-all ${
+                selectedSpoke === spoke.id
+                  ? 'bg-white shadow-lg ring-2'
+                  : 'bg-gray-50 hover:bg-white hover:shadow'
+              }`}
+              style={{
+                borderColor: selectedSpoke === spoke.id ? spoke.color : 'transparent',
+                '--tw-ring-color': spoke.color
+              } as React.CSSProperties}
+            >
+              <span className="text-xl">{spoke.icon}</span>
+              <span className="font-medium">{spoke.name}</span>
+              <span className={`text-sm font-bold ${getValueColor(spokeValues[spoke.id])}`}>
+                {spokeValues[spoke.id]}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* PDCA wheel and actions */}
+      <div className="grid grid-cols-12 gap-6">
+        {/* PDCA wheel */}
+        <div className="col-span-5 bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+          <h4 className="font-bold text-gray-900 mb-4 text-center">PDCA-cykel för {SHANARRI_SPOKES.find(s => s.id === selectedSpoke)?.name}</h4>
+
+          <div className="relative w-64 h-64 mx-auto">
+            <svg viewBox="0 0 200 200" className="w-full h-full">
+              {PDCA_PHASES.map((phase, idx) => {
+                const startAngle = (idx * 90 - 90) * (Math.PI / 180);
+                const endAngle = ((idx + 1) * 90 - 90) * (Math.PI / 180);
+                const x1 = 100 + 80 * Math.cos(startAngle);
+                const y1 = 100 + 80 * Math.sin(startAngle);
+                const x2 = 100 + 80 * Math.cos(endAngle);
+                const y2 = 100 + 80 * Math.sin(endAngle);
+                const isActive = pdcaPhase === phase.id;
+
+                return (
+                  <g key={phase.id} onClick={() => setPdcaPhase(phase.id)} className="cursor-pointer">
+                    <path
+                      d={`M 100 100 L ${x1} ${y1} A 80 80 0 0 1 ${x2} ${y2} Z`}
+                      fill={phase.color}
+                      opacity={isActive ? 1 : 0.5}
+                      className="transition-opacity duration-300"
+                    />
+                    <text
+                      x={100 + 50 * Math.cos(startAngle + Math.PI / 4)}
+                      y={100 + 50 * Math.sin(startAngle + Math.PI / 4)}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="white"
+                      fontSize="10"
+                      fontWeight="bold"
+                    >
+                      {phase.name}
+                    </text>
+                    {isActive && (
+                      <circle
+                        cx={100 + 50 * Math.cos(startAngle + Math.PI / 4)}
+                        cy={100 + 50 * Math.sin(startAngle + Math.PI / 4)}
+                        r="25"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="2"
+                        className="animate-pulse"
+                      />
+                    )}
+                  </g>
+                );
+              })}
+              <circle cx="100" cy="100" r="25" fill="white" />
+              <text x="100" y="100" textAnchor="middle" dominantBaseline="middle" fontSize="20">
+                {SHANARRI_SPOKES.find(s => s.id === selectedSpoke)?.icon}
+              </text>
+            </svg>
+          </div>
+
+          <div className="mt-4 p-4 bg-gray-50 rounded-xl">
+            <h5 className="font-bold text-gray-900 mb-1">{PDCA_PHASES.find(p => p.id === pdcaPhase)?.name}</h5>
+            <p className="text-sm text-gray-600">{PDCA_PHASES.find(p => p.id === pdcaPhase)?.description}</p>
+          </div>
+        </div>
+
+        {/* Actions panel */}
+        <div className="col-span-7 bg-white/70 backdrop-blur-xl rounded-3xl border border-white/50 p-6 shadow-xl">
+          <h4 className="font-bold text-gray-900 mb-4">Förbättringsåtgärder</h4>
+
+          <div className="space-y-4">
+            {pdcaActions[selectedSpoke]?.map((action, idx) => (
+              <div key={idx} className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                </div>
+                <span className="flex-1 text-gray-900">{action}</span>
+                <button className="text-xs px-3 py-1.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                  Simulera effekt
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl">
+            <h5 className="font-bold text-emerald-800 mb-2">Förväntad effekt</h5>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-gray-900">{spokeValues[selectedSpoke]}</span>
+                <ArrowRight className="w-5 h-5 text-gray-400" />
+                <span className="text-2xl font-bold text-emerald-600">{Math.min(5, spokeValues[selectedSpoke] + 1)}</span>
+              </div>
+              <span className="text-sm text-gray-600">
+                Om åtgärderna genomförs enligt plan inom 4-8 veckor
               </span>
             </div>
-          </div>
-        </div>
-
-        {/* Progress bar component */}
-        <div className="px-6 py-4 bg-gradient-to-r from-emerald-600 to-teal-600">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-              <Target className="w-5 h-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <p className="text-white font-semibold">PDCA FÖRBÄTTRINGSCYKEL</p>
-              <p className="text-white/80 text-sm flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                4 faser • Plan-Do-Check-Act
-              </p>
-            </div>
-            {/* Phase indicators */}
-            <div className="flex gap-1">
-              {PDCA_PHASES.map((phase, idx) => (
-                <div
-                  key={phase.id}
-                  className={`w-8 h-2 rounded-full transition-all ${
-                    PDCA_PHASES.findIndex(p => p.id === pdcaPhase) >= idx
-                      ? 'bg-white'
-                      : 'bg-white/30'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6">
-          {/* Description text */}
-          <p className="text-sm text-gray-600 mb-6">
-            Välj en SHANARRI-dimension och klicka på en fas i PDCA-hjulet för att planera förbättringsåtgärder.
-          </p>
-
-          {/* Spoke selector - styled like tab selector */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {SHANARRI_SPOKES.map((spoke) => {
-              const isSelected = selectedSpoke === spoke.id;
-              return (
-                <button
-                  key={spoke.id}
-                  onClick={() => setSelectedSpoke(spoke.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                    isSelected
-                      ? 'bg-white shadow-md border-2'
-                      : 'bg-gray-50 hover:bg-gray-100 border-2 border-transparent'
-                  }`}
-                  style={{ borderColor: isSelected ? spoke.color : 'transparent' }}
-                >
-                  <span>{spoke.icon}</span>
-                  <span className={isSelected ? 'text-gray-900' : 'text-gray-600'}>{spoke.name}</span>
-                  {/* Status dot */}
-                  <span className={`w-2 h-2 rounded-full ${
-                    spokeValues[spoke.id] >= 4 ? 'bg-emerald-500' :
-                    spokeValues[spoke.id] === 3 ? 'bg-amber-500' : 'bg-red-500'
-                  }`}></span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* PDCA wheel and actions grid */}
-          <div className="grid grid-cols-12 gap-6">
-            {/* PDCA wheel - styled with center like Välbefinnandehjul */}
-            <div className="col-span-5">
-              <div className="bg-gray-50 rounded-2xl p-6">
-                <div className="relative w-56 h-56 mx-auto">
-                  <svg viewBox="0 0 200 200" className="w-full h-full">
-                    {PDCA_PHASES.map((phase, idx) => {
-                      const startAngle = (idx * 90 - 90) * (Math.PI / 180);
-                      const endAngle = ((idx + 1) * 90 - 90) * (Math.PI / 180);
-                      const x1 = 100 + 80 * Math.cos(startAngle);
-                      const y1 = 100 + 80 * Math.sin(startAngle);
-                      const x2 = 100 + 80 * Math.cos(endAngle);
-                      const y2 = 100 + 80 * Math.sin(endAngle);
-                      const isActive = pdcaPhase === phase.id;
-
-                      // Position for status dot
-                      const dotAngle = (idx * 90 + 45 - 90) * (Math.PI / 180);
-                      const dotX = 100 + 55 * Math.cos(dotAngle);
-                      const dotY = 100 + 55 * Math.sin(dotAngle);
-
-                      return (
-                        <g key={phase.id} onClick={() => setPdcaPhase(phase.id)} className="cursor-pointer">
-                          <path
-                            d={`M 100 100 L ${x1} ${y1} A 80 80 0 0 1 ${x2} ${y2} Z`}
-                            fill={phase.color}
-                            opacity={isActive ? 1 : 0.6}
-                            className="transition-all duration-300 hover:opacity-90"
-                          />
-                          <text
-                            x={100 + 50 * Math.cos(startAngle + Math.PI / 4)}
-                            y={100 + 50 * Math.sin(startAngle + Math.PI / 4)}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                            fill="white"
-                            fontSize="11"
-                            fontWeight="bold"
-                            className="pointer-events-none"
-                          >
-                            {phase.name}
-                          </text>
-                          {/* Status dot like in Välbefinnandehjul */}
-                          <circle
-                            cx={dotX}
-                            cy={dotY}
-                            r="8"
-                            fill="white"
-                            stroke={isActive ? 'hsl(142, 76%, 36%)' : 'transparent'}
-                            strokeWidth="2"
-                          />
-                          {isActive && (
-                            <circle cx={dotX} cy={dotY} r="4" fill="hsl(142, 76%, 36%)" />
-                          )}
-                        </g>
-                      );
-                    })}
-                    {/* Center circle with icon */}
-                    <circle cx="100" cy="100" r="28" fill="white" stroke="hsl(0, 0%, 90%)" strokeWidth="2" />
-                    <text x="100" y="95" textAnchor="middle" dominantBaseline="middle" fontSize="18">
-                      {SHANARRI_SPOKES.find(s => s.id === selectedSpoke)?.icon}
-                    </text>
-                    <text x="100" y="112" textAnchor="middle" className="fill-gray-500" fontSize="8" fontWeight="500">
-                      PDCA
-                    </text>
-                  </svg>
-                </div>
-
-                {/* Current phase description */}
-                <div className="mt-4 p-3 bg-white rounded-xl border border-gray-200">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: PDCA_PHASES.find(p => p.id === pdcaPhase)?.color }}
-                    />
-                    <h5 className="font-bold text-gray-900 text-sm">
-                      {PDCA_PHASES.find(p => p.id === pdcaPhase)?.name}
-                    </h5>
-                  </div>
-                  <p className="text-xs text-gray-600">
-                    {PDCA_PHASES.find(p => p.id === pdcaPhase)?.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions panel */}
-            <div className="col-span-7">
-              <div className="bg-gray-50 rounded-2xl p-6 h-full">
-                <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <ClipboardList className="w-5 h-5 text-emerald-600" />
-                  Förbättringsåtgärder
-                </h4>
-
-                <div className="space-y-3">
-                  {pdcaActions[selectedSpoke]?.map((action, idx) => (
-                    <div key={idx} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 hover:border-emerald-300 hover:shadow-sm transition-all">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                      </div>
-                      <span className="flex-1 text-sm text-gray-900">{action}</span>
-                      <button className="text-xs px-3 py-1.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                        Simulera
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Expected effect */}
-                <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-100">
-                  <h5 className="font-semibold text-emerald-800 mb-2 text-sm">Förväntad effekt</h5>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl font-bold text-gray-900">{spokeValues[selectedSpoke]}</span>
-                      <ArrowRight className="w-4 h-4 text-gray-400" />
-                      <span className="text-2xl font-bold text-emerald-600">{Math.min(5, spokeValues[selectedSpoke] + 1)}</span>
-                    </div>
-                    <span className="text-xs text-gray-600">
-                      vid genomförda åtgärder
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Link like "Utforska hjulet →" */}
-          <div className="mt-6 flex justify-center">
-            <button className="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1">
-              Utforska PDCA-cykeln
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>
