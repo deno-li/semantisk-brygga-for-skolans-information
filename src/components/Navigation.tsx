@@ -22,7 +22,11 @@ import {
   Menu,
   X,
   ChevronDown,
-  CheckCircle2
+  CheckCircle2,
+  BookMarked,
+  Trophy,
+  PlayCircle,
+  Beaker
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -52,6 +56,7 @@ interface TabGroup {
 const TAB_GROUPS: TabGroup[] = [
   { id: 'main', label: 'Start', color: 'gray', gradient: 'from-gray-500 to-gray-600' },
   { id: 'views', label: 'Barnets vy', color: 'blue', gradient: 'from-blue-500 to-indigo-600' },
+  { id: 'creative', label: 'Kreativt', color: 'rose', gradient: 'from-rose-500 to-pink-600' },
   { id: 'icf', label: 'ICF-verktyg', color: 'emerald', gradient: 'from-emerald-500 to-teal-600' },
   { id: 'scenario', label: 'Scenarion', color: 'violet', gradient: 'from-violet-500 to-purple-600' },
   { id: 'matris', label: 'Barnets resa', color: 'purple', gradient: 'from-purple-500 to-pink-600' },
@@ -99,6 +104,12 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'shanarri', label: 'Välbefinnandehjul', icon: <PieChart size={16} />, group: 'views', color: 'blue' },
     { id: 'survey', label: 'Min röst', icon: <MessageSquare size={16} />, group: 'views', color: 'pink' },
     { id: 'sip', label: 'Min Plan', icon: <FileText size={16} />, group: 'views', color: 'indigo' },
+
+    // Creative & Interactive Features
+    { id: 'storytelling', label: 'Berättelser', icon: <BookMarked size={16} />, badge: '📖', group: 'creative', color: 'rose' },
+    { id: 'gamification', label: 'Prestationer', icon: <Trophy size={16} />, badge: '🏆', group: 'creative', color: 'amber' },
+    { id: 'wheel-animation', label: 'Tidslinje', icon: <PlayCircle size={16} />, badge: '▶️', group: 'creative', color: 'indigo' },
+    { id: 'intervention-sim', label: 'Simulator', icon: <Beaker size={16} />, badge: '🧪', hiddenForChild: true, group: 'creative', color: 'purple' },
 
     // WHO ICF Integration - dynamic badges based on profile
     { id: 'icf-demo', label: 'ICF Gap-analys', icon: <Activity size={16} />, badge: getIcfBadge('icf-demo'), hiddenForChild: true, group: 'icf', color: 'blue' },
@@ -182,6 +193,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
       violet: { active: 'bg-violet-100 text-violet-700 ring-violet-200', hover: 'hover:bg-violet-50 hover:text-violet-600' },
       slate: { active: 'bg-slate-100 text-slate-700 ring-slate-200', hover: 'hover:bg-slate-50 hover:text-slate-600' },
       gray: { active: 'bg-gray-100 text-gray-700 ring-gray-200', hover: 'hover:bg-gray-50 hover:text-gray-600' },
+      rose: { active: 'bg-rose-100 text-rose-700 ring-rose-200', hover: 'hover:bg-rose-50 hover:text-rose-600' },
     };
     const color = tab.color || 'gray';
     return colorMap[color] || colorMap.gray;
