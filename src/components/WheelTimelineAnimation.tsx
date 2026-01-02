@@ -30,7 +30,7 @@ interface TimePoint {
 }
 
 interface WheelTimelineProps {
-  timePoints: TimePoint[];
+  timePoints?: TimePoint[];
   title?: string;
   childName?: string;
 }
