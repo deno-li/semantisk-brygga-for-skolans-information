@@ -131,7 +131,7 @@ export const WheelTimelineAnimation: React.FC<WheelTimelineProps> = ({
   const [showComparison, setShowComparison] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   const currentPoint = timePoints[currentIndex];
   const previousPoint = currentIndex > 0 ? timePoints[currentIndex - 1] : null;
