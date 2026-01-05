@@ -20,11 +20,8 @@ export type View =
   | 'icf-n1'             // WHO ICF - N1 Universell screening
   | 'icf-n2'             // WHO ICF - N2 Fördjupad analys
   | 'icf-n3'             // WHO ICF - N3 Samordnad plan (SIP)
-  | 'scenario-generator' // Interaktiv "tänk om..."-scenarioskiss
-  | 'storytelling'       // Berättelseverkstad - Narrativa berättelser
-  | 'gamification'       // Spelifiering - Prestationer och uppdrag
-  | 'wheel-animation'    // Animerad tidslinje - Hjulet över tid
-  | 'intervention-sim';  // Insatssimulator - Testa insatser
+  | 'scenario-generator'    // Interaktiv "tänk om..."-scenarioskiss
+  | 'wellness-development'; // Välbefinnandeutveckling - Spider diagram + insatssimulator
 
 export interface ShanarriIndicator {
   id: string;

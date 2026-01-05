@@ -17,24 +17,17 @@ import {
   Layers,
   BookOpenCheck,
   Activity,
-  ChevronLeft,
   ChevronRight,
   Menu,
   X,
   ChevronDown,
   CheckCircle2,
-  BookMarked,
-  Trophy,
-  PlayCircle,
-  Beaker,
   Home,
   Heart,
-  Palette,
   Stethoscope,
   Lightbulb,
   Map,
   BarChart3,
-  Star,
   Compass
 } from 'lucide-react';
 
@@ -82,14 +75,6 @@ const TAB_GROUPS: TabGroup[] = [
     icon: <Heart size={18} />,
     color: 'blue',
     gradient: 'from-blue-500 to-indigo-600'
-  },
-  {
-    id: 'creative',
-    label: 'Kreativt',
-    description: 'Interaktiva upplevelser',
-    icon: <Palette size={18} />,
-    color: 'rose',
-    gradient: 'from-rose-500 to-pink-600'
   },
   {
     id: 'icf',
@@ -167,14 +152,9 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
 
     // Barnets vy
     { id: 'shanarri', label: 'Välbefinnandehjul', description: 'SHANARRI-bedömning', icon: <PieChart size={16} />, group: 'views', color: 'blue' },
+    { id: 'wellness-development', label: 'Välbefinnandeutveckling', description: 'Utveckling & insatser', icon: <TrendingUp size={16} />, group: 'views', color: 'purple' },
     { id: 'survey', label: 'Min röst', description: 'Barnets egen berättelse', icon: <MessageSquare size={16} />, group: 'views', color: 'pink' },
     { id: 'sip', label: 'Min Plan', description: 'Samordnad planering', icon: <FileText size={16} />, group: 'views', color: 'indigo' },
-
-    // Creative & Interactive Features
-    { id: 'storytelling', label: 'Berättelser', description: 'Lär genom berättelser', icon: <BookMarked size={16} />, badge: '📖', group: 'creative', color: 'rose', isNew: true },
-    { id: 'gamification', label: 'Prestationer', description: 'Uppdrag och belöningar', icon: <Trophy size={16} />, badge: '🏆', group: 'creative', color: 'amber', isNew: true },
-    { id: 'wheel-animation', label: 'Tidslinje', description: 'Animerad utveckling', icon: <PlayCircle size={16} />, badge: '▶️', group: 'creative', color: 'indigo', isNew: true },
-    { id: 'intervention-sim', label: 'Simulator', description: 'Testa insatser', icon: <Beaker size={16} />, badge: '🧪', hiddenForChild: true, group: 'creative', color: 'purple', isNew: true },
 
     // WHO ICF Integration
     { id: 'icf-demo', label: 'ICF Gap-analys', description: 'Performance vs Capacity', icon: <Activity size={16} />, badge: getIcfBadge('icf-demo'), hiddenForChild: true, group: 'icf', color: 'blue' },
