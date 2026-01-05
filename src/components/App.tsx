@@ -35,11 +35,8 @@ const N3CoordinatedPlan = lazy(() => import('./N3CoordinatedPlan'));
 // Scenario Generator
 const ScenarioGenerator = lazy(() => import('./ScenarioGenerator'));
 
-// Creative & Interactive Features
-const StorytellingModule = lazy(() => import('./StorytellingModule'));
-const GamificationSystem = lazy(() => import('./GamificationSystem'));
-const WheelTimelineAnimation = lazy(() => import('./WheelTimelineAnimation'));
-const InterventionSimulator = lazy(() => import('./InterventionSimulator'));
+// Wellness Wheel Development (combines spider diagram and intervention simulator)
+const WellnessWheelDevelopment = lazy(() => import('./WellnessWheelDevelopment'));
 
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
@@ -118,18 +115,14 @@ const App: React.FC = () => {
       case 'scenario-generator':
         return <ScenarioGenerator selectedProfileId={selectedProfileId} />;
 
-      // Creative & Interactive Features
-      case 'storytelling':
-        return <StorytellingModule />;
-
-      case 'gamification':
-        return <GamificationSystem />;
-
-      case 'wheel-animation':
-        return <WheelTimelineAnimation />;
-
-      case 'intervention-sim':
-        return <InterventionSimulator />;
+      // Wellness Wheel Development (spider diagram + intervention simulator)
+      case 'wellness-development':
+        return (
+          <WellnessWheelDevelopment
+            currentPerspective={currentPerspective}
+            selectedProfileId={selectedProfileId}
+          />
+        );
 
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">
