@@ -133,7 +133,7 @@ const QualitySystem: React.FC<QualitySystemProps> = ({ selectedProfileId = 'erik
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white mb-4 shadow-lg">
           <ClipboardCheck className="w-8 h-8" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Trygghet & Kvalitetsarbete</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Systematiskt trygghet & kvalitetsarbete</h1>
         <p className="text-gray-600">
           Gävlemodellen • Systematiskt trygghetsarbete enligt PDCA
         </p>
