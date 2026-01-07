@@ -70,7 +70,7 @@ const TAB_GROUPS: TabGroup[] = [
   },
   {
     id: 'views',
-    label: 'Barnets vy',
+    label: 'Välbefinnandehjul och barnets vy',
     description: 'Anpassat för barnet',
     icon: <Heart size={18} />,
     color: 'blue',
@@ -94,7 +94,7 @@ const TAB_GROUPS: TabGroup[] = [
   },
   {
     id: 'matris',
-    label: 'Barnets resa',
+    label: 'Profilnivå',
     description: 'Nivåhantering och matris',
     icon: <Map size={18} />,
     color: 'purple',
@@ -150,7 +150,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
   const tabs: TabItem[] = [
     { id: 'overview', label: 'Översikt', description: 'Barnets samlade bild', icon: <LayoutDashboard size={16} />, group: 'main' },
 
-    // Barnets vy
+    // Välbefinnandehjul och barnets vy
     { id: 'shanarri', label: 'Välbefinnandehjul', description: 'SHANARRI-bedömning', icon: <PieChart size={16} />, group: 'views', color: 'blue' },
     { id: 'wellness-development', label: 'Välbefinnandeutveckling', description: 'Utveckling & insatser', icon: <TrendingUp size={16} />, group: 'views', color: 'purple' },
     { id: 'survey', label: 'Min röst', description: 'Barnets egen berättelse', icon: <MessageSquare size={16} />, group: 'views', color: 'pink' },
@@ -165,7 +165,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     // Scenario Generator
     { id: 'scenario-generator', label: 'Scenarioskiss', description: 'Tänk om...', icon: <Sparkles size={16} />, badge: '✨', hiddenForChild: true, group: 'scenario', color: 'violet' },
 
-    // Barnets Resa Matris
+    // Profilnivå
     { id: 'journey-level', label: 'Nivåhantering', description: 'N1, N2, N3 nivåer', icon: <Layers size={16} />, hiddenForChild: true, group: 'matris', color: 'purple' },
     { id: 'matrix-overview', label: 'Matrisöversikt', description: 'Samlad matrisvy', icon: <BookOpenCheck size={16} />, hiddenForChild: true, group: 'matris', color: 'pink' },
 
@@ -174,7 +174,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'myworld', label: 'My World', description: 'Triangelmodellen', icon: <Globe size={16} />, hiddenForChild: true, group: 'analysis', color: 'cyan' },
     { id: 'resilience', label: 'Resiliens', description: 'Skyddsfaktorer', icon: <Shield size={16} />, hiddenForChild: true, group: 'analysis', color: 'green' },
     { id: 'journal', label: 'Journal', description: 'Dokumentation', icon: <BookOpen size={16} />, hiddenForChild: true, group: 'analysis', color: 'amber' },
-    { id: 'quality', label: 'Trygghet', description: 'Kvalitetssystem', icon: <ClipboardCheck size={16} />, hiddenForChild: true, group: 'analysis', color: 'teal' },
+    { id: 'quality', label: 'Gävlemodellen', description: 'Systematiskt trygghets & kvalitetsarbete', icon: <ClipboardCheck size={16} />, hiddenForChild: true, group: 'analysis', color: 'teal' },
     { id: 'ai-analysis', label: 'AI-Analys', description: 'Semantisk kodning', icon: <Sparkles size={16} />, hiddenForChild: true, group: 'analysis', color: 'violet' },
     { id: 'timeline', label: 'Tidslinje', description: 'Händelser', icon: <Clock size={16} />, hiddenForChild: true, group: 'analysis', color: 'slate' },
   ];
