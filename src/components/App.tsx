@@ -47,11 +47,11 @@ const App: React.FC = () => {
   const getUserContext = (perspective: Perspective): UserContext => {
     switch(perspective) {
       case 'guardian':
-        return { name: "Vårdnadshavare", role: "Vårdnadshavare", roleBadge: "Privatperson", avatar: "👩" };
+        return { name: "Vårdnadshavare", role: "Vårdnadshavare", roleBadge: "Privatperson"};
       case 'child':
-        return { name: "Barn", role: "Barn", roleBadge: "Barnet", avatar: "👦" };
+        return { name: "Barn", role: "Barn", roleBadge: "Barnet"};
       case 'professional':
-        return { name: "Tjänsteperson", role: "Pedagog", roleBadge: "Tjänsteperson", avatar: "👩‍🏫" };
+        return { name: "Tjänsteperson", role: "Pedagog", roleBadge: "Tjänsteperson"};
     }
   };
 
@@ -211,7 +211,7 @@ const App: React.FC = () => {
                 </div>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed max-w-md">
-                Demonstrerar hur informationsdelning mellan skola, vård och omsorg kan visualiseras genom semantisk brygga som mappar till nationella standarder.
+                Demonstrerar hur informationsdelning mellan skola, hälsa, vård och omsorg kan visualiseras genom semantisk brygga som mappar till nationella standarder.
               </p>
             </div>
 
