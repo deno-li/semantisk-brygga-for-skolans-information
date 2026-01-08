@@ -47,11 +47,11 @@ const App: React.FC = () => {
   const getUserContext = (perspective: Perspective): UserContext => {
     switch(perspective) {
       case 'guardian':
-        return { name: "Vårdnadshavare", role: "Vårdnadshavare", roleBadge: "Privatperson"};
+        return { name: "Vårdnadshavare", role: "Vårdnadshavare", roleBadge: "Privatperson", avatar: "VH"};
       case 'child':
-        return { name: "Barn", role: "Barn", roleBadge: "Barnet"};
+        return { name: "Barn", role: "Barn", roleBadge: "Barnet", avatar: "B"};
       case 'professional':
-        return { name: "Tjänsteperson", role: "Pedagog", roleBadge: "Tjänsteperson"};
+        return { name: "Tjänsteperson", role: "Pedagog", roleBadge: "Tjänsteperson", avatar: "TP"};
     }
   };
 
