@@ -17,13 +17,13 @@ export const ERIK_JOURNAL_DATA: JournalData = {
     Kontext: "Klass 4A. Fysisk lärmiljö bedöms som god men ljudnivån i korridorer upplevs stressande. Eleven placerad i mindre grupp vid matematik."
   },
   "Socialtjänst": {
-    unit: "Mottagningsenheten Barn & Unga",
-    contact: "Karin Larsson (Socialsekreterare)",
+    unit: "Mottagningsenheten Barn & Unga / LSS-handläggning, Gävle Kommun",
+    contact: "Karin Larsson (Socialsekreterare), Bo Handläggare (LSS)",
     lastUpdated: "2025-11-15",
-    Delaktighet: "Barnet deltar i samtal med barnsekreterare. Har uttryckt önskan om mer tid med fritidsaktiviteter.",
-    Funktion: "Behov av förutsägbarhet och struktur för att hantera vardagssituationer. Känslomässig omognad noterad vid pressade situationer i hemmiljön.",
-    Insats: "Bistånd enligt SoL 4:1: Kontaktfamilj varannan helg för att stärka socialt nätverk och ge miljöombyte. Uppföljning planerad 2026-05.",
-    Kontext: "Aktuell inom BoU sedan 2024. Sammanbor med mor och syskon växelvis. Stabilt boende men behov av avlastning i vardagen."
+    Delaktighet: "Barnet deltar i samtal med barnsekreterare. Har uttryckt önskan om mer tid med fritidsaktiviteter. Deltar i 'Fritid för alla'-verksamhet på onsdagar och trivs bra i gruppen.",
+    Funktion: "Behov av förutsägbarhet och struktur för att hantera vardagssituationer. Känslomässig omognad noterad vid pressade situationer i hemmiljön. Behov av stöd vid övergångar och nya moment. Svårigheter med tidsuppfattning.",
+    Insats: "Bistånd enligt SoL 4:1: Kontaktfamilj varannan helg för att stärka socialt nätverk och ge miljöombyte. Ledsagarservice vid fritidsaktiviteter (SoL). Ansökan om korttidsvistelse är under handläggning. Uppföljning planerad 2026-05.",
+    Kontext: "Aktuell inom BoU sedan 2024. Sammanbor med mor och syskon växelvis. Stabilt boende men behov av avlastning i vardagen. LSS-utredning påbörjad men ej slutförd. Insatser ges tills vidare via Socialtjänstlagen (SoL)."
   },
   "Hälso- och sjukvård": {
     unit: "Barn- och ungdomspsykiatrin (BUP) / Elevhälsan",
@@ -33,15 +33,6 @@ export const ERIK_JOURNAL_DATA: JournalData = {
     Funktion: "Diagnos F90.0 (ADHD). God fysisk hälsa. Syn och hörsel ua. Regelbunden medicinuppföljning.",
     Insats: "Centralstimulerande behandling insatt HT-24. Psykoedukation till föräldrar och skola genomförd. Nästa läkarkontroll 2026-02.",
     Kontext: "Ordinarie BVC-program följt. Nu aktuell via Elevhälsan och BUP Gävleborg. Audit ifylld UA."
-  },
-  "Omsorg": {
-    unit: "LSS-handläggning, Gävle Kommun",
-    contact: "Bo Handläggare",
-    lastUpdated: "2025-09-30",
-    Delaktighet: "Deltar i 'Fritid för alla'-verksamhet på onsdagar. Trivs bra i gruppen.",
-    Funktion: "Behov av stöd vid övergångar och nya moment. Svårigheter med tidsuppfattning.",
-    Insats: "Ledsagarservice vid fritidsaktiviteter (SoL). Ansökan om korttidsvistelse är under handläggning.",
-    Kontext: "LSS-utredning påbörjad men ej slutförd. Insatser ges tills vidare via Socialtjänstlagen (SoL)."
   },
   "Barn och vårdnadshavare": {
     unit: "Vårdnadshavare",
@@ -83,15 +74,6 @@ export const LISA_JOURNAL_DATA: JournalData = {
     Insats: "Stödsamtal varannan vecka med skolkurator. Avslappningsövningar och sömnhygien genomgått.",
     Kontext: "Uppföljning pågår inom elevhälsan. Eventuell remiss till BUP övervägs om oron inte minskar."
   },
-  "Omsorg": {
-    unit: "Ej aktuellt",
-    contact: "-",
-    lastUpdated: "-",
-    Delaktighet: "-",
-    Funktion: "-",
-    Insats: "-",
-    Kontext: "-"
-  },
   "Barn och vårdnadshavare": {
     unit: "Vårdnadshavare",
     contact: "Eva Johansson (Mamma)",
@@ -131,15 +113,6 @@ export const ELSA_JOURNAL_DATA: JournalData = {
     Funktion: "Dyslexi F81.0. God hörsel och syn. Inga andra funktionsnedsättningar.",
     Insats: "Strukturerad läsinlärning pågår. Uppföljning med logoped 1 gång/månad.",
     Kontext: "Utredning genomförd våren 2025. Regelbunden uppföljning inom elevhälsan."
-  },
-  "Omsorg": {
-    unit: "Ej aktuellt",
-    contact: "-",
-    lastUpdated: "-",
-    Delaktighet: "-",
-    Funktion: "-",
-    Insats: "-",
-    Kontext: "-"
   },
   "Barn och vårdnadshavare": {
     unit: "Vårdnadshavare",
@@ -181,15 +154,6 @@ export const OMAR_JOURNAL_DATA: JournalData = {
     Insats: "Ordinarie elevhälsoinsatser. Årligt hälsobesök genomfört.",
     Kontext: "Inga aktuella hälsoproblem."
   },
-  "Omsorg": {
-    unit: "Ej aktuellt",
-    contact: "-",
-    lastUpdated: "-",
-    Delaktighet: "-",
-    Funktion: "-",
-    Insats: "-",
-    Kontext: "-"
-  },
   "Barn och vårdnadshavare": {
     unit: "Vårdnadshavare",
     contact: "Fatima och Ahmed Hassan",
@@ -229,15 +193,6 @@ export const SOFIA_JOURNAL_DATA: JournalData = {
     Funktion: "Depression (F32.1) och generaliserat ångestsyndrom (F41.1). Medicinering insatt och visar viss effekt.",
     Insats: "Psykoterapi (KBT) 1 gång/vecka. SSRI-medicinering. Krisplan upprättad.",
     Kontext: "BUP-kontakt sedan mars 2023. Sofia har gjort framsteg men är fortfarande i behov av intensivt stöd."
-  },
-  "Omsorg": {
-    unit: "Ej aktuellt",
-    contact: "-",
-    lastUpdated: "-",
-    Delaktighet: "-",
-    Funktion: "-",
-    Insats: "-",
-    Kontext: "-"
   },
   "Barn och vårdnadshavare": {
     unit: "Mormor (familjehemmet)",

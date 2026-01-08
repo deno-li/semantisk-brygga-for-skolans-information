@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, memo, useMemo } from 'react';
 import { getJournalDataByProfile } from '../data/journalProfileData';
 import { CHILD_PROFILES } from '../data/childProfiles';
-import { BookOpen, Plus, Sparkles, User, GraduationCap, Stethoscope, Building2, Home, X, Edit, Clock, MapPin, CheckCircle, Save, AlertCircle, Bold, Italic, List } from 'lucide-react';
+import { BookOpen, Plus, Sparkles, User, GraduationCap, Stethoscope, Building2, X, Edit, Clock, CheckCircle, Save, AlertCircle, Bold, Italic, List } from 'lucide-react';
 import { AiSuggestion } from '../types/types';
 
 interface JournalProps {
@@ -118,7 +118,6 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI, selectedProfileId = '
     'Skola': <GraduationCap size={20} />,
     'Socialtjänst': <Building2 size={20} />,
     'Hälso- och sjukvård': <Stethoscope size={20} />,
-    'Omsorg': <Home size={20} />,
     'Barn och vårdnadshavare': <User size={20} />
   };
 
@@ -126,7 +125,6 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI, selectedProfileId = '
     'Skola': 'border-l-blue-500 text-blue-700 bg-blue-50',
     'Socialtjänst': 'border-l-red-500 text-red-700 bg-red-50',
     'Hälso- och sjukvård': 'border-l-green-500 text-green-700 bg-green-50',
-    'Omsorg': 'border-l-orange-500 text-orange-700 bg-orange-50',
     'Barn och vårdnadshavare': 'border-l-yellow-500 text-yellow-700 bg-yellow-50'
   };
 
@@ -187,8 +185,7 @@ const Journal: React.FC<JournalProps> = ({ onNavigateToAI, selectedProfileId = '
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                   selectedDomain === 'Skola' ? 'bg-blue-100' :
                   selectedDomain === 'Socialtjänst' ? 'bg-red-100' :
-                  selectedDomain === 'Hälso- och sjukvård' ? 'bg-green-100' :
-                  selectedDomain === 'Omsorg' ? 'bg-orange-100' : 'bg-yellow-100'
+                  selectedDomain === 'Hälso- och sjukvård' ? 'bg-green-100' : 'bg-yellow-100'
                 }`}>
                   {domainIcons[selectedDomain]}
                 </div>
