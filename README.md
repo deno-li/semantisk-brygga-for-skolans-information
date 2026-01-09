@@ -199,12 +199,12 @@ Forskningscentrum för kunskapsbaserad prevention vid Linnéuniversitetet
 **Deltagande organisationer:**
 - Linnéuniversitetet, FoU Nordost, Högskolan Dalarna, Örebro universitet
 - Region Kronoberg och Kronobergs åtta kommuner
-- Falun kommun, Ystad kommun, Hässleholms kommun
-- Norra Örebro län, Krokum (Region Jämtland Härjedalen), Österåker (Sju Systrar)
+- Falu kommun, Ystads kommun, Hässleholms kommun
+- Norra Örebro län, Krokums kommun (Region Jämtland Härjedalen), Österåkers kommun (Sju Systrar)
 
 **Lokala implementeringar:**
 - **Kronobarnsmodellen** - [Region Kronoberg](https://www.regionkronoberg.se/vardgivare/arbetsomraden-processer/barn-och-unga/kronobarnsmodellen/)
-- **Tillsammans För Varje Barn** - [Falun kommun](https://www.falun.se/utbildning--barnomsorg/tillsammans-for-varje-barn.html)
+- **Tillsammans För Varje Barn** - [Falu kommun](https://www.falun.se/utbildning--barnomsorg/tillsammans-for-varje-barn.html)
 - **Backa Barnet** - [backabarnet.se](https://www.backabarnet.se/)
 
 ### BBIC & IBIC (Socialstyrelsen)
