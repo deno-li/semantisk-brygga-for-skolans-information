@@ -1,0 +1,546 @@
+
+import React, { useState, useEffect, memo } from 'react';
+import { Sparkles, ArrowRight, Check, AlertCircle, Database, Copy, RefreshCw, Edit, Save, Trash2, X } from 'lucide-react';
+import { AiSuggestion, View } from '../types/types';
+import SemanticBridgeAPI from '../api/semanticBridgeApi';
+import type { ICFAnalysisResult } from '../types/icf-types';
+import ICFSuggestionsDisplay from './ICFSuggestionsDisplay';
+
+type AnalysisMode = 'semantic-mapping' | 'icf-observation';
+
+interface AIAnalysisProps {
+  onNavigate?: (view: View) => void;
+}
+
+const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
+  const [inputText, setInputText] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [results, setResults] = useState<AiSuggestion[] | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<Record<number, string>>({});
+  
+  // Phase 4: ICF observation analysis state
+  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>('semantic-mapping');
+  const [icfSuggestions, setIcfSuggestions] = useState<ICFAnalysisResult | null>(null);
+
+  useEffect(() => {
+    // Check for drafted text passed from Journal component
+    const draft = sessionStorage.getItem('journalDraft');
+    if (draft) {
+      setInputText(draft);
+      sessionStorage.removeItem('journalDraft');
+    }
+  }, []);
+
+  const validateCodeFormat = (standard: string, code: string): string | null => {
+    const cleanCode = code.trim().split(' ')[0]; // Extract the code part, ignoring description
+
+    switch (standard) {
+      case 'ICF':
+        // Starts with b, d, e, s followed by digits
+        if (!/^[bdes]\d+/.test(cleanCode)) {
+          return "Fel format: ICF ska börja med b, d, e eller s (t.ex. d160).";
+        }
+        break;
+      case 'KVÅ':
+        // Two uppercase letters followed by three digits
+        if (!/^[A-ZÅÄÖ]{2}\d{3}/.test(cleanCode)) {
+          return "Fel format: KVÅ ska vara två bokstäver och tre siffror (t.ex. GD005).";
+        }
+        break;
+      case 'KSI':
+        // KSI format: Target (e.g., SCA) optionally with Action/Status (e.g., SCA-PM-2)
+        if (!/^[A-ZÅÄÖ]{2,3}(-[A-ZÅÄÖ]{2})?(-[1-4])?$/.test(cleanCode)) {
+           return "Fel format: KSI ska vara t.ex. SCA eller SCA-PM-2.";
+        }
+        break;
+      case 'BBIC':
+        // No strict format, but shouldn't be empty
+        if (cleanCode.length < 2) return "Ange ett giltigt BBIC-område.";
+        break;
+      case 'IBIC':
+        // IBIC uses ICF life areas (d1-d9) or descriptive text
+        if (cleanCode.length < 2) return "Ange ett giltigt IBIC-livsområde.";
+        break;
+    }
+    return null;
+  };
+
+  const getCodeHint = (standard: string): string => {
+    switch (standard) {
+      case 'ICF':
+        return 'Format: d160, b140, e310';
+      case 'KVÅ':
+        return 'Format: GD005, DV015';
+      case 'KSI':
+        return 'Format: SCA eller SCA-PM-2';
+      case 'BBIC':
+        return 'Format: kort domännamn, t.ex. Skola & Lärande';
+      case 'IBIC':
+        return 'Format: livsområde, t.ex. Personlig vård, Lärande, Kommunikation';
+      default:
+        return 'Ange en kod i standardens format.';
+    }
+  };
+
+  const handleAnalyze = async () => {
+    if (!inputText.trim()) return;
+
+    setIsAnalyzing(true);
+    setResults(null);
+    setIcfSuggestions(null);
+    setIsEditing(false);
+    setValidationErrors({});
+
+    try {
+      if (analysisMode === 'semantic-mapping') {
+        // Existing semantic mapping logic
+        // Call Vercel serverless API route
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: inputText }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.suggestions && data.suggestions.length > 0) {
+          setResults(data.suggestions);
+        } else if (data.error) {
+          throw new Error(data.error);
+        }
+      } else if (analysisMode === 'icf-observation') {
+        // NEW: ICF observation analysis
+        const apiClient = new SemanticBridgeAPI();
+        const result = await apiClient.analyzeICFObservation({
+          observation_text: inputText,
+          child_age: 10,  // Could come from selected profile
+          context: 'school',
+          current_level: 'N2'
+        });
+        
+        setIcfSuggestions(result);
+      }
+    } catch (error) {
+      console.error("AI Analysis failed:", error);
+      
+      if (analysisMode === 'semantic-mapping') {
+        // Fallback/Demo mode for semantic mapping if API call fails
+        const mockSuggestions: AiSuggestion[] = [
+          {
+            standard: 'ICF',
+            code: 'd160 (Uppmärksamhet)',
+            confidence: 88,
+            reasoning: `Baserat på citatet "svårt att koncentrera sig" som indikerar nedsatt mental funktion, föreslås koden d160 (Uppmärksamhet) då den avser förmågan att fokusera på uppgifter.`
+          },
+          {
+            standard: 'BBIC',
+            code: 'Skola & Lärande',
+            confidence: 82,
+            reasoning: `Baserat på citatet "på lektionerna" och beskrivna svårigheter med skolarbete, kopplas detta till BBIC-domänen Skola & Lärande.`
+          },
+          {
+            standard: 'KVÅ',
+            code: 'GD005 (Stödsamtal)',
+            confidence: 75,
+            reasoning: `Baserat på citatet "uttrycker oro" som indikerar ett behov av ventilerande samtal, föreslås åtgärdskoden GD005 (Stödsamtal).`
+          }
+        ];
+        setResults(mockSuggestions);
+      }
+      // ICF observation mode already has fallback in API client
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleResultChange = (index: number, field: keyof AiSuggestion, value: string | number) => {
+    if (!results) return;
+    const newResults = [...results];
+    newResults[index] = { ...newResults[index], [field]: value };
+    setResults(newResults);
+
+    // Validate if standard or code changes
+    if (field === 'standard' || field === 'code') {
+      const standardToCheck = (field === 'standard' ? value : newResults[index].standard) as string;
+      const codeToCheck = (field === 'code' ? value : newResults[index].code) as string;
+
+      const error = validateCodeFormat(standardToCheck, codeToCheck);
+      
+      setValidationErrors(prev => {
+        const next = { ...prev };
+        if (error) next[index] = error;
+        else delete next[index];
+        return next;
+      });
+    }
+  };
+
+  const handleDeleteResult = (index: number) => {
+    if (!results) return;
+    const newResults = results.filter((_, i) => i !== index);
+    setResults(newResults);
+    
+    // Correctly shift validation errors down since array indices change
+    const newErrors: Record<number, string> = {};
+    Object.keys(validationErrors).forEach((key) => {
+      const keyIndex = parseInt(key, 10);
+      if (keyIndex < index) {
+        newErrors[keyIndex] = validationErrors[keyIndex];
+      } else if (keyIndex > index) {
+        newErrors[keyIndex - 1] = validationErrors[keyIndex];
+      }
+    });
+    setValidationErrors(newErrors);
+  };
+
+  const handleSaveToJournal = () => {
+    if (!results || !onNavigate) return;
+    
+    // Block saving if there are validation errors
+    if (Object.keys(validationErrors).length > 0) {
+      alert("Du måste åtgärda valideringsfelen innan du kan spara.");
+      return;
+    }
+
+    // Save current analysis to session storage so Journal can pick it up
+    const payload = {
+      originalText: inputText,
+      suggestions: results
+    };
+    sessionStorage.setItem('journalAnalysisResult', JSON.stringify(payload));
+    onNavigate('journal');
+  };
+
+  const sampleText = "Erik har visat tecken på oro vid raster. Han drar sig undan och har svårt att koncentrera sig på lektionerna efter rasten. Han uttrycker att det är 'stökigt' i korridoren.";
+  
+  const sampleICFText = "Elsa har svårt att läsa självständigt i klassrummet. Hon behöver ljudböcker och bildstöd för att kunna följa med. När hon får dessa anpassningar fungerar det bra. Ljudnivån i klassrummet stressar henne ibland.";
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-purple-50 to-white p-6 rounded-lg border border-purple-100 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-[#1F1F1F] flex items-center gap-2">
+              <Sparkles className="text-purple-600" />
+              AI-Analysstöd (Kodning)
+            </h2>
+            <p className="text-gray-600 mt-2 max-w-2xl">
+              Använd AI för att översätta pedagogiska observationer (fritext) till Socialstyrelsens klassifikationer och kodverk.
+              Detta minskar administration och säkrar enhetlig dokumentation.
+            </p>
+          </div>
+          <span className="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200 uppercase tracking-wide">
+            Beta-funktion
+          </span>
+        </div>
+      </div>
+
+      {/* Phase 4: Analysis Mode Toggle */}
+      <div className="flex gap-2 mb-4">
+        <button 
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+            analysisMode === 'semantic-mapping' 
+              ? 'bg-purple-600 text-white shadow-md' 
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+          onClick={() => {
+            setAnalysisMode('semantic-mapping');
+            setResults(null);
+            setIcfSuggestions(null);
+          }}
+        >
+          📊 Semantisk mappning (ICF/KSI/KVÅ)
+        </button>
+        <button 
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+            analysisMode === 'icf-observation' 
+              ? 'bg-purple-600 text-white shadow-md' 
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+          onClick={() => {
+            setAnalysisMode('icf-observation');
+            setResults(null);
+            setIcfSuggestions(null);
+          }}
+        >
+          🧠 ICF-bedömning från observation
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        {/* Input Section */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 flex flex-col h-full">
+          <label className="font-bold text-gray-700 mb-2 block">
+            {analysisMode === 'semantic-mapping' 
+              ? 'Pedagogisk Observation / Journalanteckning'
+              : 'ICF Observation (Performance & Capacity)'}
+          </label>
+          <div className="relative flex-grow">
+            <textarea
+              className="w-full h-64 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-sm leading-relaxed"
+              placeholder={analysisMode === 'semantic-mapping' 
+                ? "Skriv din observation här..."
+                : "Beskriv barnets funktioner med och utan anpassningar..."}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              disabled={isEditing} 
+            />
+            {!inputText && (
+              <button 
+                onClick={() => setInputText(analysisMode === 'semantic-mapping' ? sampleText : sampleICFText)}
+                className="absolute top-4 right-4 text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded transition-colors"
+              >
+                Klistra in exempel
+              </button>
+            )}
+          </div>
+          <div className="mt-4 flex justify-between items-center">
+            <p className="text-xs text-gray-500 flex items-center gap-1">
+              <AlertCircle size={14} />
+              AI-stödet är vägledande. Professionen beslutar.
+            </p>
+            <button
+              onClick={handleAnalyze}
+              disabled={isAnalyzing || !inputText || isEditing}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-white transition-all transform hover:scale-105 active:scale-95 ${
+                isAnalyzing || !inputText || isEditing
+                  ? 'bg-gray-300 cursor-not-allowed transform-none' 
+                  : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+              }`}
+            >
+              {isAnalyzing ? (
+                <>
+                  <RefreshCw size={18} className="animate-spin" /> Analyserar...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={18} /> Analysera Text
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Output Section */}
+        <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 h-full overflow-y-auto">
+          {!results && !icfSuggestions ? (
+            <div className="h-full flex flex-col items-center justify-center text-gray-400 text-center">
+              <Database size={48} className="mb-4 opacity-20" />
+              <h3 className="text-lg font-medium text-gray-600">Inväntar analys</h3>
+              <p className="text-sm mt-2 max-w-xs">
+                Skriv in en text till vänster och klicka på "Analysera" för att se förslag på kodning.
+              </p>
+            </div>
+          ) : icfSuggestions ? (
+            // Phase 4: ICF Suggestions Display
+            <div className="space-y-4 animate-fade-in">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Check className="text-green-600" size={20} />
+                  ICF-bedömning från AI
+                </h3>
+              </div>
+              
+              <ICFSuggestionsDisplay
+                suggestions={icfSuggestions}
+                onApplySuggestion={(suggestion) => {
+                  // Future: Navigate to ICF Assessment Form with pre-filled data
+                  alert('Funktionen att applicera förslag till ICF-formulär kommer snart!');
+                }}
+                onApplyEnvironmentalFactor={(factor) => {
+                  alert('Funktionen att applicera miljöfaktorer kommer snart!');
+                }}
+              />
+            </div>
+          ) : results ? (
+            // Existing semantic mapping results display
+            <div className="space-y-4 animate-fade-in">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Check className="text-green-600" size={20} />
+                  Föreslagen Kodning
+                </h3>
+                {isEditing && (
+                   <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded border border-orange-100 animate-pulse">
+                     Redigeringsläge
+                   </span>
+                )}
+              </div>
+              
+              {results.map((item, idx) => (
+                <div key={idx} className={`bg-white p-4 rounded-lg border shadow-sm transition-all group ${isEditing ? 'border-orange-200 ring-2 ring-orange-50' : 'border-gray-200 hover:shadow-md'}`}>
+                  
+                  {/* Top Row: Standard & Confidence */}
+                  <div className="flex justify-between items-start mb-2">
+                    {isEditing ? (
+                      <select
+                        value={item.standard}
+                        onChange={(e) => handleResultChange(idx, 'standard', e.target.value)}
+                        className="text-xs font-bold uppercase tracking-wide border border-gray-300 rounded px-2 py-1 bg-gray-50 focus:ring-2 focus:ring-purple-500 outline-none"
+                      >
+                        <option value="ICF">ICF</option>
+                        <option value="BBIC">BBIC</option>
+                        <option value="IBIC">IBIC</option>
+                        <option value="KVÅ">KVÅ</option>
+                        <option value="KSI">KSI</option>
+                      </select>
+                    ) : (
+                      <div className={`px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide border ${
+                        item.standard === 'ICF' ? 'bg-purple-50 text-purple-700 border-purple-100' :
+                        item.standard === 'BBIC' ? 'bg-red-50 text-red-700 border-red-100' :
+                        item.standard === 'IBIC' ? 'bg-orange-50 text-orange-700 border-orange-100' :
+                        item.standard === 'KVÅ' ? 'bg-green-50 text-green-700 border-green-100' :
+                        item.standard === 'KSI' ? 'bg-gray-100 text-gray-700 border-gray-200' :
+                        'bg-blue-50 text-blue-700 border-blue-200'
+                      }`}>
+                        {item.standard}
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2">
+                       {isEditing ? (
+                         <div className="flex items-center gap-1">
+                           <input 
+                             type="range" 
+                             min="0" 
+                             max="100" 
+                             value={item.confidence} 
+                             onChange={(e) => handleResultChange(idx, 'confidence', parseInt(e.target.value))}
+                             className="w-20 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                           />
+                           <span className="text-xs font-mono w-8 text-right">{item.confidence}%</span>
+                         </div>
+                       ) : (
+                        <div className="flex items-center gap-1 text-xs font-semibold text-gray-400">
+                          <span>{item.confidence}% säkerhet</span>
+                          <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-green-500 rounded-full" style={{ width: `${item.confidence}%` }}></div>
+                          </div>
+                        </div>
+                       )}
+                       
+                       {isEditing && (
+                         <button 
+                           onClick={() => handleDeleteResult(idx)}
+                           className="text-red-400 hover:text-red-600 ml-2 p-1"
+                           title="Ta bort förslag"
+                         >
+                           <Trash2 size={14} />
+                         </button>
+                       )}
+                    </div>
+                  </div>
+                  
+                  {/* Middle Row: Code */}
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between gap-2">
+                        {isEditing ? (
+                        <input 
+                            type="text" 
+                            value={item.code}
+                            onChange={(e) => handleResultChange(idx, 'code', e.target.value)}
+                            className={`w-full text-lg font-bold text-gray-900 font-mono border-b-2 outline-none bg-transparent ${
+                                validationErrors[idx] ? 'border-red-500 text-red-900' : 'border-gray-200 focus:border-purple-500'
+                            }`}
+                        />
+                        ) : (
+                        <div className="text-lg font-bold text-gray-900 font-mono">{item.code}</div>
+                        )}
+                        
+                        {!isEditing && (
+                        <button className="text-gray-400 hover:text-[#005595] transition-colors" title="Kopiera">
+                            <Copy size={16} />
+                        </button>
+                        )}
+                    </div>
+                    {isEditing && validationErrors[idx] && (
+                        <div className="text-xs text-red-600 font-medium flex items-center gap-1">
+                            <AlertCircle size={12} /> {validationErrors[idx]}
+                        </div>
+                    )}
+                    {isEditing && !validationErrors[idx] && (
+                        <div className="text-xs text-gray-500">
+                          {getCodeHint(item.standard)}
+                        </div>
+                    )}
+                  </div>
+                  
+                  {/* Bottom Row: Reasoning */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 text-sm text-gray-600 italic flex gap-2 items-start">
+                    <span className="shrink-0 text-purple-400 mt-1">🤖</span>
+                    {isEditing ? (
+                      <textarea 
+                        value={item.reasoning}
+                        onChange={(e) => handleResultChange(idx, 'reasoning', e.target.value)}
+                        className="w-full p-2 border border-gray-200 rounded text-sm focus:ring-2 focus:ring-purple-500 outline-none"
+                        rows={2}
+                      />
+                    ) : (
+                      <span>"{item.reasoning}"</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              <div className="mt-6 p-4 bg-blue-50 rounded border border-blue-100 text-sm text-[#005595]">
+                {isEditing ? (
+                   <div className="flex flex-col gap-2">
+                      <strong>Granska dina ändringar:</strong>
+                      <div className="flex gap-3 mt-1">
+                        <button 
+                          onClick={() => {
+                            if (Object.keys(validationErrors).length === 0) {
+                                setIsEditing(false);
+                            } else {
+                                alert("Du måste åtgärda felen i rött innan du kan avsluta redigeringen.");
+                            }
+                          }}
+                          className={`flex items-center gap-2 px-4 py-1.5 rounded font-semibold transition-colors ${
+                             Object.keys(validationErrors).length > 0
+                             ? 'bg-gray-400 cursor-not-allowed text-white'
+                             : 'bg-[#005595] text-white hover:bg-blue-800'
+                          }`}
+                        >
+                          <Save size={16} /> Spara ändringar
+                        </button>
+                      </div>
+                   </div>
+                ) : (
+                  <>
+                    <strong>Nästa steg:</strong> Vill du spara dessa koder till Journalen?
+                    <div className="mt-3 flex gap-3">
+                      <button 
+                        onClick={handleSaveToJournal}
+                        className="flex items-center gap-2 bg-[#005595] text-white px-4 py-1.5 rounded font-semibold hover:bg-blue-800 transition-colors"
+                      >
+                        <Save size={16} /> Spara & Gå till Journal
+                      </button>
+                      <button 
+                        onClick={() => setIsEditing(true)}
+                        className="flex items-center gap-2 bg-white border border-blue-200 text-[#005595] px-4 py-1.5 rounded font-semibold hover:bg-blue-50 transition-colors"
+                      >
+                        <Edit size={16} /> Redigera
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : null}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default memo(AIAnalysis);

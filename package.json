@@ -1,0 +1,57 @@
+{
+  "name": "barnets-resa---sammanhållen-planering",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive wellbeing wheel prototype demonstrating semantic integration of information from schools, social services and healthcare for coordinated planning around children and youth. Built on GIRFEC (Getting It Right For Every Child) framework.",
+  "keywords": [
+    "wellbeing",
+    "girfec",
+    "shanarri",
+    "icf",
+    "bbic",
+    "child-welfare",
+    "coordinated-planning",
+    "semantic-integration",
+    "sweden",
+    "healthcare",
+    "education",
+    "social-services"
+  ],
+  "author": "deno-li",
+  "license": "MIT",
+  "homepage": "https://github.com/deno-li/semantisk-brygga-for-skolans-information#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deno-li/semantisk-brygga-for-skolans-information.git"
+  },
+  "bugs": {
+    "url": "https://github.com/deno-li/semantisk-brygga-for-skolans-information/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.80",
+    "@google/genai": "^1.31.0",
+    "ai": "^5.0.110",
+    "html2canvas": "^1.4.1",
+    "lucide-react": "^0.556.0",
+    "openai": "^6.10.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "recharts": "^3.5.1",
+    "jspdf": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

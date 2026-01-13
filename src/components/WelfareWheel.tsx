@@ -1,0 +1,573 @@
+
+import React, { useState, useMemo, memo } from 'react';
+import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
+import { Info, Tag, Database, Activity, Search, X, Smile, ThumbsUp, Heart, BookOpen, User, CheckCircle2, ExternalLink, Shield, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShanarriIndicator, Perspective } from '../types/types';
+import { childFriendlyTexts } from '../data/childFriendlyTexts';
+import { useWelfareData } from '../hooks/useWelfareData';
+
+interface WelfareWheelProps {
+  currentPerspective?: Perspective;
+  selectedProfileId?: string;
+}
+
+const WelfareWheel: React.FC<WelfareWheelProps> = ({ currentPerspective, selectedProfileId = 'erik' }) => {
+  const isChild = currentPerspective === 'child';
+  const [activeChart, setActiveChart] = useState<'radar' | 'wheel'>('wheel');
+  const [selectedIndicator, setSelectedIndicator] = useState<ShanarriIndicator | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showMatrix, setShowMatrix] = useState(false);
+
+  // Use custom hook for welfare data
+  const { filteredData, hasData, shanarriData } = useWelfareData(selectedProfileId, searchQuery);
+
+  // Custom Wheel Logic (SVG)
+  const WheelChart = () => {
+    const size = 400;
+    const cx = size / 2;
+    const cy = size / 2;
+    const outerR = size / 2 - 20;
+    const innerR = size / 6;
+    const n = filteredData.length;
+
+    if (!hasData) return null;
+
+    return (
+      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full max-w-[400px] mx-auto animate-fade-in select-none">
+        {filteredData.map((dim, i) => {
+          const startAngle = (i * 360) / n - 90;
+          const endAngle = ((i + 1) * 360) / n - 90;
+          
+          // Convert degrees to radians
+          const startRad = (startAngle * Math.PI) / 180;
+          const endRad = (endAngle * Math.PI) / 180;
+
+          // Coordinates
+          const x1 = cx + Math.cos(startRad) * innerR;
+          const y1 = cy + Math.sin(startRad) * innerR;
+          const x2 = cx + Math.cos(startRad) * outerR;
+          const y2 = cy + Math.sin(startRad) * outerR;
+          const x3 = cx + Math.cos(endRad) * outerR;
+          const y3 = cy + Math.sin(endRad) * outerR;
+          const x4 = cx + Math.cos(endRad) * innerR;
+          const y4 = cy + Math.sin(endRad) * innerR;
+
+          // SVG Path Command
+          const path = `M ${x1} ${y1} L ${x2} ${y2} A ${outerR} ${outerR} 0 0 1 ${x3} ${y3} L ${x4} ${y4} A ${innerR} ${innerR} 0 0 0 ${x1} ${y1}`;
+          
+          // Color Logic based on status
+          const isSelected = selectedIndicator?.id === dim.id;
+          const baseOpacity = dim.status >= 3 ? 0.9 : 0.6;
+          const opacity = isSelected ? 1 : (selectedIndicator ? 0.3 : baseOpacity);
+          
+          // Status Dot
+          const midAngle = ((i + 0.5) * 360) / n - 90;
+          const midRad = (midAngle * Math.PI) / 180;
+          const statusR = outerR - 25;
+          const statusX = cx + Math.cos(midRad) * statusR;
+          const statusY = cy + Math.sin(midRad) * statusR;
+          const statusColor = dim.status >= 4 ? '#22c55e' : dim.status >= 3 ? '#eab308' : '#ef4444';
+
+          // Text Label Position
+          const labelR = outerR - 60;
+          const labelX = cx + Math.cos(midRad) * labelR;
+          const labelY = cy + Math.sin(midRad) * labelR;
+
+          return (
+            <g 
+              key={dim.id} 
+              className={`cursor-pointer transition-transform duration-300 ease-out`}
+              onClick={() => setSelectedIndicator(dim)}
+              style={{ transformOrigin: `${cx}px ${cy}px` }}
+            >
+              <path 
+                d={path} 
+                fill={dim.color} 
+                fillOpacity={opacity} 
+                stroke="white" 
+                strokeWidth={isSelected ? "4" : "2"}
+                className={`transition-all duration-300 ${isSelected && isChild ? 'animate-child-pulse' : 'hover:opacity-100'}`}
+              />
+              <circle cx={statusX} cy={statusY} r="12" fill="white" fillOpacity="0.9" />
+              <circle cx={statusX} cy={statusY} r="8" fill={statusColor} />
+              
+              <text 
+                 x={labelX} 
+                 y={labelY} 
+                 textAnchor="middle" 
+                 dominantBaseline="middle"
+                 fill="white" 
+                 fontSize="10" 
+                 fontWeight="bold"
+                 style={{ textShadow: '0px 1px 2px rgba(0,0,0,0.3)' }}
+                 pointerEvents="none"
+              >
+                {dim.name}
+              </text>
+            </g>
+          );
+        })}
+        {/* Center Hub */}
+        <circle 
+          cx={cx} cy={cy} r={innerR - 5} 
+          fill="white" stroke="#e5e7eb" strokeWidth="2" 
+          className="cursor-pointer hover:fill-gray-50"
+          onClick={() => setSelectedIndicator(null)}
+        />
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1e3a8a" pointerEvents="none">BARNETS</text>
+        <text x={cx} y={cy + 10} textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1e3a8a" pointerEvents="none">BÄSTA</text>
+      </svg>
+    );
+  };
+
+  const childText = selectedIndicator ? childFriendlyTexts[selectedIndicator.id] : null;
+
+  return (
+    <div className={`rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in ${isChild ? 'bg-orange-50/30' : 'bg-white'}`}>
+      <style>{`
+        @keyframes child-pulse {
+          0% { transform: scale(1); filter: brightness(1); }
+          50% { transform: scale(1.08); filter: brightness(1.25) drop-shadow(0 0 10px rgba(0,0,0,0.2)); }
+          100% { transform: scale(1); filter: brightness(1); }
+        }
+        .animate-child-pulse {
+          animation: child-pulse 1.5s infinite ease-in-out;
+          transform-box: fill-box;
+          transform-origin: center;
+          z-index: 10;
+        }
+      `}</style>
+
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-8 gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            🎯 {isChild ? "Ditt Välbefinnande" : "Välbefinnandehjul"}
+          </h2>
+          <p className="text-sm text-gray-500 mt-1 max-w-2xl">
+            {isChild
+              ? "Klicka på en tårtbit för att se vad skolan och de vuxna gör för att hjälpa dig."
+              : "Detta hjul är det pedagogiska gränssnittet. Klicka på en tårtbit för att se hur elevens upplevelse mappas mot Socialstyrelsens klassifikationer och kodverk."}
+          </p>
+        </div>
+        
+        {!isChild && (
+          <div className="flex flex-col sm:flex-row gap-3 xl:items-center">
+              {/* Search Bar */}
+              <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <input 
+                    type="text" 
+                    placeholder="Sök indikator..." 
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                    }}
+                    className="pl-9 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#005595] focus:ring-1 focus:ring-[#005595] w-full"
+                  />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+              </div>
+
+              {/* Chart Toggles */}
+              <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg shrink-0">
+                <button
+                  onClick={() => setActiveChart('wheel')}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    activeChart === 'wheel' ? 'bg-[#005595] text-white shadow' : 'text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  Hjuldiagram
+                </button>
+                <button
+                  onClick={() => setActiveChart('radar')}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    activeChart === 'radar' ? 'bg-[#005595] text-white shadow' : 'text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  Spindeldiagram
+                </button>
+              </div>
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Chart Area */}
+        <div className="h-[450px] flex items-center justify-center bg-gray-50 rounded-xl relative overflow-hidden border border-gray-100">
+          {!hasData ? (
+             <div className="text-center text-gray-400">
+                <Search size={48} className="mx-auto mb-2 opacity-20" />
+                <p>Inga indikatorer matchar "{searchQuery}"</p>
+             </div>
+          ) : activeChart === 'radar' && !isChild ? (
+             <ResponsiveContainer width="100%" height="100%">
+               <RadarChart cx="50%" cy="50%" outerRadius="80%" data={filteredData}>
+                 <PolarGrid />
+                 <PolarAngleAxis dataKey="name" tick={{ fontSize: 12, fill: '#4b5563' }} />
+                 <PolarRadiusAxis angle={30} domain={[0, 5]} tick={false} />
+                 <Radar
+                   name="Status"
+                   dataKey="status"
+                   stroke="#005595"
+                   fill="#005595"
+                   fillOpacity={0.4}
+                 />
+                 <Tooltip />
+               </RadarChart>
+             </ResponsiveContainer>
+          ) : (
+            <WheelChart />
+          )}
+          
+          {/* Helper Text */}
+          {!selectedIndicator && activeChart === 'wheel' && hasData && (
+            <div className="absolute bottom-4 text-xs text-gray-400 italic">
+              {isChild ? "Klicka på en färg för att läsa mer" : "Klicka på en del för att se kodning"}
+            </div>
+          )}
+        </div>
+
+        {/* Details & Coding Panel */}
+        <div className="flex flex-col h-full">
+          {selectedIndicator ? (
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm h-full flex flex-col animate-fade-in">
+              {/* Header */}
+              <div className="p-5 border-b border-gray-100" style={{ borderTop: `4px solid ${selectedIndicator.color}` }}>
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-2xl font-bold text-gray-800">{selectedIndicator.name}</h3>
+                  <div className={`px-3 py-1 rounded-full text-sm font-bold ${
+                    selectedIndicator.status >= 4 ? 'bg-green-100 text-green-700' :
+                    selectedIndicator.status === 3 ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700'
+                  }`}>
+                    {isChild 
+                      ? (selectedIndicator.status >= 4 ? 'Går bra! 😃' : 'Vi jobbar på det 💪')
+                      : `Nivå ${selectedIndicator.status}/5`
+                    }
+                  </div>
+                </div>
+                {!isChild && <p className="text-gray-600 italic">"{selectedIndicator.notes}"</p>}
+                {!isChild && <div className="mt-2 text-xs text-gray-400">Källa: {selectedIndicator.source}</div>}
+              </div>
+
+              {isChild ? (
+                /* CHILD FRIENDLY PANEL */
+                <div className="p-6 flex-1 bg-gradient-to-b from-white to-orange-50/30 overflow-y-auto">
+                   <div className="space-y-6">
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 shadow-sm">
+                         <h4 className="font-bold text-[#005595] mb-2 flex items-center gap-2">
+                           <Smile size={20} /> Vad betyder det här?
+                         </h4>
+                         <p className="text-gray-700 text-sm leading-relaxed">
+                           {childText ? childText.meaning : "Det här handlar om hur du har det i skolan och på fritiden."}
+                         </p>
+                      </div>
+                      
+                      <div className="bg-green-50 p-4 rounded-lg border border-green-100 shadow-sm">
+                         <h4 className="font-bold text-[#378056] mb-2 flex items-center gap-2">
+                           <ThumbsUp size={20} /> Vad gör skolan?
+                         </h4>
+                         <ul className="text-sm text-gray-700 space-y-2">
+                           <li className="flex items-start gap-2">
+                             <CheckCircle2 size={16} className="text-green-600 mt-0.5 shrink-0"/>
+                             <span>{childText ? childText.action : "Vi pratar med dig för att se till att du trivs."}</span>
+                           </li>
+                           {selectedIndicator.status < 4 && (
+                              <li className="flex items-start gap-2">
+                                <CheckCircle2 size={16} className="text-green-600 mt-0.5 shrink-0"/>
+                                <span>Vi har satt in extra stöd (se din Plan).</span>
+                              </li>
+                           )}
+                         </ul>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs text-gray-400 mt-4 justify-center">
+                        <Heart size={12} fill="#e5e7eb" /> Du är viktig för oss!
+                      </div>
+                   </div>
+                </div>
+              ) : (
+                /* PROFESSIONAL PANEL - Kodverk och klassifikationer */
+                <div className="p-5 flex-1 overflow-y-auto bg-gray-50">
+                  <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                    <Database size={16} />
+                    Klassifikationer och kodverk
+                  </h4>
+
+                  <div className="flex flex-col space-y-3">
+
+                    {/* Status och BBIC */}
+                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Status & BBIC-koppling</div>
+                      <div className="flex items-center gap-3 mb-3">
+                         <div className="w-5 h-5 rounded-full" style={{ backgroundColor: selectedIndicator.color }}></div>
+                         <div>
+                            <div className="font-bold text-gray-800">{selectedIndicator.name}</div>
+                            <div className="text-sm text-gray-600">
+                              Nivå {selectedIndicator.status} av 5
+                            </div>
+                         </div>
+                      </div>
+                      {selectedIndicator.bbic && (
+                        <div className="mt-2 pt-2 border-t border-gray-200">
+                          <div className="text-xs font-semibold text-gray-600 mb-1">BBIC (Barns Behov i Centrum)</div>
+                          <div className="text-sm text-gray-800 bg-red-50 px-2 py-1 rounded border border-red-200">
+                            {selectedIndicator.bbic}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ICF Codes */}
+                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                        <Tag size={12} />
+                        ICF (International Classification of Functioning)
+                      </div>
+                      <div className="text-sm font-mono text-purple-700 bg-purple-50 px-3 py-2 rounded border border-purple-200">
+                        {selectedIndicator.icf}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                        WHO:s klassifikation av funktionstillstånd, funktionshinder och hälsa
+                      </p>
+                    </div>
+
+                    {/* ICD-10/11 if available */}
+                    {selectedIndicator.icd && (
+                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">ICD-10/11 (Diagnoskod)</div>
+                        <div className="text-sm font-mono text-red-700 bg-red-50 px-3 py-2 rounded border border-red-200">
+                          {selectedIndicator.icd}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          Internationell sjukdomsklassifikation
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Snomed CT */}
+                    {selectedIndicator.snomed && (
+                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Snomed CT</div>
+                        <div className="text-sm font-mono text-teal-700 bg-teal-50 px-3 py-2 rounded border border-teal-200">
+                          {selectedIndicator.snomed}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          Systematiserad medicinsk nomenklatur
+                        </p>
+                      </div>
+                    )}
+
+                    {/* KVÅ */}
+                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KVÅ (Klassifikation av vårdåtgärder)</div>
+                      <div className="text-sm font-mono text-green-700 bg-green-50 px-3 py-2 rounded border border-green-200">
+                        {selectedIndicator.kva}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Socialstyrelsens kodverk för vårdåtgärder
+                      </p>
+                    </div>
+
+                    {/* KSI */}
+                    <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">KSI (Kommunala socialtjänsten)</div>
+                      <div className="text-sm text-gray-700 bg-gray-50 px-3 py-2 rounded border border-gray-200">
+                        {selectedIndicator.ksi}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Kodverk för statistikrapportering
+                      </p>
+                    </div>
+
+                    {/* IBIC */}
+                    {selectedIndicator.ibic && (
+                      <div className="w-full bg-white p-4 rounded border border-gray-200 shadow-sm">
+                        <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">IBIC (Individens Behov i Centrum)</div>
+                        <div className="text-sm text-gray-800 bg-orange-50 px-2 py-1 rounded border border-orange-200">
+                          {selectedIndicator.ibic}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Source */}
+                    <div className="w-full bg-blue-50 p-3 rounded border border-blue-200">
+                      <div className="text-xs font-bold text-blue-800 mb-1">Källa</div>
+                      <p className="text-xs text-gray-700">{selectedIndicator.source}</p>
+                    </div>
+
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Empty State */
+            <div className="h-full flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-gray-200 rounded-lg text-gray-400">
+              <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-4">
+                <Tag size={32} className="opacity-50" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-600">Ingen dimension vald</h3>
+              <p className="text-sm mt-2 max-w-xs">
+                {isChild 
+                 ? "Klicka på en färg i hjulet för att se vad det betyder."
+                 : "Klicka på en del av hjulet för att se hur den pedagogiska modellen kopplas till tekniska kodverk."}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Semantic Bridge Matrix - Only for professional view */}
+      {!isChild && (
+        <div className="mt-8">
+          <button
+            onClick={() => setShowMatrix(!showMatrix)}
+            className="w-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-5 hover:from-indigo-100 hover:to-purple-100 transition-all group"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center">
+                  <Database size={24} className="text-indigo-600" />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Semantisk brygga
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Koppling mellan behov och nationella kodverk
+                  </p>
+                </div>
+              </div>
+              <div className={`p-2 rounded-full bg-white shadow-sm transition-transform ${showMatrix ? 'rotate-180' : ''}`}>
+                <ChevronDown size={20} className="text-indigo-600" />
+              </div>
+            </div>
+          </button>
+
+          {showMatrix && (
+            <div className="mt-4 space-y-3 animate-fade-in">
+              {/* Header row showing what each standard is */}
+              <div className="flex gap-2 flex-wrap mb-4 px-2">
+                {[
+                  { name: 'ICF', color: 'purple', desc: 'Funktionstillstånd' },
+                  { name: 'BBIC', color: 'red', desc: 'Barns behov' },
+                  { name: 'IBIC', color: 'orange', desc: 'Individens behov' },
+                  { name: 'Snomed CT', color: 'teal', desc: 'Klinisk terminologi' },
+                  { name: 'KSI', color: 'amber', desc: 'Insatskoder' },
+                ].map((item) => (
+                  <span
+                    key={item.name}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-${item.color}-100 text-${item.color}-700`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full bg-${item.color}-500`} />
+                    {item.name}
+                  </span>
+                ))}
+              </div>
+
+              {/* Card-based rows for each dimension */}
+              {shanarriData.map((row) => (
+                <div
+                  key={row.id}
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  {/* Dimension header */}
+                  <div
+                    className="px-4 py-3 flex items-center gap-3 border-b"
+                    style={{ backgroundColor: row.color + '10' }}
+                  >
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: row.color + '20' }}
+                    >
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: row.color }}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <span className="font-semibold text-gray-900">{row.name}</span>
+                      <span className="text-xs text-gray-500 ml-2">({row.nameEn})</span>
+                    </div>
+                    <div
+                      className="px-2 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        backgroundColor: row.status >= 4 ? '#dcfce7' : row.status === 3 ? '#fef3c7' : '#fee2e2',
+                        color: row.status >= 4 ? '#166534' : row.status === 3 ? '#92400e' : '#991b1b'
+                      }}
+                    >
+                      {row.status >= 4 ? 'Bra' : row.status === 3 ? 'OK' : 'Stöd'}
+                    </div>
+                  </div>
+
+                  {/* Mappings grid */}
+                  <div className="p-4 grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {/* ICF */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-purple-600 uppercase tracking-wide">ICF</div>
+                      <div className="text-xs font-mono text-gray-700 bg-purple-50 rounded-lg px-2 py-1.5">
+                        {row.icf.split(',').slice(0, 2).join(', ')}
+                        {row.icf.split(',').length > 2 && <span className="text-purple-400"> +{row.icf.split(',').length - 2}</span>}
+                      </div>
+                    </div>
+
+                    {/* BBIC */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-red-600 uppercase tracking-wide">BBIC</div>
+                      <div className="text-xs text-gray-700 bg-red-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.bbic}
+                      </div>
+                    </div>
+
+                    {/* IBIC */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-orange-600 uppercase tracking-wide">IBIC</div>
+                      <div className="text-xs text-gray-700 bg-orange-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.ibic || '—'}
+                      </div>
+                    </div>
+
+                    {/* Snomed CT */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-teal-600 uppercase tracking-wide">Snomed CT</div>
+                      <div className="text-xs text-gray-700 bg-teal-50 rounded-lg px-2 py-1.5 truncate">
+                        {row.snomed || '—'}
+                      </div>
+                    </div>
+
+                    {/* KSI */}
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-bold text-amber-600 uppercase tracking-wide">KSI-insats</div>
+                      <div className="text-xs text-gray-700 bg-amber-50 rounded-lg px-2 py-1.5 line-clamp-2">
+                        {row.ksi.split('|')[0].replace('Target:', '').trim()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Info footer */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100 mt-4">
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  <strong className="text-blue-700">Om semantisk brygga:</strong>{' '}
+                  Kopplar barnets upplevda behov till nationella kodverk och ramverk för informationsdelning
+                  mellan skola, socialtjänst och hälso- och sjukvård.{' '}
+                  <span className="text-red-600 font-medium">BBIC</span> används för barn,{' '}
+                  <span className="text-orange-600 font-medium">IBIC</span> för vuxna och ungdomar med funktionsstöd.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default memo(WelfareWheel);
