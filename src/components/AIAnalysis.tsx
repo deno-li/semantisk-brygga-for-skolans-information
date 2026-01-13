@@ -350,15 +350,13 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ onNavigate }) => {
                 </h3>
               </div>
               
-              <ICFSuggestionsDisplay 
+              <ICFSuggestionsDisplay
                 suggestions={icfSuggestions}
                 onApplySuggestion={(suggestion) => {
-                  console.log('Apply ICF suggestion:', suggestion);
                   // Future: Navigate to ICF Assessment Form with pre-filled data
                   alert('Funktionen att applicera förslag till ICF-formulär kommer snart!');
                 }}
                 onApplyEnvironmentalFactor={(factor) => {
-                  console.log('Apply environmental factor:', factor);
                   alert('Funktionen att applicera miljöfaktorer kommer snart!');
                 }}
               />
