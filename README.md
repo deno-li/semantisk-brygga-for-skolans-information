@@ -1,4 +1,4 @@
-## Välbefinnandehjul för Sammanhållen Planering i 1177
+## Välbefinnandehjul för Sammanhållen Planering på 1177
 
 En interaktiv prototyp som demonstrerar hur skolans, socialtjänstens och hälso- och sjukvårdens informationsmängder kan harmoniseras genom semantiskt lager för **sammanhållen planering** kring barn och unga.
 Designen bygger på välbefinnandehjul och dimensioner från **GIRFEC (Getting It Right For Every Child)**, samt arbetssätt från **Kronobarnsmodellen** och **Gävlemodellen** för systematiskt trygghetsarbete.
