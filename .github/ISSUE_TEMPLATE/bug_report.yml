@@ -1,0 +1,106 @@
+name: 🐛 Buggrapport / Bug Report
+description: Rapportera ett tekniskt problem eller bugg
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tack för att du rapporterar en bugg! Din feedback hjälper oss att förbättra projektet.
+        
+  - type: textarea
+    id: description
+    attributes:
+      label: Beskrivning av problemet
+      description: Beskriv tydligt vad som gick fel
+      placeholder: När jag klickar på X så händer Y istället för Z...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steg för att reproducera
+      description: Vilka steg behövs för att återskapa problemet?
+      placeholder: |
+        1. Gå till '...'
+        2. Klicka på '...'
+        3. Scrolla till '...'
+        4. Se felet
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected
+    attributes:
+      label: Förväntat beteende
+      description: Vad förväntade du dig skulle hända?
+      placeholder: Jag förväntade mig att...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: actual
+    attributes:
+      label: Faktiskt beteende
+      description: Vad hände istället?
+      placeholder: Istället hände...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: environment
+    attributes:
+      label: Miljö
+      description: Vilken miljö använder du?
+      placeholder: |
+        - OS: [t.ex. Windows 11, macOS 14, Ubuntu 22.04]
+        - Webbläsare: [t.ex. Chrome 120, Firefox 121, Safari 17]
+        - Version: [t.ex. 1.0.0]
+      value: |
+        - OS: 
+        - Webbläsare: 
+        - Version: 
+    validations:
+      required: false
+      
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Skärmdumpar / Screenshots
+      description: Lägg till skärmdumpar om det hjälper att förklara problemet
+      placeholder: Dra och släpp bilder här...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: logs
+    attributes:
+      label: Konsolloggar / Console Logs
+      description: Om tillämpligt, inkludera relevanta felmeddelanden från webbläsarens konsol (F12)
+      placeholder: Klistra in felmeddelanden här...
+      render: shell
+    validations:
+      required: false
+      
+  - type: textarea
+    id: additional
+    attributes:
+      label: Ytterligare information
+      description: Något annat som kan vara relevant?
+      placeholder: Eventuell extra kontext...
+    validations:
+      required: false
+      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Kontrollpunkter
+      description: Bekräfta följande innan du skickar
+      options:
+        - label: Jag har sökt efter liknande issues och hittade inga dubbletter
+          required: true
+        - label: Detta är en bugg i koden, inte en säkerhetsbugg (för säkerhetsproblem, se SECURITY.md)
+          required: true
+        - label: Jag använder den senaste versionen av projektet
+          required: false

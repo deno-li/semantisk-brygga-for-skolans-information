@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Säkerhetsrelaterat problem / Security Issue
+    url: https://github.com/deno-li/semantisk-brygga-for-skolans-information/security
+    about: Rapportera säkerhetsproblem privat enligt SECURITY.md
+  - name: 📖 Dokumentation
+    url: https://github.com/deno-li/semantisk-brygga-for-skolans-information#readme
+    about: Läs projektets dokumentation och guider
+  - name: 💻 Diskussioner / Discussions
+    url: https://github.com/deno-li/semantisk-brygga-for-skolans-information/discussions
+    about: Diskutera idéer och koncept med communityn

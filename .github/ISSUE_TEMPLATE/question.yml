@@ -1,0 +1,70 @@
+name: 💬 Fråga / Question
+description: Ställ en fråga om projektet
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Välkommen att ställa frågor om projektet! Vi hjälper gärna till.
+        
+  - type: textarea
+    id: question
+    attributes:
+      label: Din fråga / Your Question
+      description: Vad vill du veta?
+      placeholder: Hur använder jag...? Varför är...? Kan systemet...?
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Ämnesområde / Topic
+      description: Vilket område handlar frågan om?
+      options:
+        - Komma igång / Getting Started
+        - Användning / Usage
+        - Konfiguration / Configuration
+        - Integration
+        - Teoretisk grund / Theoretical Framework
+        - GIRFEC / SHANARRI
+        - ICF-klassificering / ICF Classification
+        - Semantisk mappning / Semantic Mapping
+        - Deployment
+        - Säkerhet / Security
+        - Dokumentation
+        - Bidra till projektet / Contributing
+        - Övrigt / Other
+    validations:
+      required: false
+      
+  - type: textarea
+    id: context
+    attributes:
+      label: Kontext / Context
+      description: Ge oss lite bakgrund om din situation
+      placeholder: Jag försöker använda systemet för... Min organisation är...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: research
+    attributes:
+      label: Vad har du provat? / What Have You Tried?
+      description: Har du försökt hitta svaret i dokumentationen eller tidigare issues?
+      placeholder: Jag har läst... Jag har provat att...
+    validations:
+      required: false
+      
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Kontrollpunkter / Checklist
+      options:
+        - label: Jag har läst README.md
+          required: false
+        - label: Jag har sökt i befintliga issues efter liknande frågor
+          required: false
+        - label: Detta är inte en säkerhetsfråga (för säkerhet, se SECURITY.md)
+          required: true

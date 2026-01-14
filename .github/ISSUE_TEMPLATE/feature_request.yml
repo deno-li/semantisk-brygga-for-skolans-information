@@ -1,0 +1,130 @@
+name: ✨ Funktionsförslag / Feature Request
+description: Föreslå en ny funktion eller förbättring
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tack för att du vill bidra med idéer! Vi uppskattar alla förslag som kan förbättra projektet.
+        
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problemet / The Problem
+      description: Vilket problem skulle denna funktion lösa? Är det relaterat till en frustration?
+      placeholder: Jag upplever problem med X när jag försöker göra Y...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: solution
+    attributes:
+      label: Föreslagen lösning / Proposed Solution
+      description: Beskriv hur du tänker att funktionen skulle fungera
+      placeholder: Jag skulle vilja att applikationen kunde...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativa lösningar / Alternatives
+      description: Har du övervägt några alternativa sätt att lösa problemet?
+      placeholder: Ett alternativ skulle kunna vara...
+    validations:
+      required: false
+      
+  - type: dropdown
+    id: category
+    attributes:
+      label: Kategori / Category
+      description: Vilken del av systemet påverkas?
+      options:
+        - Välbefinnandehjul / Wellbeing Wheel
+        - ICF-integration
+        - Barnets Resa / Child Journey
+        - My World Triangle
+        - Resilience Matrix
+        - Livsloppsperspektiv / Life Course
+        - AI-analys / AI Analysis
+        - Visualiseringar / Visualizations
+        - Export / Rapporter
+        - Backend / API
+        - Dokumentation
+        - Användargränssnitt / UI/UX
+        - Prestanda / Performance
+        - Säkerhet / Security
+        - Övrigt / Other
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioritet / Priority
+      description: Hur viktigt är detta för dig?
+      options:
+        - Låg / Low - Nice to have
+        - Medel / Medium - Skulle förbättra användningen
+        - Hög / High - Kritiskt för min användning
+    validations:
+      required: false
+      
+  - type: dropdown
+    id: context
+    attributes:
+      label: Användningskontext / User Context
+      description: Vilken roll/sektor representerar du?
+      options:
+        - Skola / School
+        - Socialtjänst / Social Services
+        - Hälso- och sjukvård / Healthcare
+        - Utvecklare / Developer
+        - Forskare / Researcher
+        - Ledning / Management
+        - Annan / Other
+    validations:
+      required: false
+      
+  - type: textarea
+    id: examples
+    attributes:
+      label: Exempel / Use Cases
+      description: Ge konkreta exempel på när denna funktion skulle användas
+      placeholder: |
+        Scenario 1: När en lärare behöver...
+        Scenario 2: Vid samverkansmöten...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Skisser / Mockups
+      description: Om du har skisser, wireframes eller exempel, lägg till dem här
+      placeholder: Dra och släpp bilder här...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: additional
+    attributes:
+      label: Ytterligare information / Additional Context
+      description: Något annat som kan vara relevant?
+      placeholder: Eventuell extra kontext...
+    validations:
+      required: false
+      
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Bidrag / Contribution
+      description: Är du intresserad av att bidra?
+      options:
+        - label: Jag skulle vilja implementera denna funktion själv
+          required: false
+        - label: Jag kan hjälpa till med testning
+          required: false
+        - label: Jag kan bidra med dokumentation
+          required: false
