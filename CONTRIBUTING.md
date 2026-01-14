@@ -1,6 +1,6 @@
-# Bidra till Välbefinnandehjul för Sammanhållen Planering
+# Bidra till välbefinnandehjul för sammanhållen planering och uppföljning
 
-Tack för ditt intresse att bidra till detta projekt! Vi välkomnar bidrag från alla, särskilt från yrkespersoner inom skola, socialtjänst och vård.
+Tack för ditt intresse att bidra till detta projekt! Vi välkomnar bidrag från alla, särskilt från yrkespersoner inom skola, hälsa, vård och omsorg.
 
 ## 🎯 Projektets Syfte
 
@@ -113,8 +113,6 @@ backend/
 └── *_models.py        # Datamodeller
 ```
 
-## 🌟 Vad Vi Söker
-
 ### Högprioriterade Bidrag
 
 - Förbättringar av tillgänglighet (WCAG)
@@ -129,7 +127,6 @@ backend/
 - Prestandaförbättringar
 - Testning och feedback från praktiken
 - Nya visualiseringar
-- Ytterligare ramverk (t.ex. IBIC)
 
 ## 📄 Licens
 
@@ -165,4 +162,4 @@ Om du har frågor om hur du kan bidra, öppna en issue märkt med "question" ell
 
 ---
 
-**Tack för att du bidrar till förbättrad sammanhållen planering för barn och unga!** 🌟
+**Tack för att du bidrar till barn och ungas välbefinnande!** 🌟
