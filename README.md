@@ -319,6 +319,15 @@ Se [LICENSE](LICENSE) för fullständiga licensvillkor eller [docs/LICENSE.md](d
 
 ---
 
+## Bidra / Contributing
+
+Vi välkomnar bidrag från alla, särskilt från yrkespersoner inom skola, socialtjänst och vård!
+
+- 📖 Läs [CONTRIBUTING.md](CONTRIBUTING.md) för riktlinjer om hur du bidrar
+- 📜 Se [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) för våra gemenskapsstandarder
+- 📋 Använd [Issue Templates](.github/ISSUE_TEMPLATE/) för att rapportera buggar eller föreslå funktioner
+- 📝 Se [CHANGELOG.md](CHANGELOG.md) för versionshistorik
+
 ## Kontakt
 
 För frågor om projektet, använd GitHub Issues i detta repository:
@@ -329,8 +338,9 @@ För användning i projekt kontakta via GitHub.
 ---
 
 **Skapad:** 2025-12-08
-**Senast uppdaterad:** 2025-12-27
+**Senast uppdaterad:** 2025-01-14
 **Repository:** https://github.com/deno-li/semantisk-brygga-for-skolans-information
 **Licens (dokumentation):** CC BY 4.0
 **Licens (kod):** MIT
 **Status:** Öppen för användning, forskning och vidareutveckling
+**Version:** 1.0.0
