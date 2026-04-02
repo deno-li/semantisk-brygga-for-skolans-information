@@ -327,7 +327,7 @@ const EcosystemView: React.FC = () => {
       <div>
         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Shield size={20} className="text-gray-500" />
-          Hur vi stödjer nationella initiativ
+          Inspirerad av pågående initiativ
         </h3>
         <div className="space-y-4">
           {INITIATIVES.map((initiative) => (
@@ -345,7 +345,7 @@ const EcosystemView: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
                     <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                       <ArrowRight size={12} />
-                      Hur prototypen stödjer detta
+                      Hur prototypen relaterar till detta
                     </div>
                     <p className="text-sm text-gray-700 leading-relaxed">{initiative.howWeSupport}</p>
                   </div>
