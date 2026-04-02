@@ -231,7 +231,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="md:text-right">
-              <h4 className="font-semibold mb-3 text-sm">Initiativ vi stödjer</h4>
+              <h4 className="font-semibold mb-3 text-sm">Inspirerad av</h4>
               <div className="space-y-2">
                 <a href="https://www.inera.se/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
                   Inera - Sammanhållen planering ↗
@@ -250,7 +250,7 @@ const App: React.FC = () => {
           </div>
 
           <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <p>Privat initiativ • Stödjer GIRFEC i Sverige: Connected Children, Kronobarnsmodellen, Backa Barnet & Handslaget</p>
+            <p>Privat initiativ • Inspirerad av GIRFEC i Sverige, Connected Children, Kronobarnsmodellen, Backa Barnet & Handslaget</p>
             <p>Semantisk brygga för skolans information</p>
           </div>
         </div>
