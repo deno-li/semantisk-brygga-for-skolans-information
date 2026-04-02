@@ -38,6 +38,11 @@ const ScenarioGenerator = lazy(() => import('./ScenarioGenerator'));
 // Wellness Wheel Development (combines spider diagram and intervention simulator)
 const WellnessWheelDevelopment = lazy(() => import('./WellnessWheelDevelopment'));
 
+// Ekosystem & Arkitektur
+const EcosystemView = lazy(() => import('./EcosystemView'));
+const DataArchitectureView = lazy(() => import('./DataArchitectureView'));
+const SchoolClimateIntegration = lazy(() => import('./SchoolClimateIntegration'));
+
 const App: React.FC = () => {
   const [currentPerspective, setCurrentPerspective] = useState<Perspective>('guardian');
   const [currentView, setCurrentView] = useState<View>('overview');
@@ -123,6 +128,16 @@ const App: React.FC = () => {
             selectedProfileId={selectedProfileId}
           />
         );
+
+      // Ekosystem & Arkitektur
+      case 'ecosystem':
+        return <EcosystemView />;
+
+      case 'data-architecture':
+        return <DataArchitectureView />;
+
+      case 'school-climate':
+        return <SchoolClimateIntegration />;
 
       default: return (
         <div className="p-12 text-center text-gray-500 bg-white rounded-lg border-2 border-dashed border-gray-300">
@@ -216,17 +231,26 @@ const App: React.FC = () => {
             </div>
 
             <div className="md:text-right">
-              <h4 className="font-semibold mb-3 text-sm">Länkar</h4>
+              <h4 className="font-semibold mb-3 text-sm">Initiativ vi stödjer</h4>
               <div className="space-y-2">
+                <a href="https://www.inera.se/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
+                  Inera - Sammanhållen planering ↗
+                </a>
                 <a href="https://skr.se/digitaliseringivalfarden/handslagfordigitalisering.8420.html" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
-                  Handslaget för digitalisering ↗
+                  SKR - Handslaget för digitalisering ↗
+                </a>
+                <a href="https://www.socialstyrelsen.se/utveckla-verksamhet/e-halsa/klassificering-och-koder/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
+                  Socialstyrelsen - ICF/BBIC/IBIC ↗
+                </a>
+                <a href="https://www.skolverket.se/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-white transition-colors">
+                  Skolverket - SS12000 ↗
                 </a>
               </div>
             </div>
           </div>
 
           <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <p>Privat initiativ • Stödjer Kronobarnsmodellen</p>
+            <p>Privat initiativ • Stödjer Kronobarnsmodellen, Connected Children & Handslaget</p>
             <p>Semantisk brygga för skolans information</p>
           </div>
         </div>

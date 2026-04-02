@@ -21,7 +21,10 @@ export type View =
   | 'icf-n2'             // WHO ICF - N2 Fördjupad analys
   | 'icf-n3'             // WHO ICF - N3 Samordnad plan (SIP)
   | 'scenario-generator'    // Interaktiv "tänk om..."-scenarioskiss
-  | 'wellness-development'; // Välbefinnandeutveckling - Spider diagram + insatssimulator
+  | 'wellness-development' // Välbefinnandeutveckling - Spider diagram + insatssimulator
+  | 'ecosystem'            // Ekosystem - Befintliga byggstenar och initiativ
+  | 'data-architecture'    // Dataarkitektur - Medallion, AI-agenter, standardmappning
+  | 'school-climate';      // Skolklimat - Gävlemodellen & SHANARRI-koppling
 
 export interface ShanarriIndicator {
   id: string;

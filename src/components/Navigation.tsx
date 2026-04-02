@@ -101,6 +101,14 @@ const TAB_GROUPS: TabGroup[] = [
     gradient: 'from-purple-500 to-pink-600'
   },
   {
+    id: 'ecosystem',
+    label: 'Ekosystem & Arkitektur',
+    description: 'Befintliga byggstenar och standarder',
+    icon: <Compass size={18} />,
+    color: 'teal',
+    gradient: 'from-teal-500 to-cyan-600'
+  },
+  {
     id: 'analysis',
     label: 'Analys',
     description: 'Fördjupad analys',
@@ -169,6 +177,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
     { id: 'journey-level', label: 'Nivåhantering', description: 'N1, N2, N3 nivåer', icon: <Layers size={16} />, hiddenForChild: true, group: 'matris', color: 'purple' },
     { id: 'matrix-overview', label: 'Matrisöversikt', description: 'Samlad matrisvy', icon: <BookOpenCheck size={16} />, hiddenForChild: true, group: 'matris', color: 'pink' },
 
+    // Ekosystem & Arkitektur
+    { id: 'ecosystem', label: 'Ekosystem', description: 'Byggstenar & initiativ', icon: <Globe size={16} />, group: 'ecosystem', color: 'teal' },
+    { id: 'data-architecture', label: 'Dataarkitektur', description: 'Medallion & AI-agenter', icon: <Layers size={16} />, group: 'ecosystem', color: 'cyan', hiddenForChild: true },
+    { id: 'school-climate', label: 'Skolklimat', description: 'Gävlemodellen & SHANARRI', icon: <BarChart3 size={16} />, group: 'ecosystem', color: 'emerald', hiddenForChild: true },
+
     // Analys
     { id: 'lifecourse', label: 'Livslopp', description: 'Utveckling över tid', icon: <TrendingUp size={16} />, hiddenForChild: true, group: 'analysis', color: 'blue' },
     { id: 'myworld', label: 'My World', description: 'Triangelmodellen', icon: <Globe size={16} />, hiddenForChild: true, group: 'analysis', color: 'cyan' },
@@ -229,6 +242,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange, curr
       violet: { bg: 'bg-violet-100', text: 'text-violet-700', border: 'border-violet-200' },
       purple: { bg: 'bg-purple-100', text: 'text-purple-700', border: 'border-purple-200' },
       amber: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' },
+      teal: { bg: 'bg-teal-100', text: 'text-teal-700', border: 'border-teal-200' },
     };
     return colorMap[group.color] || colorMap.gray;
   };
