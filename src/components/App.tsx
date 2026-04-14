@@ -250,7 +250,7 @@ const App: React.FC = () => {
           </div>
 
           <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <p>Privat initiativ • Inspirerad av GIRFEC i Sverige, Connected Children, Kronobarnsmodellen, Backa Barnet & Handslaget</p>
+            <p>Inspirerad av GIRFEC, Connected Children, Kronobarnsmodellen, Backa Barnet, SKR: Handslaget för digitalisering, Inera: Sammanhållen planering</p>
             <p>Semantisk brygga för skolans information</p>
           </div>
         </div>
